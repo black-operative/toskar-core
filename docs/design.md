@@ -145,7 +145,8 @@ Focus is always visible: the global `:focus-visible` ring is primary teal, and a
 
 ## Layout and breakpoints
 
-- **Phone (<768px, `md`):** the sidebar becomes a drawer; the gutter is 1rem; every page fits 390px wide with no horizontal scroll outside code and tables.
+- **Phone (<768px, `md`):** the sidebar becomes a drawer; the gutter is 1rem; every page fits 390px wide with no horizontal scroll outside code and tables. In a conversation the chat box starts at one line and grows with the text, up to 30% of the screen.
+- **Store screenshots:** the phone captures (`data-form=phone`) show this same layout; capture-only CSS hides nothing but the transient jump-to-latest button.
 - **Tablet and up:** the sidebar is always shown.
 - **RTL:** use logical properties (`ms-`, `me-`, `ps-`, `start-`, `end-`); drawers slide from the inline start (`--ygg-inline-sign`).
 - **Reduced motion:** animations and slides turn off under `prefers-reduced-motion`.

@@ -287,6 +287,28 @@
     min-height: 8.75rem; /* ~140px on the empty landing */
   }
 
+  /* On a phone, in a conversation, the message box starts at one line so the
+     answer stays in view, and grows with what you type up to 30% of the
+     screen. The empty landing keeps its large box. */
+  @media (max-width: 767px) {
+    .composer {
+      @apply p-3;
+    }
+
+    .composer:not(.composer-landing) .composer-input {
+      height: 3rem;
+      min-height: 3rem;
+    }
+
+    @supports (field-sizing: content) {
+      .composer:not(.composer-landing) .composer-input {
+        field-sizing: content;
+        height: auto;
+        max-height: 30vh;
+      }
+    }
+  }
+
   .composer-toolbar {
     @apply mt-2.5 flex items-center gap-2 border-t border-line/40 pt-2.5;
   }
@@ -695,29 +717,8 @@ html[data-screenshot='1'] *::after {
   caret-color: transparent !important;
 }
 
-/* Phone store captures hide the desktop sidebar so the page fills the frame. */
-html[data-form='phone'] .app-sidebar {
-  display: none;
-}
-
-html[data-form='phone'] .composer {
-  padding: 0.75rem;
-}
-
-html[data-form='phone'] .composer-input {
-  height: 3rem;
-  min-height: 3rem;
-}
-
-html[data-form='phone'] .composer-toolbar > div {
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
-
-html[data-form='phone'] .composer-select select {
-  max-width: 6.5rem;
-}
-
+/* Phone store captures show the app's own narrow layout (a top bar and a
+   drawer below md). Only the transient jump-to-latest button is hidden. */
 html[data-form='phone'] .chat-jump {
   display: none;
 }

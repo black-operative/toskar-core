@@ -1536,7 +1536,7 @@ export function ChatPage() {
             <button
               type="button"
               className={[
-                'inline-flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm font-medium transition',
+                'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium transition',
                 historyOpen && historyMode === 'overlay'
                   ? 'bg-primary-soft text-primary-active'
                   : 'text-ink-muted hover:bg-raised hover:text-ink',
@@ -1552,7 +1552,7 @@ export function ChatPage() {
             </button>
             <button
               type="button"
-              className="btn-primary inline-flex items-center gap-1.5 px-3 py-1.5 text-xs"
+              className="btn-primary inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-xs"
               title={t('header.newChat')}
               onClick={startNewChat}
             >
