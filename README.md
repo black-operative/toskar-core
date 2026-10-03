@@ -292,6 +292,8 @@ The control API and the OpenAI-compatible API require a bearer token whenever th
 | [Tools](docs/tools.md) | Tool registry, permissions, and which tools a turn is offered |
 | [MCP](docs/mcp.md) | Add tools from MCP servers, and use Yggdrasil from other AI apps |
 | [Architecture](docs/architecture.md) | Subsystems and process layout |
+| [Glossary](docs/glossary.md) | Norse subsystem names and code paths |
+
 | [API](docs/api.md) | Every route, the event stream, and the OpenAI-compatible API |
 | [Runtimes](docs/runtimes.md) | llama.cpp and external servers |
 | [Clustering](docs/clustering.md) | Discovery, pairing, placement |
