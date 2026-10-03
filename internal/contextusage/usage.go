@@ -7,7 +7,7 @@ package contextusage
 
 import (
 	"strings"
-	"unicode/utf8"
+	"unicode"
 
 	"github.com/yeixio/yggdrasil-core/pkg/contracts"
 	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
@@ -35,9 +35,25 @@ type Usage struct {
 // false when no tokenizer was available and n is an estimate.
 type Counter func(text string) (n int, exact bool)
 
-// Estimate is about one token per four characters, for when no tokenizer is
-// running.
-func Estimate(text string) int { return utf8.RuneCountInString(text) / 4 }
+// Estimate approximates a token count for when no tokenizer is running
+// (#230). Chinese, Japanese, and Korean characters are about a token each;
+// punctuation and symbols, common in code and JSON, about half a token; and
+// other text about four characters a token. Plain "characters ÷ 4" counted
+// a Japanese sentence at a quarter of its size.
+func Estimate(text string) int {
+	var cjk, symbols, other int
+	for _, r := range text {
+		switch {
+		case unicode.In(r, unicode.Han, unicode.Hiragana, unicode.Katakana, unicode.Hangul):
+			cjk++
+		case unicode.IsPunct(r) || unicode.IsSymbol(r):
+			symbols++
+		default:
+			other++
+		}
+	}
+	return cjk + (symbols+1)/2 + other/4
+}
 
 // Count counts text with count, or estimates when count is nil.
 func (count Counter) Count(text string) (int, bool) {

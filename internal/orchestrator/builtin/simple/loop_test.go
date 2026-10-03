@@ -319,6 +319,40 @@ func TestTurnInstructionsLeadTheSystemPrompt(t *testing.T) {
 	}
 }
 
+type longGuidanceEnv struct {
+	scriptedEnv
+}
+
+// 4,000 characters of personalization, memories, and guide: about 1,000
+// tokens by the estimate.
+func (e *longGuidanceEnv) TurnInstructions(context.Context, string) string {
+	return strings.Repeat("Remember the user prefers metric units. ", 100)
+}
+
+// The gauge counts what the system prompt actually carries, turn guidance
+// included, not only the base instructions (#230).
+func TestContextCountsTurnGuidance(t *testing.T) {
+	env := &longGuidanceEnv{scriptedEnv: scriptedEnv{replies: []string{"Done."}}}
+	events, err := New().Run(context.Background(), contracts.Task{Prompt: "hi"}, contracts.AIProfile{
+		Roles: []contracts.ModelRole{{Role: "assistant", ModelID: "m"}},
+	}, env)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var usage map[string]any
+	for evt := range events {
+		if u, ok := evt.Payload["context"].(map[string]any); ok {
+			usage = u
+		}
+	}
+	if usage == nil {
+		t.Fatal("no context usage")
+	}
+	if n, _ := usage["instructions"].(int); n < 900 {
+		t.Fatalf("instructions = %v tokens, want the ~1,000-token turn guidance counted", usage["instructions"])
+	}
+}
+
 type referenceEnv struct {
 	scriptedEnv
 }

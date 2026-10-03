@@ -3,6 +3,7 @@ package contextusage
 import (
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/yeixio/yggdrasil-core/pkg/contracts"
 	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
@@ -103,5 +104,28 @@ func TestRoomAndFitCountTokens(t *testing.T) {
 	got := FitPrior(prior, 10, words)
 	if len(got) != 2 || got[0].Content != "a short answer" {
 		t.Fatalf("%+v", got)
+	}
+}
+
+// The estimate is what the gauge shows when no tokenizer is reachable, so it
+// should be near real tokenizers on the text people send: about a token per
+// CJK character, more than four characters a token for code and JSON, and
+// unchanged for plain English (#230).
+func TestEstimateByScript(t *testing.T) {
+	japanese := "今日はとても良い天気なので、公園まで散歩に行きました。" // 27 characters
+	if n := Estimate(japanese); n < 24 || n > 30 {
+		t.Errorf("Japanese: %d tokens for %d characters, want about one each", n, utf8.RuneCountInString(japanese))
+	}
+	korean := "오늘은 날씨가 좋아서 공원에 산책을 갔어요."
+	if n := Estimate(korean); n < 15 {
+		t.Errorf("Korean: %d tokens, want at least one per syllable", n)
+	}
+	json := `{"model":"gemma-4-e4b","messages":[{"role":"user","content":"hi"}],"stream":true}`
+	if n, old := Estimate(json), len(json)/4; n <= old || n > len(json)/2 {
+		t.Errorf("JSON: %d tokens for %d characters, want more than %d and at most %d", n, len(json), old, len(json)/2)
+	}
+	prose := strings.Repeat("The quick brown fox jumps over the lazy dog and runs into the forest ", 6)
+	if n, old := Estimate(prose), utf8.RuneCountInString(prose)/4; n < old || n > old+old/10 {
+		t.Errorf("English: %d tokens, want close to the old estimate %d", n, old)
 	}
 }

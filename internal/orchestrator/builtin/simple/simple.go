@@ -187,7 +187,9 @@ func (o *Orchestrator) Run(
 			sys += "\n" + toolPrompt
 		}
 		// plainSys is the same prompt without tools, for a retry when the
-		// model describes tools instead of answering.
+		// model describes tools instead of answering. The context gauge counts
+		// it as instructions, so turn guidance (personalization, memories, the
+		// guide) is counted too (#230).
 		plainSys := instructions
 		if extra := turnGuidance(ctx, env, task.Prompt); extra != "" {
 			sys = extra + "\n\n" + sys
@@ -217,7 +219,7 @@ func (o *Orchestrator) Run(
 			if m != nil {
 				promptTokens = m.PromptTokens
 			}
-			streamText(ch, role, nodeID, content, m, contextusage.Measure(count, instructions, toolPrompt, messages, promptTokens))
+			streamText(ch, role, nodeID, content, m, contextusage.Measure(count, plainSys, toolPrompt, messages, promptTokens))
 			return
 		}
 		if reply, m, made := makeFileFirst(ctx, env, profile, role, messages, task.Prompt); made {
@@ -225,7 +227,7 @@ func (o *Orchestrator) Run(
 			if m != nil {
 				promptTokens = m.PromptTokens
 			}
-			streamText(ch, role, nodeID, reply, m, contextusage.Measure(count, instructions, toolPrompt, messages, promptTokens))
+			streamText(ch, role, nodeID, reply, m, contextusage.Measure(count, plainSys, toolPrompt, messages, promptTokens))
 			return
 		}
 		calls := 0
@@ -250,7 +252,7 @@ func (o *Orchestrator) Run(
 			if m != nil {
 				promptTokens = m.PromptTokens
 			}
-			usage = contextusage.Measure(count, instructions, toolPrompt, messages, promptTokens)
+			usage = contextusage.Measure(count, plainSys, toolPrompt, messages, promptTokens)
 
 			parsed := tools.ParseModelOutput(content)
 			if parsed.Sanitized {

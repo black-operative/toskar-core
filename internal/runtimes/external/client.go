@@ -139,7 +139,15 @@ func (r *Runtime) Chat(ctx context.Context, model string, req pluginapi.ChatRequ
 	if req.MaxTokens > 0 {
 		body["max_tokens"] = req.MaxTokens
 	}
+	// Ask for the token counts at the end of the stream, so the context
+	// gauge shows the real prompt size (#230). A server that rejects the
+	// option is asked again without it.
+	body["stream_options"] = map[string]any{"include_usage": true}
 	resp, err := r.request(ctx, http.MethodPost, "/chat/completions", body)
+	if err != nil && strings.Contains(err.Error(), "stream_options") {
+		delete(body, "stream_options")
+		resp, err = r.request(ctx, http.MethodPost, "/chat/completions", body)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -155,6 +163,8 @@ func (r *Runtime) Chat(ctx context.Context, model string, req pluginapi.ChatRequ
 				return false
 			}
 		}
+		var metrics *pluginapi.GenerationMetrics
+		done := func() { send(pluginapi.ChatChunk{Done: true, Metrics: metrics}) }
 		sc := bufio.NewScanner(resp.Body)
 		sc.Buffer(make([]byte, 64<<10), 4<<20)
 		for sc.Scan() {
@@ -165,7 +175,7 @@ func (r *Runtime) Chat(ctx context.Context, model string, req pluginapi.ChatRequ
 			}
 			data = strings.TrimSpace(data)
 			if data == "[DONE]" {
-				send(pluginapi.ChatChunk{Done: true})
+				done()
 				return
 			}
 			var ev struct {
@@ -177,9 +187,20 @@ func (r *Runtime) Chat(ctx context.Context, model string, req pluginapi.ChatRequ
 				Error *struct {
 					Message string `json:"message"`
 				} `json:"error"`
+				Usage *struct {
+					PromptTokens     int `json:"prompt_tokens"`
+					CompletionTokens int `json:"completion_tokens"`
+				} `json:"usage"`
 			}
 			if json.Unmarshal([]byte(data), &ev) != nil {
 				continue
+			}
+			if ev.Usage != nil && ev.Usage.PromptTokens > 0 {
+				metrics = &pluginapi.GenerationMetrics{
+					PromptTokens:     ev.Usage.PromptTokens,
+					CompletionTokens: ev.Usage.CompletionTokens,
+					TotalTokens:      ev.Usage.PromptTokens + ev.Usage.CompletionTokens,
+				}
 			}
 			if ev.Error != nil {
 				send(pluginapi.ChatChunk{Error: "the external server stopped: " + ev.Error.Message, Done: true})
@@ -195,7 +216,7 @@ func (r *Runtime) Chat(ctx context.Context, model string, req pluginapi.ChatRequ
 			send(pluginapi.ChatChunk{Error: "the external server's reply was cut off: " + err.Error(), Done: true})
 			return
 		}
-		send(pluginapi.ChatChunk{Done: true})
+		done()
 	}()
 	return out, nil
 }
