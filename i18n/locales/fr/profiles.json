@@ -359,11 +359,5 @@
       "label": "Budget de contexte",
       "help": "Part maximale de la fenêtre que les messages précédents peuvent occuper (0.1–0.9)."
     }
-  },
-  "orchestrators": {
-    "title": "Orchestrateurs",
-    "description": "Moteurs d'orchestration modulaires qui coordonnent les modèles et les outils.",
-    "emptyTitle": "Gestion des orchestrateurs bientôt disponible",
-    "emptyDescription": "Les orchestrateurs intégrés et ceux des plugins seront configurables ici en mode avancé."
   }
 }

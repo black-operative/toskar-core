@@ -358,11 +358,5 @@
       "label": "Kontextbudget",
       "help": "Höchstanteil des Kontextfensters für frühere Nachrichten (0,1–0,9)."
     }
-  },
-  "orchestrators": {
-    "title": "Orchestratoren",
-    "description": "Austauschbare Orchestrierungs-Engines, die Modelle und Werkzeuge koordinieren.",
-    "emptyTitle": "Verwaltung der Orchestratoren folgt bald",
-    "emptyDescription": "Eingebaute Orchestratoren und solche aus Plugins lassen sich hier im Expertenmodus konfigurieren."
   }
 }

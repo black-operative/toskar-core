@@ -358,11 +358,5 @@
       "label": "Context budget",
       "help": "Most of the window earlier messages may use (0.1–0.9)."
     }
-  },
-  "orchestrators": {
-    "title": "Orchestrators",
-    "description": "Pluggable orchestration engines that coordinate models and tools.",
-    "emptyTitle": "Orchestrator management coming soon",
-    "emptyDescription": "Built-in and plugin orchestrators will be configurable here under advanced mode."
   }
 }

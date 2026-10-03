@@ -16,7 +16,6 @@ import { DiagnosticsPage } from '@/features/diagnostics/DiagnosticsPage'
 import { ModelsPage } from '@/features/models/ModelsPage'
 import { NodesPage } from '@/features/nodes/NodesPage'
 import { OnboardingPage } from '@/features/onboarding/OnboardingPage'
-import { OrchestratorsPage } from '@/features/orchestrators/OrchestratorsPage'
 import { PerformancePage } from '@/features/performance/PerformancePage'
 import { ProfilesPage } from '@/features/profiles/ProfilesPage'
 import { SettingsPage } from '@/features/settings/SettingsPage'
@@ -79,7 +78,8 @@ export function App() {
                 <Route path="diagnostics" element={<DiagnosticsPage />} />
                 <Route path="performance" element={<PerformancePage />} />
                 <Route path="settings" element={<SettingsPage />} />
-                <Route path="orchestrators" element={<OrchestratorsPage />} />
+                {/* The old "coming soon" Orchestrators page; orchestration is chosen per profile. */}
+                <Route path="orchestrators" element={<Navigate to="/profiles" replace />} />
               </Route>
               <Route path="*" element={<Navigate to="/chat" replace />} />
             </Routes>

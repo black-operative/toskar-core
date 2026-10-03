@@ -359,11 +359,5 @@
       "label": "Presupuesto de contexto",
       "help": "Parte máxima de la ventana que pueden usar los mensajes anteriores (0.1–0.9)."
     }
-  },
-  "orchestrators": {
-    "title": "Orquestadores",
-    "description": "Motores de orquestación intercambiables que coordinan modelos y herramientas.",
-    "emptyTitle": "La administración de orquestadores llegará pronto",
-    "emptyDescription": "Los orquestadores integrados y de plugins se podrán configurar aquí en el modo avanzado."
   }
 }

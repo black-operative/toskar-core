@@ -359,11 +359,5 @@
       "label": "Orçamento de contexto",
       "help": "Parte máxima da janela que as mensagens anteriores podem usar (0,1–0,9)."
     }
-  },
-  "orchestrators": {
-    "title": "Orquestradores",
-    "description": "Mecanismos de orquestração plugáveis que coordenam modelos e ferramentas.",
-    "emptyTitle": "Gerenciamento de orquestradores em breve",
-    "emptyDescription": "Os orquestradores integrados e de plugins poderão ser configurados aqui no modo avançado."
   }
 }

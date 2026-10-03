@@ -359,11 +359,5 @@
       "label": "Budget di contesto",
       "help": "Quota massima della finestra che i messaggi precedenti possono usare (0.1–0.9)."
     }
-  },
-  "orchestrators": {
-    "title": "Orchestratori",
-    "description": "Motori di orchestrazione modulari che coordinano modelli e strumenti.",
-    "emptyTitle": "Gestione degli orchestratori in arrivo",
-    "emptyDescription": "Gli orchestratori integrati e quelli dei plugin saranno configurabili qui in modalità avanzata."
   }
 }
