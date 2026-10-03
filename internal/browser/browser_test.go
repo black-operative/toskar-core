@@ -12,6 +12,7 @@ import (
 	"strings"
 	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/yeixio/yggdrasil-core/internal/artifacts"
 	"github.com/yeixio/yggdrasil-core/internal/store"
@@ -54,6 +55,11 @@ func shop(t *testing.T) (*Manager, string, *atomic.Int32, *artifacts.Store, cont
 	if ok, why := m.Available(); !ok {
 		t.Skip(why)
 	}
+	// go test ./... runs packages side by side, and a first start of the
+	// browser with a new profile can then take longer than it would alone.
+	limit := startLimit
+	startLimit = 2 * time.Minute
+	t.Cleanup(func() { startLimit = limit })
 	var secretHits atomic.Int32
 	secret := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { secretHits.Add(1) }))
 	t.Cleanup(secret.Close)

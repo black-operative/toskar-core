@@ -23,6 +23,10 @@ const (
 	idleAfter   = 10 * time.Minute
 )
 
+// startLimit is how long a browser may take to start. Tests raise it: on a
+// busy machine a first start can be slow.
+var startLimit = 30 * time.Second
+
 // Manager runs one isolated browser per chat.
 type Manager struct {
 	// ExecPath is the browser program; empty finds one.
@@ -151,6 +155,9 @@ func (m *Manager) get(key string) (*session, error) {
 		chromedp.ExecPath(m.program()),
 		chromedp.UserDataDir(dir),
 		chromedp.WindowSize(1280, 900),
+		// chromedp gives up waiting for the browser's address after 20
+		// seconds unless told otherwise, before the timer below.
+		chromedp.WSURLReadTimeout(startLimit),
 		chromedp.Flag("disable-extensions", true),
 		chromedp.Flag("disable-sync", true),
 		chromedp.Flag("no-default-browser-check", true),
@@ -174,7 +181,7 @@ func (m *Manager) get(key string) (*session, error) {
 	m.listen(ctx)
 	// The first Run starts the browser and ties it to ctx, so it runs on
 	// ctx itself; a timer stops a browser that does not start.
-	slow := time.AfterFunc(30*time.Second, s.cancel)
+	slow := time.AfterFunc(startLimit, s.cancel)
 	defer slow.Stop()
 	if err := chromedp.Run(ctx,
 		fetch.Enable().WithPatterns([]*fetch.RequestPattern{{URLPattern: "*"}}),
