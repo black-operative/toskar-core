@@ -6,10 +6,12 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/yeixio/yggdrasil-core/internal/leakcheck"
 )
@@ -17,6 +19,11 @@ import (
 // The test binary doubles as an MCP server over stdio when MCP_FAKE is
 // set, so the stdio transport runs a real child process.
 func TestMain(m *testing.M) {
+	if os.Getenv("MCP_FAKE_CHILD") == "1" {
+		// A helper process a server started, as npx starts node.
+		time.Sleep(time.Hour)
+		os.Exit(0)
+	}
 	if os.Getenv("MCP_FAKE") == "1" {
 		runFakeStdio(os.Stdin, os.Stdout)
 		os.Exit(0)
@@ -149,6 +156,15 @@ func runFakeStdio(in io.Reader, out io.Writer) {
 		mu.Lock()
 		defer mu.Unlock()
 		_, _ = out.Write(append(raw, '\n'))
+	}
+	// A server may start a helper that outlives its own stdin, without
+	// sharing its output.
+	if pidFile := os.Getenv("MCP_FAKE_CHILD_PIDFILE"); pidFile != "" {
+		child := exec.Command(os.Args[0])
+		child.Env = append(os.Environ(), "MCP_FAKE_CHILD=1")
+		if child.Start() == nil {
+			_ = os.WriteFile(pidFile, []byte(strconv.Itoa(child.Process.Pid)), 0o600)
+		}
 	}
 	// Some servers print a banner before speaking the protocol.
 	mu.Lock()

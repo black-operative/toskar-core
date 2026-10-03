@@ -83,6 +83,7 @@ Restart the daemon after editing the file by hand. A changed `api_host` or `inte
 | `YGGDRASIL_WEB_UI_DIR` | `web_ui_dir` | |
 | `YGGDRASIL_WEB_UI_ENABLED` | `web_ui_enabled` | |
 | `YGGDRASIL_STUB_INFERENCE` | | Answers with a stub model instead of llama.cpp. For tests and the Docker cluster check only. |
+| `YGGDRASIL_PPROF` | | Serves Go's live profiles at `http://<address>/debug/pprof/`, such as `127.0.0.1:6060`, for diagnosing memory or CPU use. Only a loopback address is accepted. Off when unset. |
 | `YGGDRASIL_SANDBOXED` | | `1` behaves as if the daemon ran in the macOS App Sandbox (see [Runtimes](runtimes.md#python-environments-in-sandboxed-builds)). For testing. |
 
 `yggctl` reads two more: `YGGDRASIL_URL` (the daemon address, default `http://127.0.0.1:7331`) and `YGGDRASIL_API_KEY` (sent as the bearer token). See [CLI](cli.md).

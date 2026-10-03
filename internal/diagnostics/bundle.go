@@ -88,6 +88,10 @@ func WriteBundle(destPath string, opts Options) error {
 		return !strings.Contains(lower, "secret") && !strings.Contains(lower, "key") && !strings.HasSuffix(lower, ".pem")
 	})
 
+	if err := writeProfiles(zw); err != nil {
+		return err
+	}
+
 	if opts.IncludeConversations {
 		dbPath := opts.Config.DBPath
 		if st, err := os.Stat(dbPath); err == nil && st.Size() < 32<<20 {
@@ -99,6 +103,9 @@ func WriteBundle(destPath string, opts Options) error {
 ===========================
 This archive excludes API secrets and private keys by default.
 Conversation/task database is included only when explicitly requested.
+runtime.json and profiles/ describe the daemon's memory and goroutines
+(function names, counts, and sizes; no prompts or files). Read heap.pb.gz
+with: go tool pprof profiles/heap.pb.gz
 `
 	return writeBytes(zw, "README.txt", []byte(readme))
 }

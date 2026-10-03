@@ -27,7 +27,7 @@ What you can see and remove:
 - **Run records:** prompts and tool results of past runs. They are kept for 30 days by default and removed daily. Settings → **What left this computer** sets **Keep run records for** (7, 30, or 90 days, or **Keep them**) and has **Delete run records now**. Deleting them also clears cached web searches and pages. Chats are not run records and are not deleted with them.
 - **Knowledge, files, specialized AIs:** each has a delete action. Deleting a specialized AI deletes its adapters and exports.
 
-The diagnostic bundle is written to omit secrets, private keys, and API key material. Do not assume a log file has been redacted. Remove tokens and personal text before you paste a log into an issue.
+The diagnostic bundle is written to omit secrets, private keys, and API key material. Its `runtime.json` and `profiles/` describe the daemon's memory and goroutines: function names, counts, and sizes, with no prompts, files, or credentials. Do not assume a log file has been redacted. Remove tokens and personal text before you paste a log into an issue.
 
 ## Encryption
 

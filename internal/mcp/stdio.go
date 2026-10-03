@@ -122,15 +122,18 @@ func (t *stdioTransport) Close() error {
 		_ = t.stdin.Close()
 		select {
 		case <-t.exited:
-			return
 		case <-time.After(2 * time.Second):
+			terminate(t.cmd)
+			select {
+			case <-t.exited:
+			case <-time.After(3 * time.Second):
+				_ = t.cmd.Process.Kill()
+			}
 		}
-		terminate(t.cmd)
-		select {
-		case <-t.exited:
-		case <-time.After(3 * time.Second):
-			_ = t.cmd.Process.Kill()
-		}
+		// The server is gone; end what it started that is still running, such
+		// as the node process npx runs. A server that quits on its own when
+		// stdin closes used to leave those behind (#231).
+		reapGroup(t.cmd)
 	})
 	return nil
 }

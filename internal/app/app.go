@@ -849,6 +849,15 @@ func (a *App) requireKeyForRemoteBind(ctx context.Context) error {
 
 // Start runs the API server until context cancellation.
 func (a *App) Start(ctx context.Context) error {
+	// Live profiles for diagnosing a running daemon, only when asked for
+	// and only on this computer (#231).
+	if addr := os.Getenv("YGGDRASIL_PPROF"); addr != "" {
+		if got, err := diagnostics.ServeProfiles(ctx, addr); err != nil {
+			a.Logger.Warn("profiles not served", "error", err)
+		} else {
+			a.Logger.Info("profiles served", "addr", "http://"+got.String()+"/debug/pprof/")
+		}
+	}
 	ctx, a.cancel = context.WithCancel(ctx)
 	a.notifyFromEvents(ctx)
 	a.Notifications.Start(ctx)

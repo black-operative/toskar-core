@@ -17,3 +17,7 @@ func terminate(cmd *exec.Cmd) {
 		_ = cmd.Process.Kill()
 	}
 }
+
+// reapGroup has nothing to do on Windows: there are no process groups to
+// signal. Ending a server's helpers there would need a job object.
+func reapGroup(*exec.Cmd) {}

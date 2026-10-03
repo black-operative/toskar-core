@@ -104,6 +104,18 @@ Do not paste a real key into a bug report, and do not put one in a URL.
 
 `/v1/chat/completions` does not download a model. Install one, then use `auto`, a profile, or a model id.
 
+## Yggdrasil uses more and more memory
+
+Note how long Yggdrasil has been running and what it was doing (chats, automations, models loading and unloading, tool sources). Then:
+
+1. Export a diagnostic bundle (Diagnostics → **Export diagnostics**). It includes `runtime.json` (goroutines, heap size, collections) and `profiles/goroutines.txt` and `profiles/heap.pb.gz`, which show where memory and background work go. They hold function names, counts, and sizes, not prompts or files.
+2. If it keeps growing, export a second bundle an hour later. Two snapshots show what grew.
+3. Attach both to an issue.
+
+To look yourself, start the daemon with `YGGDRASIL_PPROF=127.0.0.1:6060` and run `go tool pprof http://127.0.0.1:6060/debug/pprof/heap`, or open `http://127.0.0.1:6060/debug/pprof/goroutine?debug=1`.
+
+Stopping a model, a tool source, or Yggdrasil itself ends every process it started, including helpers such as the `node` process `npx` runs. If one is left behind, note its command line (`ps -ef | grep llama-server`) in the issue.
+
 ## Reset
 
 `POST /api/v1/settings/reset` (Settings → **Reset application**) clears application state. Pass `delete_models=true` only when you also want model files removed. This is local and not reversible.
