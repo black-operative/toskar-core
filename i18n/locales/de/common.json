@@ -48,7 +48,7 @@
     "retrying": "Neuer Versuch …",
     "tryAgain": "Erneut versuchen",
     "keyRequired": "API-Schlüssel erforderlich",
-    "keyBody": "Dieser Yggdrasil-Daemon ist auch außerhalb dieses Computers erreichbar. Gib einen API-Schlüssel ein, um fortzufahren. Ein Schlüssel verschlüsselt den Datenverkehr über einfaches HTTP nicht.",
+    "keyBody": "Dieses Yggdrasil nimmt Verbindungen von anderen Geräten an und verlangt deshalb einen API-Schlüssel. Gib einen ein, um fortzufahren. Über einfaches HTTP verschlüsselt ein Schlüssel deinen Datenverkehr nicht.",
     "continue": "Weiter"
   },
   "units": {

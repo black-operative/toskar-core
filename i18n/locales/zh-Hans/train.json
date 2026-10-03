@@ -258,7 +258,7 @@
     "starting": "正在启动…",
     "train": "训练修订版 {{revision}}",
     "thisComputer": "这台电脑",
-    "nornPicked": "由 Norn 选择",
+    "nornPicked": "为你推荐",
     "trainHere": "改为在这里训练",
     "memory": "内存",
     "memoryOf": "{{needed}} / {{available}}",

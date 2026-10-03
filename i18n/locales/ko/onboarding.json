@@ -5,14 +5,14 @@
   },
   "hardware": {
     "title": "이 컴퓨터",
-    "description": "로컬 추론에 사용할 하드웨어를 감지했어요.",
+    "description": "이 컴퓨터가 AI 모델을 실행하는 데 갖춘 사양이에요.",
     "detecting": "하드웨어를 감지하는 중…",
     "processor": "프로세서",
     "cores_other": "{{count}}코어",
     "memory": "메모리",
     "graphics": "그래픽",
     "system": "시스템",
-    "unavailable": "앱 백엔드가 실행되면 하드웨어 정보가 표시돼요. 지금 설정을 계속할 수 있어요."
+    "unavailable": "Yggdrasil이 시작되면 하드웨어 정보가 표시돼요. 지금 설정을 계속할 수 있어요."
   },
   "question": "AI로 무엇을 하고 싶으세요?",
   "purposes": {

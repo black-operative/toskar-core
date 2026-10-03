@@ -39,7 +39,7 @@
     "choose": "Elegir…",
     "automatic": "Automático",
     "thisComputer": "Esta computadora",
-    "runOnAutomatic": "Norn elige la mejor computadora disponible.",
+    "runOnAutomatic": "Yggdrasil elige la mejor computadora disponible para cada mensaje.",
     "runOnLocal": "Ejecutar solo en esta computadora.",
     "model": "Modelo",
     "modelHint": "Qué modelo instalado responde en este chat",

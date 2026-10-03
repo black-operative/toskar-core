@@ -258,7 +258,7 @@
     "starting": "正在開始…",
     "train": "訓練修訂版 {{revision}}",
     "thisComputer": "這台電腦",
-    "nornPicked": "由 Norn 挑選",
+    "nornPicked": "為你推薦",
     "trainHere": "改在這裡訓練",
     "memory": "記憶體",
     "memoryOf": "{{available}} 中需要 {{needed}}",

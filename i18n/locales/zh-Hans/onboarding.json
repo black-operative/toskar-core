@@ -5,14 +5,14 @@
   },
   "hardware": {
     "title": "这台电脑",
-    "description": "检测到的本地推理硬件。",
+    "description": "这台电脑用于运行 AI 模型的硬件。",
     "detecting": "正在检测硬件…",
     "processor": "处理器",
     "cores_other": "{{count}} 核",
     "memory": "内存",
     "graphics": "显卡",
     "system": "系统",
-    "unavailable": "应用后端运行后会显示硬件详情。你现在可以继续设置。"
+    "unavailable": "Yggdrasil 启动后会显示硬件详情。你现在可以继续设置。"
   },
   "question": "你希望你的 AI 做什么？",
   "purposes": {

@@ -132,7 +132,7 @@
     "details": "詳細資訊",
     "hideDetails": "隱藏詳細資訊",
     "modelSize": "模型大小",
-    "quantization": "量化",
+    "quantization": "壓縮（量化）",
     "unknown": "未知",
     "runtimeMemory": "預估執行記憶體",
     "context": "設定的上下文長度",

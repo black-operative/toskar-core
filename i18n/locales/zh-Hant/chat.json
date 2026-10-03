@@ -39,7 +39,7 @@
     "choose": "選擇…",
     "automatic": "自動",
     "thisComputer": "這台電腦",
-    "runOnAutomatic": "Norn 會選擇最合適的可用電腦。",
+    "runOnAutomatic": "Yggdrasil 會為每則訊息選擇最合適的可用電腦。",
     "runOnLocal": "只在這台電腦上執行。",
     "model": "模型",
     "modelHint": "由哪個已安裝的模型回答這個聊天",

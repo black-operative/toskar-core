@@ -5,7 +5,7 @@
   },
   "hardware": {
     "title": "Dieser Computer",
-    "description": "Erkannte Hardware für lokale Inferenz.",
+    "description": "Was dieser Computer zum Ausführen von KI-Modellen mitbringt.",
     "detecting": "Hardware wird erkannt …",
     "processor": "Prozessor",
     "cores_one": "{{count}} Kern",
@@ -13,7 +13,7 @@
     "memory": "Arbeitsspeicher",
     "graphics": "Grafik",
     "system": "System",
-    "unavailable": "Hardwaredetails erscheinen, sobald das App-Backend läuft. Du kannst die Einrichtung jetzt fortsetzen."
+    "unavailable": "Hardwaredetails erscheinen, sobald Yggdrasil gestartet ist. Du kannst die Einrichtung jetzt fortsetzen."
   },
   "question": "Wobei soll dir deine KI helfen?",
   "purposes": {

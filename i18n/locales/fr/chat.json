@@ -39,7 +39,7 @@
     "choose": "Choisir…",
     "automatic": "Automatique",
     "thisComputer": "Cet ordinateur",
-    "runOnAutomatic": "Norn choisit le meilleur ordinateur disponible.",
+    "runOnAutomatic": "Yggdrasil choisit le meilleur ordinateur disponible pour chaque message.",
     "runOnLocal": "Exécuter uniquement sur cet ordinateur.",
     "model": "Modèle",
     "modelHint": "Modèle installé qui répond dans cette discussion",

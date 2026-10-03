@@ -5,14 +5,14 @@
   },
   "hardware": {
     "title": "このコンピュータ",
-    "description": "ローカル推論用に検出されたハードウェアです。",
+    "description": "このコンピュータが AI モデルを動かすために備えているものです。",
     "detecting": "ハードウェアを検出しています…",
     "processor": "プロセッサ",
     "cores_other": "{{count}}コア",
     "memory": "メモリ",
     "graphics": "グラフィックス",
     "system": "システム",
-    "unavailable": "アプリのバックエンドが起動すると、ハードウェアの詳細が表示されます。このままセットアップを続けられます。"
+    "unavailable": "Yggdrasil が起動すると、ハードウェアの詳細が表示されます。このままセットアップを続けられます。"
   },
   "question": "AIに何をしてほしいですか？",
   "purposes": {

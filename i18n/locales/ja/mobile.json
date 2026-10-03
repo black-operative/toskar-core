@@ -114,7 +114,7 @@
     "welcome": "ようこそ",
     "lede": "このアプリでは、このiPhone上でプライベートにAIを実行できます。",
     "thisIPhone": "このiPhone",
-    "hardware": "ローカル推論用に検出されたハードウェアです。",
+    "hardware": "この iPhone が AI モデルを動かすために備えているものです。",
     "device": "デバイス",
     "memory": "メモリ",
     "system": "システム",

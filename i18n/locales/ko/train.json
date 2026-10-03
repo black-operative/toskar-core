@@ -258,7 +258,7 @@
     "starting": "시작하는 중…",
     "train": "리비전 {{revision}} 학습",
     "thisComputer": "이 컴퓨터",
-    "nornPicked": "Norn이 선택함",
+    "nornPicked": "추천",
     "trainHere": "대신 여기에서 학습",
     "memory": "메모리",
     "memoryOf": "{{available}} 중 {{needed}}",

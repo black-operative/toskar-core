@@ -39,7 +39,7 @@
     "choose": "선택…",
     "automatic": "자동",
     "thisComputer": "이 컴퓨터",
-    "runOnAutomatic": "Norn이 사용 가능한 최적의 컴퓨터를 선택해요.",
+    "runOnAutomatic": "Yggdrasil이 메시지마다 사용 가능한 가장 좋은 컴퓨터를 골라요.",
     "runOnLocal": "이 컴퓨터에서만 실행해요.",
     "model": "모델",
     "modelHint": "이 채팅에 답할 설치된 모델",

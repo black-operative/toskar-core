@@ -17,7 +17,7 @@
     "bundleCreated": "已建立診斷資料包",
     "bundleAt": "已在 <path>{{path}}</path> 建立診斷資料包",
     "bundleShare": "已建立診斷資料包。尋求協助時可以分享這個檔案。",
-    "bundleFailed": "無法建立診斷資料包。請確認背景服務正在執行。"
+    "bundleFailed": "無法建立診斷套件。請檢查 Yggdrasil 服務是否正在執行。"
   },
   "checked": {
     "never": "尚未檢查",
@@ -44,7 +44,7 @@
     "control": {
       "label": "控制服務",
       "notResponding": "沒有回應",
-      "message": "無法連線到本機的 Yggdrasil 服務。請結束並重新打開 App，或確認背景服務正在執行。"
+      "message": "無法連線到本機 Yggdrasil 服務。請結束並重新開啟應用程式。如果是伺服器，請檢查 Yggdrasil 服務是否正在執行。"
     },
     "runtime": {
       "label": "模型執行環境",

@@ -17,7 +17,7 @@
     "bundleCreated": "Diagnostics bundle created",
     "bundleAt": "Diagnostics bundle created at <path>{{path}}</path>",
     "bundleShare": "Diagnostics bundle created. You can share this file when asking for help.",
-    "bundleFailed": "Could not create diagnostics bundle. Check that the daemon is running."
+    "bundleFailed": "Couldn't create the diagnostics bundle. Check that the Yggdrasil service is running."
   },
   "checked": {
     "never": "Not checked yet",
@@ -47,7 +47,7 @@
     "control": {
       "label": "Control service",
       "notResponding": "Not responding",
-      "message": "The local Yggdrasil service is not reachable. Quit and reopen the app, or check that the daemon is running."
+      "message": "The local Yggdrasil service isn't reachable. Quit and reopen the app. On a server, check that the Yggdrasil service is running."
     },
     "runtime": {
       "label": "Model runtime",

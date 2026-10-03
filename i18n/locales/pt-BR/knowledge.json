@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Conhecimento",
-    "description": "O Mimir mantém catálogos, preços, políticas e documentos pesquisáveis. Quando um perfil ou uma IA especializada usa uma fonte, os trechos que correspondem a cada pergunta são adicionados a ela. Edite um arquivo e a próxima pergunta já vê a mudança. Sem retreinamento.",
+    "description": "O Yggdrasil mantém catálogos, preços, políticas e documentos pesquisáveis. Quando um perfil ou uma IA especializada usa uma fonte, os trechos que correspondem a cada pergunta são adicionados a ela. Edite um arquivo e a próxima pergunta já vê a mudança. Sem retreinamento.",
     "loading": "Carregando…",
     "emptyTitle": "Nenhum conhecimento conectado",
     "emptyDescription": "Conecte um arquivo ou pasta deste computador, cole conteúdo ou leia de um banco de dados ou de uma API web. Funcionam arquivos PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, texto e HTML."

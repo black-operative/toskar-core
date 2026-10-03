@@ -49,7 +49,7 @@
     "retrying": "Reintentando…",
     "tryAgain": "Reintentar",
     "keyRequired": "Se requiere una clave de API",
-    "keyBody": "Este daemon de Yggdrasil acepta conexiones desde fuera de esta computadora. Ingresa una clave de API para continuar. Una clave no cifra el tráfico por HTTP sin cifrar.",
+    "keyBody": "Este Yggdrasil acepta conexiones de otros dispositivos, así que pide una clave de API. Introduce una para continuar. Con HTTP simple, una clave no cifra tu tráfico.",
     "continue": "Continuar"
   },
   "units": {

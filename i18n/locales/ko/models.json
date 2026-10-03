@@ -132,7 +132,7 @@
     "details": "세부 정보",
     "hideDetails": "세부 정보 숨기기",
     "modelSize": "모델 크기",
-    "quantization": "양자화",
+    "quantization": "압축(양자화)",
     "unknown": "알 수 없음",
     "runtimeMemory": "예상 실행 메모리",
     "context": "설정된 컨텍스트",

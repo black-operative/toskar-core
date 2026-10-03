@@ -49,7 +49,7 @@
     "retrying": "Nouvelle tentative…",
     "tryAgain": "Réessayer",
     "keyRequired": "Clé API requise",
-    "keyBody": "Ce daemon Yggdrasil écoute au-delà de cet ordinateur. Saisissez une clé API pour continuer. Une clé ne chiffre pas le trafic en HTTP simple.",
+    "keyBody": "Cet Yggdrasil accepte les connexions d'autres appareils et demande donc une clé d'API. Saisissez-en une pour continuer. En HTTP simple, une clé ne chiffre pas votre trafic.",
     "continue": "Continuer"
   },
   "units": {

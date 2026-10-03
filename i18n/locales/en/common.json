@@ -48,7 +48,7 @@
     "retrying": "Retrying…",
     "tryAgain": "Try again",
     "keyRequired": "API key required",
-    "keyBody": "This Yggdrasil daemon is listening beyond this computer. Enter an API key to continue. A key does not encrypt traffic on plain HTTP.",
+    "keyBody": "This Yggdrasil accepts connections from other devices, so it asks for an API key. Enter one to continue. Over plain HTTP, a key doesn't encrypt your traffic.",
     "continue": "Continue"
   },
   "units": {

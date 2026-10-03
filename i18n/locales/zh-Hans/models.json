@@ -132,7 +132,7 @@
     "details": "详情",
     "hideDetails": "隐藏详情",
     "modelSize": "模型大小",
-    "quantization": "量化",
+    "quantization": "压缩（量化）",
     "unknown": "未知",
     "runtimeMemory": "预计运行内存",
     "context": "已配置的上下文",

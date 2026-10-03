@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Conocimiento",
-    "description": "Mimir mantiene catálogos, precios, políticas y documentos disponibles para búsqueda. Cuando un perfil o una IA especializada usa una fuente, se le agregan los fragmentos que coinciden con cada pregunta. Edita un archivo y la siguiente pregunta verá el cambio. Sin volver a entrenar.",
+    "description": "Yggdrasil mantiene catálogos, precios, políticas y documentos disponibles para búsqueda. Cuando un perfil o una IA especializada usa una fuente, se le agregan los fragmentos que coinciden con cada pregunta. Edita un archivo y la siguiente pregunta verá el cambio. Sin volver a entrenar.",
     "loading": "Cargando…",
     "emptyTitle": "No hay conocimiento conectado",
     "emptyDescription": "Conecta un archivo o una carpeta de esta computadora, pega contenido, o lee de una base de datos o una API web. Funcionan archivos PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, de texto y HTML."

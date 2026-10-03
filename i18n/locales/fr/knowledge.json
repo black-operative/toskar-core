@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Connaissances",
-    "description": "Mimir permet de rechercher dans vos catalogues, prix, politiques et documents. Lorsqu'un profil ou une IA spécialisée utilise une source, les passages correspondant à chaque question lui sont ajoutés. Modifiez un fichier, et la question suivante voit le changement. Aucun réentraînement.",
+    "description": "Yggdrasil permet de rechercher dans vos catalogues, prix, politiques et documents. Lorsqu'un profil ou une IA spécialisée utilise une source, les passages correspondant à chaque question lui sont ajoutés. Modifiez un fichier, et la question suivante voit le changement. Aucun réentraînement.",
     "loading": "Chargement…",
     "emptyTitle": "Aucune connaissance connectée",
     "emptyDescription": "Connectez un fichier ou un dossier de cet ordinateur, collez du contenu, ou lisez depuis une base de données ou une API web. Les fichiers PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, texte et HTML sont pris en charge."

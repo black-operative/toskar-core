@@ -262,7 +262,7 @@
     "starting": "Starting…",
     "train": "Train revision {{revision}}",
     "thisComputer": "this computer",
-    "nornPicked": "Norn picked this",
+    "nornPicked": "Picked for you",
     "trainHere": "Train here instead",
     "memory": "Memory",
     "memoryOf": "{{needed}} of {{available}}",

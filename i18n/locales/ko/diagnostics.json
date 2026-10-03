@@ -17,7 +17,7 @@
     "bundleCreated": "진단 번들을 만들었어요",
     "bundleAt": "진단 번들을 <path>{{path}}</path>에 만들었어요",
     "bundleShare": "진단 번들을 만들었어요. 도움을 요청할 때 이 파일을 공유할 수 있어요.",
-    "bundleFailed": "진단 번들을 만들 수 없어요. 데몬이 실행 중인지 확인하세요."
+    "bundleFailed": "진단 번들을 만들지 못했어요. Yggdrasil 서비스가 실행 중인지 확인하세요."
   },
   "checked": {
     "never": "아직 확인하지 않음",
@@ -44,7 +44,7 @@
     "control": {
       "label": "제어 서비스",
       "notResponding": "응답 없음",
-      "message": "로컬 Yggdrasil 서비스에 연결할 수 없어요. 앱을 종료했다가 다시 열거나 데몬이 실행 중인지 확인하세요."
+      "message": "로컬 Yggdrasil 서비스에 연결할 수 없어요. 앱을 종료했다가 다시 여세요. 서버라면 Yggdrasil 서비스가 실행 중인지 확인하세요."
     },
     "runtime": {
       "label": "모델 런타임",

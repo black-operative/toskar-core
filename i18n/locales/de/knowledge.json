@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Wissen",
-    "description": "Mimir hält Kataloge, Preise, Richtlinien und Dokumente durchsuchbar. Wenn ein Profil oder eine spezialisierte KI eine Quelle nutzt, werden die zu jeder Frage passenden Textstellen hinzugefügt. Bearbeite eine Datei, und die nächste Frage sieht die Änderung. Ohne neues Training.",
+    "description": "Yggdrasil hält Kataloge, Preise, Richtlinien und Dokumente durchsuchbar. Wenn ein Profil oder eine spezialisierte KI eine Quelle nutzt, werden die zu jeder Frage passenden Textstellen hinzugefügt. Bearbeite eine Datei, und die nächste Frage sieht die Änderung. Ohne neues Training.",
     "loading": "Wird geladen …",
     "emptyTitle": "Kein Wissen verbunden",
     "emptyDescription": "Verbinde eine Datei oder einen Ordner auf diesem Computer, füge Inhalte ein oder lies aus einer Datenbank oder Web-API. PDF-, Excel-, CSV-, TSV-, JSON-, JSONL-, Markdown-, Text- und HTML-Dateien funktionieren."

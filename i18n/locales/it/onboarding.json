@@ -5,7 +5,7 @@
   },
   "hardware": {
     "title": "Questo computer",
-    "description": "Hardware rilevato per l'inferenza locale.",
+    "description": "Cosa ha questo computer per eseguire modelli di IA.",
     "detecting": "Rilevamento dell'hardware…",
     "processor": "Processore",
     "cores_one": "{{count}} core",
@@ -14,7 +14,7 @@
     "memory": "Memoria",
     "graphics": "Grafica",
     "system": "Sistema",
-    "unavailable": "I dettagli dell'hardware appariranno quando il backend dell'app sarà in esecuzione. Puoi continuare la configurazione adesso."
+    "unavailable": "I dettagli dell'hardware compariranno quando Yggdrasil sarà avviato. Puoi continuare la configurazione ora."
   },
   "question": "Cosa vorresti che facesse la tua IA?",
   "purposes": {

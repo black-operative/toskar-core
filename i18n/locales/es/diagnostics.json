@@ -17,7 +17,7 @@
     "bundleCreated": "Se creó el paquete de diagnóstico",
     "bundleAt": "Se creó el paquete de diagnóstico en <path>{{path}}</path>",
     "bundleShare": "Se creó el paquete de diagnóstico. Puedes compartir este archivo cuando pidas ayuda.",
-    "bundleFailed": "No se pudo crear el paquete de diagnóstico. Comprueba que el daemon esté en ejecución."
+    "bundleFailed": "No se pudo crear el paquete de diagnóstico. Comprueba que el servicio de Yggdrasil esté en ejecución."
   },
   "checked": {
     "never": "Todavía no se comprobó",
@@ -50,7 +50,7 @@
     "control": {
       "label": "Servicio de control",
       "notResponding": "No responde",
-      "message": "No se puede acceder al servicio local de Yggdrasil. Sal de la app y vuelve a abrirla, o comprueba que el daemon esté en ejecución."
+      "message": "No se puede acceder al servicio local de Yggdrasil. Cierra la app y vuelve a abrirla. En un servidor, comprueba que el servicio de Yggdrasil esté en ejecución."
     },
     "runtime": {
       "label": "Entorno de ejecución de modelos",

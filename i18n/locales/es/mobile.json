@@ -114,7 +114,7 @@
     "welcome": "Te damos la bienvenida a",
     "lede": "Esta app puede ejecutar IA de forma privada en este iPhone.",
     "thisIPhone": "Este iPhone",
-    "hardware": "Hardware detectado para la inferencia local.",
+    "hardware": "Lo que tiene este iPhone para ejecutar modelos de IA.",
     "device": "Dispositivo",
     "memory": "Memoria",
     "system": "Sistema",

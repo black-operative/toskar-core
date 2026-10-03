@@ -47,7 +47,7 @@
     "retrying": "다시 시도하는 중…",
     "tryAgain": "다시 시도",
     "keyRequired": "API 키 필요",
-    "keyBody": "이 Yggdrasil 데몬은 이 컴퓨터 밖에서도 접속을 받고 있어요. 계속하려면 API 키를 입력하세요. 일반 HTTP에서는 키가 트래픽을 암호화하지 않아요.",
+    "keyBody": "이 Yggdrasil은 다른 기기의 연결을 받기 때문에 API 키가 필요해요. 계속하려면 키를 입력하세요. 일반 HTTP에서는 키가 트래픽을 암호화하지 않아요.",
     "continue": "계속"
   },
   "units": {

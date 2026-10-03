@@ -49,7 +49,7 @@
     "retrying": "Tentando novamente…",
     "tryAgain": "Tentar novamente",
     "keyRequired": "Chave de API necessária",
-    "keyBody": "Este daemon do Yggdrasil está acessível além deste computador. Digite uma chave de API para continuar. Uma chave não criptografa o tráfego em HTTP simples.",
+    "keyBody": "Este Yggdrasil aceita conexões de outros dispositivos, então pede uma chave de API. Digite uma para continuar. Em HTTP simples, uma chave não criptografa seu tráfego.",
     "continue": "Continuar"
   },
   "units": {

@@ -132,7 +132,7 @@
     "details": "詳細",
     "hideDetails": "詳細を隠す",
     "modelSize": "モデルサイズ",
-    "quantization": "量子化",
+    "quantization": "圧縮（量子化）",
     "unknown": "不明",
     "runtimeMemory": "推定実行時メモリ",
     "context": "設定されたコンテキスト",

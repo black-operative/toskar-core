@@ -17,7 +17,7 @@
     "bundleCreated": "Diagnosepaket erstellt",
     "bundleAt": "Diagnosepaket erstellt unter <path>{{path}}</path>",
     "bundleShare": "Diagnosepaket erstellt. Du kannst diese Datei teilen, wenn du um Hilfe bittest.",
-    "bundleFailed": "Diagnosepaket konnte nicht erstellt werden. Prüfe, ob der Daemon läuft."
+    "bundleFailed": "Diagnosepaket konnte nicht erstellt werden. Prüfe, ob der Yggdrasil-Dienst läuft."
   },
   "checked": {
     "never": "Noch nicht geprüft",
@@ -47,7 +47,7 @@
     "control": {
       "label": "Steuerdienst",
       "notResponding": "Antwortet nicht",
-      "message": "Der lokale Yggdrasil-Dienst ist nicht erreichbar. Beende die App und öffne sie erneut, oder prüfe, ob der Daemon läuft."
+      "message": "Der lokale Yggdrasil-Dienst ist nicht erreichbar. Beende die App und öffne sie erneut. Auf einem Server prüfe, ob der Yggdrasil-Dienst läuft."
     },
     "runtime": {
       "label": "Modell-Laufzeit",

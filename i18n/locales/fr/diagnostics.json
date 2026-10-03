@@ -17,7 +17,7 @@
     "bundleCreated": "Paquet de diagnostics créé",
     "bundleAt": "Paquet de diagnostics créé dans <path>{{path}}</path>",
     "bundleShare": "Paquet de diagnostics créé. Vous pouvez partager ce fichier lorsque vous demandez de l'aide.",
-    "bundleFailed": "Impossible de créer le paquet de diagnostics. Vérifiez que le daemon est en cours d'exécution."
+    "bundleFailed": "Impossible de créer le paquet de diagnostic. Vérifiez que le service Yggdrasil est en cours d'exécution."
   },
   "checked": {
     "never": "Pas encore vérifié",
@@ -50,7 +50,7 @@
     "control": {
       "label": "Service de contrôle",
       "notResponding": "Ne répond pas",
-      "message": "Le service Yggdrasil local est injoignable. Quittez puis rouvrez l'app, ou vérifiez que le daemon est en cours d'exécution."
+      "message": "Le service Yggdrasil local est injoignable. Quittez puis rouvrez l'application. Sur un serveur, vérifiez que le service Yggdrasil est en cours d'exécution."
     },
     "runtime": {
       "label": "Moteur d'exécution des modèles",

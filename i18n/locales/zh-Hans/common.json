@@ -47,7 +47,7 @@
     "retrying": "正在重试…",
     "tryAgain": "重试",
     "keyRequired": "需要 API 密钥",
-    "keyBody": "这个 Yggdrasil 守护进程正在接受来自本机以外的连接。请输入 API 密钥以继续。在普通 HTTP 上，密钥不会加密传输内容。",
+    "keyBody": "此 Yggdrasil 接受来自其他设备的连接，因此需要 API 密钥。请输入密钥以继续。在普通 HTTP 上，密钥不会加密你的通信。",
     "continue": "继续"
   },
   "units": {

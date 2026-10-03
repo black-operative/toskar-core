@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "知识库",
-    "description": "Mimir 让目录、价格、政策和文档都可以被搜索。当某个配置或专用 AI 使用某个来源时，与每个问题匹配的段落会被提供给它。编辑文件后，下一个问题就能看到变化，无需重新训练。",
+    "description": "Yggdrasil 让目录、价格、政策和文档都可以被搜索。当某个配置或专用 AI 使用某个来源时，与每个问题匹配的段落会被提供给它。编辑文件后，下一个问题就能看到变化，无需重新训练。",
     "loading": "正在加载…",
     "emptyTitle": "尚未连接知识库",
     "emptyDescription": "连接这台电脑上的文件或文件夹、粘贴内容，或从数据库或 Web API 读取。支持 PDF、Excel、CSV、TSV、JSON、JSONL、Markdown、文本和 HTML 文件。"

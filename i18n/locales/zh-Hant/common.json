@@ -47,7 +47,7 @@
     "retrying": "正在重試…",
     "tryAgain": "再試一次",
     "keyRequired": "需要 API 金鑰",
-    "keyBody": "這個 Yggdrasil 背景服務正在接受這台電腦以外的連線。請輸入 API 金鑰以繼續。在一般 HTTP 連線上，金鑰並不會將傳輸內容加密。",
+    "keyBody": "此 Yggdrasil 接受來自其他裝置的連線，因此需要 API 金鑰。請輸入金鑰以繼續。在一般 HTTP 上，金鑰不會加密你的通訊。",
     "continue": "繼續"
   },
   "units": {

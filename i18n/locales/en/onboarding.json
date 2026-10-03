@@ -5,7 +5,7 @@
   },
   "hardware": {
     "title": "This computer",
-    "description": "Hardware detected for local inference.",
+    "description": "What this computer has for running AI models.",
     "detecting": "Detecting hardware…",
     "processor": "Processor",
     "cores_one": "{{count}} core",
@@ -13,7 +13,7 @@
     "memory": "Memory",
     "graphics": "Graphics",
     "system": "System",
-    "unavailable": "Hardware details will appear once the app backend is running. You can continue setup now."
+    "unavailable": "Hardware details appear once Yggdrasil has started. You can continue setup now."
   },
   "question": "What would you like your AI to do?",
   "purposes": {

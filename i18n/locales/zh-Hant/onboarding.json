@@ -5,14 +5,14 @@
   },
   "hardware": {
     "title": "這台電腦",
-    "description": "偵測到可用於本機推論的硬體。",
+    "description": "這台電腦用於執行 AI 模型的硬體。",
     "detecting": "正在偵測硬體…",
     "processor": "處理器",
     "cores_other": "{{count}} 核心",
     "memory": "記憶體",
     "graphics": "顯示卡",
     "system": "系統",
-    "unavailable": "App 後端開始執行後，就會顯示硬體詳細資訊。你現在可以繼續設定。"
+    "unavailable": "Yggdrasil 啟動後會顯示硬體詳細資訊。你現在可以繼續設定。"
   },
   "question": "你希望你的 AI 做些什麼？",
   "purposes": {

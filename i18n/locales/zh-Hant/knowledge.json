@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "知識",
-    "description": "Mimir 讓目錄、價格、政策和文件都能被搜尋。當設定檔或專用 AI 使用某個來源時，與每個問題相符的段落會加入其中。編輯檔案後，下一個問題就會看到變更，不需要重新訓練。",
+    "description": "Yggdrasil 讓目錄、價格、政策和文件都能被搜尋。當設定檔或專用 AI 使用某個來源時，與每個問題相符的段落會加入其中。編輯檔案後，下一個問題就會看到變更，不需要重新訓練。",
     "loading": "正在載入…",
     "emptyTitle": "尚未連接任何知識",
     "emptyDescription": "連接這台電腦上的檔案或檔案夾、貼上內容，或從資料庫或 Web API 讀取。支援 PDF、Excel、CSV、TSV、JSON、JSONL、Markdown、純文字和 HTML 檔案。"

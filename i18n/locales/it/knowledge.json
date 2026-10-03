@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Conoscenza",
-    "description": "Mimir rende ricercabili cataloghi, prezzi, regolamenti e documenti. Quando un profilo o un'IA specializzata usa una fonte, i passaggi pertinenti a ogni domanda vengono aggiunti al contesto. Modifica un file e la domanda successiva vede la modifica. Nessun riaddestramento.",
+    "description": "Yggdrasil rende ricercabili cataloghi, prezzi, regolamenti e documenti. Quando un profilo o un'IA specializzata usa una fonte, i passaggi pertinenti a ogni domanda vengono aggiunti al contesto. Modifica un file e la domanda successiva vede la modifica. Nessun riaddestramento.",
     "loading": "Caricamento…",
     "emptyTitle": "Nessuna conoscenza collegata",
     "emptyDescription": "Collega un file o una cartella di questo computer, incolla del contenuto, oppure leggi da un database o da un'API web. Funzionano file PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, di testo e HTML."

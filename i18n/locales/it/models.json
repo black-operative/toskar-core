@@ -134,7 +134,7 @@
     "details": "Dettagli",
     "hideDetails": "Nascondi dettagli",
     "modelSize": "Dimensione del modello",
-    "quantization": "Quantizzazione",
+    "quantization": "Compressione (quantizzazione)",
     "unknown": "Sconosciuta",
     "runtimeMemory": "Memoria stimata in esecuzione",
     "context": "Contesto configurato",

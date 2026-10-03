@@ -114,7 +114,7 @@
     "welcome": "欢迎使用",
     "lede": "这个应用可以在这部 iPhone 上私密地运行 AI。",
     "thisIPhone": "这部 iPhone",
-    "hardware": "检测到的本地推理硬件。",
+    "hardware": "这台 iPhone 用于运行 AI 模型的硬件。",
     "device": "设备",
     "memory": "内存",
     "system": "系统",

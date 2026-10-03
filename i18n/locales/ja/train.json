@@ -258,7 +258,7 @@
     "starting": "開始中…",
     "train": "リビジョン{{revision}}をトレーニング",
     "thisComputer": "このコンピュータ",
-    "nornPicked": "Nornが選択",
+    "nornPicked": "おすすめ",
     "trainHere": "代わりにここでトレーニング",
     "memory": "メモリ",
     "memoryOf": "{{available}}中{{needed}}",
