@@ -43,12 +43,14 @@ describe('AppLayout', () => {
     expect(menu).toHaveAttribute('aria-expanded', 'false')
     expect(sidebar.dataset.open).toBe('false')
 
+    // As from the keyboard: the button has focus when it is pressed.
+    menu.focus()
     fireEvent.click(menu)
     expect(menu).toHaveAttribute('aria-expanded', 'true')
     expect(sidebar.dataset.open).toBe('true')
     expect(document.activeElement).toHaveAttribute('href', '/models')
 
-    fireEvent.keyDown(window, { key: 'Escape' })
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
     expect(sidebar.dataset.open).toBe('false')
     expect(document.activeElement).toBe(menu)
 

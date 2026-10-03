@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { useDialog } from '@/lib/useDialog'
 
 export function TightFitDialog({
   modelName,
@@ -10,6 +11,7 @@ export function TightFitDialog({
   onInstall: () => void
 }) {
   const { t } = useTranslation('models')
+  const ref = useDialog(true, onCancel)
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center"
@@ -17,6 +19,7 @@ export function TightFitDialog({
       onClick={onCancel}
     >
       <div
+        ref={ref}
         className="card w-full max-w-md space-y-4 border-s-4 border-danger shadow-panel"
         role="dialog"
         aria-modal="true"
@@ -39,7 +42,7 @@ export function TightFitDialog({
           </div>
         </div>
         <div className="flex flex-wrap justify-end gap-2">
-          <button type="button" className="btn-secondary" autoFocus onClick={onCancel}>
+          <button type="button" className="btn-secondary" data-autofocus onClick={onCancel}>
             {t('tightFit.cancel')}
           </button>
           <button type="button" className="btn-primary" onClick={onInstall}>

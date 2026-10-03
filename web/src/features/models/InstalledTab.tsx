@@ -14,6 +14,7 @@ import { formatLastUsed, largerAlternative } from './modelPresentation'
 import { SmallModelNote } from './SmallModelNote'
 import { CommunityScore, RateButton } from './ratings'
 import { formatPercent } from '@/i18n/format'
+import { rovingKeyDown, useMenu } from '@/lib/roving'
 
 export function InstalledTab({
   models,
@@ -51,6 +52,7 @@ export function InstalledTab({
 }) {
   const { t } = useTranslation('models')
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null)
+  const menuRef = useMenu(menuOpenId, () => setMenuOpenId(null))
   const q = search.trim().toLowerCase()
   const installed = models.filter((m) => {
     const isInstalled =
@@ -177,7 +179,9 @@ export function InstalledTab({
                   {menuOpenId === model.id && (
                     <div
                       className="absolute end-0 top-full z-20 mt-1 min-w-[9rem] rounded-lg border border-line bg-surface py-1 shadow-panel"
+                      ref={menuRef}
                       role="menu"
+                      onKeyDown={rovingKeyDown}
                       onClick={(e) => e.stopPropagation()}
                     >
                       {live && showManualControls && (

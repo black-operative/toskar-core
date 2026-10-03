@@ -195,7 +195,7 @@ export function OnboardingPage() {
   }, [recommendation, step, phase, downloadProgress])
 
   return (
-    <div className="mx-auto flex h-full min-h-0 w-full max-w-3xl flex-col justify-center overflow-y-auto px-6 py-12">
+    <main className="mx-auto flex h-full min-h-0 w-full max-w-3xl flex-col justify-center overflow-y-auto px-6 py-12">
       <header className="mb-10 text-center">
         <Ratatoskr state={mascot} size={160} className="mx-auto mb-3" />
         <p className="mb-3 text-sm font-medium uppercase tracking-[0.18em] text-accent">
@@ -266,14 +266,16 @@ export function OnboardingPage() {
           </section>
 
           <section className="card mb-8">
-            <h2 className="font-display text-xl font-semibold text-ink">{t('question')}</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <h2 id="onboarding-purpose" className="font-display text-xl font-semibold text-ink">{t('question')}</h2>
+            {/* One choice: each card says whether it is the chosen one. */}
+            <div role="group" aria-labelledby="onboarding-purpose" className="mt-4 grid gap-3 sm:grid-cols-2">
               {presetOptions.map((option) => {
                 const selected = selectedPurpose === option.id
                 return (
                   <button
                     key={option.id}
                     type="button"
+                    aria-pressed={selected}
                     onClick={() => setSelectedPurpose(option.id)}
                     className={[
                       'selectable',
@@ -422,7 +424,7 @@ export function OnboardingPage() {
           </button>
         </div>
       )}
-    </div>
+    </main>
   )
 }
 

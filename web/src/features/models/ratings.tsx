@@ -1,5 +1,6 @@
 import type { TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
+import { useDialog } from '@/lib/useDialog'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { api, ApiError } from '@/lib/api'
@@ -7,6 +8,7 @@ import { RATING_TAGS, languageLines, ratingLanguage, ratingLanguages, useCommuni
 import { languageName } from './modelPresentation'
 import { formatDecimal, formatLocale, formatMilliseconds, formatNumber, formatPercent, formatTokensPerSecond } from '@/i18n/format'
 import type { LanguageRatingStats, ModelRating, RatingObservations, RatingStats, RatingTag } from '@/types/api'
+import { rovingKeyDown } from '@/lib/roving'
 
 function Stars({ value }: { value: number }) {
   const full = Math.round(value)
@@ -128,11 +130,8 @@ function RateModelDialog({ modelId, modelName, onClose }: { modelId: string; mod
     setObserve(rating.share_observations)
   }, [rating])
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  // Focus stays in the dialog; Escape closes it and focus goes back.
+  const dialogRef = useDialog(true, onClose)
 
   const refresh = (next?: ModelRating) => {
     if (next) queryClient.setQueryData(['model-rating', modelId], next)
@@ -166,6 +165,7 @@ function RateModelDialog({ modelId, modelName, onClose }: { modelId: string; mod
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center" role="presentation" onClick={onClose}>
       <div
+        ref={dialogRef}
         className="card max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto shadow-panel"
         role="dialog"
         aria-modal="true"
@@ -194,6 +194,7 @@ function RateModelDialog({ modelId, modelName, onClose }: { modelId: string; mod
         {language ? <p className="text-sm text-ink">{t('ratings.languageQuestion', { language: languageName(language) })}</p> : null}
         <div
           role="radiogroup"
+          onKeyDown={rovingKeyDown}
           aria-label={language ? t('ratings.languageQuestion', { language: languageName(language) }) : t('ratings.starsLabel')}
           className="flex gap-1"
         >
@@ -204,6 +205,8 @@ function RateModelDialog({ modelId, modelName, onClose }: { modelId: string; mod
               role="radio"
               aria-checked={stars === n}
               aria-label={t('ratings.stars', { count: n })}
+              // One Tab stop; the arrow keys move the rating (rovingKeyDown).
+              tabIndex={stars === n || (stars === 0 && n === 1) ? 0 : -1}
               className={['text-3xl leading-none transition', n <= stars ? 'text-warning' : 'text-ink-faint hover:text-ink-muted'].join(' ')}
               onClick={() => setStars(n)}
             >

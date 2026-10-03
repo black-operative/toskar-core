@@ -30,6 +30,8 @@ const allPages = [
 ]
 const only = (process.env.A11Y_PAGES || '').split(',').map((p) => p.trim()).filter(Boolean)
 const pages = only.length ? allPages.filter((p) => only.includes(p)) : allPages
+// Onboarding is checked in a session that has not finished it yet.
+const checkOnboarding = only.length === 0 || only.includes('/onboarding')
 const themes = ['dark', 'light']
 const widths = [
   { name: 'desktop', viewport: { width: 1440, height: 900 } },
@@ -61,44 +63,51 @@ const browser = await chromium.launch(process.env.SCREENSHOT_CHROME ? { executab
 try {
   for (const theme of themes) {
     for (const { name, viewport } of widths) {
-      const context = await browser.newContext({ viewport, reducedMotion: 'reduce' })
-      // Past onboarding, Advanced mode on so every page is in the sidebar,
-      // and the theme under test.
-      await context.addInitScript((theme) => {
-        localStorage.setItem(
-          'yggdrasil-ui',
-          JSON.stringify({ state: { onboardingComplete: true, advancedMode: true, theme }, version: 0 }),
+      for (const onboarded of checkOnboarding ? [true, false] : [true]) {
+        const routes = onboarded ? pages : ['/onboarding']
+        if (routes.length === 0) continue
+        const context = await browser.newContext({ viewport, reducedMotion: 'reduce' })
+        // Advanced mode on so every page is in the sidebar, onboarding done
+        // (or not, for its own check), and the theme under test.
+        await context.addInitScript(
+          ({ theme, onboarded }) => {
+            localStorage.setItem(
+              'yggdrasil-ui',
+              JSON.stringify({ state: { onboardingComplete: onboarded, advancedMode: true, theme }, version: 0 }),
+            )
+          },
+          { theme, onboarded },
         )
-      }, theme)
-      const page = await context.newPage()
-      const errors = []
-      page.on('pageerror', (error) => errors.push(error.message))
-      for (const route of pages) {
-        errors.length = 0
-        await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' })
-        await page.waitForSelector('main h1', { timeout: 30_000 }).catch(() => {})
-        // Let queries settle (the event stream stays open, so the network is
-        // never idle), and measure colors at rest, not mid-transition.
-        await page.waitForTimeout(1500)
-        await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important}' })
-        await page.addScriptTag({ path: axePath })
-        const violations = await page.evaluate(
-          async (tags) =>
-            (await window.axe.run(document, { runOnly: { type: 'tag', values: tags } })).violations.map((v) => ({
-              id: v.id,
-              impact: v.impact,
-              help: v.help,
-              nodes: v.nodes.slice(0, 3).map((n) => `${n.target.join(' ')} — ${(n.failureSummary || '').split('\n')[1]?.trim() || ''}`),
-              count: v.nodes.length,
-            })),
-          tags,
-        )
-        const where = `${theme} ${name} ${route}`
-        if (errors.length) failures.push({ where, id: 'page-error', impact: 'critical', help: errors[0], nodes: [], count: errors.length })
-        for (const v of violations) failures.push({ where, ...v })
-        console.log(`${violations.length || errors.length ? '✗' : '✓'} ${where}`)
+        const page = await context.newPage()
+        const errors = []
+        page.on('pageerror', (error) => errors.push(error.message))
+        for (const route of routes) {
+          errors.length = 0
+          await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' })
+          await page.waitForSelector('main h1', { timeout: 30_000 }).catch(() => {})
+          // Let queries settle (the event stream stays open, so the network is
+          // never idle), and measure colors at rest, not mid-transition.
+          await page.waitForTimeout(1500)
+          await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important}' })
+          await page.addScriptTag({ path: axePath })
+          const violations = await page.evaluate(
+            async (tags) =>
+              (await window.axe.run(document, { runOnly: { type: 'tag', values: tags } })).violations.map((v) => ({
+                id: v.id,
+                impact: v.impact,
+                help: v.help,
+                nodes: v.nodes.slice(0, 3).map((n) => `${n.target.join(' ')} — ${(n.failureSummary || '').split('\n')[1]?.trim() || ''}`),
+                count: v.nodes.length,
+              })),
+            tags,
+          )
+          const where = `${theme} ${name} ${route}`
+          if (errors.length) failures.push({ where, id: 'page-error', impact: 'critical', help: errors[0], nodes: [], count: errors.length })
+          for (const v of violations) failures.push({ where, ...v })
+          console.log(`${violations.length || errors.length ? '✗' : '✓'} ${where}`)
+        }
+        await context.close()
       }
-      await context.close()
     }
   }
 } finally {
@@ -118,4 +127,5 @@ if (failures.length) {
   }
   process.exit(1)
 }
-console.log(`\nNo accessibility problems on ${pages.length} pages × ${themes.length} themes × ${widths.length} widths.`)
+const checked = pages.length + (checkOnboarding ? 1 : 0)
+console.log(`\nNo accessibility problems on ${checked} pages × ${themes.length} themes × ${widths.length} widths.`)

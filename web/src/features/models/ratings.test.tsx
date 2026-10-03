@@ -50,6 +50,20 @@ describe('ratings', () => {
     vi.mocked(api.dismissModelRating).mockResolvedValue(null)
   })
 
+  it('lets the keyboard choose stars: one Tab stop, arrow keys move the rating', async () => {
+    renderIt(<RateButton modelId="qwen" modelName="Qwen Coder" />)
+    fireEvent.click(await screen.findByRole('button', { name: 'Rate Qwen Coder' }))
+    const stars = screen.getAllByRole('radio')
+    expect(stars.map((s) => s.tabIndex)).toEqual([0, -1, -1, -1, -1])
+    stars[0].focus()
+    fireEvent.keyDown(stars[0], { key: 'ArrowRight' })
+    fireEvent.keyDown(document.activeElement!, { key: 'ArrowRight' })
+    const three = screen.getByRole('radio', { name: '3 stars' })
+    expect(three).toHaveAttribute('aria-checked', 'true')
+    expect(document.activeElement).toBe(three)
+    expect(screen.getAllByRole('radio').map((s) => s.tabIndex)).toEqual([-1, -1, 0, -1, -1])
+  })
+
   it('rates a model, showing exactly what sharing sends before it is shared', async () => {
     renderIt(<RateButton modelId="qwen" modelName="Qwen Coder" />)
     fireEvent.click(await screen.findByRole('button', { name: 'Rate Qwen Coder' }))

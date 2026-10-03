@@ -10,6 +10,7 @@ import { useMascotState } from '@/lib/ratatoskr/useMascotState'
 import { ApiError, api, streamChat } from '@/lib/api'
 import { ATTACH_ACCEPT, MAX_ATTACH_BYTES, isAttachable, readUpload } from '@/lib/upload'
 import { subscribeEvents } from '@/lib/events'
+import { useDialog } from '@/lib/useDialog'
 import { useUIStore } from '@/stores/uiStore'
 import type {
   AIProfile,
@@ -532,6 +533,15 @@ export function ChatPage() {
       setToolDeciding(false)
     }
   }
+
+  // Both dialogs keep keyboard focus inside while open. Escape is the safe
+  // choice: keep the chat, or deny the tool.
+  const deleteDialogRef = useDialog(Boolean(pendingDelete), () => {
+    if (!deleteConversation.isPending) setPendingDelete(null)
+  })
+  const toolDialogRef = useDialog(Boolean(pendingTool), () => {
+    if (!toolDeciding) void decidePendingTool(false)
+  })
 
   // The event stream is opened once. Its handler reads the current chat,
   // model locations, and completion handler from this ref; depending on
@@ -1828,6 +1838,7 @@ export function ChatPage() {
 
       {pendingDelete && (
         <div
+          ref={deleteDialogRef}
           className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center"
           role="dialog"
           aria-modal="true"
@@ -1849,6 +1860,7 @@ export function ChatPage() {
               <button
                 type="button"
                 className="btn-secondary"
+                data-autofocus
                 disabled={deleteConversation.isPending}
                 onClick={() => setPendingDelete(null)}
               >
@@ -1869,6 +1881,7 @@ export function ChatPage() {
 
       {pendingTool && (
         <div
+          ref={toolDialogRef}
           className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center"
           role="dialog"
           aria-modal="true"
@@ -1908,6 +1921,7 @@ export function ChatPage() {
               <button
                 type="button"
                 className="btn-secondary"
+                data-autofocus
                 disabled={toolDeciding}
                 onClick={() => void decidePendingTool(false)}
               >

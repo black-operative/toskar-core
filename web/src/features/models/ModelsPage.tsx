@@ -22,6 +22,7 @@ import { RatingDialogHost } from './ratings'
 import { RealmKicker } from '@/components/ui/Realm'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { useMascotState } from '@/lib/ratatoskr/useMascotState'
+import { rovingKeyDown } from '@/lib/roving'
 
 type Tab = 'discover' | 'installed' | 'running'
 
@@ -233,6 +234,7 @@ export function ModelsPage() {
       />
 
       <div className="flex flex-wrap items-center gap-2">
+        <div role="tablist" aria-label={t('page.title')} className="flex flex-wrap gap-2" onKeyDown={rovingKeyDown}>
         {(
           [
             { id: 'discover', label: t('tabs.discover') },
@@ -243,6 +245,9 @@ export function ModelsPage() {
           <button
             key={option.id}
             type="button"
+            role="tab"
+            aria-selected={tab === option.id}
+            tabIndex={tab === option.id ? 0 : -1}
             onClick={() => {
               setTab(option.id)
               if (option.id !== 'discover') setBrowseOpen(false)
@@ -257,9 +262,12 @@ export function ModelsPage() {
             {option.label}
           </button>
         ))}
+        </div>
         {(tab === 'discover' || tab === 'installed') && (
           <input
+            type="search"
             className="field ms-auto min-w-[200px] max-w-sm flex-1"
+            aria-label={t('page.search')}
             placeholder={t('page.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}

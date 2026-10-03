@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageErrorBoundary } from '@/components/layout/PageErrorBoundary'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { YggdrasilMark } from '@/components/ui/YggdrasilMark'
+import { useDialog } from '@/lib/useDialog'
 
 // Each page's name in the window title: common:nav.<key>.
 const pageTitles: Record<string, string> = {
@@ -32,7 +33,11 @@ export function AppLayout() {
   const { pathname } = useLocation()
   const titleKey = pageTitles[pathname]
   const [menuOpen, setMenuOpen] = useState(false)
-  const menuButton = useRef<HTMLButtonElement>(null)
+  // The open drawer is modal: focus starts on the current page's link and
+  // stays in the drawer, Escape closes it, and focus returns to the button.
+  const drawerRef = useDialog<HTMLDivElement>(menuOpen, () => setMenuOpen(false), {
+    initialFocus: 'nav a[aria-current="page"]',
+  })
 
   // Each page names itself in the window title, for history, tabs, and screen readers.
   useEffect(() => {
@@ -42,29 +47,15 @@ export function AppLayout() {
   // Choosing a page closes the drawer.
   useEffect(() => setMenuOpen(false), [pathname])
 
-  useEffect(() => {
-    if (!menuOpen) return
-    const sidebar = document.getElementById('app-sidebar')
-    ;(sidebar?.querySelector<HTMLElement>('nav a[aria-current="page"]') ?? sidebar?.querySelector<HTMLElement>('nav a'))?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      setMenuOpen(false)
-      menuButton.current?.focus()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [menuOpen])
-
   return (
     <div className="app-shell">
-      <Sidebar open={menuOpen} />
+      <Sidebar ref={drawerRef} open={menuOpen} />
       {menuOpen ? (
         <div className="fixed inset-0 z-30 bg-black/40 md:hidden" aria-hidden onClick={() => setMenuOpen(false)} />
       ) : null}
-      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+      <main inert={menuOpen} className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <div className="flex items-center gap-2 border-b border-line/60 bg-sidebar px-2 py-1.5 md:hidden">
           <button
-            ref={menuButton}
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-ink hover:bg-raised/60"
             aria-label={t('nav.open')}

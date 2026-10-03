@@ -4,6 +4,7 @@ import { ActivityPanel } from './ActivityPanel'
 import { BenchmarkPanel } from './BenchmarkPanel'
 import { OverviewPanel } from './OverviewPanel'
 import { RealmKicker } from '@/components/ui/Realm'
+import { rovingKeyDown } from '@/lib/roving'
 
 type Tab = 'overview' | 'benchmarks' | 'activity'
 
@@ -22,13 +23,14 @@ export function PerformancePage() {
         <p className="page-subtitle">{t('page.subtitle')}</p>
       </header>
 
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('page.views')}>
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('page.views')} onKeyDown={rovingKeyDown}>
         {tabs.map((option) => (
           <button
             key={option}
             type="button"
             role="tab"
             aria-selected={tab === option}
+            tabIndex={tab === option ? 0 : -1}
             onClick={() => setTab(option)}
             className={[
               'rounded-lg border px-4 py-2 text-sm font-medium transition',

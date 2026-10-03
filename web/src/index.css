@@ -273,6 +273,11 @@
     box-shadow: var(--shadow-panel), inset 0 0 0 1px rgb(var(--rgb-line) / 0.45);
   }
 
+  /* The message box has no outline of its own; the composer shows focus. */
+  .composer:focus-within {
+    box-shadow: var(--shadow-panel), inset 0 0 0 1px rgb(var(--rgb-primary) / 0.7);
+  }
+
   .composer-input {
     @apply w-full resize-none border-0 bg-transparent px-2 py-2 text-[15px] leading-relaxed text-ink outline-none placeholder:text-ink-faint disabled:opacity-60;
     min-height: 7.5rem; /* ~120px — generous multi-line prompt */
@@ -375,7 +380,8 @@
   .chat-list-search:focus,
   .chat-list-search:focus-visible {
     @apply text-ink;
-    box-shadow: none;
+    /* An underline in place of the outline, so focus still shows. */
+    box-shadow: inset 0 -2px 0 rgb(var(--rgb-primary));
     border-color: transparent;
   }
 

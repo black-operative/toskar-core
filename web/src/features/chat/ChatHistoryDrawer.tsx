@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react'
+import { useEffect, useMemo, useState, type MouseEvent } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDialog } from '@/lib/useDialog'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import type { Conversation } from '@/types/api'
+import { rovingKeyDown, useMenu } from '@/lib/roving'
 
 const PIN_MIN_WIDTH = 1100
 
@@ -122,7 +124,11 @@ export function ChatHistoryDrawer({
   const { t } = useTranslation('chat')
   const [search, setSearch] = useState('')
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null)
-  const panelRef = useRef<HTMLElement | null>(null)
+  const menuRef = useMenu(menuOpenId, () => setMenuOpenId(null))
+  // As an overlay it is a modal dialog: focus moves in and stays, and Escape
+  // closes it. Pinned, it is a side panel the page works alongside.
+  const overlay = mode === 'overlay'
+  const panelRef = useDialog<HTMLElement>(open && overlay, onClose)
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -134,15 +140,6 @@ export function ChatHistoryDrawer({
     () => groupConversations(filtered, pinnedIds),
     [filtered, pinnedIds],
   )
-
-  useEffect(() => {
-    if (!open || mode === 'pinned') return
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open, mode, onClose])
 
   useEffect(() => {
     if (!menuOpenId) return
@@ -163,7 +160,8 @@ export function ChatHistoryDrawer({
           ? 'absolute inset-y-0 start-0 z-30 border-e border-line/40 shadow-panel animate-chat-drawer'
           : 'relative z-10 h-full shrink-0 border-e border-line/50',
       ].join(' ')}
-      role="dialog"
+      role={overlay ? 'dialog' : undefined}
+      aria-modal={overlay ? true : undefined}
       aria-label={t('history.label')}
     >
       <div className="flex shrink-0 items-center gap-2 border-b border-line/40 px-3 py-3">
@@ -204,7 +202,7 @@ export function ChatHistoryDrawer({
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t('history.searchPlaceholder')}
             className="field w-full py-2 text-sm"
-            autoFocus={mode === 'overlay'}
+            data-autofocus={overlay ? true : undefined}
           />
         </label>
       </div>
@@ -303,7 +301,9 @@ export function ChatHistoryDrawer({
                           {menuOpenId === conversation.id && (
                             <div
                               className="absolute end-0 top-full z-40 mt-1 min-w-[8.5rem] rounded-lg border border-line bg-surface py-1 shadow-panel"
+                              ref={menuRef}
                               role="menu"
+                              onKeyDown={rovingKeyDown}
                               onClick={(e) => e.stopPropagation()}
                             >
                               <button

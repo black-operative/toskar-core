@@ -1,3 +1,4 @@
+import type { Ref } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
@@ -46,7 +47,7 @@ function NavItem({ to, label }: { to: string; label: string }) {
 }
 
 /** open shows the sidebar as a drawer below the md breakpoint; wider, it is always shown. */
-export function Sidebar({ open = false }: { open?: boolean }) {
+export function Sidebar({ open = false, ref }: { open?: boolean; ref?: Ref<HTMLDivElement> }) {
   const { t } = useTranslation()
   const advancedMode = useUIStore((s) => s.advancedMode)
   const healthQuery = useQuery({
@@ -120,7 +121,7 @@ export function Sidebar({ open = false }: { open?: boolean }) {
   return (
     // App chrome, not complementary content: the brand and status are the
     // page header, the links are the Main nav, and subsystem status is the footer.
-    <div id="app-sidebar" data-open={open} className="app-sidebar flex h-full min-h-0 w-[15.5rem] shrink-0 flex-col overflow-hidden border-e border-line/60 bg-sidebar">
+    <div ref={ref} id="app-sidebar" data-open={open} className="app-sidebar flex h-full min-h-0 w-[15.5rem] shrink-0 flex-col overflow-hidden border-e border-line/60 bg-sidebar">
       <header className="px-4 pb-3 pt-4">
         <div className="flex items-center gap-2.5">
           <YggdrasilMark size={36} lore />

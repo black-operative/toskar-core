@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import i18n from '@/i18n'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { api, forgetApiKey, rememberApiKey, storedApiKey } from '@/lib/api'
+import { useDialog } from '@/lib/useDialog'
 import { formatLastUsed } from '@/features/models/modelPresentation'
 import { useUIStore } from '@/stores/uiStore'
 import type { APIKeyRecord } from '@/types/api'
@@ -108,6 +109,7 @@ export function ApiAccessPage() {
   const [copiedField, setCopiedField] = useState<string | null>(null)
   const [probeTick, setProbeTick] = useState(0)
   const [lanConfirmOpen, setLanConfirmOpen] = useState(false)
+  const lanDialogRef = useDialog(lanConfirmOpen, () => setLanConfirmOpen(false))
   const [browserHasKey, setBrowserHasKey] = useState(() => Boolean(storedApiKey()))
   const [dialogKeyName, setDialogKeyName] = useState(() => t('lan.defaultKeyName'))
   const [docsOpen, setDocsOpen] = useState(false)
@@ -554,6 +556,7 @@ export function ApiAccessPage() {
 
       {lanConfirmOpen && (
         <div
+          ref={lanDialogRef}
           className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4"
           role="dialog"
           aria-modal="true"
@@ -602,6 +605,7 @@ export function ApiAccessPage() {
               <button
                 type="button"
                 className="btn-secondary px-3 py-1.5 text-xs"
+                data-autofocus
                 onClick={() => setLanConfirmOpen(false)}
                 disabled={updateSettingsMutation.isPending}
               >

@@ -36,6 +36,7 @@ import {
 import { OrchestrationControls, cleanOrchestration } from './OrchestrationControls'
 import { EXECUTION_KEYS, MEMORY_KEYS, ORCHESTRATION_KEYS } from './orchestrationKeys'
 import { RealmKicker } from '@/components/ui/Realm'
+import { rovingKeyDown, useMenu } from '@/lib/roving'
 
 // The tools a profile can set one by one; each name and description is profiles:tools.<tool id> in the catalog.
 const TOOL_CATALOG: string[] = [
@@ -126,6 +127,7 @@ export function ProfilesPage() {
   const [detailsId, setDetailsId] = useState<string | null>(null)
   const [filter, setFilter] = useState<ProfileFilter>('all')
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null)
+  const menuRef = useMenu(menuOpenId, () => setMenuOpenId(null))
   const [renamingId, setRenamingId] = useState<string | null>(null)
   const [renameValue, setRenameValue] = useState('')
 
@@ -319,7 +321,7 @@ export function ProfilesPage() {
       )}
 
       {allProfiles.length > 0 && (
-        <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('page.filter')}>
+        <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('page.filter')} onKeyDown={rovingKeyDown}>
           {(
             [
               { id: 'all', label: t('page.filters.all') },
@@ -332,6 +334,7 @@ export function ProfilesPage() {
               type="button"
               role="tab"
               aria-selected={filter === tab.id}
+              tabIndex={filter === tab.id ? 0 : -1}
               className={[
                 'rounded-lg px-3 py-1.5 text-xs font-medium transition',
                 filter === tab.id
@@ -548,7 +551,9 @@ export function ProfilesPage() {
                     {menuOpenId === profile.id && (
                       <div
                         className="absolute end-0 top-full z-20 mt-1 min-w-[9.5rem] rounded-lg border border-line bg-surface py-1 shadow-panel"
+                        ref={menuRef}
                         role="menu"
+                        onKeyDown={rovingKeyDown}
                         onClick={(e) => e.stopPropagation()}
                       >
                         <MenuItem

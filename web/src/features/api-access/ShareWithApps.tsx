@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import i18n from '@/i18n'
 import { api } from '@/lib/api'
 import type { MCPShare } from '@/types/api'
+import { rovingKeyDown } from '@/lib/roving'
 
 type AppID = 'claude-desktop' | 'claude-code' | 'cursor' | 'vscode' | 'other'
 
@@ -89,13 +90,14 @@ export function ShareWithApps() {
         <h2 className="section-title">{t('share.title')}</h2>
         <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t('share.description')}</p>
       </div>
-      <div role="tablist" className="flex flex-wrap gap-1.5">
+      <div role="tablist" className="flex flex-wrap gap-1.5" onKeyDown={rovingKeyDown}>
         {APPS.map((a) => (
           <button
             key={a.id}
             type="button"
             role="tab"
             aria-selected={app === a.id}
+            tabIndex={app === a.id ? 0 : -1}
             className={app === a.id ? 'btn-primary px-3 py-1.5 text-xs' : 'btn-secondary px-3 py-1.5 text-xs'}
             onClick={() => {
               setApp(a.id)

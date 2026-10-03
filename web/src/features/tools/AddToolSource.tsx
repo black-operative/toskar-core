@@ -14,6 +14,7 @@ import type {
 } from '@/types/api'
 import { preopenSignInWindow } from '@/lib/desktopBridge'
 import { errorText, linesToMap, openSignIn, SOURCES_KEY, specSummary, splitArgs } from './mcpShared'
+import { rovingKeyDown } from '@/lib/roving'
 
 // The tabs, in order; each is tools:add.tabs.<id> in the catalog.
 const TABS = ['gallery', 'paste', 'apps', 'custom'] as const
@@ -44,13 +45,14 @@ export function AddToolSource({ onClose }: { onClose: () => void }) {
         <AddedNotice added={done} onAnother={() => setDone(null)} onClose={onClose} />
       ) : (
         <>
-          <div role="tablist" className="flex flex-wrap gap-1.5">
+          <div role="tablist" className="flex flex-wrap gap-1.5" onKeyDown={rovingKeyDown}>
             {TABS.map((id) => (
               <button
                 key={id}
                 type="button"
                 role="tab"
                 aria-selected={tab === id}
+                tabIndex={tab === id ? 0 : -1}
                 className={tab === id ? 'btn-primary px-3 py-1.5 text-xs' : 'btn-secondary px-3 py-1.5 text-xs'}
                 onClick={() => setTab(id)}
               >
@@ -484,13 +486,14 @@ function CustomTab({ onAdded }: { onAdded: (a: MCPAdded) => void }) {
         add.mutate({ body: { spec } })
       }}
     >
-      <div className="flex gap-1.5" role="radiogroup" aria-label={t('add.where')}>
+      <div className="flex gap-1.5" role="radiogroup" aria-label={t('add.where')} onKeyDown={rovingKeyDown}>
         {(['local', 'remote'] as const).map((w) => (
           <button
             key={w}
             type="button"
             role="radio"
             aria-checked={where === w}
+            tabIndex={where === w ? 0 : -1}
             className={where === w ? 'btn-primary px-3 py-1.5 text-xs' : 'btn-secondary px-3 py-1.5 text-xs'}
             onClick={() => setWhere(w)}
           >

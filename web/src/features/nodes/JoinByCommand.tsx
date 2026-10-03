@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { api, ApiError } from '@/lib/api'
 import { formatNumber, formatRelativeTime } from '@/i18n/format'
 import type { JoinToken, JoinTokenCreated } from '@/types/api'
+import { rovingKeyDown } from '@/lib/roving'
 
 type Kind = 'installed' | 'install' | 'windows'
 
@@ -113,13 +114,14 @@ export function JoinByCommand({ onClose }: { onClose: () => void }) {
         </div>
       ) : (
         <div className="space-y-3">
-          <div role="tablist" aria-label={t('join.kindLabel')} className="flex flex-wrap gap-1.5">
+          <div role="tablist" aria-label={t('join.kindLabel')} className="flex flex-wrap gap-1.5" onKeyDown={rovingKeyDown}>
             {KINDS.map((k) => (
               <button
                 key={k}
                 type="button"
                 role="tab"
                 aria-selected={kind === k}
+                tabIndex={kind === k ? 0 : -1}
                 className={['status-chip transition', kind === k ? 'bg-primary/20 text-ink ring-1 ring-primary' : 'bg-raised/80 text-ink-muted hover:text-ink'].join(' ')}
                 onClick={() => {
                   setKind(k)
