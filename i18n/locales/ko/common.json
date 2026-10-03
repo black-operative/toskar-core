@@ -29,10 +29,11 @@
     "readyHint": "로컬 서비스가 준비되었어요."
   },
   "subsystems": {
-    "title": "시스템",
+    "title": "상태",
+    "placement": "모델 배치",
     "bifrostHint": "컴퓨터 검색 및 네트워킹",
     "computersNone": "컴퓨터 없음",
-    "computersConnected_other": "컴퓨터 {{count}}대 연결됨",
+    "connected_other": "{{count}}대 연결됨",
     "nornHint": "Norn이 여러 컴퓨터에 작업을 배분해요",
     "nornAutomatic": "자동",
     "mimirHint": "로컬 지식 및 메모리",

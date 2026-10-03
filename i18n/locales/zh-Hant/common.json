@@ -29,10 +29,11 @@
     "readyHint": "本機服務已就緒。"
   },
   "subsystems": {
-    "title": "系統",
+    "title": "狀態",
+    "placement": "模型分配",
     "bifrostHint": "電腦探索與網路連線",
     "computersNone": "沒有電腦",
-    "computersConnected_other": "已連線 {{count}} 台電腦",
+    "connected_other": "已連接 {{count}} 台",
     "nornHint": "Norn 會在你的電腦之間排程工作",
     "nornAutomatic": "自動",
     "mimirHint": "本機知識與記憶",

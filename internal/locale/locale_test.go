@@ -36,13 +36,13 @@ func TestT(t *testing.T) {
 		t.Errorf("de nav.settings = %q", got)
 	}
 	// Placeholders, plural forms, and numbers in the language's format.
-	if got := T("en", "common:subsystems.computersConnected", map[string]any{"count": 1}); got != "1 computer connected" {
+	if got := T("en", "chat:steps.correctedCode", map[string]any{"count": 1}); got != "Checked the code and fixed 1 error" {
 		t.Errorf("en one = %q", got)
 	}
-	if got := T("en", "common:subsystems.computersConnected", map[string]any{"count": 1234}); got != "1,234 computers connected" {
+	if got := T("en", "chat:steps.correctedCode", map[string]any{"count": 1234}); got != "Checked the code and fixed 1,234 errors" {
 		t.Errorf("en other = %q", got)
 	}
-	if got := T("de", "common:subsystems.computersConnected", map[string]any{"count": 1234}); !strings.Contains(got, "1.234") {
+	if got := T("de", "common:subsystems.connected", map[string]any{"count": 1234}); !strings.Contains(got, "1.234") {
 		t.Errorf("de other = %q, want 1.234", got)
 	}
 	// A key the catalog lacks shows itself.

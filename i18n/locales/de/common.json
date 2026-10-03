@@ -29,11 +29,12 @@
     "readyHint": "Der lokale Dienst ist bereit."
   },
   "subsystems": {
-    "title": "System",
+    "title": "Status",
+    "placement": "Modellverteilung",
     "bifrostHint": "Computer finden und vernetzen",
     "computersNone": "Keine Computer",
-    "computersConnected_one": "{{count}} Computer verbunden",
-    "computersConnected_other": "{{count}} Computer verbunden",
+    "connected_one": "{{count}} verbunden",
+    "connected_other": "{{count}} verbunden",
     "nornHint": "Norn verteilt Arbeit auf deine Computer",
     "nornAutomatic": "Automatisch",
     "mimirHint": "Lokales Wissen und Gedächtnis",

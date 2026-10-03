@@ -179,18 +179,19 @@ export function Sidebar({ open = false }: { open?: boolean }) {
         </div>
       </nav>
 
+      {/* Plain labels; the realm behind each is in its tooltip. */}
       <footer className="mt-auto space-y-1.5 border-t border-line/50 px-4 py-3">
         <p className="label-caps mb-2 text-[10px] text-ink-faint">{t('subsystems.title')}</p>
         <div
           className="flex items-center justify-between gap-2 text-[11px] text-ink-faint"
-          title={t('subsystems.bifrostHint')}
+          title={`Bifrost · ${t('subsystems.bifrostHint')}`}
         >
           <span className="flex items-center gap-1.5">
             <span className="h-1 w-1 rounded-full bg-bifrost" aria-hidden />
-            Bifrost
+            {t('nav.computers')}
           </span>
           <span className="tabular-nums">
-            {nodeCount === 0 ? t('subsystems.computersNone') : t('subsystems.computersConnected', { count: nodeCount })}
+            {nodeCount === 0 ? t('subsystems.computersNone') : t('subsystems.connected', { count: nodeCount })}
           </span>
         </div>
         <div
@@ -199,17 +200,17 @@ export function Sidebar({ open = false }: { open?: boolean }) {
         >
           <span className="flex items-center gap-1.5">
             <span className="h-1 w-1 rounded-full bg-norn" aria-hidden />
-            Norn
+            {t('subsystems.placement')}
           </span>
           <span>{t('subsystems.nornAutomatic')}</span>
         </div>
         <div
           className="flex items-center justify-between gap-2 text-[11px] text-ink-faint"
-          title={t('subsystems.mimirHint')}
+          title={`Mimir · ${t('subsystems.mimirHint')}`}
         >
           <span className="flex items-center gap-1.5">
             <span className="h-1 w-1 rounded-full bg-mimir" aria-hidden />
-            Mimir
+            {t('nav.knowledge')}
           </span>
           <span>{t('subsystems.mimirReady')}</span>
         </div>

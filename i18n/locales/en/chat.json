@@ -48,6 +48,7 @@
     "models": "Models",
     "specialized": "Specialized AIs",
     "effort": "Effort",
+    "options": "Chat options",
     "send": "Send",
     "stop": "Stop",
     "autoHint": "Auto picks an installed model for each message",

@@ -29,11 +29,12 @@
     "readyHint": "Local service is ready."
   },
   "subsystems": {
-    "title": "System",
+    "title": "Status",
+    "placement": "Model placement",
     "bifrostHint": "Computer discovery and networking",
     "computersNone": "No computers",
-    "computersConnected_one": "{{count}} computer connected",
-    "computersConnected_other": "{{count}} computers connected",
+    "connected_one": "{{count}} connected",
+    "connected_other": "{{count}} connected",
     "nornHint": "Norn schedules work across your computers",
     "nornAutomatic": "Automatic",
     "mimirHint": "Local knowledge and memory",

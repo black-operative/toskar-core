@@ -213,6 +213,27 @@ export function ChatPage() {
   const [listError, setListError] = useState<string | null>(null)
   const [runMode, setRunMode] = useState<RunMode | null>(null)
   const [executionAsked, setExecutionAsked] = useState(false)
+  // Chat options (profile, run on, effort, memory) sit behind one button.
+  const [optionsOpen, setOptionsOpen] = useState(false)
+  const optionsRef = useRef<HTMLDivElement | null>(null)
+  const optionsButtonRef = useRef<HTMLButtonElement | null>(null)
+  useEffect(() => {
+    if (!optionsOpen) return
+    const onPointer = (event: globalThis.MouseEvent) => {
+      if (!optionsRef.current?.contains(event.target as Node)) setOptionsOpen(false)
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setOptionsOpen(false)
+      optionsButtonRef.current?.focus()
+    }
+    document.addEventListener('mousedown', onPointer)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onPointer)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [optionsOpen])
   const { scrollerRef, contentRef, showJump, jumpToLatest, followLatest } = useChatFollow(selectedId)
 
   useEffect(() => {
@@ -1137,6 +1158,19 @@ export function ChatPage() {
   const showPinnedSidebar = historyOpen && historyMode === 'pinned'
 
   const runOnTitle = effectiveRunMode === 'automatic' ? t('composer.runOnAutomatic') : t('composer.runOnLocal')
+  // Run on stays in view while Settings asks for a choice before sending.
+  const needsRunOn = defaultExecution === 'ask' && !executionAsked && runMode == null
+  const memoryOff = selectedConversation ? Boolean(selectedConversation.memory_off) : memoryOffDraft
+  // The Options button names what differs from the defaults, so the chat's
+  // setup shows without opening it.
+  const optionsSummary = [
+    sortedProfiles.find((p) => p.id === profileIdForChat)?.name,
+    effort !== 'auto' ? t(`effort.${effort}.label`) : '',
+    !needsRunOn && runMode === 'local' ? t('composer.thisComputer') : '',
+    settingsQuery.data?.memory_enabled !== false && memoryOff ? t('memory.off') : '',
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   const historyDrawer = (
     <ChatHistoryDrawer
@@ -1247,55 +1281,29 @@ export function ChatPage() {
               <path d="M13.5 7.5 8 13a3.5 3.5 0 0 1-5-5l6-6a2.3 2.3 0 0 1 3.3 3.3L6.4 11.2a1.2 1.2 0 0 1-1.6-1.6L10 4.4" />
             </svg>
           </button>
-          <label className="composer-select" title={t('composer.profileHint')}>
-            <span className="composer-select-label">{t('composer.profile')}</span>
-            <span className="sr-only">{t('composer.assistantProfile')}</span>
-            <select
-              ref={profileSelectRef}
-              value={profileIdForChat ?? ''}
-              disabled={isSending || updateConversation.isPending}
-              onChange={(event) => setProfile(event.target.value)}
-            >
-              {sortedProfiles.map((profile: AIProfile) => (
-                <option key={profile.id} value={profile.id}>
-                  {profile.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label
-            className={[
-              'composer-select',
-              defaultExecution === 'ask' && !executionAsked && runMode == null
-                ? 'ring-1 ring-primary/50'
-                : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-            title={runOnTitle}
-          >
-            <span className="composer-select-label">{t('composer.runOn')}</span>
-            <span className="sr-only">{t('composer.runOn')}</span>
-            <select
-              value={
-                runMode ??
-                (defaultExecution === 'ask' ? '' : effectiveRunMode)
-              }
-              disabled={isSending || updateConversation.isPending}
-              onChange={(event) => chooseRunMode(event.target.value as RunMode)}
-            >
-              {defaultExecution === 'ask' && runMode == null ? (
-                <option value="" disabled>
-                  {t('composer.choose')}
-                </option>
-              ) : null}
-              <option value="automatic">{t('composer.automatic')}</option>
-              <option value="local">{t('composer.thisComputer')}</option>
-            </select>
-          </label>
+          {needsRunOn ? (
+            <label className="composer-select ring-1 ring-primary/50" title={runOnTitle}>
+              <span className="composer-select-label">{t('composer.runOn')}</span>
+              <select
+                value={
+                  runMode ??
+                  (defaultExecution === 'ask' ? '' : effectiveRunMode)
+                }
+                disabled={isSending || updateConversation.isPending}
+                onChange={(event) => chooseRunMode(event.target.value as RunMode)}
+              >
+                {defaultExecution === 'ask' && runMode == null ? (
+                  <option value="" disabled>
+                    {t('composer.choose')}
+                  </option>
+                ) : null}
+                <option value="automatic">{t('composer.automatic')}</option>
+                <option value="local">{t('composer.thisComputer')}</option>
+              </select>
+            </label>
+          ) : null}
           <label className="composer-select" title={t('composer.modelHint')}>
             <span className="composer-select-label">{t('composer.model')}</span>
-            <span className="sr-only">{t('composer.model')}</span>
             <select
               ref={modelSelectRef}
               value={modelIdForChat ?? ''}
@@ -1336,29 +1344,87 @@ export function ChatPage() {
               )}
             </select>
           </label>
-          <label className="composer-select" title={t(`effort.${effort}.hint`)}>
-            <span className="composer-select-label">{t('composer.effort')}</span>
-            <span className="sr-only">{t('composer.effort')}</span>
-            <select value={effort} disabled={isSending} onChange={(event) => setEffort(event.target.value as Effort)}>
-              {EFFORTS.map((e) => (
-                <option key={e} value={e} title={t(`effort.${e}.hint`)}>
-                  {t(`effort.${e}.label`)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <MemoryToggle
-            memoryEnabled={settingsQuery.data?.memory_enabled !== false}
-            off={selectedConversation ? Boolean(selectedConversation.memory_off) : memoryOffDraft}
-            disabled={isSending}
-            onChange={(off) => {
-              if (selectedConversation) {
-                updateConversation.mutate({ id: selectedConversation.id, memory_off: off })
-              } else {
-                setMemoryOffDraft(off)
-              }
-            }}
-          />
+          <div ref={optionsRef} className="relative">
+            <button
+              ref={optionsButtonRef}
+              type="button"
+              className="composer-options-button"
+              aria-expanded={optionsOpen}
+              aria-controls="composer-options"
+              title={t('composer.options')}
+              onClick={() => setOptionsOpen((open) => !open)}
+            >
+              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+                <path d="M2.5 4.5h7M12.5 4.5h1M2.5 11.5h1M6.5 11.5h7" />
+                <circle cx="11" cy="4.5" r="1.5" />
+                <circle cx="5" cy="11.5" r="1.5" />
+              </svg>
+              <span className="sr-only">{t('composer.options')}: </span>
+              <span className="truncate">{optionsSummary || t('composer.options')}</span>
+            </button>
+            {optionsOpen ? (
+              <div id="composer-options" role="group" aria-label={t('composer.options')} className="composer-options">
+                <label className="composer-select" title={t('composer.profileHint')}>
+                  <span className="composer-select-label">{t('composer.profile')}</span>
+                  <select
+                    ref={profileSelectRef}
+                    value={profileIdForChat ?? ''}
+                    disabled={isSending || updateConversation.isPending}
+                    onChange={(event) => setProfile(event.target.value)}
+                  >
+                    {sortedProfiles.map((profile: AIProfile) => (
+                      <option key={profile.id} value={profile.id}>
+                        {profile.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {needsRunOn ? null : (
+                  <label className="composer-select" title={runOnTitle}>
+                    <span className="composer-select-label">{t('composer.runOn')}</span>
+                    <select
+                      value={
+                        runMode ??
+                        (defaultExecution === 'ask' ? '' : effectiveRunMode)
+                      }
+                      disabled={isSending || updateConversation.isPending}
+                      onChange={(event) => chooseRunMode(event.target.value as RunMode)}
+                    >
+                      {defaultExecution === 'ask' && runMode == null ? (
+                        <option value="" disabled>
+                          {t('composer.choose')}
+                        </option>
+                      ) : null}
+                      <option value="automatic">{t('composer.automatic')}</option>
+                      <option value="local">{t('composer.thisComputer')}</option>
+                    </select>
+                  </label>
+                )}
+                <label className="composer-select" title={t(`effort.${effort}.hint`)}>
+                  <span className="composer-select-label">{t('composer.effort')}</span>
+                  <select value={effort} disabled={isSending} onChange={(event) => setEffort(event.target.value as Effort)}>
+                    {EFFORTS.map((e) => (
+                      <option key={e} value={e} title={t(`effort.${e}.hint`)}>
+                        {t(`effort.${e}.label`)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <MemoryToggle
+                  memoryEnabled={settingsQuery.data?.memory_enabled !== false}
+                  off={memoryOff}
+                  disabled={isSending}
+                  onChange={(off) => {
+                    if (selectedConversation) {
+                      updateConversation.mutate({ id: selectedConversation.id, memory_off: off })
+                    } else {
+                      setMemoryOffDraft(off)
+                    }
+                  }}
+                />
+              </div>
+            ) : null}
+          </div>
         </div>
         <ContextUsageButton
           usage={contextUsage}

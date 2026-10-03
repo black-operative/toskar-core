@@ -48,6 +48,7 @@
     "models": "模型",
     "specialized": "专用 AI",
     "effort": "投入程度",
+    "options": "聊天选项",
     "send": "发送",
     "stop": "停止",
     "autoHint": "“自动”会为每条消息选择一个已安装的模型",

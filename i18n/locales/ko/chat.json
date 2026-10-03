@@ -48,6 +48,7 @@
     "models": "모델",
     "specialized": "전문 AI",
     "effort": "노력 수준",
+    "options": "채팅 옵션",
     "send": "보내기",
     "stop": "중지",
     "autoHint": "자동은 메시지마다 설치된 모델을 선택해요",

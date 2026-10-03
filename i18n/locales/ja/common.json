@@ -29,10 +29,11 @@
     "readyHint": "ローカルサービスの準備ができました。"
   },
   "subsystems": {
-    "title": "システム",
+    "title": "ステータス",
+    "placement": "モデルの配置",
     "bifrostHint": "コンピュータの検出とネットワーク",
     "computersNone": "コンピュータなし",
-    "computersConnected_other": "{{count}}台のコンピュータが接続中",
+    "connected_other": "{{count}}台接続中",
     "nornHint": "Nornがコンピュータ間で作業をスケジュールします",
     "nornAutomatic": "自動",
     "mimirHint": "ローカルのナレッジとメモリ",

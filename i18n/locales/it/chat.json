@@ -48,6 +48,7 @@
     "models": "Modelli",
     "specialized": "IA specializzate",
     "effort": "Impegno",
+    "options": "Opzioni della chat",
     "send": "Invia",
     "stop": "Interrompi",
     "autoHint": "Automatico sceglie un modello installato per ogni messaggio",

@@ -48,6 +48,7 @@
     "models": "Modelle",
     "specialized": "Spezialisierte KIs",
     "effort": "Aufwand",
+    "options": "Chat-Optionen",
     "send": "Senden",
     "stop": "Stoppen",
     "autoHint": "„Automatisch“ wählt für jede Nachricht ein installiertes Modell",

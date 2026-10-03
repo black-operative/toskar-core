@@ -29,10 +29,11 @@
     "readyHint": "本地服务已就绪。"
   },
   "subsystems": {
-    "title": "系统",
+    "title": "状态",
+    "placement": "模型分配",
     "bifrostHint": "电脑发现与网络",
     "computersNone": "没有电脑",
-    "computersConnected_other": "已连接 {{count}} 台电脑",
+    "connected_other": "已连接 {{count}} 台",
     "nornHint": "Norn 在你的各台电脑之间调度工作",
     "nornAutomatic": "自动",
     "mimirHint": "本地知识库与记忆",

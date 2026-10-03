@@ -29,12 +29,13 @@
     "readyHint": "Il servizio locale è pronto."
   },
   "subsystems": {
-    "title": "Sistema",
+    "title": "Stato",
+    "placement": "Posizionamento dei modelli",
     "bifrostHint": "Rilevamento dei computer e rete",
     "computersNone": "Nessun computer",
-    "computersConnected_one": "{{count}} computer collegato",
-    "computersConnected_many": "{{count}} computer collegati",
-    "computersConnected_other": "{{count}} computer collegati",
+    "connected_one": "{{count}} connesso",
+    "connected_many": "{{count}} connessi",
+    "connected_other": "{{count}} connessi",
     "nornHint": "Norn distribuisce il lavoro tra i tuoi computer",
     "nornAutomatic": "Automatico",
     "mimirHint": "Conoscenza e memoria locali",

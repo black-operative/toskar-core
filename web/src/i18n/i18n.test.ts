@@ -80,7 +80,7 @@ describe('the pseudo-locale', () => {
   it('applies to every string when chosen', async () => {
     await applyLanguage('en-XA')
     expect(i18n.t('nav.models')).toBe(pseudoLocalize('Models'))
-    expect(i18n.t('subsystems.computersConnected', { count: 3 })).toBe(pseudoLocalize('3 computers connected'))
+    expect(i18n.t('subsystems.connected', { count: 3 })).toBe(pseudoLocalize('3 connected'))
     expect(document.documentElement.lang).toBe('en-XA')
   })
 })
@@ -107,9 +107,9 @@ describe('the page', () => {
 
 describe('plurals', () => {
   it('use plural rules, not count === 1', () => {
-    expect(i18n.t('subsystems.computersConnected', { count: 1 })).toBe('1 computer connected')
-    expect(i18n.t('subsystems.computersConnected', { count: 2 })).toBe('2 computers connected')
-    expect(i18n.t('subsystems.computersConnected', { count: 0 })).toBe('0 computers connected')
+    expect(i18n.t('chat:steps.correctedCode', { count: 1 })).toBe('Checked the code and fixed 1 error')
+    expect(i18n.t('chat:steps.correctedCode', { count: 2 })).toBe('Checked the code and fixed 2 errors')
+    expect(i18n.t('chat:steps.correctedCode', { count: 0 })).toBe('Checked the code and fixed 0 errors')
   })
 })
 

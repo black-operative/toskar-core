@@ -294,8 +294,9 @@
     @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink-muted transition hover:bg-raised hover:text-ink disabled:opacity-50;
   }
 
+  /* Shown at every width: with the rest in Options, there is room. */
   .composer-select-label {
-    @apply hidden text-[11px] font-medium text-ink-faint sm:inline;
+    @apply text-[11px] font-medium text-ink-faint;
   }
 
   .composer-select select {
@@ -305,6 +306,38 @@
   .composer-select select:focus-visible {
     outline: 2px solid rgb(var(--rgb-primary));
     outline-offset: 1px;
+  }
+
+  /* One button for profile, run on, effort, and memory; it names what
+     differs from the defaults. */
+  .composer-options-button {
+    @apply inline-flex max-w-[14rem] items-center gap-1.5 rounded-md bg-raised/70 px-2 py-1.5 text-xs font-medium text-ink outline-none transition hover:bg-raised;
+  }
+
+  .composer-options-button:focus-visible {
+    outline: 2px solid rgb(var(--rgb-primary));
+    outline-offset: 1px;
+  }
+
+  .composer-options-button[aria-expanded='true'] {
+    @apply bg-raised;
+  }
+
+  .composer-options {
+    @apply absolute bottom-full start-0 z-20 mb-2 flex w-72 max-w-[calc(100vw-2.5rem)] flex-col gap-2.5 rounded-xl border border-line/70 bg-surface p-3;
+    box-shadow: var(--shadow-panel);
+  }
+
+  .composer-options label.composer-select {
+    @apply flex justify-between;
+  }
+
+  .composer-options .composer-select-label {
+    @apply inline text-xs text-ink-muted;
+  }
+
+  .composer-options .composer-select select {
+    @apply max-w-[10rem];
   }
 
   .chat-suggestion {
