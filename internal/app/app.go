@@ -133,6 +133,13 @@ type App struct {
 	tokenCounts *cache.Cache[int]
 	// tokenize counts with a running model; tests replace it.
 	tokenize func(ctx context.Context, endpoint, text string) (int, error)
+	// windows keeps each running llama-server's actual window (endpoint ->
+	// tokens), and shapes each model file's GGUF shape (path -> gguf.Info),
+	// for the context gauge (#230).
+	windows sync.Map
+	shapes  sync.Map
+	// window reads a running model's window; tests replace it.
+	window func(ctx context.Context, endpoint string) (int, error)
 	// StubReply, when set with stub inference, scripts what the stub model
 	// says, for the quality test set (§64). It sees every prompt.
 	StubReply func(modelID string, messages []pluginapi.ChatMessage) string

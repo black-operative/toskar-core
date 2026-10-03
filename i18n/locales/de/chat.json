@@ -375,6 +375,9 @@
     "summarized_one": "Die älteste Nachricht wurde als Zusammenfassung gesendet, damit das Gespräch passt. Jede Nachricht bleibt gespeichert.",
     "summarized_other": "Die {{count}} ältesten Nachrichten wurden als Zusammenfassung gesendet, damit das Gespräch passt. Jede Nachricht bleibt gespeichert.",
     "empty": "Sende eine Nachricht, um zu sehen, wie viel vom Speicher dieses Modells der Chat belegt.",
+    "memory": "Dieses Gesprächsfenster belegt auf diesem Computer etwa {{size}} Arbeitsspeicher.",
+    "memoryHint": "Ein längeres Fenster behält mehr vom Chat und braucht mehr Speicher.",
+    "nearFull": "Fast voll: Wenn der Chat wächst, werden seine ältesten Nachrichten als Zusammenfassung gesendet. Starte einen neuen Chat für ein frisches Fenster.",
     "rows": {
       "instructions": "Anweisungen",
       "tools": "Werkzeuge",

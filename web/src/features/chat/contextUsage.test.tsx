@@ -20,11 +20,13 @@ describe('context usage formatting', () => {
       conversation: 30,
       tool_results: 40,
       estimated: false,
+      memory_bytes: 1073741824,
     })
     expect(usage).toMatchObject({
       promptTokens: 100,
       tools: 20,
       toolResults: 40,
+      memoryBytes: 1073741824,
     })
   })
 })
@@ -52,5 +54,26 @@ describe('ContextUsageButton', () => {
     expect(screen.getByText('Conversation')).toBeTruthy()
     expect(screen.getByText('Tool results')).toBeTruthy()
     expect(screen.getByText('100 / 8.2K tokens')).toBeTruthy()
+  })
+
+  it('says how much memory the window reserves, when the model ran here', () => {
+    render(
+      <ContextUsageButton
+        windowLimit={8192}
+        usage={{
+          promptTokens: 500,
+          limit: 16384,
+          instructions: 100,
+          tools: 0,
+          conversation: 400,
+          toolResults: 0,
+          estimated: false,
+          memoryBytes: 2 * 1024 ** 3,
+        }}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /Context/ }))
+    expect(screen.getByText(/reserves about 2(\.0)? GB of memory on this computer/)).toBeTruthy()
+    expect(screen.getByText('500 / 16.4K tokens')).toBeTruthy()
   })
 })

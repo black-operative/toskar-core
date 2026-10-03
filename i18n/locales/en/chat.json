@@ -375,6 +375,9 @@
     "summarized_one": "The oldest message was sent as a summary so the conversation fits. Every message is still saved.",
     "summarized_other": "The {{count}} oldest messages were sent as a summary so the conversation fits. Every message is still saved.",
     "empty": "Send a message to see how much of this model’s memory the chat is using.",
+    "memory": "This conversation window reserves about {{size}} of memory on this computer.",
+    "memoryHint": "A longer window remembers more of the chat and uses more memory.",
+    "nearFull": "Nearly full: as the chat grows, its oldest messages are sent as a summary. Start a new chat for a fresh window.",
     "rows": {
       "instructions": "Instructions",
       "tools": "Tools",

@@ -381,6 +381,9 @@
     "summarized_many": "As {{count}} mensagens mais antigas foram enviadas como resumo para que a conversa caiba. Todas as mensagens continuam salvas.",
     "summarized_other": "As {{count}} mensagens mais antigas foram enviadas como resumo para que a conversa caiba. Todas as mensagens continuam salvas.",
     "empty": "Envie uma mensagem para ver quanto da memória deste modelo o chat está usando.",
+    "memory": "A janela desta conversa reserva cerca de {{size}} de memória neste computador.",
+    "memoryHint": "Uma janela maior lembra mais da conversa e usa mais memória.",
+    "nearFull": "Quase cheio: conforme a conversa cresce, as mensagens mais antigas são enviadas como resumo. Comece uma nova conversa para ter uma janela nova.",
     "rows": {
       "instructions": "Instruções",
       "tools": "Ferramentas",

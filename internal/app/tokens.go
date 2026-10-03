@@ -9,6 +9,7 @@ import (
 
 	"github.com/yeixio/yggdrasil-core/internal/cache"
 	"github.com/yeixio/yggdrasil-core/internal/contextusage"
+	"github.com/yeixio/yggdrasil-core/internal/gguf"
 	"github.com/yeixio/yggdrasil-core/internal/runtimes/llamacpp"
 	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
 )
@@ -90,4 +91,51 @@ func (a *App) runningEndpoint(ctx context.Context, modelID string) string {
 		}
 	}
 	return ""
+}
+
+// kvBytesPerElement is the size of one key or value entry in llama.cpp's
+// default f16 cache.
+const kvBytesPerElement = 2
+
+// localContext is the window a model running on this computer actually has,
+// and about how much memory that window reserves (its KV cache), for the
+// context gauge (#230). ok is false when the model isn't running here, and
+// memory is 0 when its file's header can't be read.
+func (a *App) localContext(ctx context.Context, modelID string) (window int, memory uint64, ok bool) {
+	if a.stubInference || a.Runtimes == nil || modelID == "" {
+		return 0, 0, false
+	}
+	endpoint := a.runningEndpoint(ctx, modelID)
+	if endpoint == "" {
+		return 0, 0, false
+	}
+	if v, hit := a.windows.Load(endpoint); hit {
+		window = v.(int)
+	} else {
+		read := a.window
+		if read == nil {
+			read = llamacpp.Window
+		}
+		wctx, cancel := context.WithTimeout(ctx, tokenizeTimeout)
+		n, err := read(wctx, endpoint)
+		cancel()
+		if err != nil || n <= 0 {
+			return 0, 0, false
+		}
+		window = n
+		a.windows.Store(endpoint, n)
+	}
+	if a.Models != nil {
+		if path, err := a.Models.Path(ctx, modelID); err == nil && path != "" {
+			var info gguf.Info
+			if v, hit := a.shapes.Load(path); hit {
+				info = v.(gguf.Info)
+			} else if read, err := gguf.ReadInfo(path); err == nil {
+				info = read
+				a.shapes.Store(path, info)
+			}
+			memory = info.KVCacheBytes(window, kvBytesPerElement)
+		}
+	}
+	return window, memory, true
 }

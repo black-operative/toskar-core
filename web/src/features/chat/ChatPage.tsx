@@ -237,8 +237,11 @@ export function ChatPage() {
   }, [optionsOpen])
   const { scrollerRef, contentRef, showJump, jumpToLatest, followLatest } = useChatFollow(selectedId)
 
+  // Each chat keeps its last reading, so switching back shows it rather
+  // than an empty gauge until the next answer (#230).
+  const usageByChat = useRef(new Map<string, ContextUsage>())
   useEffect(() => {
-    setContextUsage(null)
+    setContextUsage((selectedId && usageByChat.current.get(selectedId)) || null)
   }, [selectedId])
   const abortRef = useRef<AbortController | null>(null)
   const lastUserMessageRef = useRef('')
@@ -746,6 +749,7 @@ export function ChatPage() {
         if (event.type === 'chat.complete') {
           const conversationId = event.payload?.conversation_id as string | undefined
           const nextUsage = parseContextUsage(event.payload?.context)
+          if (nextUsage && conversationId) usageByChat.current.set(conversationId, nextUsage)
           if (
             nextUsage &&
             conversationId &&

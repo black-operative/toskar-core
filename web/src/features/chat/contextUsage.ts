@@ -11,6 +11,8 @@ export type ContextUsage = {
   estimated: boolean
   /** Older saved messages the model saw as a summary. */
   summarizedMessages?: number
+  /** About how much memory the model's window reserves (its KV cache), when it ran on this computer. */
+  memoryBytes?: number
 }
 
 /** Local llama.cpp starts at this window unless the model advertises a smaller one. */
@@ -35,6 +37,7 @@ export function parseContextUsage(raw: unknown): ContextUsage | null {
     toolResults: numberField(record.tool_results),
     estimated: record.estimated === true,
     summarizedMessages: numberField(record.summarized_messages),
+    memoryBytes: numberField(record.memory_bytes),
   }
   if (usage.promptTokens <= 0 && usage.instructions + usage.tools + usage.conversation + usage.toolResults <= 0) {
     return null

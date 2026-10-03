@@ -508,6 +508,10 @@ func (a *App) RunChat(ctx context.Context, profileID, conversationID, message st
 		}
 		if contextUsage != nil {
 			contextUsage["limit"] = env.ContextLimit()
+			// What the window reserves in memory, when the model ran here.
+			if _, memory, ok := a.localContext(ctx, env.modelID()); ok && memory > 0 {
+				contextUsage["memory_bytes"] = memory
+			}
 			env.mu.Lock()
 			if env.summarized > 0 {
 				contextUsage["summarized_messages"] = env.summarized
@@ -907,6 +911,13 @@ func (e *chatExecEnv) ContextLimit() int {
 	id := e.modelOverride
 	if id == "" {
 		id = e.modelID()
+	}
+	// A model running here reports its real window; the catalog is a guess
+	// that can differ from what llama-server was started with (#230).
+	if e.app != nil && e.ctx != nil {
+		if window, _, ok := e.app.localContext(e.ctx, id); ok {
+			return window
+		}
 	}
 	if id != "" && e.app != nil && e.app.Models != nil {
 		if entry, ok := e.app.Models.Catalog().Get(id); ok {

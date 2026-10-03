@@ -7,6 +7,7 @@ import {
   type ContextUsage,
 } from './contextUsage'
 import { formatPercent } from '@/i18n/format'
+import { formatBytes } from '@/lib/format'
 
 const rowColor: Record<string, string> = {
   instructions: 'bg-ink-faint',
@@ -98,6 +99,15 @@ export function ContextUsageButton({
                   </li>
                 ))}
               </ul>
+              {percent >= 85 ? (
+                <p className="mt-2 text-xs leading-relaxed text-warning">{t('context.nearFull')}</p>
+              ) : null}
+              {(usage.memoryBytes ?? 0) > 0 ? (
+                <p className="mt-2 text-xs leading-relaxed text-ink-muted">
+                  {t('context.memory', { size: formatBytes(usage.memoryBytes ?? 0) })}{' '}
+                  <span className="text-ink-faint">{t('context.memoryHint')}</span>
+                </p>
+              ) : null}
               {(usage.summarizedMessages ?? 0) > 0 ? (
                 <p className="mt-2 text-xs leading-relaxed text-ink-muted">
                   {t('context.summarized', { count: usage.summarizedMessages })}

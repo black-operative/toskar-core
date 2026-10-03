@@ -381,6 +381,9 @@
     "summarized_many": "Les {{count}} messages les plus anciens ont été envoyés sous forme de résumé pour que la conversation tienne. Tous les messages restent enregistrés.",
     "summarized_other": "Les {{count}} messages les plus anciens ont été envoyés sous forme de résumé pour que la conversation tienne. Tous les messages restent enregistrés.",
     "empty": "Envoyez un message pour voir quelle part de la mémoire de ce modèle la discussion utilise.",
+    "memory": "La fenêtre de cette conversation réserve environ {{size}} de mémoire sur cet ordinateur.",
+    "memoryHint": "Une fenêtre plus longue retient davantage de la conversation et utilise plus de mémoire.",
+    "nearFull": "Presque plein : à mesure que la conversation s'allonge, ses plus anciens messages sont envoyés sous forme de résumé. Commencez une nouvelle conversation pour repartir de zéro.",
     "rows": {
       "instructions": "Instructions",
       "tools": "Outils",

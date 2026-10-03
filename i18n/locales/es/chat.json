@@ -381,6 +381,9 @@
     "summarized_many": "Los {{count}} mensajes más antiguos se enviaron como resumen para que la conversación quepa. Todos los mensajes siguen guardados.",
     "summarized_other": "Los {{count}} mensajes más antiguos se enviaron como resumen para que la conversación quepa. Todos los mensajes siguen guardados.",
     "empty": "Envía un mensaje para ver cuánta memoria de este modelo usa el chat.",
+    "memory": "La ventana de esta conversación reserva unos {{size}} de memoria en esta computadora.",
+    "memoryHint": "Una ventana más larga recuerda más del chat y usa más memoria.",
+    "nearFull": "Casi lleno: a medida que el chat crece, sus mensajes más antiguos se envían como resumen. Empieza un chat nuevo para tener una ventana nueva.",
     "rows": {
       "instructions": "Instrucciones",
       "tools": "Herramientas",

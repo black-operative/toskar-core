@@ -86,3 +86,33 @@ func TestStubInferenceEstimates(t *testing.T) {
 		t.Fatal("stub inference has no tokenizer")
 	}
 }
+
+// The gauge's limit is the window the running llama-server reports, read
+// once per server; a model that isn't running here falls back (#230).
+func TestLocalContextReadsTheRunningWindow(t *testing.T) {
+	a, _ := tokenApp(pluginapi.RunningModel{ModelID: "llama", Endpoint: "http://chat", Status: "running"})
+	reads := 0
+	a.window = func(_ context.Context, endpoint string) (int, error) {
+		reads++
+		if endpoint != "http://chat" {
+			t.Fatalf("endpoint %q", endpoint)
+		}
+		return 16384, nil
+	}
+	for range 2 {
+		window, memory, ok := a.localContext(context.Background(), "llama")
+		if !ok || window != 16384 || memory != 0 {
+			t.Fatalf("window=%d memory=%d ok=%v", window, memory, ok)
+		}
+	}
+	if reads != 1 {
+		t.Fatalf("read the window %d times, want once", reads)
+	}
+	if _, _, ok := a.localContext(context.Background(), "qwen"); ok {
+		t.Fatal("a model not running here has no local window")
+	}
+	env := &chatExecEnv{app: a, ctx: context.Background(), modelOverride: "llama"}
+	if got := env.ContextLimit(); got != 16384 {
+		t.Fatalf("ContextLimit = %d, want the running window", got)
+	}
+}

@@ -381,6 +381,9 @@
     "summarized_many": "I {{count}} messaggi più vecchi sono stati inviati come riassunto per far stare la conversazione nel contesto. Tutti i messaggi restano salvati.",
     "summarized_other": "I {{count}} messaggi più vecchi sono stati inviati come riassunto per far stare la conversazione nel contesto. Tutti i messaggi restano salvati.",
     "empty": "Invia un messaggio per vedere quanta parte della memoria di questo modello sta usando la chat.",
+    "memory": "La finestra di questa conversazione riserva circa {{size}} di memoria su questo computer.",
+    "memoryHint": "Una finestra più lunga ricorda più della chat e usa più memoria.",
+    "nearFull": "Quasi pieno: man mano che la chat cresce, i messaggi più vecchi vengono inviati come riassunto. Inizia una nuova chat per una finestra nuova.",
     "rows": {
       "instructions": "Istruzioni",
       "tools": "Strumenti",
