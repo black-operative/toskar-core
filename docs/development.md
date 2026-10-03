@@ -56,7 +56,7 @@ make test
 make vet
 ```
 
-`make test` is `go test ./...`. `make ci` runs format, vet, tests, and the frontend job locally. A push to `main` publishes the README coverage badge from `go test ./... -coverprofile`. CI does not enforce a coverage percentage.
+`make test` is `go test ./...`. Every package under `internal/` runs `leakcheck.Main` from its `TestMain`: when its tests pass, it waits up to five seconds for goroutines they started to finish and fails the package if any are still running, printing their stacks. A new package with tests adds `func TestMain(m *testing.M) { leakcheck.Main(m) }` (see `internal/leakcheck`); a goroutine meant to live for the whole process is named with `leakcheck.Main(m, "pkg.longLived")`. `make ci` runs format, vet, tests, and the frontend job locally. A push to `main` publishes the README coverage badge from `go test ./... -coverprofile`. CI does not enforce a coverage percentage.
 
 Web tests alone:
 

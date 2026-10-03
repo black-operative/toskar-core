@@ -44,6 +44,9 @@ type Manager struct {
 	mu       sync.Mutex
 	sessions map[string]*session
 	reaping  bool
+	// stopReap ends the reaper when the last session closes, rather than
+	// at its next minute's check (#231).
+	stopReap chan struct{}
 	cleaned  bool
 }
 
@@ -195,7 +198,8 @@ func (m *Manager) get(key string) (*session, error) {
 	m.sessions[key] = s
 	if !m.reaping {
 		m.reaping = true
-		go m.reap()
+		m.stopReap = make(chan struct{})
+		go m.reap(m.stopReap)
 	}
 	return s, nil
 }
@@ -241,6 +245,7 @@ func (m *Manager) Close(key string) bool {
 	defer m.mu.Unlock()
 	_, ok := m.sessions[key]
 	m.closeLocked(key)
+	m.stopReapIfIdleLocked()
 	return ok
 }
 
@@ -258,12 +263,28 @@ func (m *Manager) CloseAll() {
 	for k := range m.sessions {
 		m.closeLocked(k)
 	}
+	m.stopReapIfIdleLocked()
 }
 
-// reap closes browsers left idle.
-func (m *Manager) reap() {
+// stopReapIfIdleLocked ends the reaper once no browser is open.
+func (m *Manager) stopReapIfIdleLocked() {
+	if m.reaping && len(m.sessions) == 0 {
+		close(m.stopReap)
+		m.reaping = false
+	}
+}
+
+// reap closes browsers left idle, checking each minute, until stop closes
+// or no browser is left.
+func (m *Manager) reap(stop <-chan struct{}) {
+	tick := time.NewTicker(time.Minute)
+	defer tick.Stop()
 	for {
-		time.Sleep(time.Minute)
+		select {
+		case <-stop:
+			return
+		case <-tick.C:
+		}
 		m.mu.Lock()
 		for k, s := range m.sessions {
 			if time.Since(s.lastUsed) > idleAfter || s.ctx.Err() != nil {
@@ -271,7 +292,8 @@ func (m *Manager) reap() {
 			}
 		}
 		empty := len(m.sessions) == 0
-		if empty {
+		if empty && m.reaping {
+			close(m.stopReap)
 			m.reaping = false
 		}
 		m.mu.Unlock()

@@ -154,9 +154,15 @@ func imapDial(ctx context.Context, cred Credential) (*client.Client, error) {
 		logout(c)
 		return nil, fmt.Errorf("the IMAP server refused the sign-in; check the username and app password")
 	}
+	// Cut the connection if the request is cancelled. The watcher also ends
+	// when the session logs out: waiting on ctx alone leaked one goroutine
+	// per connection whenever ctx was never cancelled (#231).
 	go func() {
-		<-ctx.Done()
-		_ = c.Terminate()
+		select {
+		case <-ctx.Done():
+			_ = c.Terminate()
+		case <-c.LoggedOut():
+		}
 	}()
 	return c, nil
 }

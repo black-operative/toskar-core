@@ -10,6 +10,8 @@ import (
 	"strings"
 	"sync"
 	"testing"
+
+	"github.com/yeixio/yggdrasil-core/internal/leakcheck"
 )
 
 // The test binary doubles as an MCP server over stdio when MCP_FAKE is
@@ -19,7 +21,8 @@ func TestMain(m *testing.M) {
 		runFakeStdio(os.Stdin, os.Stdout)
 		os.Exit(0)
 	}
-	os.Exit(m.Run())
+	// Goroutines the tests start must be gone when they end (#231).
+	leakcheck.Main(m)
 }
 
 // fakeStdioSpec runs this test binary as the fake server.
