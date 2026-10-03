@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
 import { EmptyState } from '@/components/ui/EmptyState'
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { api } from '@/lib/api'
 import { subscribeEvents } from '@/lib/events'
 import { useUIStore } from '@/stores/uiStore'
@@ -24,6 +23,7 @@ import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { useMascotState } from '@/lib/ratatoskr/useMascotState'
 import { rovingKeyDown } from '@/lib/roving'
 import { LoadError } from '@/components/ui/LoadError'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 type Tab = 'discover' | 'installed' | 'running'
 
@@ -230,6 +230,7 @@ export function ModelsPage() {
         target={target}
         onTargetChange={setTarget}
         localHardware={hardwareQuery.data ?? null}
+        checking={hardwareQuery.isLoading}
         nodes={nodes}
         running={running}
       />
@@ -288,7 +289,7 @@ export function ModelsPage() {
         </div>
       ) : null}
 
-      {modelsQuery.isLoading && <LoadingSpinner label={t('page.loading')} />}
+      {modelsQuery.isLoading && <Skeleton label={t('page.loading')} shape="cards" />}
 
       {modelsQuery.isError && !modelsQuery.data && (
         <LoadError error={modelsQuery.error} onRetry={() => void modelsQuery.refetch()} retrying={modelsQuery.isFetching} />

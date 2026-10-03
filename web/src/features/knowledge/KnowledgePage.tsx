@@ -12,6 +12,7 @@ import { refreshNote, sourceBadge, sourceWhere } from './remote'
 import { RemoteSourceForm } from './RemoteSourceForm'
 import { formatDateTime } from '@/i18n/format'
 import { LoadError } from '@/components/ui/LoadError'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 
 export function KnowledgePage() {
@@ -30,7 +31,7 @@ export function KnowledgePage() {
       </div>
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,26rem)]">
         <section className="space-y-3">
-          {sources.isLoading && <p className="text-sm text-ink-muted">{t('page.loading')}</p>}
+          {sources.isLoading && <Skeleton label={t('page.loading')} />}
           {sources.isError && !sources.data && (
             <LoadError error={sources.error} onRetry={() => void sources.refetch()} retrying={sources.isFetching} />
           )}

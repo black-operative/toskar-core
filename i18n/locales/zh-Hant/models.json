@@ -28,6 +28,7 @@
     "manage": "管理電腦",
     "useAnother": "使用其他電腦",
     "hardwareUnavailable": "無法取得硬體詳細資訊",
+    "hardwareChecking": "正在檢查硬體…",
     "unifiedMemory": "{{size}} 統一記憶體",
     "memory": "{{size}} 記憶體"
   },

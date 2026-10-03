@@ -28,6 +28,7 @@
     "manage": "管理电脑",
     "useAnother": "使用其他电脑",
     "hardwareUnavailable": "无法获取硬件详情",
+    "hardwareChecking": "正在检查硬件…",
     "unifiedMemory": "{{size}} 统一内存",
     "memory": "{{size}} 内存"
   },

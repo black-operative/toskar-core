@@ -19,6 +19,7 @@ import { TrainStep } from './steps/TrainStep'
 import { completedSteps, errorText, isTerminal, nextStep, stateLabel, stepLabel, steps, type StepID } from './display'
 import { RealmKicker } from '@/components/ui/Realm'
 import { LoadError } from '@/components/ui/LoadError'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 export function TrainPage() {
   const { t } = useTranslation('train')
@@ -80,7 +81,7 @@ export function TrainPage() {
 
       <div className="grid gap-4 xl:grid-cols-[16rem_minmax(0,1fr)]">
         <aside className="space-y-2">
-          {listQuery.isLoading && <p className="text-sm text-ink-muted">{t('page.loading')}</p>}
+          {listQuery.isLoading && <Skeleton label={t('page.loading')} count={2} />}
           {items.map((ai) => (
             <AIListItem key={ai.id} ai={ai} active={ai.id === selectedID} onSelect={() => select(ai.id)} />
           ))}

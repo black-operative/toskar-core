@@ -4,7 +4,6 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import i18n from '@/i18n'
 import { EmptyState } from '@/components/ui/EmptyState'
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { ApiError, api } from '@/lib/api'
 import { formatBytes } from '@/lib/format'
 import { useUIStore } from '@/stores/uiStore'
@@ -25,6 +24,7 @@ import { RealmKicker } from '@/components/ui/Realm'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { useMascotState } from '@/lib/ratatoskr/useMascotState'
 import { LoadError } from '@/components/ui/LoadError'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 function errorMessage(err: unknown): string {
   if (err instanceof ApiError) return err.message
@@ -643,7 +643,7 @@ export function NodesPage() {
         </section>
       )}
 
-      {nodesQuery.isLoading && <LoadingSpinner label={t('page.looking')} />}
+      {nodesQuery.isLoading && <Skeleton label={t('page.looking')} shape="cards" count={2} />}
 
       {nodesQuery.isError && !nodesQuery.data && (
         <LoadError error={nodesQuery.error} onRetry={() => void nodesQuery.refetch()} retrying={nodesQuery.isFetching} />

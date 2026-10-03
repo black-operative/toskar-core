@@ -28,6 +28,7 @@
     "manage": "コンピュータを管理",
     "useAnother": "別のコンピュータを使う",
     "hardwareUnavailable": "ハードウェアの詳細を取得できません",
+    "hardwareChecking": "ハードウェアを確認中…",
     "unifiedMemory": "ユニファイドメモリ{{size}}",
     "memory": "メモリ{{size}}"
   },

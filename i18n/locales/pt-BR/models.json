@@ -30,6 +30,7 @@
     "manage": "Gerenciar computadores",
     "useAnother": "Usar outro computador",
     "hardwareUnavailable": "Detalhes do hardware indisponíveis",
+    "hardwareChecking": "Verificando o hardware…",
     "unifiedMemory": "{{size}} de memória unificada",
     "memory": "{{size}} de memória"
   },

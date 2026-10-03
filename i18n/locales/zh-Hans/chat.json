@@ -172,7 +172,8 @@
     "runningCode": "正在沙盒中运行代码…",
     "runningCommand": "正在运行命令…",
     "checkingGit": "正在检查 git…",
-    "usingTool": "正在使用 {{tool}}…"
+    "usingTool": "正在使用 {{tool}}…",
+    "loadingChat": "正在加载此聊天…"
   },
   "tools": {
     "names": {

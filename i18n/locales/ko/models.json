@@ -28,6 +28,7 @@
     "manage": "컴퓨터 관리",
     "useAnother": "다른 컴퓨터 사용",
     "hardwareUnavailable": "하드웨어 정보 없음",
+    "hardwareChecking": "하드웨어를 확인하는 중…",
     "unifiedMemory": "통합 메모리 {{size}}",
     "memory": "메모리 {{size}}"
   },

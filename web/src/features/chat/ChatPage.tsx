@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } fr
 import { Trans, useTranslation } from 'react-i18next'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import i18n from '@/i18n'
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { RealmKicker } from '@/components/ui/Realm'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { useMascotState } from '@/lib/ratatoskr/useMascotState'
@@ -42,6 +41,7 @@ import { ModelFailureNotice } from './ModelFailureNotice'
 import { toolDisplayName } from './toolNames'
 import { useChatFollow } from './useChatFollow'
 import { RatingDialogHost, RatingPrompt } from '@/features/models/ratings'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 type TeamStep = {
   role: string
@@ -1613,7 +1613,7 @@ export function ChatPage() {
                   className="chat-transcript absolute inset-0 overflow-y-auto px-1 pb-2 [overflow-anchor:none]"
                 >
                   <div ref={contentRef} className="space-y-4">
-                {messagesQuery.isLoading && <LoadingSpinner />}
+                {messagesQuery.isLoading && <Skeleton label={t('status.loadingChat')} shape="chat" />}
                 {messages.map((message) => {
                   const text = displayChatText(message.content)
                   if (message.role === 'assistant' && !text) return null

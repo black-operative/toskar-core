@@ -180,7 +180,8 @@
     "runningCode": "Esecuzione del codice nella sandbox…",
     "runningCommand": "Esecuzione del comando…",
     "checkingGit": "Controllo di git…",
-    "usingTool": "Uso di {{tool}}…"
+    "usingTool": "Uso di {{tool}}…",
+    "loadingChat": "Caricamento della chat…"
   },
   "tools": {
     "names": {

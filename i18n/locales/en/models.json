@@ -29,6 +29,7 @@
     "manage": "Manage computers",
     "useAnother": "Use another computer",
     "hardwareUnavailable": "Hardware details unavailable",
+    "hardwareChecking": "Checking hardware…",
     "unifiedMemory": "{{size}} unified memory",
     "memory": "{{size}} memory"
   },

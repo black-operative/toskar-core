@@ -176,7 +176,8 @@
     "runningCode": "Code wird in der Sandbox ausgeführt …",
     "runningCommand": "Befehl wird ausgeführt …",
     "checkingGit": "Git wird geprüft …",
-    "usingTool": "{{tool}} wird genutzt …"
+    "usingTool": "{{tool}} wird genutzt …",
+    "loadingChat": "Dieser Chat wird geladen…"
   },
   "tools": {
     "names": {

@@ -55,12 +55,15 @@ export function ModelsTargetBar({
   localHardware,
   nodes,
   running,
+  checking = false,
 }: {
   target: ModelsTarget
   onTargetChange: (next: ModelsTarget) => void
   localHardware: HardwareInventory | null
   nodes: Node[]
   running: RunningModelView[]
+  /** This computer's hardware is still being read; don't call it unavailable yet. */
+  checking?: boolean
 }) {
   const { t } = useTranslation('models')
   const localNode = nodes.find((n) => n.is_local)
@@ -85,7 +88,7 @@ export function ModelsTargetBar({
           )
         : running.filter((r) => r.node_id === target)
 
-  const line = hardwareLine(hw)
+  const line = checking && !hw ? t('target.hardwareChecking') : hardwareLine(hw)
   const runningLabel = t('target.running', { count: runningForTarget.length })
 
   return (

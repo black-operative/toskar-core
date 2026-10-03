@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 're
 import { Trans, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { EmptyState } from '@/components/ui/EmptyState'
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { api } from '@/lib/api'
 import { blankProfileTemplate, profileTemplateFromPurpose } from '@/lib/profilePresets'
 import { useUIStore } from '@/stores/uiStore'
@@ -38,6 +37,7 @@ import { EXECUTION_KEYS, MEMORY_KEYS, ORCHESTRATION_KEYS } from './orchestration
 import { RealmKicker } from '@/components/ui/Realm'
 import { rovingKeyDown, useMenu } from '@/lib/roving'
 import { LoadError } from '@/components/ui/LoadError'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 // The tools a profile can set one by one; each name and description is profiles:tools.<tool id> in the catalog.
 const TOOL_CATALOG: string[] = [
@@ -350,7 +350,7 @@ export function ProfilesPage() {
         </div>
       )}
 
-      {profilesQuery.isLoading && <LoadingSpinner label={t('page.loading')} />}
+      {profilesQuery.isLoading && <Skeleton label={t('page.loading')} shape="cards" />}
 
       {profilesQuery.isError && !profilesQuery.data && (
         <LoadError error={profilesQuery.error} onRetry={() => void profilesQuery.refetch()} retrying={profilesQuery.isFetching} />

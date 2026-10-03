@@ -96,7 +96,8 @@ React components to reuse:
 | `EmptyState` | `components/ui` | A list with nothing in it yet: title, description, next action, optional mascot |
 | `LoadError` | `components/ui` | A query that failed: "couldn't load this", Try again, Diagnostics, details |
 | `PageErrorBoundary` | `components/layout` | Wraps every page; a crash shows Try again, and the sidebar keeps working |
-| `LoadingSpinner` | `components/ui` | Loading, with a label that says what is loading |
+| `Skeleton` | `components/ui` | Content loading: placeholder rows, cards, or chat bubbles in the shape of what's coming, with a screen-reader label |
+| `LoadingSpinner` | `components/ui` | Work in progress (searching, detecting hardware, estimating), with a label that says what is happening |
 | `Toggle` | `components/ui` | On/off settings, with the switch role |
 | `LoreButton` | `components/ui` | A realm name or mascot that opens its story |
 
@@ -116,12 +117,12 @@ The window title follows the page ("Models · Yggdrasil"); `AppLayout` sets it f
 Every view that loads data has four states, decided in this order:
 
 1. **Failed, with nothing cached** → `LoadError` with the query's `error` and `refetch`. Never the empty state.
-2. **Loading** → `LoadingSpinner` or "Loading…" text. Never the empty state.
+2. **Loading** → `Skeleton` in the content's shape (`rows`, `cards`, or `chat`) for lists and pages; `LoadingSpinner` for work in progress, such as a search. Never the empty state, and never a claim the page can't make yet ("Checking hardware…", not "Hardware details unavailable").
 3. **Loaded and empty** → `EmptyState` with a next action.
 4. **Loaded** → the content.
 
 ```tsx
-{query.isLoading && <LoadingSpinner label={t('page.loading')} />}
+{query.isLoading && <Skeleton label={t('page.loading')} />}
 {query.isError && !query.data && (
   <LoadError error={query.error} onRetry={() => void query.refetch()} retrying={query.isFetching} />
 )}

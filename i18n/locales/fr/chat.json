@@ -180,7 +180,8 @@
     "runningCode": "Exécution du code dans le bac à sable…",
     "runningCommand": "Exécution de la commande…",
     "checkingGit": "Vérification de git…",
-    "usingTool": "Utilisation de {{tool}}…"
+    "usingTool": "Utilisation de {{tool}}…",
+    "loadingChat": "Chargement de la conversation…"
   },
   "tools": {
     "names": {

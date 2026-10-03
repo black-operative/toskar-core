@@ -176,7 +176,8 @@
     "runningCode": "Running code in the sandbox…",
     "runningCommand": "Running command…",
     "checkingGit": "Checking git…",
-    "usingTool": "Using {{tool}}…"
+    "usingTool": "Using {{tool}}…",
+    "loadingChat": "Loading this chat…"
   },
   "tools": {
     "names": {

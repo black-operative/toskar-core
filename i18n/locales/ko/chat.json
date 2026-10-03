@@ -172,7 +172,8 @@
     "runningCode": "샌드박스에서 코드를 실행하는 중…",
     "runningCommand": "명령을 실행하는 중…",
     "checkingGit": "git 확인하는 중…",
-    "usingTool": "{{tool}} 사용 중…"
+    "usingTool": "{{tool}} 사용 중…",
+    "loadingChat": "이 채팅을 불러오는 중…"
   },
   "tools": {
     "names": {

@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EmptyState } from '@/components/ui/EmptyState'
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { api } from '@/lib/api'
 import { useUIStore } from '@/stores/uiStore'
 import type { GenerationRun, Model } from '@/types/api'
@@ -19,6 +18,7 @@ import {
   stepMetricRows,
 } from './performanceFormat'
 import { LoadError } from '@/components/ui/LoadError'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
@@ -327,7 +327,7 @@ export function ActivityPanel() {
         </div>
       )}
 
-      {performanceQuery.isLoading && <LoadingSpinner label={t('activity.loading')} />}
+      {performanceQuery.isLoading && <Skeleton label={t('activity.loading')} />}
 
       {performanceQuery.isError && !performanceQuery.data && (
         <LoadError error={performanceQuery.error} onRetry={() => void performanceQuery.refetch()} retrying={performanceQuery.isFetching} />

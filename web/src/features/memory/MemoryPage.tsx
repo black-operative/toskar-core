@@ -10,6 +10,7 @@ import { RealmKicker } from '@/components/ui/Realm'
 import { formatDate } from '@/i18n/format'
 import { nameInItself } from '@/i18n/answerLanguages'
 import { LoadError } from '@/components/ui/LoadError'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 // The categories, in order; their names are memory:categories.<category> in the catalog.
 const CATEGORIES: MemoryCategory[] = ['identity', 'preferences', 'projects', 'technical', 'interests', 'people', 'other']
@@ -66,7 +67,7 @@ export function MemoryPage() {
         </p>
       )}
       <AddMemory categories={categories} onAdded={refresh} />
-      {memory.isLoading && <p className="text-sm text-ink-muted">{t('page.loading')}</p>}
+      {memory.isLoading && <Skeleton label={t('page.loading')} />}
       {memory.isError && !memory.data && (
         <LoadError error={memory.error} onRetry={() => void memory.refetch()} retrying={memory.isFetching} />
       )}

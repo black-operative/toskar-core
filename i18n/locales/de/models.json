@@ -29,6 +29,7 @@
     "manage": "Computer verwalten",
     "useAnother": "Anderen Computer nutzen",
     "hardwareUnavailable": "Hardwaredetails nicht verfügbar",
+    "hardwareChecking": "Hardware wird geprüft…",
     "unifiedMemory": "{{size}} gemeinsamer Speicher",
     "memory": "{{size}} Speicher"
   },

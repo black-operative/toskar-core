@@ -180,7 +180,8 @@
     "runningCode": "Ejecutando código en el entorno aislado…",
     "runningCommand": "Ejecutando el comando…",
     "checkingGit": "Revisando git…",
-    "usingTool": "Usando {{tool}}…"
+    "usingTool": "Usando {{tool}}…",
+    "loadingChat": "Cargando este chat…"
   },
   "tools": {
     "names": {
