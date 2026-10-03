@@ -23,6 +23,7 @@ import { RealmKicker } from '@/components/ui/Realm'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { useMascotState } from '@/lib/ratatoskr/useMascotState'
 import { rovingKeyDown } from '@/lib/roving'
+import { LoadError } from '@/components/ui/LoadError'
 
 type Tab = 'discover' | 'installed' | 'running'
 
@@ -289,7 +290,10 @@ export function ModelsPage() {
 
       {modelsQuery.isLoading && <LoadingSpinner label={t('page.loading')} />}
 
-      {!modelsQuery.isLoading && models.length === 0 && tab === 'discover' && (
+      {modelsQuery.isError && !modelsQuery.data && (
+        <LoadError error={modelsQuery.error} onRetry={() => void modelsQuery.refetch()} retrying={modelsQuery.isFetching} />
+      )}
+      {!modelsQuery.isLoading && !modelsQuery.isError && models.length === 0 && tab === 'discover' && (
         <EmptyState
           title={t('page.emptyTitle')}
           description={t('page.emptyDescription')}

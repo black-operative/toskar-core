@@ -18,6 +18,7 @@ import { TestStep } from './steps/TestStep'
 import { TrainStep } from './steps/TrainStep'
 import { completedSteps, errorText, isTerminal, nextStep, stateLabel, stepLabel, steps, type StepID } from './display'
 import { RealmKicker } from '@/components/ui/Realm'
+import { LoadError } from '@/components/ui/LoadError'
 
 export function TrainPage() {
   const { t } = useTranslation('train')
@@ -83,7 +84,10 @@ export function TrainPage() {
           {items.map((ai) => (
             <AIListItem key={ai.id} ai={ai} active={ai.id === selectedID} onSelect={() => select(ai.id)} />
           ))}
-          {!listQuery.isLoading && items.length === 0 && !creating && (
+          {listQuery.isError && !listQuery.data && (
+            <LoadError error={listQuery.error} onRetry={() => void listQuery.refetch()} retrying={listQuery.isFetching} />
+          )}
+          {!listQuery.isLoading && !listQuery.isError && items.length === 0 && !creating && (
             <p className="px-1 text-sm text-ink-muted">{t('page.nothing')}</p>
           )}
         </aside>
@@ -101,6 +105,8 @@ export function TrainPage() {
             <Workspace key={selectedID} view={viewQuery.data} onDeleted={() => select(null)} />
           ) : selectedID && viewQuery.isLoading ? (
             <p className="text-sm text-ink-muted">{t('page.loading')}</p>
+          ) : selectedID && viewQuery.isError ? (
+            <LoadError error={viewQuery.error} onRetry={() => void viewQuery.refetch()} retrying={viewQuery.isFetching} />
           ) : (
             <>
               <EmptyState

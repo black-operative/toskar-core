@@ -76,7 +76,6 @@
     "profile": "프로필",
     "filterDate": "날짜별 필터",
     "loading": "활동을 불러오는 중…",
-    "loadFailed": "성능 기록을 불러올 수 없어요. Yggdrasil이 실행 중인가요?",
     "emptyTitle": "아직 활동이 없어요",
     "emptyDescription": "채팅 메시지를 몇 개 보내 보세요. 두 대 이상의 컴퓨터를 사용한 팀 턴은 팀 실행으로 표시돼요.",
     "noMatches": "이 필터와 일치하는 실행이 없어요."

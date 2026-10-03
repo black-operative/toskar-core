@@ -1321,7 +1321,14 @@ export function ChatPage() {
               onChange={(event) => setModel(event.target.value)}
             >
               {installedModels.length === 0 ? (
-                <option value="">{t('composer.noModel')}</option>
+                // "No model installed" only once the list has loaded.
+                <option value="">
+                  {modelsQuery.isError
+                    ? t('composer.modelsFailed')
+                    : modelsQuery.isSuccess
+                      ? t('composer.noModel')
+                      : t('composer.modelsLoading')}
+                </option>
               ) : specializedModels.length === 0 ? (
                 <>
                   <option value={AUTO_MODEL_ID}>{t('composer.auto')}</option>
@@ -1469,7 +1476,20 @@ export function ChatPage() {
             {capabilityLine.length > 0 ? ` · ${capabilityLine.join(' · ')}` : ''}
           </p>
         )}
-      {!modelIdForChat && (
+      {!modelIdForChat && modelsQuery.isError && !modelsQuery.data && (
+        <p role="alert" className="mt-2 text-xs text-ink-muted">
+          {t('composer.modelsFailedHint')}{' '}
+          <button
+            type="button"
+            className="font-medium text-primary underline-offset-2 hover:underline"
+            disabled={modelsQuery.isFetching}
+            onClick={() => void modelsQuery.refetch()}
+          >
+            {t('loadError.retry', { ns: 'common' })}
+          </button>
+        </p>
+      )}
+      {!modelIdForChat && modelsQuery.isSuccess && (
         <p className="mt-2 text-xs text-ink-muted">
           {downloadBehavior === 'ask' ? t('composer.noModelAsk') : t('composer.noModelDownload')}{' '}
           <Link to="/models" className="font-medium text-primary underline-offset-2 hover:underline">

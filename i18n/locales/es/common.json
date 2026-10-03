@@ -63,5 +63,13 @@
     "retry": "Reintentar",
     "reload": "Recargar",
     "details": "Detalles"
+  },
+  "loadError": {
+    "title": "Yggdrasil no pudo cargar esto",
+    "body": "No respondió, o respondió con un error. Tus datos siguen ahí. Vuelve a intentarlo, o revisa Diagnóstico si se repite.",
+    "retry": "Reintentar",
+    "retrying": "Reintentando…",
+    "diagnostics": "Abrir Diagnóstico",
+    "details": "Detalles"
   }
 }

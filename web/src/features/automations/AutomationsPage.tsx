@@ -12,6 +12,7 @@ import { AutomationForm } from './AutomationForm'
 import { clockDetail, compactWhen, explainRun, runTiming } from './display'
 import { notificationLabel, resultProse, scheduleLabel, visibleTask } from './parseRequest'
 import { RealmKicker } from '@/components/ui/Realm'
+import { LoadError } from '@/components/ui/LoadError'
 
 const screenshotSentence =
   'Every morning at 8:00 AM, check this product and tell me if the price is below $500.'
@@ -165,8 +166,10 @@ export function AutomationsPage() {
             ))}
           </div>
           {listQuery.isLoading && <p className="text-sm text-ink-muted">{t('page.loading')}</p>}
-          {listQuery.isError && <p className="text-sm text-danger">{t('page.loadFailed')}</p>}
-          {!listQuery.isLoading && (listQuery.data ?? []).length === 0 && !creating && (
+          {listQuery.isError && !listQuery.data && (
+            <LoadError error={listQuery.error} onRetry={() => void listQuery.refetch()} retrying={listQuery.isFetching} />
+          )}
+          {!listQuery.isLoading && !listQuery.isError && (listQuery.data ?? []).length === 0 && !creating && (
             <EmptyState
               mascot="idle"
               title={t('page.emptyTitle')}

@@ -6,7 +6,6 @@
     "create": "创建配置",
     "createTitle": "创建新配置",
     "loading": "正在加载配置…",
-    "loadFailed": "无法加载配置。本地守护进程在运行吗？",
     "emptyTitle": "还没有配置",
     "emptyDescription": "创建一个配置，告诉聊天你的助手应该如何工作。",
     "noneInFilter": "此筛选条件下没有配置。",

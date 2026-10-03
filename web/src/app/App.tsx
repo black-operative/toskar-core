@@ -31,6 +31,9 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 30_000,
       refetchOnWindowFocus: false,
+      // One retry, not three: a failed request shows its error with Try
+      // again in about a second, rather than a spinner for seven.
+      retry: 1,
     },
   },
 })

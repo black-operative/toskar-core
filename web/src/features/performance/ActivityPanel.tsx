@@ -18,6 +18,7 @@ import {
   routeLabel,
   stepMetricRows,
 } from './performanceFormat'
+import { LoadError } from '@/components/ui/LoadError'
 
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
@@ -328,12 +329,9 @@ export function ActivityPanel() {
 
       {performanceQuery.isLoading && <LoadingSpinner label={t('activity.loading')} />}
 
-      {performanceQuery.isError && (
-        <div className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
-          {t('activity.loadFailed')}
-        </div>
+      {performanceQuery.isError && !performanceQuery.data && (
+        <LoadError error={performanceQuery.error} onRetry={() => void performanceQuery.refetch()} retrying={performanceQuery.isFetching} />
       )}
-
       {!performanceQuery.isLoading && !performanceQuery.isError && runs.length === 0 && (
         <EmptyState
           title={t('activity.emptyTitle')}

@@ -11,6 +11,7 @@ import { crossLanguageNote, meaningNote, sourceLanguages } from './semantic'
 import { refreshNote, sourceBadge, sourceWhere } from './remote'
 import { RemoteSourceForm } from './RemoteSourceForm'
 import { formatDateTime } from '@/i18n/format'
+import { LoadError } from '@/components/ui/LoadError'
 
 
 export function KnowledgePage() {
@@ -30,7 +31,10 @@ export function KnowledgePage() {
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,26rem)]">
         <section className="space-y-3">
           {sources.isLoading && <p className="text-sm text-ink-muted">{t('page.loading')}</p>}
-          {!sources.isLoading && list.length === 0 && (
+          {sources.isError && !sources.data && (
+            <LoadError error={sources.error} onRetry={() => void sources.refetch()} retrying={sources.isFetching} />
+          )}
+          {!sources.isLoading && !sources.isError && list.length === 0 && (
             <EmptyState
               mascot="idle"
               title={t('page.emptyTitle')}

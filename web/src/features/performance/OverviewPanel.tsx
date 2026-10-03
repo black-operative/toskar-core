@@ -7,6 +7,7 @@ import { describeNodeHardware } from '@/features/nodes/nodePresentation'
 import type { Node, RunningModelView, Task } from '@/types/api'
 import { formatTokPerSec, memoryUsePercent } from './performanceFormat'
 import { formatPercent } from '@/i18n/format'
+import { LoadError } from '@/components/ui/LoadError'
 
 function MemoryBar({ percent }: { percent: number }) {
   const { t } = useTranslation('performance')
@@ -163,7 +164,9 @@ export function OverviewPanel() {
         )}
       </section>
 
-      {fleet.length === 0 ? (
+      {nodesQuery.isError && !nodesQuery.data ? (
+        <LoadError error={nodesQuery.error} onRetry={() => void nodesQuery.refetch()} retrying={nodesQuery.isFetching} />
+      ) : fleet.length === 0 ? (
         <p className="text-sm text-ink-muted">
           {t('overview.noComputers')}{' '}
           <Link to="/nodes" className="text-primary hover:underline">

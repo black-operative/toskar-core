@@ -9,6 +9,7 @@ import { AddToolSource } from './AddToolSource'
 import { preopenSignInWindow } from '@/lib/desktopBridge'
 import { errorText, openSignIn, quoteArg, SOURCES_KEY, specSummary, splitArgs, statusOf, toneClass } from './mcpShared'
 import { formatDate } from '@/i18n/format'
+import { LoadError } from '@/components/ui/LoadError'
 
 /**
  * Tool sources: MCP servers the person added. Each card says in plain words
@@ -52,8 +53,10 @@ export function ToolSources() {
         )}
       </div>
       {adding && <AddToolSource onClose={() => setAdding(false)} />}
-      {sources.isError && <p className="text-sm text-danger">{errorText(sources.error)}</p>}
-      {!sources.isLoading && list.length === 0 && !adding && (
+      {sources.isError && !sources.data && (
+        <LoadError error={sources.error} onRetry={() => void sources.refetch()} retrying={sources.isFetching} />
+      )}
+      {!sources.isLoading && !sources.isError && list.length === 0 && !adding && (
         <button
           type="button"
           className="card-outline w-full text-start text-sm text-ink-muted hover:bg-raised/40"

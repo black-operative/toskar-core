@@ -12,7 +12,6 @@
       "attention": "Requerem atenção"
     },
     "loading": "Carregando automações…",
-    "loadFailed": "Não foi possível carregar as automações.",
     "emptyTitle": "Nenhuma automação ainda",
     "emptyDescription": "Descreva uma verificação recorrente, como um preço toda manhã ou um resumo de lançamentos às sextas, e o Yggdrasil vai executá-la nesse horário.",
     "noMatches": "Nenhuma automação corresponde.",

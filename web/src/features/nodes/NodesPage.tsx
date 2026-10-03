@@ -24,6 +24,7 @@ import {
 import { RealmKicker } from '@/components/ui/Realm'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { useMascotState } from '@/lib/ratatoskr/useMascotState'
+import { LoadError } from '@/components/ui/LoadError'
 
 function errorMessage(err: unknown): string {
   if (err instanceof ApiError) return err.message
@@ -644,7 +645,10 @@ export function NodesPage() {
 
       {nodesQuery.isLoading && <LoadingSpinner label={t('page.looking')} />}
 
-      {!nodesQuery.isLoading && nodes.length === 0 && (
+      {nodesQuery.isError && !nodesQuery.data && (
+        <LoadError error={nodesQuery.error} onRetry={() => void nodesQuery.refetch()} retrying={nodesQuery.isFetching} />
+      )}
+      {!nodesQuery.isLoading && !nodesQuery.isError && nodes.length === 0 && (
         <EmptyState
           title={t('page.emptyTitle')}
           description={t('page.emptyDescription')}

@@ -82,7 +82,6 @@
     "profile": "Profilo",
     "filterDate": "Filtra per data",
     "loading": "Caricamento dell'attività…",
-    "loadFailed": "Impossibile caricare la cronologia delle prestazioni. Yggdrasil è in esecuzione?",
     "emptyTitle": "Ancora nessuna attività",
     "emptyDescription": "Invia qualche messaggio in chat. I turni di team che usano più di un computer vengono etichettati come esecuzioni di team.",
     "noMatches": "Nessuna esecuzione corrisponde a questi filtri."

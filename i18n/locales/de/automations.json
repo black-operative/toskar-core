@@ -12,7 +12,6 @@
       "attention": "Erfordert Aufmerksamkeit"
     },
     "loading": "Automationen werden geladen …",
-    "loadFailed": "Automationen konnten nicht geladen werden.",
     "emptyTitle": "Noch keine Automationen",
     "emptyDescription": "Beschreibe eine wiederkehrende Prüfung, etwa einen Preis am Morgen oder eine Release-Zusammenfassung am Freitag, und Yggdrasil führt sie nach diesem Zeitplan aus.",
     "noMatches": "Keine passenden Automationen.",

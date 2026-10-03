@@ -6,7 +6,6 @@
     "create": "프로필 만들기",
     "createTitle": "새 프로필 만들기",
     "loading": "프로필을 불러오는 중…",
-    "loadFailed": "프로필을 불러올 수 없어요. 로컬 데몬이 실행 중인가요?",
     "emptyTitle": "아직 프로필이 없어요",
     "emptyDescription": "프로필을 만들어 채팅에서 어시스턴트가 어떻게 작동할지 정하세요.",
     "noneInFilter": "이 필터에 해당하는 프로필이 없어요.",

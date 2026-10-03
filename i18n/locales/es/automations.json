@@ -12,7 +12,6 @@
       "attention": "Requieren atención"
     },
     "loading": "Cargando automatizaciones…",
-    "loadFailed": "No se pudieron cargar las automatizaciones.",
     "emptyTitle": "Todavía no hay automatizaciones",
     "emptyDescription": "Describe una comprobación recurrente, como un precio cada mañana o un resumen de versiones los viernes, y Yggdrasil la ejecutará con esa frecuencia.",
     "noMatches": "Ninguna automatización coincide.",

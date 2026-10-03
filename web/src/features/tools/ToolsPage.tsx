@@ -8,6 +8,7 @@ import { RealmKicker } from '@/components/ui/Realm'
 import { ImageSetupCard, VideoSetupCard } from './ImageSetup'
 import { ToolSources } from './ToolSources'
 import { formatDateTime } from '@/i18n/format'
+import { LoadError } from '@/components/ui/LoadError'
 
 // The filters, in order; each is tools:page.filters.<id> in the catalog.
 const FILTERS = ['all', 'builtin', 'added', 'disabled'] as const
@@ -113,6 +114,11 @@ export function ToolsPage() {
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)]">
         <ul className="space-y-2">
           {toolsQuery.isLoading && <li className="text-sm text-ink-muted">{t('page.loading')}</li>}
+          {toolsQuery.isError && !toolsQuery.data && (
+            <li>
+              <LoadError error={toolsQuery.error} onRetry={() => void toolsQuery.refetch()} retrying={toolsQuery.isFetching} />
+            </li>
+          )}
           {visible.map((tool) => (
             <li key={tool.id}>
               <button

@@ -37,6 +37,7 @@ import { OrchestrationControls, cleanOrchestration } from './OrchestrationContro
 import { EXECUTION_KEYS, MEMORY_KEYS, ORCHESTRATION_KEYS } from './orchestrationKeys'
 import { RealmKicker } from '@/components/ui/Realm'
 import { rovingKeyDown, useMenu } from '@/lib/roving'
+import { LoadError } from '@/components/ui/LoadError'
 
 // The tools a profile can set one by one; each name and description is profiles:tools.<tool id> in the catalog.
 const TOOL_CATALOG: string[] = [
@@ -351,12 +352,9 @@ export function ProfilesPage() {
 
       {profilesQuery.isLoading && <LoadingSpinner label={t('page.loading')} />}
 
-      {profilesQuery.isError && (
-        <div className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
-          {t('page.loadFailed')}
-        </div>
+      {profilesQuery.isError && !profilesQuery.data && (
+        <LoadError error={profilesQuery.error} onRetry={() => void profilesQuery.refetch()} retrying={profilesQuery.isFetching} />
       )}
-
       {!profilesQuery.isLoading && !profilesQuery.isError && allProfiles.length === 0 && (
         <EmptyState
           title={t('page.emptyTitle')}

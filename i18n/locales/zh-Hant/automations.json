@@ -12,7 +12,6 @@
       "attention": "需要處理"
     },
     "loading": "正在載入自動化…",
-    "loadFailed": "無法載入自動化。",
     "emptyTitle": "還沒有任何自動化",
     "emptyDescription": "描述一項定期檢查，例如每天早上查價格或每週五整理版本發布摘要，Yggdrasil 就會依照排程執行。",
     "noMatches": "沒有符合的自動化。",

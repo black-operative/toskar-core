@@ -82,7 +82,6 @@
     "profile": "Perfil",
     "filterDate": "Filtrar por data",
     "loading": "Carregando atividade…",
-    "loadFailed": "Não foi possível carregar o histórico de desempenho. O Yggdrasil está em execução?",
     "emptyTitle": "Nenhuma atividade ainda",
     "emptyDescription": "Envie algumas mensagens no chat. Rodadas que usam mais de um computador são marcadas como execuções em equipe.",
     "noMatches": "Nenhuma execução corresponde a esses filtros."

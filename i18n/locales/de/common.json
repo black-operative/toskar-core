@@ -62,5 +62,13 @@
     "retry": "Erneut versuchen",
     "reload": "Neu laden",
     "details": "Details"
+  },
+  "loadError": {
+    "title": "Yggdrasil konnte das nicht laden",
+    "body": "Es hat nicht geantwortet oder mit einem Fehler geantwortet. Deine Daten sind noch da. Versuche es erneut oder sieh in der Diagnose nach, falls es wieder passiert.",
+    "retry": "Erneut versuchen",
+    "retrying": "Wird erneut versucht…",
+    "diagnostics": "Diagnose öffnen",
+    "details": "Details"
   }
 }

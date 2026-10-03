@@ -76,7 +76,6 @@
     "profile": "配置",
     "filterDate": "按日期筛选",
     "loading": "正在加载活动…",
-    "loadFailed": "无法加载性能历史。Yggdrasil 正在运行吗？",
     "emptyTitle": "暂无活动",
     "emptyDescription": "发送几条聊天消息。使用多台电脑的团队轮次会被标记为团队运行。",
     "noMatches": "没有符合这些筛选条件的运行。"

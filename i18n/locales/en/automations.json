@@ -12,7 +12,6 @@
       "attention": "Needs attention"
     },
     "loading": "Loading automations…",
-    "loadFailed": "Automations could not be loaded.",
     "emptyTitle": "No automations yet",
     "emptyDescription": "Describe a recurring check, such as a morning price or a Friday release summary, and Yggdrasil will run it on that schedule.",
     "noMatches": "No automations match.",

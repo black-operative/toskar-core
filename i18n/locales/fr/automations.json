@@ -12,7 +12,6 @@
       "attention": "Action requise"
     },
     "loading": "Chargement des automatisations…",
-    "loadFailed": "Impossible de charger les automatisations.",
     "emptyTitle": "Aucune automatisation pour l'instant",
     "emptyDescription": "Décrivez une vérification récurrente, comme un prix chaque matin ou un résumé des nouvelles versions le vendredi, et Yggdrasil l'exécutera selon ce calendrier.",
     "noMatches": "Aucune automatisation ne correspond.",

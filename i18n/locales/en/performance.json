@@ -79,7 +79,6 @@
     "profile": "Profile",
     "filterDate": "Filter by date",
     "loading": "Loading activity…",
-    "loadFailed": "Could not load performance history. Is Yggdrasil running?",
     "emptyTitle": "No activity yet",
     "emptyDescription": "Send a few chat messages. Team turns that use more than one computer are labeled as team runs.",
     "noMatches": "No runs match these filters."

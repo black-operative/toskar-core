@@ -12,7 +12,6 @@
       "attention": "확인 필요"
     },
     "loading": "자동화를 불러오는 중…",
-    "loadFailed": "자동화를 불러올 수 없어요.",
     "emptyTitle": "아직 자동화가 없어요",
     "emptyDescription": "아침 가격 확인이나 금요일 릴리스 요약처럼 반복할 확인 작업을 설명하면 Yggdrasil이 그 일정에 맞춰 실행해요.",
     "noMatches": "일치하는 자동화가 없어요.",

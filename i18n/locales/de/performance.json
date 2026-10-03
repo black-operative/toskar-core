@@ -79,7 +79,6 @@
     "profile": "Profil",
     "filterDate": "Nach Datum filtern",
     "loading": "Aktivität wird geladen …",
-    "loadFailed": "Leistungsverlauf konnte nicht geladen werden. Läuft Yggdrasil?",
     "emptyTitle": "Noch keine Aktivität",
     "emptyDescription": "Sende ein paar Chatnachrichten. Teamschritte, die mehr als einen Computer nutzen, werden als Teamdurchläufe gekennzeichnet.",
     "noMatches": "Keine Durchläufe passen zu diesen Filtern."

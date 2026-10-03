@@ -6,7 +6,6 @@
     "create": "Crea profilo",
     "createTitle": "Crea un nuovo profilo",
     "loading": "Caricamento dei profili…",
-    "loadFailed": "Impossibile caricare i profili. Il daemon locale è in esecuzione?",
     "emptyTitle": "Ancora nessun profilo",
     "emptyDescription": "Crea un profilo per indicare a Chat come deve lavorare il tuo assistente.",
     "noneInFilter": "Nessun profilo in questo filtro.",

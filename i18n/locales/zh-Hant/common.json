@@ -61,5 +61,13 @@
     "retry": "重試",
     "reload": "重新載入",
     "details": "詳細資訊"
+  },
+  "loadError": {
+    "title": "Yggdrasil 無法載入此內容",
+    "body": "它沒有回應，或回傳了錯誤。你的資料仍然在。請重試；如果反覆發生，請查看診斷。",
+    "retry": "重試",
+    "retrying": "正在重試…",
+    "diagnostics": "開啟診斷",
+    "details": "詳細資訊"
   }
 }

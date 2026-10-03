@@ -6,7 +6,6 @@
     "create": "Criar perfil",
     "createTitle": "Criar um novo perfil",
     "loading": "Carregando perfis…",
-    "loadFailed": "Não foi possível carregar os perfis. O daemon local está em execução?",
     "emptyTitle": "Nenhum perfil ainda",
     "emptyDescription": "Crie um perfil para dizer ao Chat como seu assistente deve trabalhar.",
     "noneInFilter": "Nenhum perfil neste filtro.",

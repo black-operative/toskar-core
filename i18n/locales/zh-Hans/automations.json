@@ -12,7 +12,6 @@
       "attention": "需要处理"
     },
     "loading": "正在加载自动化…",
-    "loadFailed": "无法加载自动化。",
     "emptyTitle": "还没有自动化",
     "emptyDescription": "描述一项定期检查，比如每天早上查一次价格，或每周五汇总一次发布情况，Yggdrasil 会按这个时间表运行它。",
     "noMatches": "没有匹配的自动化。",

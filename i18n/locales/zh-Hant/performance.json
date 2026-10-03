@@ -76,7 +76,6 @@
     "profile": "設定檔",
     "filterDate": "依日期篩選",
     "loading": "正在載入活動…",
-    "loadFailed": "無法載入效能歷史紀錄。Yggdrasil 是否正在執行？",
     "emptyTitle": "還沒有任何活動",
     "emptyDescription": "傳送幾則聊天訊息。使用多台電腦的團隊回合會被標示為團隊執行。",
     "noMatches": "沒有符合這些篩選條件的執行紀錄。"

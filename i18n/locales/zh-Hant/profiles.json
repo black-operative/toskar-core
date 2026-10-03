@@ -6,7 +6,6 @@
     "create": "建立設定檔",
     "createTitle": "建立新的設定檔",
     "loading": "正在載入設定檔…",
-    "loadFailed": "無法載入設定檔。本機背景服務是否正在執行？",
     "emptyTitle": "還沒有任何設定檔",
     "emptyDescription": "建立一個設定檔，告訴「聊天」你的助理應該如何運作。",
     "noneInFilter": "這個篩選條件中沒有設定檔。",

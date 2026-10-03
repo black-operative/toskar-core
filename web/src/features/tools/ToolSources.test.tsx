@@ -79,6 +79,19 @@ function renderIt() {
   )
 }
 
+// A failed list is an error with Try again, never "No tool sources yet".
+describe('ToolSources when the list fails to load', () => {
+  it('says it could not load, offers Try again, and loads on retry', async () => {
+    vi.mocked(api.listMCPServers).mockRejectedValueOnce(new Error('database is locked')).mockResolvedValue([])
+    renderIt()
+    expect(await screen.findByRole('alert')).toHaveTextContent("Yggdrasil couldn't load this")
+    expect(screen.queryByText(/No tool sources yet/)).toBeNull()
+    expect(screen.getByText('database is locked')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    expect(await screen.findByText(/No tool sources yet/)).toBeInTheDocument()
+  })
+})
+
 describe('ToolSources', () => {
   let current: MCPServer[]
   beforeEach(() => {

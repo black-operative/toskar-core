@@ -82,7 +82,6 @@
     "profile": "Profil",
     "filterDate": "Filtrer par date",
     "loading": "Chargement de l'activité…",
-    "loadFailed": "Impossible de charger l'historique des performances. Yggdrasil est-il en cours d'exécution ?",
     "emptyTitle": "Aucune activité pour l'instant",
     "emptyDescription": "Envoyez quelques messages dans une discussion. Les tours d'équipe qui utilisent plusieurs ordinateurs sont signalés comme exécutions en équipe.",
     "noMatches": "Aucune exécution ne correspond à ces filtres."

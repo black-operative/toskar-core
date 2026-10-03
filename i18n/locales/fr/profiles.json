@@ -6,7 +6,6 @@
     "create": "Créer un profil",
     "createTitle": "Créer un nouveau profil",
     "loading": "Chargement des profils…",
-    "loadFailed": "Impossible de charger les profils. Le daemon local est-il en cours d'exécution ?",
     "emptyTitle": "Aucun profil pour l'instant",
     "emptyDescription": "Créez un profil pour indiquer à Discussion comment votre assistant doit travailler.",
     "noneInFilter": "Aucun profil dans ce filtre.",

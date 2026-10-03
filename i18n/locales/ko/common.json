@@ -61,5 +61,13 @@
     "retry": "다시 시도",
     "reload": "새로고침",
     "details": "자세히"
+  },
+  "loadError": {
+    "title": "Yggdrasil이 이 내용을 불러오지 못했어요",
+    "body": "응답이 없었거나 오류로 응답했어요. 데이터는 그대로 있어요. 다시 시도하거나, 계속 발생하면 진단을 확인하세요.",
+    "retry": "다시 시도",
+    "retrying": "다시 시도하는 중…",
+    "diagnostics": "진단 열기",
+    "details": "자세히"
   }
 }

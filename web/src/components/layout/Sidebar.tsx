@@ -84,9 +84,11 @@ export function Sidebar({ open = false, ref }: { open?: boolean; ref?: Ref<HTMLD
     !serviceOk &&
     (healthQuery.isPending || healthQuery.isFetching || healthQuery.isLoading)
   const nodeCount = nodesQuery.data?.length ?? 0
-  const hasModel = (modelsQuery.data ?? []).some(
-    (m) => m.installed || (m.installed_on?.length ?? 0) > 0,
-  )
+  // "No model" only when the model list loaded and has none installed; a list
+  // that is still loading or failed to load says nothing about models.
+  const hasModel =
+    !modelsQuery.isSuccess ||
+    (modelsQuery.data ?? []).some((m) => m.installed || (m.installed_on?.length ?? 0) > 0)
 
   const runningVersion = displayVersion(healthQuery.data?.version)
 
@@ -192,7 +194,7 @@ export function Sidebar({ open = false, ref }: { open?: boolean; ref?: Ref<HTMLD
             {t('nav.computers')}
           </span>
           <span className="tabular-nums">
-            {nodeCount === 0 ? t('subsystems.computersNone') : t('subsystems.connected', { count: nodeCount })}
+            {!nodesQuery.isSuccess ? '—' : nodeCount === 0 ? t('subsystems.computersNone') : t('subsystems.connected', { count: nodeCount })}
           </span>
         </div>
         <div
