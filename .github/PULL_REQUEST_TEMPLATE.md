@@ -46,3 +46,4 @@ The agreement is [CLA.md](../CLA.md).
 - [ ] Relevant docs updated
 - [ ] A changelog fragment in `changes/unreleased/` for anything users or integrators notice (not an edit to `CHANGELOG.md`)
 - [ ] New or changed text is in `i18n/locales/en/`, not written into the code; for translations, the language and how it was checked are in the description
+- [ ] New or changed UI follows [docs/design.md](../docs/design.md): tokens, loading/failed/empty states, keyboard, 390px wide, both themes; `node scripts/screenshots/a11y.mjs` passes

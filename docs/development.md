@@ -72,7 +72,7 @@ node scripts/screenshots/a11y.mjs
 A11Y_PAGES=/chat,/settings node scripts/screenshots/a11y.mjs
 ```
 
-Any WCAG 2.2 A or AA violation, best-practice violation, or page error fails it, with the element and the reason.
+Any WCAG 2.2 A or AA violation, best-practice violation, or page error fails it, with the element and the reason. The rules new UI follows (tokens, states, keyboard patterns, writing) are in [Design](design.md).
 
 Cluster check (Docker, stub inference, not a GPU test):
 
