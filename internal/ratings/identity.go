@@ -1,7 +1,7 @@
 // Package ratings is community model ratings (#37): a person's own 1–5
 // star rating of each model, shared with the ratings service only when they
 // choose to, and the public summary of everyone's ratings, grouped by
-// hardware like theirs. The contract is yeixio/yggdrasil-ratings' schema
+// hardware like theirs. The contract is yeixio/toskar-ratings' schema
 // version 1.
 package ratings
 

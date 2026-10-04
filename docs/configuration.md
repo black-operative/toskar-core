@@ -60,7 +60,7 @@ What lives there:
 | `places_router_url` | `https://routing.openstreetmap.de` | The OSRM service for routes. Your own OSRM server is used as `/route/v1/{driving,foot,bike}/…`. |
 | `external_openai_url` | none | An OpenAI-compatible server (OpenAI, vLLM, Ollama elsewhere…) whose models can be chosen for a chat. Its API key is `secrets/external-openai.key`. Set both in Settings → External server (advanced mode) or with `PUT /api/v1/external-server`. |
 | `ratings_url` | `https://ratings.toskar.ai` | The community ratings service that shared ratings go to and the daily summary comes from |
-| `ratings_summary_url` | the summary in `yeixio/yggdrasil-model-data` | The public ratings summary used when the service cannot be reached |
+| `ratings_summary_url` | the summary in `yeixio/toskar-model-data` | The public ratings summary used when the service cannot be reached |
 | `node_name` | the host name | The name other computers see |
 | `node_id` | generated | This computer's id. Do not copy it between computers. |
 

@@ -401,7 +401,7 @@ Live Database
 Aggregator
       │
       ▼
-yeixio/yggdrasil-model-data
+yeixio/toskar-model-data
 ```
 
 The Git repository contains **sanitized aggregate snapshots**, not the live write stream.
@@ -409,7 +409,7 @@ The Git repository contains **sanitized aggregate snapshots**, not the live writ
 Recommended separate repository:
 
 ```text
-yeixio/yggdrasil-model-data
+yeixio/toskar-model-data
 ```
 
 Possible structure:
@@ -705,7 +705,7 @@ Display:
 Create:
 
 ```text
-yeixio/yggdrasil-model-data
+yeixio/toskar-model-data
 ```
 
 with automated aggregate snapshots.

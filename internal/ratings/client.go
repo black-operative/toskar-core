@@ -17,7 +17,7 @@ import (
 // names others.
 const (
 	DefaultServiceURL = "https://ratings.toskar.ai"
-	DefaultSummaryURL = "https://raw.githubusercontent.com/yeixio/yggdrasil-model-data/main/ratings/summary.json"
+	DefaultSummaryURL = "https://raw.githubusercontent.com/yeixio/toskar-model-data/main/ratings/summary.json"
 )
 
 // Rating is one submission, in the ratings service's schema version 1.
