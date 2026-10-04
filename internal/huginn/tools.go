@@ -56,7 +56,7 @@ var (
 	cueFilm    = regexp.MustCompile(`(?i)\b(videos?|clips?|animat\w*|movies?|footage|gifs?|bring (it|this|that|the|my)( \w+)? to life|make (it|this) move)\b`)
 	cueBrowse  = regexp.MustCompile(`(?i)(\b(browser|click|fill (in|out)|sign up|add to (my )?cart|on (the|that|their) (site|page|website)|log ?in to|screenshot|navigate to)\b|\bgo to \S+\.\w{2,}\b)`)
 	cueSheet   = regexp.MustCompile(`(?i)\b(spreadsheets?|xlsx|csv|excel|workbooks?|sheets?)\b`)
-	cueWeb     = regexp.MustCompile(`(?i)(\b(search|web|online|internet|look up|website|url|link|news|latest)\b|https?://)`)
+	cueWeb     = regexp.MustCompile(`(?i)(\b(search|web|online|internet|look up|website|url|links?|news|latest)\b|https?://)`)
 )
 
 // ToolsFor picks the tools worth offering for a request (spec §16): the
@@ -83,7 +83,7 @@ func ToolsFor(k Kind, message string, available []string) []string {
 			want["gitw"] = true
 		}
 	}
-	if cueWeb.MatchString(message) {
+	if cueWeb.MatchString(message) || tools.MessageAsksToFind(message) {
 		want["web"] = true
 	}
 	if cueMake.MatchString(message) {

@@ -10,7 +10,41 @@ permissions:
   pull-requests: write
 
 jobs:
+  # Chat quality gates the release: the quality set against a real model
+  # (tests/quality, scripts/quality-model.sh) must pass 90% of its cases
+  # before anything is published.
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.26.x"
+      - uses: actions/cache@v4
+        with:
+          path: .quality-cache
+          key: quality-model-b11174-llama-3.2-1b-q4km
+      - name: Quality set with a real model
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TOSKAR_QUALITY_REPORT: ${{ runner.temp }}/quality-report.md
+        run: scripts/quality-model.sh run
+      - name: Report
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/quality-report.md" ]; then
+            head -c 60000 "$RUNNER_TEMP/quality-report.md" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-report-core
+          path: ${{ runner.temp }}/quality-report.md
+          if-no-files-found: ignore
+
   release:
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,0 +1,190 @@
+{
+  "about": "Web pages the quality set reads instead of the live web, so every run sees the same pages. A search gets the results of the first site whose `match` matches the query; a page is found by the longest URL prefix in any site's `pages`. Facts here are fixtures for the tests, not current information. The iPhone app's quality run serves the same pages.",
+  "sites": [
+    {
+      "topic": "weather",
+      "match": "(?i)weather|forecast|rain|umbrella|temperature|how (cold|warm|hot)",
+      "results": [
+        {
+          "title": "Juneau, AK 7-Day Forecast - National Weather Service",
+          "url": "https://forecast.weather.gov/MapClick.php?lat=58.30&lon=-134.42",
+          "snippet": "Today: Rain likely. High near 48. South wind around 8 mph."
+        },
+        {
+          "title": "Juneau, AK Weather Conditions | AccuWeather",
+          "url": "https://www.accuweather.com/en/us/juneau/99801/weather-forecast/331686",
+          "snippet": "Current weather in Juneau: light rain, 48°F."
+        }
+      ],
+      "pages": {
+        "https://wttr.in/": "juneau alaska: +48°F (feels like +44°F), Light rain, humidity 93%, wind ↓8mph, precipitation 0.1in",
+        "https://forecast.weather.gov/": "Juneau AK forecast. Today: Rain likely, mainly after 10am. High near 48. South wind around 8 mph. Chance of precipitation is 70%. Tonight: Rain. Low around 41.",
+        "https://www.accuweather.com/": "Juneau current weather: Light rain. 48°F, RealFeel 44°F. Wind S 8 mph. Humidity 93%."
+      }
+    },
+    {
+      "topic": "bikes for heavy riders",
+      "match": "(?i)bike|bicycle|surly|zize|cycling|500 ?lb|heavy rider",
+      "results": [
+        {
+          "title": "Zize Bikes | Bikes for Big Riders up to 550 lbs",
+          "url": "https://zizebikes.com/",
+          "snippet": "Zize bikes are built for riders up to 550 lbs, with steel frames and 48-spoke wheels."
+        },
+        {
+          "title": "Long Haul Trucker | Surly Bikes",
+          "url": "https://surlybikes.com/bikes/long_haul_trucker",
+          "snippet": "A steel touring bike made to carry heavy loads."
+        },
+        {
+          "title": "Worksman Cycles - Heavy Duty Bicycles",
+          "url": "https://www.worksmancycles.com/",
+          "snippet": "American-made heavy duty bicycles with capacities up to 500 lbs."
+        }
+      ],
+      "pages": {
+        "https://zizebikes.com/": "Zize Bikes. Bikes for big riders. Every Zize bike is rated for riders up to 550 lbs. The Zize Forte is a hybrid with a chromoly steel frame, 48-spoke wheels, and hydraulic disc brakes, from $1,795. Free shipping in the US.",
+        "https://surlybikes.com/bikes/long_haul_trucker": "Surly Long Haul Trucker. A steel touring bike made to carry a lot. Rider and cargo weight limit: 300 lbs. From $1,650.",
+        "https://www.worksmancycles.com/": "Worksman Cycles. Heavy duty bicycles and tricycles made in New York. The Worksman Big Cruiser carries riders up to 500 lbs, from $899."
+      }
+    },
+    {
+      "topic": "espresso machines",
+      "match": "(?i)espresso|coffee machine|coffee maker",
+      "results": [
+        {
+          "title": "The Best Espresso Machines Under $200 (2026) | Wirecutter",
+          "url": "https://www.nytimes.com/wirecutter/reviews/best-cheap-espresso-machine/",
+          "snippet": "Our pick under $200 is the De'Longhi Stilosa at $119."
+        },
+        {
+          "title": "Casabrews CM5418 Review",
+          "url": "https://www.seriouseats.com/casabrews-cm5418-review",
+          "snippet": "A $139 machine with a steam wand that makes good milk drinks."
+        }
+      ],
+      "pages": {
+        "https://www.nytimes.com/wirecutter/": "Best espresso machines under $200. Our pick: De'Longhi Stilosa ($119), simple and reliable, with a manual steam wand. Runner-up: Casabrews CM5418 ($139), with a pressure gauge. Upgrade pick: Breville Bambino ($299).",
+        "https://www.seriouseats.com/": "Casabrews CM5418 review. Price $139. 20-bar pump, 49-ounce water tank, steam wand. Good for lattes."
+      }
+    },
+    {
+      "topic": "coffee shops in Juneau",
+      "match": "(?i)coffee shop|cafe|café|coffee (in|near)|open now",
+      "results": [
+        {
+          "title": "Heritage Coffee Roasting Co. - Downtown Juneau",
+          "url": "https://heritagecoffee.com/locations/downtown",
+          "snippet": "130 Front St, Juneau. Open daily 6 am to 6 pm."
+        },
+        {
+          "title": "Coppa | Juneau",
+          "url": "https://www.coppajuneau.com/",
+          "snippet": "917 Glacier Ave, Juneau. Open 7 am to 4 pm, closed Mondays."
+        }
+      ],
+      "pages": {
+        "https://heritagecoffee.com/": "Heritage Coffee Roasting Co., Downtown. 130 Front St, Juneau, AK 99801. Open daily 6 am to 6 pm. Espresso, pastries, and coffee roasted in Juneau.",
+        "https://www.coppajuneau.com/": "Coppa. 917 Glacier Ave, Juneau. Coffee and house-made ice cream. Open 7 am to 4 pm Tuesday to Sunday, closed Mondays."
+      }
+    },
+    {
+      "topic": "exchange rate",
+      "match": "(?i)exchange rate|euros?|eur\\b|usd|dollars? (to|in)",
+      "results": [
+        {
+          "title": "USD to EUR - US Dollar to Euro Exchange Rate",
+          "url": "https://www.xe.com/currencyconverter/convert/?From=USD&To=EUR",
+          "snippet": "1 USD = 0.92 EUR, mid-market rate."
+        }
+      ],
+      "pages": {
+        "https://www.xe.com/": "1.00 US Dollar = 0.92 Euro. 1 EUR = 1.087 USD. Mid-market rate at 12:00 UTC."
+      }
+    },
+    {
+      "topic": "bitcoin price",
+      "match": "(?i)bitcoin|btc",
+      "results": [
+        {
+          "title": "Bitcoin price today, BTC to USD | CoinDesk",
+          "url": "https://www.coindesk.com/price/bitcoin",
+          "snippet": "Bitcoin is trading at $64,210."
+        }
+      ],
+      "pages": {
+        "https://www.coindesk.com/": "Bitcoin (BTC) price: $64,210.15, up 1.2% in the last 24 hours."
+      }
+    },
+    {
+      "topic": "Juneau marathon",
+      "match": "(?i)marathon",
+      "results": [
+        {
+          "title": "2026 Juneau Marathon Results",
+          "url": "https://juneaumarathon.org/results/2026",
+          "snippet": "Ana Ruiz won the 2026 Juneau Marathon in 2:51:07."
+        }
+      ],
+      "pages": {
+        "https://juneaumarathon.org/": "2026 Juneau Marathon results. Women: Ana Ruiz, 2:51:07. Men: Tom Becker, 2:38:44. 412 finishers."
+      }
+    },
+    {
+      "topic": "Go release",
+      "match": "(?i)\\bgo\\b|golang",
+      "results": [
+        {
+          "title": "Go 1.26.3 is released - The Go Programming Language",
+          "url": "https://go.dev/doc/devel/release#go1.26.3",
+          "snippet": "go1.26.3 (released 2026-09-02) includes security fixes."
+        }
+      ],
+      "pages": {
+        "https://go.dev/": "Release history. go1.26.3 (released 2026-09-02) includes security fixes to the net/http package and bug fixes to the compiler. go1.26.0 was released 2026-02-10."
+      }
+    },
+    {
+      "topic": "phones",
+      "match": "(?i)iphone|pixel|phone",
+      "results": [
+        {
+          "title": "iPhone 17 vs Pixel 10: which should you buy? | The Verge",
+          "url": "https://www.theverge.com/iphone-17-vs-pixel-10",
+          "snippet": "Both start at $799; the Pixel 10 lasts longer on a charge."
+        }
+      ],
+      "pages": {
+        "https://www.theverge.com/": "iPhone 17 vs Pixel 10. Both start at $799 with 6.3-inch screens. The iPhone 17 has the faster chip and longer software support from Apple. The Pixel 10 lasted 2 hours longer in our battery test and has the better zoom camera."
+      }
+    },
+    {
+      "topic": "kayaks",
+      "match": "(?i)kayak",
+      "results": [
+        {
+          "title": "Used Kayaks for Sale - Juneau Outdoor Center",
+          "url": "https://juneauoutdoorcenter.com/used-kayaks",
+          "snippet": "Used touring kayaks from $350."
+        }
+      ],
+      "pages": {
+        "https://juneauoutdoorcenter.com/": "Juneau Outdoor Center, 9105 Mendenhall Mall Rd. Used touring and sit-on-top kayaks from $350. Rentals from $45 a day."
+      }
+    },
+    {
+      "topic": "news",
+      "match": "(?i)news|headlines",
+      "results": [
+        {
+          "title": "Juneau Assembly extends library hours - Juneau Empire",
+          "url": "https://www.juneauempire.com/news/library-hours",
+          "snippet": "The downtown library will open until 8 pm on weekdays."
+        }
+      ],
+      "pages": {
+        "https://www.juneauempire.com/": "Juneau Assembly extends library hours. The downtown library will stay open until 8 pm on weekdays starting November 1."
+      }
+    }
+  ]
+}

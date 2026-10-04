@@ -122,10 +122,15 @@ func (o *Orchestrator) Run(
 				offered = append(offered, id)
 			}
 		}
+		// The profile before tools are narrowed to this request, for a
+		// look-up when the answer turns out to send the person off to search.
+		webProfile := profile
 		profile = offerOnly(profile, offered)
 		// A request with several parts is worked through part by part;
 		// otherwise a current question is looked up first.
 		planned := false
+		// lookedUp records that the web was read for this turn.
+		lookedUp := false
 		// Planning set to Always, and the Team strategy, ask the planner to
 		// split a request that has no obvious parts (§12). Team keeps a plan
 		// of one part, so a worker drafts and the answer is written from it.
@@ -159,6 +164,7 @@ func (o *Orchestrator) Run(
 				instructions += "\n" + planGuidance
 				if plan.NeedsWeb && webAllowed(profile) {
 					profile = withoutWeb(profile)
+					lookedUp = true
 				}
 				planned = true
 			}
@@ -170,10 +176,11 @@ func (o *Orchestrator) Run(
 				reference = joinReference(reference, found)
 				instructions += "\n" + serviceGuidance
 				profile = withoutFetched(profile)
-			} else if found, ok := lookUpFirst(ctx, env, profile, task.Prompt, budget.Pages); ok {
+			} else if found, ok := lookUpFirst(ctx, env, profile, role, task.Prompt, budget.Pages); ok {
 				reference = joinReference(reference, found)
 				instructions += "\n" + lookupGuidance
 				profile = withoutWeb(profile)
+				lookedUp = true
 			}
 		}
 		// evidence is what the answer may draw figures from, for the check.
@@ -199,9 +206,8 @@ func (o *Orchestrator) Run(
 		count := tokenCounter(ctx, env, role)
 		userMsg := withReference(task.Prompt, reference)
 		messages := []pluginapi.ChatMessage{{Role: "system", Content: sys}}
-		if prior := priorMessages(ctx, env, count, userMsg, sys, profile.Orchestration.ContextShare); len(prior) > 0 {
-			messages = append(messages, prior...)
-		}
+		prior := priorMessages(ctx, env, count, userMsg, sys, profile.Orchestration.ContextShare)
+		messages = append(messages, prior...)
 		messages = append(messages, pluginapi.ChatMessage{Role: "user", Content: userMsg})
 
 		var metrics *pluginapi.GenerationMetrics
@@ -235,6 +241,7 @@ func (o *Orchestrator) Run(
 		// changed records that a tool that changes things ran.
 		changed := false
 		retriedPlain := false
+		retriedLookup := false
 
 		for {
 			content, m, err := generateText(ctx, env, role, messages)
@@ -345,6 +352,23 @@ func (o *Orchestrator) Run(
 				env.Emit(events.ToolFailed, map[string]any{"narrated": true, "error": "described tools instead of answering"})
 				messages[0] = pluginapi.ChatMessage{Role: "system", Content: plainSys}
 				continue
+			}
+			// An answer that sends the person off to search, or pretends to,
+			// is looked up and written again from what the web says (§21).
+			// Core tells the model not to; a small model still does. Small talk
+			// ("as an AI, I don't have feelings") is not looked up.
+			if !lookedUp && !retriedLookup && !jsonOnly && !huginn.SmallTalk(task.Prompt) && huginn.Deflects(parsed.Text) && webAllowed(webProfile) {
+				retriedLookup = true
+				if found, ok := lookUp(ctx, env, webProfile, searchQuery(ctx, env, role, task.Prompt), task.Prompt, budget.Pages); ok {
+					lookedUp = true
+					reference = joinReference(reference, found)
+					evidence = joinReference(evidence, found)
+					toolsOn = false
+					rewrite := []pluginapi.ChatMessage{{Role: "system", Content: plainSys + "\n" + lookupGuidance}}
+					rewrite = append(rewrite, prior...)
+					messages = append(rewrite, pluginapi.ChatMessage{Role: "user", Content: withReference(task.Prompt, reference)})
+					continue
+				}
 			}
 			answer := parsed.Text
 			if budget.Verify {

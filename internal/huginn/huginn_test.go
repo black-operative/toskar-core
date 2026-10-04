@@ -191,6 +191,25 @@ func TestToolsFor(t *testing.T) {
 	if got := ToolsFor(Chat, "Search the web for how DNS works", all); !has(got, "internet.search") || has(got, "terminal") {
 		t.Fatalf("web cue = %v", got)
 	}
+	// A request to find something offers the web, so the answer comes from
+	// it and not from memory or "search for it yourself" (§21).
+	for _, msg := range []string{
+		"Can you recommend a good bike for someone up to 500lbs?",
+		"Where can I buy a used kayak in Juneau?",
+		"What's the best espresso machine under $200?",
+		"Can you check for me please?",
+		"How much does it cost?",
+		"Is there a new Go release?",
+	} {
+		if got := ToolsFor(Chat, msg, all); !has(got, "internet.search") {
+			t.Fatalf("%q offered %v", msg, got)
+		}
+	}
+	for _, msg := range []string{"Suggest a name for my gray cat", "Write a haiku about autumn rain", "What is 17 times 23?"} {
+		if got := ToolsFor(Chat, msg, all); len(got) != 0 {
+			t.Fatalf("%q offered %v", msg, got)
+		}
+	}
 	if got := ToolsFor(Chat, "Make a spreadsheet of these prices", all); !has(got, "files.create") || has(got, "internet.search") {
 		t.Fatalf("file cue = %v", got)
 	}
@@ -258,5 +277,41 @@ func TestToolsFor(t *testing.T) {
 	// Only tools the profile has are offered.
 	if got := ToolsFor(Local, "run the tests", []string{"terminal"}); len(got) != 1 {
 		t.Fatalf("limited profile = %v", got)
+	}
+}
+
+func TestDeflects(t *testing.T) {
+	for _, answer := range []string{
+		"I'm a text-based AI model, I don't have direct access to real-time location-based data.",
+		`You can search for "Juneau weather" on a search engine like Google.`,
+		"I'm not sure, the user needs to check a bike website for that.",
+		"I'll search the web for you. [Searching on iPhone's Safari]",
+		"You can find these by visiting specialty bike shops or online retailers. Websites like REI list them.",
+	} {
+		if !Deflects(answer) {
+			t.Errorf("not caught: %q", answer)
+		}
+	}
+	for _, answer := range []string{
+		"Zize bikes are rated for riders up to 550 lbs: https://zizebikes.com/",
+		"It is 48°F with light rain in Juneau.",
+		"Paris is the capital of France.",
+	} {
+		if Deflects(answer) {
+			t.Errorf("an answer was caught: %q", answer)
+		}
+	}
+}
+
+func TestSmallTalk(t *testing.T) {
+	for _, message := range []string{"Hi! How are you?", "hello", "Thanks so much!", "Good morning, how's it going?", "ok"} {
+		if !SmallTalk(message) {
+			t.Errorf("not small talk: %q", message)
+		}
+	}
+	for _, message := range []string{"", "Hi! What's the weather in Juneau?", "How are you supposed to season cast iron?", "Thanks. Can you check for me please?"} {
+		if SmallTalk(message) {
+			t.Errorf("small talk: %q", message)
+		}
 	}
 }

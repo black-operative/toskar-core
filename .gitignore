@@ -59,3 +59,4 @@ coverage.out
 
 # Wails
 desktop/node_modules/
+.quality-cache/

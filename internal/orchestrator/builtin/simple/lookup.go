@@ -49,15 +49,87 @@ func lookupQuery(prompt string) string {
 }
 
 // lookUpFirst searches the web, and reads the best page, before the model
-// answers a question that needs current information (spec §21). Small models
-// often pick the wrong tool or none; Yggdrasil decides instead. It runs only
-// when the profile allows web search without asking, and returns the material
-// to give the model as data.
-func lookUpFirst(ctx context.Context, env pluginapi.ExecutionEnvironment, profile contracts.AIProfile, prompt string, pages int) (string, bool) {
-	if !tools.MessageNeedsLiveWeb(prompt) {
+// answers a question that needs current information, or a request to find
+// something (spec §21). Small models often pick the wrong tool or none, and
+// answer from memory or tell the person to search; Toskar decides instead.
+// It runs only when the profile allows web search without asking, and
+// returns the material to give the model as data.
+func lookUpFirst(ctx context.Context, env pluginapi.ExecutionEnvironment, profile contracts.AIProfile, role, prompt string, pages int) (string, bool) {
+	if !tools.MessageNeedsLiveWeb(prompt) && !tools.MessageAsksToFind(prompt) {
 		return "", false
 	}
-	return lookUp(ctx, env, profile, lookupQuery(prompt), prompt, pages)
+	if !webAllowed(profile) {
+		return "", false
+	}
+	return lookUp(ctx, env, profile, searchQuery(ctx, env, role, prompt), prompt, pages)
+}
+
+// referBackRe matches words that point at something earlier in the chat.
+var referBackRe = regexp.MustCompile(`(?i)\b(that|it|this|those|them|these|one|ones|there|for me|again|more|same)\b`)
+
+// queryWriter asks the model for one search query from the conversation.
+const queryWriter = "You write web search queries. Read the conversation, then write one search query that finds what the latest message asks for. Use the specific names of the products, places, or things it refers to. Reply with only the query, at most 12 words."
+
+// searchQuery is what to search for: the message's own words, or, for a
+// follow-up such as "Can you provide a link to that bike?", a query the
+// model writes from the conversation, so the search names the bike.
+func searchQuery(ctx context.Context, env pluginapi.ExecutionEnvironment, role, prompt string) string {
+	fallback := lookupQuery(prompt)
+	if len(strings.Fields(prompt)) > 6 && !referBackRe.MatchString(prompt) {
+		return fallback
+	}
+	src, ok := env.(conversationMemory)
+	if !ok {
+		return fallback
+	}
+	prior := src.PriorMessages(ctx)
+	if len(prior) == 0 {
+		return fallback
+	}
+	if len(prior) > 4 {
+		prior = prior[len(prior)-4:]
+	}
+	var b strings.Builder
+	for _, m := range prior {
+		who := "Person"
+		if m.Role == "assistant" {
+			who = "Assistant"
+		}
+		text := m.Content
+		if utf8.RuneCountInString(text) > 600 {
+			text = string([]rune(text)[:600])
+		}
+		fmt.Fprintf(&b, "%s: %s\n", who, text)
+	}
+	reply, _, err := generateText(ctx, env, role, []pluginapi.ChatMessage{
+		{Role: "system", Content: queryWriter},
+		{Role: "user", Content: "Conversation:\n" + b.String() + "\nLatest message: " + prompt + "\n\nSearch query:"},
+	})
+	if err != nil {
+		return fallback
+	}
+	query := cleanQuery(reply)
+	if query == "" || len(strings.Fields(query)) > 20 || strings.ContainsAny(query, "{}") {
+		return fallback
+	}
+	return query
+}
+
+// cleanQuery keeps a written query's first line, without a label or quotes.
+func cleanQuery(raw string) string {
+	for _, line := range strings.Split(tools.VisibleText(raw), "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+		for _, label := range []string{"search query:", "query:", "search:"} {
+			if strings.HasPrefix(strings.ToLower(line), label) {
+				line = strings.TrimSpace(line[len(label):])
+			}
+		}
+		return strings.TrimRight(strings.Trim(line, "\"'“”‘’`"), "?!. ")
+	}
+	return ""
 }
 
 // webAllowed reports whether the profile lets Yggdrasil search without asking.
