@@ -1,12 +1,12 @@
-# Yggdrasil Core Branching and Release Strategy
+# Toskar Core Branching and Release Strategy
 
 ## Purpose
 
-This document defines the recommended Git branching, pull request, branch protection, release, backport, and security release process for Yggdrasil Core.
+This document defines the recommended Git branching, pull request, branch protection, release, backport, and security release process for Toskar Core.
 
 The goal is to keep development simple, keep `main` healthy, make releases reproducible, and establish predictable contribution rules for maintainers and external contributors.
 
-Yggdrasil Core uses a **trunk-based development model** with short-lived branches, pull requests into `main`, tag-driven releases, and maintenance branches only when older stable releases need continued support.
+Toskar Core uses a **trunk-based development model** with short-lived branches, pull requests into `main`, tag-driven releases, and maintenance branches only when older stable releases need continued support.
 
 ---
 
@@ -14,7 +14,7 @@ Yggdrasil Core uses a **trunk-based development model** with short-lived branche
 
 ### Permanent branches
 
-Yggdrasil Core should keep the number of permanent branches small.
+Toskar Core should keep the number of permanent branches small.
 
 Initially, the only permanent branch should be:
 
@@ -22,7 +22,7 @@ Initially, the only permanent branch should be:
 main
 ```
 
-`main` represents the current development version of Yggdrasil Core.
+`main` represents the current development version of Toskar Core.
 
 Every commit on `main` should:
 
@@ -143,7 +143,7 @@ Each issue should produce a reasonably reviewable PR rather than one massive fea
 
 ### Default: Squash and Merge
 
-Yggdrasil Core should use **Squash and merge** as the normal merge strategy.
+Toskar Core should use **Squash and merge** as the normal merge strategy.
 
 Example contributor history:
 
@@ -240,7 +240,7 @@ branch → PR → checks → review → merge
 
 The exact required job names should match the repository's GitHub Actions workflows.
 
-Typical required checks for Yggdrasil Core should include the equivalent of:
+Typical required checks for Toskar Core should include the equivalent of:
 
 ```text
 gofmt
@@ -284,7 +284,7 @@ For a small project this is optional at first, but it becomes useful as concurre
 
 ## 10. Release Philosophy
 
-Yggdrasil Core releases should be **tag-driven**.
+Toskar Core releases should be **tag-driven**.
 
 The Git tag is the source of truth for the exact source revision that produced a release.
 
@@ -433,7 +433,7 @@ Recommended policy:
 - published tags cannot be deleted except through an explicit emergency process,
 - automation credentials used for release publishing should be narrowly scoped.
 
-Release tags are part of Yggdrasil's reproducibility and supply-chain trust.
+Release tags are part of Toskar's reproducibility and supply-chain trust.
 
 ---
 
@@ -957,7 +957,7 @@ The most important rules are:
 
 ## 32. Recommended Strategy Summary
 
-For Yggdrasil Core today:
+For Toskar Core today:
 
 ```text
 Permanent:

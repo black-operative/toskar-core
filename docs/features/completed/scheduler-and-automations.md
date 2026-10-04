@@ -1,4 +1,4 @@
-# Yggdrasil Scheduler & Automations
+# Toskar Scheduler & Automations
 
 Implemented. Day-to-day use is in the user guide section “Schedule an automation.” This document is the v1 specification.
 
@@ -6,11 +6,11 @@ Implemented. Day-to-day use is in the user guide section “Schedule an automati
 
 ### Goal
 
-Let Yggdrasil perform useful AI tasks on a schedule without requiring the desktop UI to remain open.
+Let Toskar perform useful AI tasks on a schedule without requiring the desktop UI to remain open.
 
 ## Core Principle
 
-The scheduler belongs to the Yggdrasil daemon/control plane, not the desktop UI.
+The scheduler belongs to the Toskar daemon/control plane, not the desktop UI.
 
 Represent automations as scheduled prompts/tasks rather than hard-coded product-specific features. Price checks, stock checks, website monitoring, recurring research, and summaries are all instances of the same primitive.
 
@@ -134,7 +134,7 @@ Store enough task-specific context in the automation itself that the task remain
 
 - One-time and recurring schedules.
 - Natural-language task creation translated into a structured task.
-- Scheduled prompts with normal Yggdrasil tools.
+- Scheduled prompts with normal Toskar tools.
 - Conditional notifications.
 - Run Now and Pause/Resume.
 - Persistent run history.
@@ -164,4 +164,4 @@ Store enough task-specific context in the automation itself that the task remain
 
 ## Product Outcome
 
-The scheduler succeeds when Yggdrasil can quietly perform recurring AI work in the background and surface only useful results.
+The scheduler succeeds when Toskar can quietly perform recurring AI work in the background and surface only useful results.

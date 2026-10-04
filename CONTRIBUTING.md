@@ -1,14 +1,14 @@
 # Contributing
 
-Yggdrasil Core is the headless control plane. Changes should fit that role: runtimes, models, hardware detection, pairing, placement, health, and the HTTP API. Desktop and mobile clients live in other repositories, but every app's text is translated here (see [Translations](#translations)).
+Toskar Core is the headless control plane. Changes should fit that role: runtimes, models, hardware detection, pairing, placement, health, and the HTTP API. Desktop and mobile clients live in other repositories, but every app's text is translated here (see [Translations](#translations)).
 
 ## Contributor License Agreement
 
 Contributors retain copyright ownership of their contributions.
 
-By submitting a contribution to Yggdrasil Core, you agree to the [Yggdrasil Contributor License Agreement](CLA.md), which grants YEIXIO LLC the rights necessary to use, modify, distribute, sublicense, and relicense contributed code, including as part of commercial offerings.
+By submitting a contribution to Toskar Core, you agree to the [Toskar Contributor License Agreement](CLA.md), which grants YEIXIO LLC the rights necessary to use, modify, distribute, sublicense, and relicense contributed code, including as part of commercial offerings.
 
-This allows Yggdrasil Core to remain open source under the AGPL while preserving future commercial licensing options.
+This allows Toskar Core to remain open source under the AGPL while preserving future commercial licensing options.
 
 Pull requests include a checkbox for that agreement. Check it before requesting review.
 
@@ -82,7 +82,7 @@ because repository label changes require elevated GitHub permissions.
 
 ## Submitting a pull request
 
-Use the pull request template. Check "I agree to the Yggdrasil Contributor License Agreement." Link an issue when there is one. Describe how you tested and on which platform. Keep the change focused.
+Use the pull request template. Check "I agree to the Toskar Contributor License Agreement." Link an issue when there is one. Describe how you tested and on which platform. Keep the change focused.
 
 This repository does not include an `AGENTS.md`. Follow the style of the package you are editing. See [docs/development.md](docs/development.md).
 
@@ -92,7 +92,7 @@ Read [docs/runtimes.md](docs/runtimes.md). An adapter implements `pkg/pluginapi.
 
 ## Hardware compatibility reports
 
-Use the hardware issue form. Say whether it works, works with limitations, does not work, or you are not sure. Include OS, CPU, GPU, memory, Yggdrasil version, runtime, and models. This surface is large, and a careful report is a real contribution.
+Use the hardware issue form. Say whether it works, works with limitations, does not work, or you are not sure. Include OS, CPU, GPU, memory, Toskar version, runtime, and models. This surface is large, and a careful report is a real contribution.
 
 ## Documentation contributions
 
@@ -105,7 +105,7 @@ Every app's text is in one catalog in this repository, `i18n/locales/<language>/
 Translations go through the same steps as code: a pull request, a review, CI, and then a release.
 
 1. **Find the text.** Search `i18n/locales/<language>/` for the words you see, then change the same key in that file. Don't change the key or the English text unless the English is what's wrong.
-2. **Keep the terms consistent.** `python3 scripts/i18n.py glossary <language>` prints the words your language uses for Yggdrasil's main terms, such as Model, Auto, and Knowledge. Use the same word everywhere. To change a term, change it in every file in one pull request.
+2. **Keep the terms consistent.** `python3 scripts/i18n.py glossary <language>` prints the words your language uses for Toskar's main terms, such as Model, Auto, and Knowledge. Use the same word everywhere. To change a term, change it in every file in one pull request.
 3. **Keep what the app fills in.** `{{placeholders}}` stay exactly as in English, though they can move within the sentence. Plural keys need every form your language uses: Spanish, French, Italian, and Portuguese add `_many`; Japanese, Korean, and Chinese have only `_other`.
 4. **See what's left.** `python3 scripts/i18n.py status <language> --keys` lists keys that are missing (shown in English until translated) and text that is still the same as English. Text that is meant to stay that way, such as `PDF`, `Git commit`, or a word your language shares with English, is listed in `i18n/same-as-english.json` and isn't counted. Add a key there when you keep its text on purpose, and remove it when you translate one.
 5. **Check.** Run `pnpm test` in `web/`. It checks every language against English: valid JSON, no duplicate keys, the same placeholders, and every plural form.
@@ -135,6 +135,6 @@ Do not file a public issue for a vulnerability. Use [SECURITY.md](SECURITY.md).
 
 Start with issues labeled [good first issue](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22), [help wanted](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22), [hardware](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3Ahardware), or [documentation](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation).
 
-Hardware reports are genuine contributions. Yggdrasil has a large heterogeneous hardware surface, and CI does not generate tokens on those GPUs. A report that names the machine, the model, and the result is more useful than a guess.
+Hardware reports are genuine contributions. Toskar has a large heterogeneous hardware surface, and CI does not generate tokens on those GPUs. A report that names the machine, the model, and the result is more useful than a guess.
 
 Suggested starter issues are listed in [.github/SEED_ISSUES.md](.github/SEED_ISSUES.md). Those are drafts. They are not already filed on GitHub.

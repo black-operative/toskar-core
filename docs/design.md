@@ -110,7 +110,7 @@ Subtitle                    ← one or two sentences: what this page is for
 Sections (h2)               ← cards or groups
 ```
 
-The window title follows the page ("Models · Yggdrasil"); `AppLayout` sets it from the sidebar label. New pages add their path to `pageTitles` there and to `realms.ts`.
+The window title follows the page ("Models · Toskar"); `AppLayout` sets it from the sidebar label. New pages add their path to `pageTitles` there and to `realms.ts`.
 
 ## States
 

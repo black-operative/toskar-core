@@ -6,7 +6,7 @@ The daemon listens on `http://127.0.0.1:7331` unless `config.json` or `TOSKAR_AP
 
 Loopback binds (`127.0.0.1`, `::1`, `localhost`) do not require an API key. Any other API host, including `0.0.0.0` and `::`, requires `Authorization: Bearer YOUR_API_KEY` on every `/api/v1/*` and `/v1/*` request. The daemon refuses to listen on a non-loopback address until at least one API key exists. `GET /about` and `GET /source` stay open so a network user can obtain the corresponding source.
 
-The web UI calls this setting local network access. Turning it on stores `api_host` as `0.0.0.0` and turns the key check on immediately. The process keeps the socket it bound at startup until it is restarted, so quit and reopen Yggdrasil before other computers can connect. The daemon also rejects a settings change that enables that bind when no key exists.
+The web UI calls this setting local network access. Turning it on stores `api_host` as `0.0.0.0` and turns the key check on immediately. The process keeps the socket it bound at startup until it is restarted, so quit and reopen Toskar before other computers can connect. The daemon also rejects a settings change that enables that bind when no key exists.
 
 Create a key from the web UI or `POST /api/v1/api-keys`. The response includes the secret once. The database stores a bcrypt hash and a prefix. The plaintext key is not written to disk. Revoke with `DELETE /api/v1/api-keys/{id}` and rotate with `POST /api/v1/api-keys/{id}/rotate`. Do not put the key in a URL or query string. Those requests are rejected.
 
@@ -22,7 +22,7 @@ Bifrost, on port 7332, is a separate server. Its protected routes require a pair
 
 ```json
 {
-  "name": "Yggdrasil Core",
+  "name": "Toskar Core",
   "version": "1.4.0",
   "commit": "abc1234",
   "license": "AGPL-3.0-or-later",
@@ -34,7 +34,7 @@ Bifrost, on port 7332, is a separate server. Its protected routes require a pair
 
 A release build, which sets `version.Version` from the tag, points `source` at `https://github.com/yeixio/yggdrasil-core/tree/v<version>`. A development build with a known commit points at `.../tree/<commit>`. A build with neither points at the repository itself.
 
-If you distribute or operate a modified Yggdrasil Core over a network, set the source URL so users can obtain the corresponding source for your modified version:
+If you distribute or operate a modified Toskar Core over a network, set the source URL so users can obtain the corresponding source for your modified version:
 
 ```text
 -X github.com/yeixio/yggdrasil-core/internal/version.SourceURL=<url-of-your-corresponding-source>
@@ -44,7 +44,7 @@ The same text is printed by `toskar -version` and by `toskarctl version` or `tos
 
 ## Route reference
 
-Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under `/v1`, and Yggdrasil's MCP server is `/mcp` (see [MCP](mcp.md)). `GET /about` and `GET /source` are at the root.
+Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under `/v1`, and Toskar's MCP server is `/mcp` (see [MCP](mcp.md)). `GET /about` and `GET /source` are at the root.
 
 ### System
 
@@ -111,7 +111,7 @@ Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under
 | --- | --- | --- |
 | GET, POST | `/profiles` | List or create profiles |
 | GET, PATCH, DELETE | `/profiles/{id}` | Read, change, or delete a profile, including its roles, tools, `knowledge_sources`, and `orchestration` |
-| POST | `/profiles/{id}/reset` | Put a built-in profile back to how Yggdrasil ships it. Other profiles are refused with 400 |
+| POST | `/profiles/{id}/reset` | Put a built-in profile back to how Toskar ships it. Other profiles are refused with 400 |
 | GET | `/tools` | Every tool's descriptor (level, input schema, outputs, requirements, time limit, provider), with whether it is enabled, its `health`, and the profiles that allow it |
 | GET | `/tools/{id}` | One tool's descriptor |
 | GET | `/tools/runs` | Audited tool calls, newest first; `?tool_id=`, `?conversation_id=`, `?limit=` |
@@ -129,7 +129,7 @@ Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under
 | GET | `/mcp/gallery` | Known MCP servers to add |
 | GET | `/mcp/import` | MCP servers set up in other apps on this computer, with secrets hidden |
 | POST | `/mcp/parse` | Read pasted MCP configuration into sources, and what each still needs |
-| GET | `/mcp/share` | What other apps need to use Yggdrasil over MCP: `url`, `command`, `args`, `needs_key` |
+| GET | `/mcp/share` | What other apps need to use Toskar over MCP: `url`, `command`, `args`, `needs_key` |
 
 ### Knowledge
 
@@ -195,7 +195,7 @@ Uploads send `text`, or `content_base64` for binary files such as `.xlsx` and `.
 
 | Method | Path | Purpose |
 | --- | --- | --- |
-| GET | `/nodes` | This computer and the others Yggdrasil knows |
+| GET | `/nodes` | This computer and the others Toskar knows |
 | POST | `/nodes/refresh` | Look for computers again |
 | POST | `/nodes/pair` | Ask a discovered computer to pair |
 | GET | `/nodes/pairing/pending` | Pairing requests waiting for approval on this computer |
@@ -228,7 +228,7 @@ Assistant messages from `GET /conversations/{id}/messages` carry `meta`: the `so
 
 `POST /chat` takes `attachments`, a list of artifact ids. Chat reads documents, spreadsheets (`.csv`, `.tsv`, `.xlsx`), PDFs with a text layer, JSON, HTML, and code files. Images are not read yet. A scanned PDF attached to a chat is refused with a pointer to the Knowledge page, which reads scanned pages once with text recognition, instead of on every turn. An attached file reaches the model as data in the user turn, the whole file when it fits and otherwise the parts that best match the question, and files attached or produced earlier in the chat add the passages that match later questions. The user message's `meta.files` lists its attachments.
 
-The `files.create` tool, allowed by default in the built-in profiles, saves a file the user can download: a document, JSON, a spreadsheet (`.xlsx` is built from CSV text), or code. It writes only to Yggdrasil's file store. When a message asks for a file and the profile allows `files.create` without asking, Yggdrasil has the model write only the contents and saves the file itself, with a `chat.making_file` event. The answer's `meta.files` lists produced files. File content is served as an attachment with a sandboxing `Content-Security-Policy`, so HTML never runs on the API's origin.
+The `files.create` tool, allowed by default in the built-in profiles, saves a file the user can download: a document, JSON, a spreadsheet (`.xlsx` is built from CSV text), or code. It writes only to Toskar's file store. When a message asks for a file and the profile allows `files.create` without asking, Toskar has the model write only the contents and saves the file itself, with a `chat.making_file` event. The answer's `meta.files` lists produced files. File content is served as an attachment with a sandboxing `Content-Security-Policy`, so HTML never runs on the API's origin.
 
 When a model under 4B parameters answers from attached files or connected knowledge, `meta.notice` says it can mix up numbers and details and suggests a larger model. Auto treats a question about the user's files or knowledge as one that needs a careful answer, so it prefers a larger model that fits.
 
@@ -245,7 +245,7 @@ Community ratings and load are Auto's other inputs (spec §13):
 
 Before choosing a model, Auto checks the deployed specialized AIs. A chat goes to one when the message names it, or when at least two of the message's words, and at least 40% of them, are words the AI was trained on. Those words come from its name, its goal, and words that recur in its training questions. Requests that need current information, a task on this computer, or code never go to a specialized AI, because it answers without tools. An AI whose adapter file is missing on this computer, or whose base model is not installed, is skipped. Asking for it by id then fails with an explanation. When Auto routes to a specialized AI, `chat.model_routed` carries its `sai:` id and name.
 
-A model can have a `support_role`: `embedding`, `reranker`, or `classifier`. These models serve Yggdrasil instead of chatting. The role comes from the catalog, or, for models installed by URL or from Hugging Face, from the model's name, purpose, or tags. Auto, fallback, and the default model never pick one. A chat that asks for one by id fails with an explanation.
+A model can have a `support_role`: `embedding`, `reranker`, or `classifier`. These models serve Toskar instead of chatting. The role comes from the catalog, or, for models installed by URL or from Hugging Face, from the model's name, purpose, or tags. Auto, fallback, and the default model never pick one. A chat that asks for one by id fails with an explanation.
 
 A catalog model's `languages` say how well it writes each language it has a level for (multilingual spec §13–14, §31), best first: `language` (a BCP 47 tag), `level` (`limited`, `fair`, `good`, or `excellent`), `confidence` (`low`, `medium`, or `high`), and `sources` (`model_card`, `maintainer`, `benchmark`, `provider`, `community`, or `local_evaluation`). Levels are coarse on purpose. A language a model has no level for is unknown and left out. The levels in the catalog come from what each model card says it supports, judged by size for languages it lists but doesn't lead with; models installed by URL or from Hugging Face have none yet.
 
@@ -267,7 +267,7 @@ A request with several parts is worked through in parts. "Compare A, B and C…"
 Before an answer is shown, its arithmetic is recomputed. When the turn used reference material or tool results, each figure must appear in, or follow from, the lines about the same subject. Dates and years are skipped. This check needs no model. Only an answer with issues is sent back to the model once, with the issues named (`chat.verifying`), and the revision is kept if it fixes some. `verify.done` reports `issues`, `fixed`, and `remaining`. Remaining figures become the answer's `meta.notice`. An answer that describes tool calls instead of answering is asked for again without tools.
 
 Two more checks follow:
-- **Code:** fenced code blocks tagged `go`, `json`, `python`, or `bash`/`sh` are parsed, never run. Go and JSON are parsed in Yggdrasil; Python with Python's own parser (`ast.parse`) and shell with `bash -n`, when installed. Untagged blocks, other languages, and sketches with `...` are skipped. Code that doesn't parse goes back to the model with the errors named, once per correction the effort allows, and the revision is kept when it has fewer errors. `verify.code` reports `blocks`, `issues`, `fixed`, and `remaining`, and errors left become the answer's `meta.notice`.
+- **Code:** fenced code blocks tagged `go`, `json`, `python`, or `bash`/`sh` are parsed, never run. Go and JSON are parsed in Toskar; Python with Python's own parser (`ast.parse`) and shell with `bash -n`, when installed. Untagged blocks, other languages, and sketches with `...` are skipped. Code that doesn't parse goes back to the model with the errors named, once per correction the effort allows, and the revision is kept when it has fewer errors. `verify.code` reports `blocks`, `issues`, `fixed`, and `remaining`, and errors left become the answer's `meta.notice`.
 - **Links:** web addresses in the answer, outside code, are checked against the reference material, tool results, and the conversation; no request is made. A link no source gave is one the model wrote from memory and often doesn't open, so it goes back to the model with the links named, once per correction the effort allows, and the revision is kept when it has fewer. A site's home page, example addresses, and addresses on this computer or network are not flagged. `verify.links` reports `links`, `issues`, `fixed`, and `remaining`, and links left become the answer's `meta.notice`.
 - **Contradictions:** at Thorough effort, an answer of 400 characters or more is checked by the reviewer for statements that contradict each other or the reference material. When some are found, the answer is rewritten once with them named, and kept when the contradictions drop. `verify.consistency` reports `found`, `fixed`, and `remaining`. A check whose reply can't be read counts as finding none, so it never holds an answer back.
 
@@ -279,7 +279,7 @@ Window budgets are counted in tokens with the answering model's tokenizer (llama
 
 Memory is on unless the setting `memory_enabled` is `false` or a conversation has `memory_off: true` (set with `PATCH /conversations/{id}`). A message that starts "Remember that…", "Forget…", or asks "What do you remember?" is answered without a model; the reply is saved as usual and the events `memory.saved` or `memory.deleted` follow. Other turns add the memories that fit the question to the instructions and list them as `memory` sources. A secret such as a password, key, or card number is not saved. A memory fits a question when it is about the person (identity and preferences), when it shares words with the question, or, with an embedding model installed, when it is close in meaning, whatever language either is written in (multilingual spec §18): a memory saved as "Mi proyecto usa Go" comes with "What language does my project use?". Each memory's `language` is the language it is written in, detected on this computer; its vector is made by the embedding model when first needed and again after an edit or a change of model.
 
-When a question needs current information and the profile allows `internet.search` without asking, Yggdrasil searches the web and reads the best page before the model answers. The `chat.lookup` event carries the `query`. The results reach the model as data, and the model answers without web tools for that turn.
+When a question needs current information and the profile allows `internet.search` without asking, Toskar searches the web and reads the best page before the model answers. The `chat.lookup` event carries the `query`. The results reach the model as data, and the model answers without web tools for that turn.
 
 ### Tools
 
@@ -293,7 +293,7 @@ A profile's `knowledge_sources` lists Mimir source ids. Chat searches them on ev
 
 A knowledge source can read current data from a database or a web API instead of a file. `POST /knowledge/sources` takes `kind` `database` with `remote` `{"driver": "sqlite", "database": "~/shop.db", "query": "SELECT …"}`, or `driver` `postgres` or `mysql` with `connection_string`. It takes `kind` `api` with `remote` `{"url": "https://…", "items": "data.products", "headers": {"Authorization": "Bearer …"}}`. `refresh_minutes` (1 to 10080, default 60) sets how old the data may get.
 
-- **Queries:** a query must be one `SELECT`, `WITH`, or `VALUES` statement. It runs in a read-only transaction, and a SQLite file is opened read-only, so Yggdrasil never changes the database. Each row becomes a passage labelled with its column names, and a query that returns more than 200,000 rows is refused.
+- **Queries:** a query must be one `SELECT`, `WITH`, or `VALUES` statement. It runs in a read-only transaction, and a SQLite file is opened read-only, so Toskar never changes the database. Each row becomes a passage labelled with its column names, and a query that returns more than 200,000 rows is refused.
 - **APIs:** a JSON response that is a list of objects, or holds exactly one such list (or the list at `items`), becomes one passage per object. Other JSON, CSV, HTML, and text are read like files. Requests time out after 30 seconds, and responses are limited to 20 MB.
 - **Credentials:** connection strings and header values are kept in the secrets directory, not the database. They are never returned: a source reports `remote` with the driver, query, URL, `items`, `header_names`, and `refresh_minutes`. `PATCH /knowledge/sources/{id}` with `remote` changes the settings. A blank `connection_string` or header value keeps the stored one, and the credentials are deleted with the source.
 - **Refreshing:** when a search uses a source whose data is older than `refresh_minutes`, Mimir fetches it again in the background, and that search uses the data already indexed. `POST /knowledge/sources/{id}/refresh` fetches at once. If a fetch fails, the source is `failed` with the reason (credentials removed), and search keeps using the last data that was fetched.
@@ -320,11 +320,11 @@ Notifications come from Gjallarhorn. Each one is stored first and then delivered
 
 Health notifications (category `health`) come on changes only. A paired computer that goes offline gets a warning, unless `notify_peer_offline` is off, and one when it is back online. A computer that was never announced offline is not announced back. A model that crashes twice within 30 minutes gets an error saying it keeps crashing, at most once an hour, with a hint when it is likely running out of memory; a single crash is handled by answering on another model. These stay out of desktop notices and go to the bell and to destinations that take `health`.
 
-**Destinations.** Notifications can also go to email, through your own SMTP server, to phones and computers through ntfy, and to webhooks. Each destination has `categories` (empty: all) and `min_severity` (`info`, `success`, `warning`, or `error`), and receives every notification that matches, from any part of Yggdrasil.
+**Destinations.** Notifications can also go to email, through your own SMTP server, to phones and computers through ntfy, and to webhooks. Each destination has `categories` (empty: all) and `min_severity` (`info`, `success`, `warning`, or `error`), and receives every notification that matches, from any part of Toskar.
 - **Email:** `host`, `port` (587, or 465 with `tls`), `username`, `from`, `to` (up to 20 addresses), and `tls`: `starttls` (the default), `tls`, or `none`. `none` is allowed only for a server on this computer, so a password is never sent unencrypted over the network. The password is stored in `secrets/notify-<id>`, never returned, and kept when a change leaves it blank.
 - **Webhooks:** must use `https`, except for an address on this computer or the local network (`localhost`, private IP addresses, `.local`, `.lan`, `.home.arpa`). Redirects are not followed. Each request is a JSON `POST`: `version` (1), `notification_id`, `created_at`, `category`, `severity`, `title`, `body`, `language` (the BCP 47 tag `title` and `body` are written in, the App language), `message` (when there is one), `link`, `repeat_count` (when more than 1), and `source` (`type`, `id`). The `Toskar-Signature` header is `t=<unix seconds>,v1=<hex HMAC-SHA256 of "<t>.<body>">`, keyed with the destination's secret. `Toskar-Notification-Id` repeats the id, so a receiver can ignore a delivery it already handled. Both are also sent under their names from before the rename, `Yggdrasil-Signature` and `Yggdrasil-Notification-Id`, with the same values.
 
-- **Push (ntfy):** `server` (default `https://ntfy.sh`, or your own; https except on the local network), `topic` (letters, digits, `-`, `_`, up to 64), `content`, and `open_url`. `content` is `full` (title and text) or `private` (only "You have a new Yggdrasil notification"); private is the default on ntfy.sh, where anyone who knows a topic can read it. Severity sets ntfy's priority: errors 4 (high), warnings 3, everything else 2. With `open_url` (this Yggdrasil's address), tapping the notification opens its link there. An access token for a protected topic is sent as `password`, stored in `secrets/notify-<id>`, and sent as a bearer token. ntfy has apps for Android and iPhone and works in a browser; no Yeix-hosted service is involved.
+- **Push (ntfy):** `server` (default `https://ntfy.sh`, or your own; https except on the local network), `topic` (letters, digits, `-`, `_`, up to 64), `content`, and `open_url`. `content` is `full` (title and text) or `private` (only "You have a new Toskar notification"); private is the default on ntfy.sh, where anyone who knows a topic can read it. Severity sets ntfy's priority: errors 4 (high), warnings 3, everything else 2. With `open_url` (this Toskar's address), tapping the notification opens its link there. An access token for a protected topic is sent as `password`, stored in `secrets/notify-<id>`, and sent as a bearer token. ntfy has apps for Android and iPhone and works in a browser; no Yeix-hosted service is involved.
 
 **Language.** A notification's `message` is its title and body as catalog keys with the values they need (`{"title": {"key": "notifications:notices.modelReady"}, "body": [{"key": "notifications:notices.modelReadyBody", "params": {"model": "Qwen 2.5 7B"}}]}`, from `i18n/locales/<language>/notifications.json`), so each app shows it in its own App language; a piece with `text` instead of `key`, such as an automation's name or what a model wrote, is shown as it is. `title` and `body` stay in English. Desktop notices, email, push, and webhooks are written in the App language (`ui_locale`) when they are sent; with the system language, they are in English.
 
@@ -340,7 +340,7 @@ Chat, automations, knowledge indexing, benchmarks, and training share this compu
 
 ## Connected services
 
-Content from a connected service, such as an email or a calendar event, stays in the language it was written in unless you ask for a translation; Yggdrasil's own text around it follows the App language (multilingual spec §21). Sign-ins and what a service may do never depend on language settings.
+Content from a connected service, such as an email or a calendar event, stays in the language it was written in unless you ask for a translation; Toskar's own text around it follows the App language (multilingual spec §21). Sign-ins and what a service may do never depend on language settings.
 
 Connected services add tools. Today they are:
 - GitHub (`github.search`, `github.issue`, `github.comment`).
@@ -359,7 +359,7 @@ Email and Calendar sign in with an app password. See [Tools](tools.md#email-and-
 
 ## MCP
 
-MCP tool sources add tools the same way, with `source` `mcp:<source>`; secrets are kept in `secrets/mcp-<source>.json`. `/mcp` (outside `/api/v1`) is Yggdrasil's own MCP server for other apps, checked like `/v1`, and `/mcp/oauth/callback` is where a tool source's sign-in returns. See [MCP](mcp.md).
+MCP tool sources add tools the same way, with `source` `mcp:<source>`; secrets are kept in `secrets/mcp-<source>.json`. `/mcp` (outside `/api/v1`) is Toskar's own MCP server for other apps, checked like `/v1`, and `/mcp/oauth/callback` is where a tool source's sign-in returns. See [MCP](mcp.md).
 
 ## Personalization
 
@@ -419,7 +419,7 @@ A profile's `orchestration` object holds its advanced controls. Every field is o
 | `memory` | `off` | Keeps persistent memory out of the profile's chats |
 | `context_share` | 0.1–0.9 | Most of the model's window earlier messages may use |
 | `fallback` | `off` | Shows a failure instead of answering on another model |
-| `fallback_models` | up to 8 model ids | Tried in order when the answering model fails, before Yggdrasil picks another installed model |
+| `fallback_models` | up to 8 model ids | Tried in order when the answering model fails, before Toskar picks another installed model |
 | `retries` | 1–3 | Tries after a model fails before showing anything (default 1). Each try first runs the same model on another online computer that has it, then another model |
 | `timeout_seconds` | 10–3600 | Stops a turn that runs longer; the answer so far is kept and says it reached the time limit |
 
@@ -462,14 +462,14 @@ The capability inventory lists what exists right now:
 - `connectors`, `providers` (runtimes and MCP tool sources, with health), and stored `artifacts`;
 - `abilities`, each with `available`, the tools or models it comes `via`, and a `note` saying how it works or what would make it possible. Abilities are worked out from tools and models by what they do, so a new MCP tool that sends email counts as email without code.
 
-A chat question about what Yggdrasil can do, such as "Can you generate an image?", "Do you have access to my email?", or "Which computer can run Qwen 2.5 14B?", gets the matching facts as trusted instructions. The model answers from them instead of guessing, and the answer's steps say so. In the app, Diagnostics shows the same list.
+A chat question about what Toskar can do, such as "Can you generate an image?", "Do you have access to my email?", or "Which computer can run Qwen 2.5 14B?", gets the matching facts as trusted instructions. The model answers from them instead of guessing, and the answer's steps say so. In the app, Diagnostics shows the same list.
 
 Three behaviors come from the quality test set (`tests/quality`):
 - **Plain questions:** a plain question is answered without tools; the message must ask for a search, a file, a command, and so on.
-- **Capability questions:** a short question about what Yggdrasil can do is answered straight from the capability inventory, without a model.
+- **Capability questions:** a short question about what Toskar can do is answered straight from the capability inventory, without a model.
 - **False claims:** an answer that says it changed something, when no tool that changes things ran, gets the notice "Nothing was changed: no tool ran to do this, whatever the answer says."
 
-**Questions about Yggdrasil.** The user guide (`docs/user-guide/guide.json`) ships inside the daemon. A question about Yggdrasil itself, one that names it or its screens, or one that matches the guide's own words strongly, gets up to four matching guide passages (about 3,000 characters) in the turn's instructions, and the model is told to answer from them, name screens as they do, and say when they don't cover the question. The answer's steps say which sections it read. Questions about anything else get nothing added. A short how-to question about MCP is answered directly, without a model.
+**Questions about Toskar.** The user guide (`docs/user-guide/guide.json`) ships inside the daemon. A question about Toskar itself, one that names it or its screens, or one that matches the guide's own words strongly, gets up to four matching guide passages (about 3,000 characters) in the turn's instructions, and the model is told to answer from them, name screens as they do, and say when they don't cover the question. The answer's steps say which sections it read. Questions about anything else get nothing added. A short how-to question about MCP is answered directly, without a model.
 
 ## Caches
 
@@ -490,12 +490,12 @@ A repeat web search or page read is answered from the cache. The tool does not r
 The desktop app, mobile apps, and other clients read a versioned contract: events, run traces, answers with their citations, steps, and files, artifacts, notifications, and egress records. The version is `major.minor`, now `1.4` (1.1 added `repeat_count` to notifications; 1.2 added `setup` to answers, an offer to install what a request needed; 1.3 added stable error codes to chat streams; 1.4 added `message` to notifications, their title and body as catalog keys).
 - **Where it appears:** every event has `contract`, and so do answer metadata and run traces. Metadata saved before the contract existed has no `contract` and reads as 1.0. Every response carries the `Toskar-Contract` header, and the same value as `Yggdrasil-Contract`, its name from before the rename, and `GET /api/v1/version` has `contract` (`version`, `major`).
 - **Minor versions** add fields or event types. Clients ignore what they do not know, so an older client keeps working.
-- **Major versions** remove something or change its meaning. A client may send `Toskar-Client-Contract: 1.0`, or `Yggdrasil-Client-Contract: 1.0`, which every version accepts; when both are sent, `Toskar-Client-Contract` wins. A client built for another major version gets 426 with code `CONTRACT_MISMATCH`, and the message says whether to update the app or Yggdrasil. A client that sends no header is served as before.
+- **Major versions** remove something or change its meaning. A client may send `Toskar-Client-Contract: 1.0`, or `Yggdrasil-Client-Contract: 1.0`, which every version accepts; when both are sent, `Toskar-Client-Contract` wins. A client built for another major version gets 426 with code `CONTRACT_MISMATCH`, and the message says whether to update the app or Toskar. A client that sends no header is served as before.
 - **Compatibility test:** `tests/contract` records the contract's fields. It fails when one is removed or renamed within a major version, and when one is added without a minor version bump (`UPDATE_CONTRACT=1 go test ./tests/contract` records the new fields).
 
 ## Errors
 
-An error is `{"error": {"code", "message", "details"}}`. `code` is stable, such as `MODEL_NOT_INSTALLED` or `MEMORY_LOOKS_SECRET`, and `details` has the values its message needs, such as `model_id`. Clients show text for the code from the catalog, `i18n/locales/<language>/errors.json`, in the App language; `message` is the English text, for logs, Diagnostics, and codes a client does not know yet. A code keeps its meaning, and a more specific code may replace a general one such as `BAD_REQUEST` or `INSTALL_FAILED`. Every code Yggdrasil sends has English text in `errors.json`, and a test checks it.
+An error is `{"error": {"code", "message", "details"}}`. `code` is stable, such as `MODEL_NOT_INSTALLED` or `MEMORY_LOOKS_SECRET`, and `details` has the values its message needs, such as `model_id`. Clients show text for the code from the catalog, `i18n/locales/<language>/errors.json`, in the App language; `message` is the English text, for logs, Diagnostics, and codes a client does not know yet. A code keeps its meaning, and a more specific code may replace a general one such as `BAD_REQUEST` or `INSTALL_FAILED`. Every code Toskar sends has English text in `errors.json`, and a test checks it.
 
 A chat that fails while streaming sends `event: error_code` with the same `code`, `message`, and `details`, then `event: error` with the text, as before. Chat errors are recognized in core, once: `NO_MODEL_INSTALLED`, `NO_MODEL_ASSIGNED`, `MODEL_NOT_INSTALLED`, `RUNTIME_NOT_INSTALLED`, `CONTEXT_TOO_LONG`, `OUT_OF_MEMORY`, `COMPUTER_OFFLINE`, `CONNECTION_LOST`, `RUNTIME_ERROR`, and `MODEL_UNHEALTHY`, whose `error` text is the model's failure as JSON.
 
@@ -600,7 +600,7 @@ The optional `toskar` object holds the assistant's own controls. Its name from b
 | `progress` | With `"stream": true`, progress and tool activity arrive as chunks with an empty `delta` and a `toskar.event`, such as `{"type": "tool.started", "tool_id": "internet.search"}`. Before `[DONE]`, a last such chunk carries `toskar.sources`, `steps`, `notice`, and `files`. Each chunk has the same object as `yggdrasil` too, for clients written before the rename. Clients that ignore unknown fields see a plain OpenAI stream. |
 
 `response_format` asks for JSON:
-- **Types:** `{"type": "json_object"}`, or `{"type": "json_schema", "json_schema": {"schema": {...}}}` with a JSON Schema. Yggdrasil checks `type`, `properties`, `required`, `enum`, and `items`.
+- **Types:** `{"type": "json_object"}`, or `{"type": "json_schema", "json_schema": {"schema": {...}}}` with a JSON Schema. Toskar checks `type`, `properties`, `required`, `enum`, and `items`.
 - **Constrained output:** the model is told the shape. On this computer, llama.cpp also constrains the reply to the schema with a grammar. Such a turn is one reply: the web look-up still runs first, but there is no plan, tool call, file, or figure check.
 - **Repairs:** the answer's JSON is found (fenced or not) and safely repaired: trailing commas, curly quotes, `"$1,299"` for a number, `"yes"` for a boolean.
 - **Retry:** an answer that still does not fit is asked for once more, with the problems named.
@@ -623,7 +623,7 @@ Asking for something a key does not allow returns 403 and says what was refused.
 
 - `temperature` and `max_tokens` are accepted and ignored.
 - `tool` messages and assistant `tool_calls` in the history are skipped.
-- Tool definitions in the OpenAI request are not passed through. Tool use is controlled by the Yggdrasil profile.
+- Tool definitions in the OpenAI request are not passed through. Tool use is controlled by the Toskar profile.
 - The non-streaming `id` is the fixed string `chatcmpl-ygg`.
 - A model must already be installed and startable. The HTTP call does not download one for you.
 

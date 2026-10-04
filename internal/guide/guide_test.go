@@ -9,7 +9,7 @@ func TestAboutYggdrasil(t *testing.T) {
 	cases := map[string]string{
 		"How do I schedule an automation?":        "Schedule an automation",
 		"Can Yggdrasil train its own AI?":         "Train your own AI",
-		"what features do you have?":              "What Yggdrasil does",
+		"what features do you have?":              "What Toskar does",
 		"How do I connect my other computer?":     "Connect your computers",
 		"where is what left this computer?":       "Privacy, encryption, and what left this computer",
 		"is my data encrypted?":                   "Privacy, encryption, and what left this computer",

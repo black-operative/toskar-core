@@ -169,7 +169,7 @@ jobs:
           fi
 
   # Capture the release's screenshots and walkthrough and attach them to it,
-  # for yggdrasil.yeix.io. A failure here does not undo the release.
+  # for toskar.ai. A failure here does not undo the release.
   screenshots:
     needs: release
     if: success()

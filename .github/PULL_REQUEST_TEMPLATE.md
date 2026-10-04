@@ -38,7 +38,7 @@ RAM/VRAM:
 
 The agreement is [CLA.md](../CLA.md).
 
-- [ ] I agree to the Yggdrasil Contributor License Agreement.
+- [ ] I agree to the Toskar Contributor License Agreement.
 - [ ] Code formatted
 - [ ] Tests added/updated where appropriate
 - [ ] No secrets or personal data included

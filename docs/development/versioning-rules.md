@@ -1,12 +1,12 @@
-# Yggdrasil Core Versioning Rules
+# Toskar Core Versioning Rules
 
 ## Purpose
 
-This document defines when and how Yggdrasil Core version numbers change.
+This document defines when and how Toskar Core version numbers change.
 
 The goals are to make releases predictable, communicate compatibility clearly, keep pre-release numbering consistent, make tags and binaries traceable to exact source revisions, avoid arbitrary version bumps, and keep release automation simple.
 
-Yggdrasil Core uses **Semantic Versioning (SemVer)** with standard pre-release identifiers.
+Toskar Core uses **Semantic Versioning (SemVer)** with standard pre-release identifiers.
 
 ---
 
@@ -134,7 +134,7 @@ Example:
 
 Versioning decisions should be based on the interfaces users and integrations can reasonably depend on.
 
-For Yggdrasil Core this includes, where documented as supported:
+For Toskar Core this includes, where documented as supported:
 
 - `/api/v1` routes,
 - OpenAI-compatible `/v1` routes,
@@ -189,7 +189,7 @@ When uncertain, prefer compatibility or document the change prominently.
 
 ## 5. Pre-1.0 Development
 
-If Yggdrasil Core is below `1.0.0`, compatibility expectations may be looser, but version changes should still communicate intent.
+If Toskar Core is below `1.0.0`, compatibility expectations may be looser, but version changes should still communicate intent.
 
 For `0.x.y` releases:
 
@@ -216,7 +216,7 @@ However, pre-1.0 status should not be used as an excuse for arbitrary breakage. 
 
 ## 6. Pre-Release Stages
 
-Yggdrasil uses three standard pre-release stages:
+Toskar uses three standard pre-release stages:
 
 ```text
 alpha
@@ -563,9 +563,9 @@ Use the version as the release name.
 Examples:
 
 ```text
-Yggdrasil Core v1.10.0
-Yggdrasil Core v1.10.1
-Yggdrasil Core v1.11.0-beta.1
+Toskar Core v1.10.0
+Toskar Core v1.10.1
+Toskar Core v1.11.0-beta.1
 ```
 
 GitHub pre-release status should be enabled for alpha, beta, and RC releases.
@@ -611,7 +611,7 @@ SemVer supports build metadata:
 1.10.0+abcdef1
 ```
 
-Yggdrasil may use build metadata internally or in development binaries, but official public release tags should remain simple.
+Toskar may use build metadata internally or in development binaries, but official public release tags should remain simple.
 
 Preferred public tag:
 
@@ -996,7 +996,7 @@ Version numbers communicate compatibility impact, not the number of features.
 
 ## 33. Do Not Encode Dates Into Normal Versions
 
-Use SemVer rather than calendar versions for Yggdrasil Core releases.
+Use SemVer rather than calendar versions for Toskar Core releases.
 
 Preferred:
 
@@ -1032,7 +1032,7 @@ Do not promote a normal feature release to `v2.0.0` merely because it is importa
 
 ## 35. Rules for 1.0.0
 
-`1.0.0` means Yggdrasil Core is declaring a stable public compatibility baseline.
+`1.0.0` means Toskar Core is declaring a stable public compatibility baseline.
 
 Before `1.0.0`, identify which interfaces are considered stable, such as:
 
@@ -1063,7 +1063,7 @@ v1.8.x   supported
 v1.6.x   unsupported
 ```
 
-If Yggdrasil later adopts an explicit support window, document it separately.
+If Toskar later adopts an explicit support window, document it separately.
 
 ---
 

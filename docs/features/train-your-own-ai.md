@@ -1,4 +1,4 @@
-# Yggdrasil — Train Your Own AI
+# Toskar — Train Your Own AI
 
 ## Status
 
@@ -26,11 +26,11 @@ Open items:
 
 Let power users and small organizations create inexpensive, hyper-specialized local AI assistants without requiring machine-learning expertise.
 
-Yggdrasil should teach users the difference between **training model behavior** and **connecting changing knowledge**, then guide them toward the correct approach.
+Toskar should teach users the difference between **training model behavior** and **connecting changing knowledge**, then guide them toward the correct approach.
 
 ## Product Principle
 
-Users should describe the AI they want to build, provide their material, and let Yggdrasil handle the implementation details.
+Users should describe the AI they want to build, provide their material, and let Toskar handle the implementation details.
 
 The product may legitimately present this as **Train Your Own AI**, while transparently explaining which information is fine-tuned into the model and which information should remain connected knowledge.
 
@@ -51,7 +51,7 @@ Use examples to teach:
 - tone,
 - specialized task behavior.
 
-Yggdrasil may use LoRA/QLoRA fine-tuning.
+Toskar may use LoRA/QLoRA fine-tuning.
 
 ### Connect what your AI knows
 
@@ -67,7 +67,7 @@ Attach information that changes or must remain authoritative:
 - APIs,
 - other business data.
 
-Yggdrasil retrieves this information when needed.
+Toskar retrieves this information when needed.
 
 Suggested explanation:
 
@@ -103,11 +103,11 @@ The deployed assistant combines:
 6. **Prepare** — validate/clean training examples and configure knowledge ingestion.
 7. **Train** — run fine-tuning on a suitable node.
 8. **Evaluate** — compare base vs specialized model on representative test prompts.
-9. **Deploy** — save the resulting specialized AI as a reusable Yggdrasil model/profile/assistant.
+9. **Deploy** — save the resulting specialized AI as a reusable Toskar model/profile/assistant.
 
 ## Intelligent Data Guidance
 
-Yggdrasil should proactively detect likely misuse rather than silently accepting every file as training data.
+Toskar should proactively detect likely misuse rather than silently accepting every file as training data.
 
 - Frequently changing structured data should usually be recommended as Connected Knowledge.
 - High-quality input/output examples or conversations can be recommended as training examples.
@@ -140,7 +140,7 @@ Initially store customization as a base-model + adapter relationship. Merging/ex
 
 ## Knowledge Scope
 
-Integrate with Mimir or the existing Yggdrasil knowledge/RAG layer.
+Integrate with Mimir or the existing Toskar knowledge/RAG layer.
 
 Support useful sources incrementally:
 
@@ -162,7 +162,7 @@ Estimate before starting:
 - required memory,
 - storage,
 - likely duration,
-- eligible Yggdrasil nodes.
+- eligible Toskar nodes.
 
 Norn should select a capable training node.
 
@@ -237,7 +237,7 @@ After successful evaluation:
 - preserve adapter/version,
 - preserve profile/system instructions,
 - preserve connected knowledge sources,
-- make it usable through normal Yggdrasil chat/API surfaces,
+- make it usable through normal Toskar chat/API surfaces,
 - support versioning so retraining creates a new revision.
 
 ## UX Language
@@ -266,7 +266,7 @@ Explain LoRA, QLoRA, RAG, embeddings, epochs, and similar terminology only when 
 - Progress/cancel/failure cleanup.
 - Base-vs-specialized evaluation.
 - Deployment as a reusable specialized AI.
-- Connection to existing Yggdrasil knowledge/RAG capabilities.
+- Connection to existing Toskar knowledge/RAG capabilities.
 
 ## Explicitly Out of Scope for V1
 
@@ -282,14 +282,14 @@ Explain LoRA, QLoRA, RAG, embeddings, epochs, and similar terminology only when 
 
 1. A non-ML user can create a specialized AI without configuring raw training hyperparameters.
 2. The UI clearly teaches the difference between training behavior and connecting knowledge.
-3. Yggdrasil warns when frequently changing data appears better suited to connected knowledge.
-4. Users can review Yggdrasil’s classification before training.
+3. Toskar warns when frequently changing data appears better suited to connected knowledge.
+4. Users can review Toskar’s classification before training.
 5. Training fit is evaluated independently from inference fit.
 6. A supported training job can run, report progress, be cancelled, and clean up resources correctly.
 7. The base model remains available after customization.
 8. Users can compare base and specialized behavior before deployment.
 9. Changing connected business data does not require retraining.
-10. A completed specialized AI can be saved and used through normal Yggdrasil interfaces.
+10. A completed specialized AI can be saved and used through normal Toskar interfaces.
 
 ## Product Outcome
 

@@ -1,4 +1,4 @@
-# Yggdrasil Core — Expanded Tool Platform
+# Toskar Core — Expanded Tool Platform
 
 ## Feature Specification — V1+
 
@@ -7,13 +7,13 @@
 **Type:** Feature / Platform Capability  
 **Primary subsystem:** Gungnir  
 **Supporting subsystems:** Norn, Heimdall, Bifrost  
-**Primary goal:** Expand Yggdrasil from a small set of built-in tools into a general-purpose tool platform that makes local AI feel as capable and convenient as a hosted AI service.
+**Primary goal:** Expand Toskar from a small set of built-in tools into a general-purpose tool platform that makes local AI feel as capable and convenient as a hosted AI service.
 
 ---
 
 ## 1. Goal
 
-Yggdrasil should support a broad set of user-facing capabilities without requiring users to understand which runtime, provider, computer, or backend implements them.
+Toskar should support a broad set of user-facing capabilities without requiring users to understand which runtime, provider, computer, or backend implements them.
 
 Users should be able to ask for tasks such as:
 
@@ -29,23 +29,23 @@ Open this website and download my invoice.
 Make a short video from this image.
 ```
 
-Yggdrasil should determine:
+Toskar should determine:
 
 - which tool is needed,
 - whether it is available,
 - which provider can perform it,
-- which Yggdrasil node should execute it,
+- which Toskar node should execute it,
 - what permissions are required,
 - whether approval is needed,
 - how progress and results are returned.
 
-> **Users choose what they want done. Yggdrasil figures out how and where to do it.**
+> **Users choose what they want done. Toskar figures out how and where to do it.**
 
 ---
 
 ## 2. Why This Matters
 
-Yggdrasil's core mission is:
+Toskar's core mission is:
 
 > **Make local AI as easy as SaaS AI.**
 
@@ -114,7 +114,7 @@ Gungnir Tool Registry
          Tool Provider
 ```
 
-Gungnir should not care whether a capability is implemented locally, on another Yggdrasil node, by a plugin, by an external API, by a GPU service, or by a sandbox.
+Gungnir should not care whether a capability is implemented locally, on another Toskar node, by a plugin, by an external API, by a GPU service, or by a sandbox.
 
 ---
 
@@ -269,7 +269,7 @@ EstimateCost()
 Provider classes may include:
 
 - local providers,
-- remote Yggdrasil providers,
+- remote Toskar providers,
 - plugins/connectors,
 - hosted API providers.
 
@@ -450,7 +450,7 @@ The user sees only the result.
 
 ---
 
-## 15. One Yggdrasil, Many Machines
+## 15. One Toskar, Many Machines
 
 ```text
 User
@@ -469,7 +469,7 @@ Norn
        result
 ```
 
-The Yggdrasil network should feel like **one AI computer**.
+The Toskar network should feel like **one AI computer**.
 
 Norn may consider:
 
@@ -824,7 +824,7 @@ If a requested capability is unavailable:
 User:
 Make me an image of a Viking tree.
 
-Yggdrasil:
+Toskar:
 Image generation isn't installed yet.
 
 I found a compatible setup:
@@ -1398,7 +1398,7 @@ Create a PDF.
 Read this aloud.
 ```
 
-and Yggdrasil can complete those requests without requiring the user to understand:
+and Toskar can complete those requests without requiring the user to understand:
 
 - tool schemas,
 - model APIs,
@@ -1445,4 +1445,4 @@ Norn determines where workloads execute.
 
 Gungnir determines what capabilities exist and whether they are allowed.
 
-> **The Yggdrasil network should behave like one capable AI system, regardless of which computer, runtime, provider, or plugin actually performs the work.**
+> **The Toskar network should behave like one capable AI system, regardless of which computer, runtime, provider, or plugin actually performs the work.**

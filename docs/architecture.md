@@ -1,6 +1,6 @@
 # Architecture
 
-Yggdrasil Core is one daemon process, `toskar`, plus the web UI it serves. Desktop and mobile applications are separate clients. They are not built from this repository.
+Toskar Core is one daemon process, `toskar`, plus the web UI it serves. Desktop and mobile applications are separate clients. They are not built from this repository.
 
 ```text
 client (web UI, desktop, mobile, curl, an app over MCP or the OpenAI API)
@@ -33,7 +33,7 @@ The Norse names are what the app and the code call the subsystems.
 
 | Name | Role | Package |
 | --- | --- | --- |
-| Yggdrasil Core | Daemon, API, web UI | `cmd/daemon`, `internal/app`, `internal/api`, `web/` |
+| Toskar Core | Daemon, API, web UI | `cmd/daemon`, `internal/app`, `internal/api`, `web/` |
 | Huginn | Classifies each request, picks the model (Auto, specialized AIs, fallback), and chooses which tools a turn is offered | `internal/huginn` |
 | Muninn | Memories, per-chat and global Memory off, summaries of long conversations | `internal/muninn` |
 | Mimir | Connected knowledge: files, folders, uploads, databases, web APIs, scanned PDFs; keyword search plus meaning search with an embedding model | `internal/mimir`, `internal/ocr` |
@@ -51,14 +51,14 @@ Other packages:
 | --- | --- |
 | `internal/tools` | Tool registry, built-in tools (internet, files, shell, Git, `files.create`), policies |
 | `internal/connectors` | GitHub and Home Assistant, with credentials kept out of model context |
-| `internal/mcp` | MCP tool sources, and Yggdrasil's own MCP server at `/mcp` |
+| `internal/mcp` | MCP tool sources, and Toskar's own MCP server at `/mcp` |
 | `internal/artifacts` | Files attached to chats and files the assistant made |
 | `internal/automations` | Scheduled prompts |
 | `internal/share` | Who gets the computer when several kinds of work want it |
 | `internal/runlog` | A trace of each run |
 | `internal/egress`, `internal/retention` | What left this computer, and removing old run records |
 | `internal/cache` | Caches, each with a declared policy |
-| `internal/inventory` | The capability inventory: what Yggdrasil can do right now |
+| `internal/inventory` | The capability inventory: what Toskar can do right now |
 | `internal/personal` | Personalization of answers |
 | `internal/structured` | Checking and repairing JSON from models (tool arguments, `response_format`, automation results) |
 | `internal/contextusage` | Splitting a prompt into the parts the context gauge shows |
@@ -68,7 +68,7 @@ Other packages:
 
 A chat message, an API request, and an automation run take the same path.
 
-1. **Classify.** Huginn decides what kind of request it is: a quick question, current information, coding, a detailed question, a task on this computer, or a question about what Yggdrasil can do. A capability question is answered from the inventory.
+1. **Classify.** Huginn decides what kind of request it is: a quick question, current information, coding, a detailed question, a task on this computer, or a question about what Toskar can do. A capability question is answered from the inventory.
 2. **Route.** With Auto, Huginn picks the model: a deployed specialized AI when the message is about what it was trained for, otherwise the largest suitable model that fits. It sets the effort (Fast, Balanced, or Thorough).
 3. **Assemble context.** Instructions come first: the profile, the specialized AI's instructions, personalization, and memories that fit the question. Retrieved content is data, not instructions: attached files, connected knowledge, and web look-ups arrive as labelled reference material in the user turn. Older messages are summarized when a conversation passes half the model's window.
 4. **Place.** Norn picks the computer. Work that uses local-only memories or knowledge stays on this computer.
@@ -126,7 +126,7 @@ The event bus publishes structured events for chat, tasks, models, tools, comput
 
 ## What is not in this process
 
-- Yggdrasil Desktop and Yggdrasil Mobile
+- Toskar Desktop and Toskar Mobile
 - splitting a single model across machines
 - TLS for remote API access
 - code signing of release binaries

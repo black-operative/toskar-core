@@ -1,8 +1,8 @@
 # Norse subsystem glossary
 
-Yggdrasil names its subsystems after figures from Norse myth. This glossary maps each name to what it does in Core, where it lives in the code, and the mythic figure.
+Toskar names its subsystems after figures from Norse myth. This glossary maps each name to what it does in Core, where it lives in the code, and the mythic figure.
 
-| Name | In Yggdrasil | Code path | Myth |
+| Name | In Toskar | Code path | Myth |
 | --- | --- | --- | --- |
 | **Huginn** | Classifies each request, picks the model (Auto, specialized AIs, fallback), and chooses which tools a turn is offered | `internal/huginn` | One of Odin's ravens; thought and observation |
 | **Muninn** | Memories, per-chat and global Memory off, summaries of long conversations | `internal/muninn` | Odin's other raven; memory |

@@ -1,9 +1,9 @@
-# Yggdrasil Core
+# Toskar Core
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/brand/logo/toskar-mark.svg">
-    <img src="docs/brand/logo/toskar-mark-light.svg" alt="Yggdrasil" width="148">
+    <img src="docs/brand/logo/toskar-mark-light.svg" alt="Toskar" width="148">
   </picture>
 </p>
 
@@ -11,15 +11,15 @@
 
 **An open-source control plane that makes local AI feel like a hosted AI service.**
 
-Yggdrasil Core is built around one goal: make running AI on hardware you own feel as simple as using a hosted service.
+Toskar Core is built around one goal: make running AI on hardware you own feel as simple as using a hosted service.
 
 You should not need to understand model formats, runtimes, GPU backends, memory limits, networking, or cluster scheduling just to use local AI.
 
-Yggdrasil detects your hardware, recommends and manages models, starts the right runtime, uses other computers when needed, and exposes a consistent API to your applications. It manages models, runtimes, hardware, and multiple computers behind that API.
+Toskar detects your hardware, recommends and manages models, starts the right runtime, uses other computers when needed, and exposes a consistent API to your applications. It manages models, runtimes, hardware, and multiple computers behind that API.
 
 **Your computers. Your models. Your AI.**
 
-The daemon (`toskar`), the local web UI, and the HTTP API are in this repository. Yggdrasil Desktop and Yggdrasil Mobile are separate clients, developed outside this repository.
+The daemon (`toskar`), the local web UI, and the HTTP API are in this repository. Toskar Desktop and Toskar Mobile are separate clients, developed outside this repository.
 
 **Status:** Stable. See the latest [GitHub Release](https://github.com/yeixio/yggdrasil-core/releases).
 
@@ -32,7 +32,7 @@ The daemon (`toskar`), the local web UI, and the HTTP API are in this repository
 
 ## Design principle
 
-Yggdrasil is not trying to expose every local-AI knob.
+Toskar is not trying to expose every local-AI knob.
 
 It is trying to make those knobs unnecessary.
 
@@ -42,7 +42,7 @@ The default experience should be:
 
 Advanced controls should exist when needed, but users should not have to become AI infrastructure engineers to run models locally.
 
-## Why Yggdrasil?
+## Why Toskar?
 
 Hosted AI is easy:
 
@@ -54,9 +54,9 @@ Local AI often is not.
 
 Before you can ask a question, you may need to understand model formats, quantization, runtime backends, GPU support, memory requirements, context sizes, ports, APIs, and which machine can actually run the model.
 
-Yggdrasil's goal is to hide that complexity.
+Toskar's goal is to hide that complexity.
 
-You choose what AI you want to use. Yggdrasil figures out how to run it on the hardware you own.
+You choose what AI you want to use. Toskar figures out how to run it on the hardware you own.
 
 To make that possible, Core:
 
@@ -65,7 +65,7 @@ To make that possible, Core:
 - installs and manages model runtimes
 - downloads and manages models
 - starts and stops models when they are needed, and unloads them after they sit idle
-- discovers other Yggdrasil computers
+- discovers other Toskar computers
 - places workloads on machines that can run them
 - monitors model and node health
 - exposes one consistent OpenAI-compatible API
@@ -82,7 +82,7 @@ Open `http://127.0.0.1:7331` after the daemon is running. The API listens on `12
 
 ### macOS
 
-Homebrew installs the Core daemon from this repository. Yggdrasil Desktop is a separate product. The Homebrew cask named `yggdrasil` is a different project.
+Homebrew installs the Core daemon from this repository. Toskar Desktop is a separate product. The Homebrew cask named `yggdrasil` is a different project.
 
 ```bash
 brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core
@@ -135,7 +135,7 @@ These exist in this repository today:
 - persistent memory across chats and models, which you can review, edit, and turn off per chat
 - Mimir connected knowledge: files, folders, uploads, scanned PDFs (text recognition), read-only SQL databases, and web APIs, searched by keyword and, with an embedding model, by meaning
 - tools for web search, files, shell, Git, and making files, with per-profile Allow, Ask, and Deny policies; connected services (GitHub, Home Assistant); and tools from MCP servers
-- Yggdrasil as an MCP server, so other AI apps can use it (`/mcp` and `toskarctl mcp`)
+- Toskar as an MCP server, so other AI apps can use it (`/mcp` and `toskarctl mcp`)
 - scheduled automations with conditional notifications, and a notification center
 - Train your own AI: a guided build of a specialized assistant from a base model, LoRA training on your examples (MLX on Apple Silicon, PyTorch on NVIDIA GPUs), and connected knowledge, with base-versus-specialized testing before deployment, training on a paired computer, and export as a GGUF file. See [docs/features/train-your-own-ai.md](docs/features/train-your-own-ai.md).
 - Bifrost discovery, pairing, and node-to-node calls, and Norn workload placement across paired nodes
@@ -167,7 +167,7 @@ Each computer runs its own daemon. Norn places a role on a machine that can run 
 Apps / IDEs / Agents
         │
         ▼
-  Yggdrasil Core
+  Toskar Core
    ┌────┴────┐
    │  Norn   │ workload placement
    │ Bifrost │ discovery and pairing
@@ -276,9 +276,9 @@ Models, runtimes, logs, `toskar.db`, and `secrets/` live under that path. An ins
 
 ## Security and privacy
 
-Yggdrasil Core does not send usage telemetry by default. A search of this repository found no analytics, crash-reporting, or metrics-upload client.
+Toskar Core does not send usage telemetry by default. A search of this repository found no analytics, crash-reporting, or metrics-upload client.
 
-The control API and the OpenAI-compatible API require a bearer token whenever the daemon listens beyond loopback. Loopback access stays open by default. Yggdrasil refuses a non-loopback API until a key is configured. Enabling local network access records `0.0.0.0`; the socket changes on the next start, and the key check follows the configured host immediately. The Docker image listens on `0.0.0.0` and needs `TOSKAR_API_KEY`. A key on plain HTTP does not encrypt traffic. Bifrost listens for pairing on the LAN when discovery is enabled. Read [docs/privacy.md](docs/privacy.md) and [SECURITY.md](SECURITY.md) before exposing either port.
+The control API and the OpenAI-compatible API require a bearer token whenever the daemon listens beyond loopback. Loopback access stays open by default. Toskar refuses a non-loopback API until a key is configured. Enabling local network access records `0.0.0.0`; the socket changes on the next start, and the key check follows the configured host immediately. The Docker image listens on `0.0.0.0` and needs `TOSKAR_API_KEY`. A key on plain HTTP does not encrypt traffic. Bifrost listens for pairing on the LAN when discovery is enabled. Read [docs/privacy.md](docs/privacy.md) and [SECURITY.md](SECURITY.md) before exposing either port.
 
 ## Documentation
 
@@ -290,7 +290,7 @@ The control API and the OpenAI-compatible API require a bearer token whenever th
 | [CLI](docs/cli.md) | `toskar` and `toskarctl` |
 | [Capabilities](docs/capabilities.md) | Internet, Files, Shell, Git, connected services, and MCP |
 | [Tools](docs/tools.md) | Tool registry, permissions, and which tools a turn is offered |
-| [MCP](docs/mcp.md) | Add tools from MCP servers, and use Yggdrasil from other AI apps |
+| [MCP](docs/mcp.md) | Add tools from MCP servers, and use Toskar from other AI apps |
 | [Architecture](docs/architecture.md) | Subsystems and process layout |
 | [Glossary](docs/glossary.md) | Norse subsystem names and code paths |
 | [Design](docs/design.md) | Colors, type, components, states, keyboard patterns, and writing rules for the UI |
@@ -301,7 +301,7 @@ The control API and the OpenAI-compatible API require a bearer token whenever th
 | [Privacy](docs/privacy.md) | What stays local and what can leave |
 | [Development](docs/development.md) | Build, test, lint, and CI |
 
-The public site is [yggdrasil.yeix.io](https://yggdrasil.yeix.io). It reads the version index, guide snapshots, the latest GitHub release, and [`site/content.json`](site/content.json) from this repository.
+The public site is [toskar.ai](https://toskar.ai). It reads the version index, guide snapshots, the latest GitHub release, and [`site/content.json`](site/content.json) from this repository.
 
 ### Feature specifications
 
@@ -332,7 +332,7 @@ This brief is not a commitment to build.
 
 ## Contributing
 
-Hardware reports, runtime notes, documentation, and code all help. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Code contributions are covered by the [Yggdrasil Contributor License Agreement](CLA.md).
+Hardware reports, runtime notes, documentation, and code all help. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Code contributions are covered by the [Toskar Contributor License Agreement](CLA.md).
 
 ## Community
 
@@ -343,17 +343,17 @@ Hardware reports, runtime notes, documentation, and code all help. Read [CONTRIB
 
 [SUPPORT.md](SUPPORT.md) maps each kind of report to a form.
 
-## Support Yggdrasil Core
+## Support Toskar Core
 
-If Yggdrasil Core is useful to you, you can support continued development through [GitHub Sponsors](https://github.com/sponsors/gopherstein). Contributions, testing, bug reports, documentation, and hardware compatibility reports are also valuable ways to support the project.
+If Toskar Core is useful to you, you can support continued development through [GitHub Sponsors](https://github.com/sponsors/gopherstein). Contributions, testing, bug reports, documentation, and hardware compatibility reports are also valuable ways to support the project.
 
 Nothing in the software is gated on a donation.
 
-## Yggdrasil Desktop
+## Toskar Desktop
 
-Yggdrasil Core is the open-source engine. You can run the daemon and the web UI in this repository directly.
+Toskar Core is the open-source engine. You can run the daemon and the web UI in this repository directly.
 
-Yggdrasil Desktop and Yggdrasil Mobile are separate products. They are clients for people who want a packaged application. This repository does not contain their source. Desktop release artifacts are built outside this tree. The public site describes both products at [yggdrasil.yeix.io](https://yggdrasil.yeix.io).
+Toskar Desktop and Toskar Mobile are separate products. They are clients for people who want a packaged application. This repository does not contain their source. Desktop release artifacts are built outside this tree. The public site describes both products at [toskar.ai](https://toskar.ai).
 
 ## License
 

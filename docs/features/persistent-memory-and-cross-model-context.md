@@ -1,21 +1,21 @@
-# Yggdrasil Persistent Memory & Cross-Model Context
+# Toskar Persistent Memory & Cross-Model Context
 
 ## Feature Specification — V1
 
 ### Goal
 
-Make Yggdrasil feel like a persistent AI service rather than a collection of isolated local models. Conversations and durable user memory belong to Yggdrasil, so context can survive model stops, application restarts, and model changes.
+Make Toskar feel like a persistent AI service rather than a collection of isolated local models. Conversations and durable user memory belong to Toskar, so context can survive model stops, application restarts, and model changes.
 
 ## Core Principle
 
-Models are interchangeable inference engines. Yggdrasil owns persistence.
+Models are interchangeable inference engines. Toskar owns persistence.
 
-Yggdrasil should maintain two layers of context:
+Toskar should maintain two layers of context:
 
 1. **Conversation context** — messages and working state for the current conversation.
 2. **Persistent user memory** — a lightweight set of durable facts, preferences, project information, and other user-approved metadata.
 
-This enables cross-model continuity: a conversation started with one model can continue with another because Yggdrasil reconstructs and sends the context.
+This enables cross-model continuity: a conversation started with one model can continue with another because Toskar reconstructs and sends the context.
 
 ## User Experience
 
@@ -33,7 +33,7 @@ Memory Off does not delete memory. It only prevents persistent memory from being
 Provide a Memory settings area where users can:
 
 - Enable or disable memory by default.
-- View what Yggdrasil currently remembers.
+- View what Toskar currently remembers.
 - Add a memory manually.
 - Edit incorrect or outdated memories.
 - Remove a memory.
@@ -74,7 +74,7 @@ V1 can use simple category/keyword/relevance rules. More sophisticated semantic 
 
 Conversation persistence and context-window size are separate concerns.
 
-- Preserve the full conversation in Yggdrasil.
+- Preserve the full conversation in Toskar.
 - Keep recent turns verbatim.
 - Summarize older portions when required by the active model’s context window.
 - Never delete original persisted history merely because a summary is used for inference.
@@ -88,11 +88,11 @@ Example:
 
 - Chat with Qwen.
 - Stop Qwen.
-- Restart Yggdrasil later.
+- Restart Toskar later.
 - Start Llama.
 - Continue the same conversation.
 
-The new model receives Yggdrasil-owned context.
+The new model receives Toskar-owned context.
 
 ## Storage Design
 
@@ -137,7 +137,7 @@ A later Muninn phase can:
 
 ## Suggested Internal Ownership
 
-Treat persistent memory/context as a dedicated Yggdrasil subsystem.
+Treat persistent memory/context as a dedicated Toskar subsystem.
 
 **Muninn** is the appropriate internal/product name for this layer.
 
@@ -182,4 +182,4 @@ Do not require:
 
 ## Product Outcome
 
-The feature succeeds when users can stop a model, restart Yggdrasil, switch models, and begin new conversations without feeling that the assistant has forgotten who they are.
+The feature succeeds when users can stop a model, restart Toskar, switch models, and begin new conversations without feeling that the assistant has forgotten who they are.

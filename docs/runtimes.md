@@ -34,8 +34,8 @@ The daemon knows it is sandboxed when macOS sets `APP_SANDBOX_CONTAINER_ID`. `TO
 
 - **No downloads:** it never downloads or installs a Python environment.
 - **Bundled environments are used:** a current environment found in a `python` folder beside the daemon executable is used instead.
-- **Training without a bundle:** the trainer is reported as unavailable on this computer, with the reason, in `GET /training/backends`, the training plan, and the capabilities a paired computer sees. Norn chooses an eligible paired computer running Yggdrasil Core instead, and a paired computer that is sandboxed refuses runs it cannot do.
-- **Scanned PDFs without a bundle:** a scanned PDF fails with "text recognition is not included in this copy of Yggdrasil". PDFs with a text layer are read as usual.
+- **Training without a bundle:** the trainer is reported as unavailable on this computer, with the reason, in `GET /training/backends`, the training plan, and the capabilities a paired computer sees. Norn chooses an eligible paired computer running Toskar Core instead, and a paired computer that is sandboxed refuses runs it cannot do.
+- **Scanned PDFs without a bundle:** a scanned PDF fails with "text recognition is not included in this copy of Toskar". PDFs with a text layer are read as usual.
 
 To bundle an environment, run `toskar -python-envs`. It prints each environment as JSON: `name`, `python` version, `requirements`, `install_args`, `no_deps`, and `marker`. For each one you want to ship:
 
@@ -62,4 +62,4 @@ See [privacy.md](privacy.md).
 
 ## Adding an adapter
 
-Implement the runtime interface, register it where the app constructs the runtime registry, and cover detection plus start/stop with tests. Open a runtime request or a pull request using the forms in `.github/`. Licensing of the upstream runtime should be compatible with shipping and downloading it. Code contributions are covered by the [Yggdrasil Contributor License Agreement](../CLA.md).
+Implement the runtime interface, register it where the app constructs the runtime registry, and cover detection plus start/stop with tests. Open a runtime request or a pull request using the forms in `.github/`. Licensing of the upstream runtime should be compatible with shipping and downloading it. Code contributions are covered by the [Toskar Contributor License Agreement](../CLA.md).

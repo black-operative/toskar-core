@@ -1,5 +1,5 @@
 name: Feature request
-description: Propose a change to Yggdrasil Core.
+description: Propose a change to Toskar Core.
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
@@ -14,13 +14,13 @@ body:
     id: behavior
     attributes:
       label: Proposed behavior
-      description: What should Yggdrasil Core do? Implementation details are optional.
+      description: What should Toskar Core do? Implementation details are optional.
     validations:
       required: true
   - type: textarea
     id: why-core
     attributes:
-      label: Why this belongs in Yggdrasil Core
+      label: Why this belongs in Toskar Core
       description: Core is the headless control plane. Desktop and mobile clients are separate products.
     validations:
       required: true

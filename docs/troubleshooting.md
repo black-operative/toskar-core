@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Start with the answer itself. Under each answer, **What I did** lists the model that answered and why, the searches and pages read, the knowledge and memories used, and anything that went wrong. In advanced mode, **Run details** adds timings, tokens, tools, and the computer that ran each part. Diagnostics shows the health of every part of Yggdrasil and what it can do right now.
+Start with the answer itself. Under each answer, **What I did** lists the model that answered and why, the searches and pages read, the knowledge and memories used, and anything that went wrong. In advanced mode, **Run details** adds timings, tokens, tools, and the computer that ran each part. Diagnostics shows the health of every part of Toskar and what it can do right now.
 
 ## The web UI does not load
 
@@ -50,7 +50,7 @@ Web look-ups need Internet allowed in the profile. A plain question is answered 
 The source shows **Failed** with the reason.
 
 - **A file or folder:** check that it still exists and is a supported type.
-- **A scanned PDF:** the first one installs text recognition (about 110 MB from PyPI), which needs a network connection. A copy of Yggdrasil from the Mac App Store reads scanned PDFs only if the app includes text recognition.
+- **A scanned PDF:** the first one installs text recognition (about 110 MB from PyPI), which needs a network connection. A copy of Toskar from the Mac App Store reads scanned PDFs only if the app includes text recognition.
 - **A database or web API:** the reason names the connection or HTTP error, with credentials removed. Search keeps using the last data that was fetched. Fix the settings and choose **Reindex**.
 
 A scanned PDF attached to a chat is refused: connect it on the Knowledge page instead, which reads scanned pages once.
@@ -70,7 +70,7 @@ The answer said it did something, such as committing or sending, but no tool tha
 
 - Training needs a Mac with Apple Silicon or a computer with an NVIDIA GPU. The plan shows each computer and why it can or cannot train.
 - Another computer can train for this one: pair it, and choose it in the plan's Review step.
-- A copy of Yggdrasil from the Mac App Store cannot run the Python it would download. It trains on a paired computer, unless the app includes the training environment.
+- A copy of Toskar from the Mac App Store cannot run the Python it would download. It trains on a paired computer, unless the app includes the training environment.
 - Training waits for chat, automations, and benchmarks before it starts, and the job shows what it is waiting for.
 
 ## Export as a GGUF file failed
@@ -104,9 +104,9 @@ Do not paste a real key into a bug report, and do not put one in a URL.
 
 `/v1/chat/completions` does not download a model. Install one, then use `auto`, a profile, or a model id.
 
-## Yggdrasil uses more and more memory
+## Toskar uses more and more memory
 
-Note how long Yggdrasil has been running and what it was doing (chats, automations, models loading and unloading, tool sources). Then:
+Note how long Toskar has been running and what it was doing (chats, automations, models loading and unloading, tool sources). Then:
 
 1. Export a diagnostic bundle (Diagnostics → **Export diagnostics**). It includes `runtime.json` (goroutines, heap size, collections) and `profiles/goroutines.txt` and `profiles/heap.pb.gz`, which show where memory and background work go. They hold function names, counts, and sizes, not prompts or files.
 2. If it keeps growing, export a second bundle an hour later. Two snapshots show what grew.
@@ -114,7 +114,7 @@ Note how long Yggdrasil has been running and what it was doing (chats, automatio
 
 To look yourself, start the daemon with `TOSKAR_PPROF=127.0.0.1:6060` and run `go tool pprof http://127.0.0.1:6060/debug/pprof/heap`, or open `http://127.0.0.1:6060/debug/pprof/goroutine?debug=1`.
 
-Stopping a model, a tool source, or Yggdrasil itself ends every process it started, including helpers such as the `node` process `npx` runs. If one is left behind, note its command line (`ps -ef | grep llama-server`) in the issue.
+Stopping a model, a tool source, or Toskar itself ends every process it started, including helpers such as the `node` process `npx` runs. If one is left behind, note its command line (`ps -ef | grep llama-server`) in the issue.
 
 ## Reset
 

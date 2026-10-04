@@ -40,4 +40,4 @@ These features run their own programs, so they have their own status. "Manual ru
 
 ## Sending a report
 
-Open a [Hardware](../.github/ISSUE_TEMPLATE/hardware_compatibility.yml) issue and classify the machine as Works, Works with limitations, Does not work, or Not sure. Include the OS version, CPU, GPU, RAM, Yggdrasil version, runtime, and models. Tokens per second are optional. Results move around with model size, context, and other programs using the machine.
+Open a [Hardware](../.github/ISSUE_TEMPLATE/hardware_compatibility.yml) issue and classify the machine as Works, Works with limitations, Does not work, or Not sure. Include the OS version, CPU, GPU, RAM, Toskar version, runtime, and models. Tokens per second are optional. Results move around with model size, context, and other programs using the machine.

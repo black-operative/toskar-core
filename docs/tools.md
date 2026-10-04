@@ -1,6 +1,6 @@
 # Tools
 
-Yggdrasil has one tool registry. Chat, profiles, and the Tools screen all use it. Built-in tools, connected services, and MCP tool sources all run through it. There is no second execution path.
+Toskar has one tool registry. Chat, profiles, and the Tools screen all use it. Built-in tools, connected services, and MCP tool sources all run through it. There is no second execution path.
 
 ## Architecture
 
@@ -22,11 +22,11 @@ Arguments are checked against the tool's schema before it runs. Safe repairs are
 
 Each call has a time limit: web 45 s, files 30 s, Git 90 s, the shell 2 minutes. A failed call reports a `kind`: `timeout`, `cancelled`, `denied`, `not_offered`, `invalid`, or `failed`.
 
-When a question needs current information and the profile allows web search without asking, Yggdrasil searches and reads the best page before the model answers, so a small model answers from the page instead of choosing a tool. A repeat search within 15 minutes, or page within 30 minutes, is answered from the cache.
+When a question needs current information and the profile allows web search without asking, Toskar searches and reads the best page before the model answers, so a small model answers from the page instead of choosing a tool. A repeat search within 15 minutes, or page within 30 minutes, is answered from the cache.
 
 ## Making files
 
-`files.create`, allowed by default in the built-in profiles, saves a file the user can download. It writes only to Yggdrasil's file store, never to your folders. When a message asks for a file, Yggdrasil has the model write only the contents and saves the file itself.
+`files.create`, allowed by default in the built-in profiles, saves a file the user can download. It writes only to Toskar's file store, never to your folders. When a message asks for a file, Toskar has the model write only the contents and saves the file itself.
 
 | Asked for | Written from | Notes |
 | --- | --- | --- |
@@ -54,7 +54,7 @@ The browser tools use web pages that need JavaScript or interaction, in an isola
 | `browser.close` | Closes the chat's browser and forgets its pages | Allow |
 
 - **The browser:** a Chromium-based browser already on this computer (Google Chrome, Microsoft Edge, Chromium, or Brave), run headless. Nothing is downloaded. Without one, the tools say what to install. The Mac App Store build cannot start one.
-- **Isolation:** each chat has its own browser with a fresh, temporary profile. It never uses your own profile, sign-ins, saved passwords, or extensions, and it saves nothing to your computer. A chat's browser closes after 10 idle minutes, with `browser.close`, or when Yggdrasil stops, and its profile is deleted. At most three run at once.
+- **Isolation:** each chat has its own browser with a fresh, temporary profile. It never uses your own profile, sign-ins, saved passwords, or extensions, and it saves nothing to your computer. A chat's browser closes after 10 idle minutes, with `browser.close`, or when Toskar stops, and its profile is deleted. At most three run at once.
 - **This computer and the local network are off limits:** every request a page makes, including redirects and resources, is checked as it happens. Requests for loopback, private, link-local, and other non-public addresses, and for names such as `localhost` or `*.local`, are refused. Downloads check again at connect time.
 - **Sensitive fields:** password, payment, and one-time-code fields are marked on the page and refused for typing; the person enters those themselves. Pages are treated as data, not instructions, so a turn that used them asks before changing anything.
 - **Privacy:** each page opened, including where a click or a search leads, and each download is recorded in What left this computer.
@@ -73,7 +73,7 @@ Four tools answer questions about places with [OpenStreetMap](https://www.openst
 - **Places:** `near`, `from`, and `to` are names, addresses, or `lat,lon`. The user's location is not known; the model uses the place named, or where About me in Personalization says they live.
 - **Distances** come in meters, kilometers, and miles, so answers follow the units chosen in Personalization.
 - **Attribution:** results carry their attribution, "© OpenStreetMap contributors (ODbL)", and an openstreetmap.org link for each place.
-- **Fair use:** requests identify Yggdrasil, Nominatim requests are spaced at least a second apart as its usage policy asks, and a repeat within the hour is answered from memory (the Places and routes cache). For heavy use, point `places_geocoder_url`, `places_overpass_url`, and `places_router_url` at your own servers.
+- **Fair use:** requests identify Toskar, Nominatim requests are spaced at least a second apart as its usage policy asks, and a repeat within the hour is answered from memory (the Places and routes cache). For heavy use, point `places_geocoder_url`, `places_overpass_url`, and `places_router_url` at your own servers.
 - **Privacy:** each request is recorded in What left this computer as Maps and places.
 
 Recognized kinds include cafes, restaurants, fast food, bars, pharmacies, hospitals, clinics, fuel and charging stations, parking, ATMs, banks, post offices, libraries, toilets, supermarkets, bakeries, hardware stores, bookshops, hotels, museums, viewpoints, campsites, parks, playgrounds, and gyms. Anything else is searched by name.
@@ -190,7 +190,7 @@ Personalization and memories never change a policy. A note such as "you can alwa
 
 ## Model compatibility
 
-Tool support is one of native, compatible, limited, or unsupported. Catalog models with `tool_calling: true` are compatible: they use Yggdrasil's JSON tool format. Models with `tool_calling: false` are unsupported and do not receive tools. A catalog entry can set `tool_call_support` to limited when a model is known to emit tool syntax that does not parse. Auto requires a model with tool support for current information and for tasks on this computer. A model you choose yourself keeps answering, without tools if it has no tool support.
+Tool support is one of native, compatible, limited, or unsupported. Catalog models with `tool_calling: true` are compatible: they use Toskar's JSON tool format. Models with `tool_calling: false` are unsupported and do not receive tools. A catalog entry can set `tool_call_support` to limited when a model is known to emit tool syntax that does not parse. Auto requires a model with tool support for current information and for tasks on this computer. A model you choose yourself keeps answering, without tools if it has no tool support.
 
 ## Adding a built-in tool
 
@@ -239,7 +239,7 @@ Both services join the connected-service rules. The app password is stored apart
 
 ## MCP tool sources
 
-MCP servers add tools to the same registry. They are listed on the Tools screen with `source` `mcp:<source>`, and they follow the same policies. Yggdrasil is also an MCP server for other apps. See [MCP](mcp.md).
+MCP servers add tools to the same registry. They are listed on the Tools screen with `source` `mcp:<source>`, and they follow the same policies. Toskar is also an MCP server for other apps. See [MCP](mcp.md).
 
 ## Diagnostics
 

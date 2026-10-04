@@ -1,4 +1,4 @@
-# Yggdrasil Core — Community Model Ratings
+# Toskar Core — Community Model Ratings
 
 ## Feature Specification — V1
 
@@ -10,7 +10,7 @@ The user-facing question is:
 
 > **How well does this model work for people with hardware like mine?**
 
-This feature should directly support Yggdrasil's core product goal: making local AI as easy to choose and use as SaaS AI.
+This feature should directly support Toskar's core product goal: making local AI as easy to choose and use as SaaS AI.
 
 ---
 
@@ -113,7 +113,7 @@ A Q4_K_M rating should not automatically be treated as equivalent to Q8_0, nor s
 
 ## 4. Hardware Cohorts
 
-Exact-machine matching would fragment the dataset too much. Yggdrasil should progressively widen the comparison.
+Exact-machine matching would fragment the dataset too much. Toskar should progressively widen the comparison.
 
 Apple example:
 
@@ -213,7 +213,7 @@ Stronger labels such as **Recommended for your hardware** should require both su
 
 ## 7. Objective Runtime Observations
 
-With explicit user permission, a rating may include anonymous runtime observations already known to Yggdrasil:
+With explicit user permission, a rating may include anonymous runtime observations already known to Toskar:
 
 - model startup success
 - time to first token
@@ -224,7 +224,7 @@ With explicit user permission, a rating may include anonymous runtime observatio
 - OOM/memory-pressure event
 - generation completion
 - runtime version
-- Yggdrasil version
+- Toskar version
 
 This can produce useful model details such as:
 
@@ -247,7 +247,7 @@ Submitting ratings must be explicit.
 Suggested consent text:
 
 ```text
-Share this rating with the Yggdrasil community?
+Share this rating with the Toskar community?
 
 We'll share:
 • your star rating
@@ -369,7 +369,7 @@ Use a small transactional datastore for live writes.
 Conceptually:
 
 ```text
-Yggdrasil Core
+Toskar Core
       │
       ▼
 Community Ratings API
@@ -389,7 +389,7 @@ Git should still play an important role.
 Recommended architecture:
 
 ```text
-Yggdrasil Core
+Toskar Core
       │
       ▼
 Community Ratings API
@@ -615,7 +615,7 @@ Faster and more stable on your hardware
 [Install recommended model]
 ```
 
-This is the long-term value of the feature: model selection becomes a Yggdrasil decision rather than an infrastructure research project for the user.
+This is the long-term value of the feature: model selection becomes a Toskar decision rather than an infrastructure research project for the user.
 
 ---
 
@@ -766,4 +766,4 @@ without needing to understand local-AI benchmarking, quantization tradeoffs, VRA
 
 The intended result is:
 
-> **Yggdrasil already knows what tends to work well on a computer like yours.**
+> **Toskar already knows what tends to work well on a computer like yours.**

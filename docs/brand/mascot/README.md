@@ -1,6 +1,6 @@
 # Ratatoskr
 
-Ratatoskr is the Yggdrasil mascot. In the myth he is the squirrel who runs up and down the World Tree carrying messages between the eagle at the top and Níðhöggr at the roots. Yggdrasil does a similar job, carrying requests between apps and the models on your computers.
+Ratatoskr is the Toskar mascot, and Toskar takes its name from him. In the myth he is the squirrel who runs up and down Yggdrasil, the World Tree, carrying messages between the eagle at the top and Níðhöggr at the roots. Toskar does a similar job, carrying requests between apps and the models on your computers.
 
 ![Ratatoskr in all seven states](ratatoskr-states.svg)
 
@@ -33,7 +33,7 @@ He is one inline SVG, drawn in code with no image files.
 | `deliver` | Work is going to a paired computer. | A `scheduler.placement` event naming a remote node, or a deploy running from `features/nodes/DeployModelsPanel.tsx`. | Inline in `ChatActivity` when the reply runs on a peer. Also the header of `features/nodes/NodesPage.tsx` while a deploy is running. | 32 px inline, 96 px page |
 | `success` | Something finished. Plays once (1.8 s), then returns to `idle`. | `model.download.completed`, `training.deployed`, `node.paired`, or the onboarding `done` step. | `features/models/ModelCard.tsx` or `InstalledTab.tsx` after a download. `features/train/TrainPage.tsx` after deploy. `OnboardingPage.tsx` on the `done` step. | 64 to 96 px |
 | `error` | Something failed. Holds its final pose. | `chat.error`, `model.download.failed`, `task.failed`, a failing Heimdall check, or boot timing out. | `features/chat/ChatErrorCard.tsx`, `features/chat/ModelFailureNotice.tsx`, the top of `features/diagnostics/DiagnosticsPage.tsx` when a check fails, and `BootFailed` in `ServiceBootGate.tsx`. | 48 px in cards, 96 px pages |
-| `sleep` | No model is loaded. | The running-models query returns an empty list, for example after the idle sweeper unloads a model. Also the desktop shell's `stopping` lifecycle event. | Empty state of `features/models/RunningTab.tsx`. The "Closing Yggdrasil" overlay in `components/LifecycleHost.tsx`. | 96 px |
+| `sleep` | No model is loaded. | The running-models query returns an empty list, for example after the idle sweeper unloads a model. Also the desktop shell's `stopping` lifecycle event. | Empty state of `features/models/RunningTab.tsx`. The "Closing Toskar" overlay in `components/LifecycleHost.tsx`. | 96 px |
 
 ### Rules of thumb
 

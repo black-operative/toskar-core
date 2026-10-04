@@ -1,12 +1,12 @@
 # Clustering
 
-Yggdrasil can use more than one computer. Each computer runs `toskar`. Work is placed per role. One model is not split across machines.
+Toskar can use more than one computer. Each computer runs `toskar`. Work is placed per role. One model is not split across machines.
 
 ## Discovery
 
 Discovery is enabled by default. The daemon advertises `_localai._tcp` and browses for the same service. Peers show up through `GET /api/v1/nodes` and the Computers page.
 
-The service's port is Bifrost's (7332). Its TXT record carries `node_id`, `name`, `version`, `pairing`, and `api_port`, the port of the API (7331 by default), so an app that finds Yggdrasil on the network, such as the iPhone app, knows where to connect.
+The service's port is Bifrost's (7332). Its TXT record carries `node_id`, `name`, `version`, `pairing`, and `api_port`, the port of the API (7331 by default), so an app that finds Toskar on the network, such as the iPhone app, knows where to connect.
 
 When mDNS cannot see peers, set static addresses:
 
@@ -47,19 +47,19 @@ For a server or any computer you reach over SSH, without mDNS or a screen, join 
    yggctl join --server 192.168.1.10:7332 --token ygj_… --fingerprint sha256:…
    ```
 
-2. On the new computer, with Yggdrasil running, run that command. The two computers trust each other from then on, and the new one shows on the Computers page and takes work from Norn like any paired computer.
+2. On the new computer, with Toskar running, run that command. The two computers trust each other from then on, and the new one shows on the Computers page and takes work from Norn like any paired computer.
 
-   If Yggdrasil isn't installed there yet, use the second command `join-token create` prints instead. It installs Yggdrasil, starts it as a service, and joins:
+   If Toskar isn't installed there yet, use the second command `join-token create` prints instead. It installs Toskar, starts it as a service, and joins:
 
    ```text
    curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh -s -- join --server … --token … --fingerprint …
    ```
 
-   On Linux it installs the release's `.deb` (apt) or `.rpm` (dnf, yum, rpm) and the `toskar` systemd service, using `sudo` when not run as root. On macOS it installs the headless archive in `~/.local/lib/toskar` with a launchd agent (`ai.toskar.toskar`), or with `sudo` in `/usr/local/lib/toskar` with a launchd daemon that runs as the person who ran `sudo`, for a Mac nobody is logged in to. Each download is checked against the release's `SHA256SUMS.txt`, and a Yggdrasil that is already installed and running is left as it is. Windows has the same in PowerShell, from `install.ps1`, which installs in `%LOCALAPPDATA%\Programs\Toskar` and starts at sign-in with a scheduled task named Toskar. Installing over a setup from before the rename replaces its launchd service (`io.yeix.yggdrasil`) or scheduled task (Yggdrasil), and leaves its old install folder as a link to the new one, so settings that run programs from there keep working.
+   On Linux it installs the release's `.deb` (apt) or `.rpm` (dnf, yum, rpm) and the `toskar` systemd service, using `sudo` when not run as root. On macOS it installs the headless archive in `~/.local/lib/toskar` with a launchd agent (`ai.toskar.toskar`), or with `sudo` in `/usr/local/lib/toskar` with a launchd daemon that runs as the person who ran `sudo`, for a Mac nobody is logged in to. Each download is checked against the release's `SHA256SUMS.txt`, and a Toskar that is already installed and running is left as it is. Windows has the same in PowerShell, from `install.ps1`, which installs in `%LOCALAPPDATA%\Programs\Toskar` and starts at sign-in with a scheduled task named Toskar. Installing over a setup from before the rename replaces its launchd service (`io.yeix.yggdrasil`) or scheduled task (Yggdrasil), and leaves its old install folder as a link to the new one, so settings that run programs from there keep working.
 
    `TOSKAR_VERSION` installs a particular release instead of the latest. Without `join`, the scripts only install.
 
-The Computers page does the same: **Add by command** makes a command, with tabs for a computer that has Yggdrasil, one to install it on (Linux, macOS), and Windows, a copy button, a countdown, **Revoke**, and the recent commands. It says when the computer has joined.
+The Computers page does the same: **Add by command** makes a command, with tabs for a computer that has Toskar, one to install it on (Linux, macOS), and Windows, a copy button, a countdown, **Revoke**, and the recent commands. It says when the computer has joined.
 
 The token lasts 15 minutes (`--ttl` up to `24h`) and works once. `toskarctl join-token list` shows recent tokens, and `toskarctl join-token revoke <id>` stops an unused one. Only a proof key derived from the token is stored, and the token is never logged.
 
@@ -77,7 +77,7 @@ Every join command takes `--output json` and exits 0 when joined or already join
 
 - **Make a token where you are:** run `toskarctl join-token create --output json` on a computer in the network, over SSH from the provisioning machine if need be, and read `install_command` (or `command`, `token`, `server`, `fingerprint`) from it. Tokens can last up to a day (`--ttl 24h`) for a slow build, and each still works once, so make one per computer. The control API (`POST /api/v1/join-tokens`) does the same from scripts on that computer, or from elsewhere with an API key when the API listens beyond it.
 - **Name it:** `--name gpu-box-3` renames the computer as it joins. A name already taken in the network gets `-2`, `-3`, and so on.
-- **Right after installing:** `--wait 60s` waits for Yggdrasil to start before joining. `install.sh` waits on its own.
+- **Right after installing:** `--wait 60s` waits for Toskar to start before joining. `install.sh` waits on its own.
 
 cloud-init, with the token made beforehand:
 
@@ -96,7 +96,7 @@ Ansible, making the token on an existing computer for each new one:
   changed_when: true
   no_log: true  # the output holds the token
 
-- name: Install Yggdrasil and join
+- name: Install Toskar and join
   ansible.builtin.shell: >-
     {{ (token.stdout | from_json).install_command }} --name {{ inventory_hostname }}
   no_log: true
@@ -129,7 +129,7 @@ Image generation (`image.generate`, `image.edit`), video (`video.generate`), and
 
 Stop closes the connection, which stops the work on the other computer. Each job sent is recorded in What left this computer.
 
-`GET /internal/v1/tools/providers` is what a computer can run. It is asked at most every 30 seconds per computer, and again after a failed call. A computer whose Yggdrasil predates remote tools answers 404 and is listed as needing a newer Yggdrasil. Diagnostics → **Tools on each computer** shows every computer's providers and their state: Ready (healthy), Installing, Failed, or Not set up (unavailable). `GET /api/v1/tools/providers` returns the same list.
+`GET /internal/v1/tools/providers` is what a computer can run. It is asked at most every 30 seconds per computer, and again after a failed call. A computer whose Toskar predates remote tools answers 404 and is listed as needing a newer Toskar. Diagnostics → **Tools on each computer** shows every computer's providers and their state: Ready (healthy), Installing, Failed, or Not set up (unavailable). `GET /api/v1/tools/providers` returns the same list.
 
 A manual pass is written up in [two-machine-team-demo.md](two-machine-team-demo.md). Continuous integration does not run that pass on physical hardware. The Docker cluster check uses stub inference.
 

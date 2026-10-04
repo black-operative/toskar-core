@@ -1,6 +1,6 @@
 # Configuration
 
-Yggdrasil Core is configured in three places:
+Toskar Core is configured in three places:
 
 - **`config.json`** in the data directory: where the daemon listens, where it keeps files, and how it finds other computers. It is read at startup.
 - **Environment variables** (`TOSKAR_*`) override some `config.json` values. They are meant for containers and scripted nodes. Each also works under its name from before the rename, `YGGDRASIL_*`, such as `YGGDRASIL_API_PORT`; when both are set, `TOSKAR_*` wins.

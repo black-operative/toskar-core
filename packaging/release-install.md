@@ -1,6 +1,6 @@
 ## Install
 
-One line, on Linux or macOS. It installs the package or archive below for this computer, checks it against `SHA256SUMS.txt`, and starts Yggdrasil as a service:
+One line, on Linux or macOS. It installs the package or archive below for this computer, checks it against `SHA256SUMS.txt`, and starts Toskar as a service:
 
 ```bash
 curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh
@@ -8,7 +8,7 @@ curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/ins
 
 On Windows, in PowerShell: `irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex`. To add a computer to an existing network, use the command `toskarctl join-token create` prints.
 
-macOS. Homebrew installs Yggdrasil Core from this repository. It does not install Yggdrasil Desktop. The short command `brew install yggdrasil` is a different Homebrew cask.
+macOS. Homebrew installs Toskar Core from this repository. It does not install Toskar Desktop. The short command `brew install yggdrasil` is a different Homebrew cask.
 
 ```bash
 brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core

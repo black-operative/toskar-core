@@ -1,26 +1,26 @@
 # MCP
 
-Yggdrasil speaks the [Model Context Protocol](https://modelcontextprotocol.io) both ways:
+Toskar speaks the [Model Context Protocol](https://modelcontextprotocol.io) both ways:
 
 - **Tool sources.** Add an MCP server and the AI can use its tools in every chat and automation.
-- **Yggdrasil as a server.** Apps such as Claude Desktop, Claude Code, Cursor, and VS Code can ask your local AI and search your connected knowledge.
+- **Toskar as a server.** Apps such as Claude Desktop, Claude Code, Cursor, and VS Code can ask your local AI and search your connected knowledge.
 
 Neither needs a config file. Both use the same tool registry, permissions, and credential handling as the built-in tools and connected services.
 
 ## Adding tools
 
-Open **Tools → Add tools**. There are four ways in, and each ends the same way: Yggdrasil connects, lists the tools, and says what it found ("ready with 14 tools: 10 that read, and 4 that change things and ask you first").
+Open **Tools → Add tools**. There are four ways in, and each ends the same way: Toskar connects, lists the tools, and says what it found ("ready with 14 tools: 10 that read, and 4 that change things and ask you first").
 
 | Way | What you do |
 | --- | --- |
 | Gallery | Pick an entry and answer at most one or two questions: a folder, a key, or nothing. Services such as Notion, Linear, Jira and Confluence, and Sentry open a sign-in window instead. |
 | Paste | Paste whatever a server's instructions say. That can be JSON for Claude Desktop, Cursor, VS Code, Windsurf, Gemini CLI, LM Studio, or Zed, a fragment of it, one server object, a web address, a command line, or a `claude mcp add` line. Placeholders such as `<your-api-key>` or `YOUR_TOKEN_HERE` become fields to fill in. |
-| From your other apps | Servers you already set up in Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, or LM Studio on this computer. Yggdrasil reads them from the app again when you add one, so their secrets never pass through the browser. |
+| From your other apps | Servers you already set up in Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, or LM Studio on this computer. Toskar reads them from the app again when you add one, so their secrets never pass through the browser. |
 | Custom | A command to run, or a web address, with environment variables or headers. |
 
 Nothing is stored if the server cannot be reached. The error says what to do: install Node.js or uv, check a key, or try again because the first start downloads the server. The exception is a service that needs a sign-in. It is kept, marked **Sign in to use it**, so the sign-in can finish it.
 
-`npx mcp-remote <address>` entries, which apps without remote support use to reach a web server, are turned into a direct connection. Yggdrasil's own sign-in is used, and no Node.js process runs.
+`npx mcp-remote <address>` entries, which apps without remote support use to reach a web server, are turned into a direct connection. Toskar's own sign-in is used, and no Node.js process runs.
 
 ### The gallery
 
@@ -54,9 +54,9 @@ Tool source tools join the catalog as `<source>.<tool>`, such as `linear.list_is
 
 ## Running them
 
-A server on this computer starts when one of its tools is first needed. It stops after 10 minutes unused, the way models unload. Its tool list is kept, so restarting Yggdrasil starts nothing. A server that changes its tool list while running is listed again.
+A server on this computer starts when one of its tools is first needed. It stops after 10 minutes unused, the way models unload. Its tool list is kept, so restarting Toskar starts nothing. A server that changes its tool list while running is listed again.
 
-Yggdrasil looks for `npx`, `uvx`, `docker`, and other programs on `PATH`, and also in the usual install folders: Homebrew, `~/.local/bin`, nvm, Volta, Bun, and Cargo. This means a daemon started by launchd or systemd still finds them. A server gets only the environment it needs to run, such as `HOME`, `PATH`, the locale, and proxy settings, plus the variables you gave it. Anything else in Yggdrasil's environment stays out. Stopping a server also stops the processes it started.
+Toskar looks for `npx`, `uvx`, `docker`, and other programs on `PATH`, and also in the usual install folders: Homebrew, `~/.local/bin`, nvm, Volta, Bun, and Cargo. This means a daemon started by launchd or systemd still finds them. A server gets only the environment it needs to run, such as `HOME`, `PATH`, the locale, and proxy settings, plus the variables you gave it. Anything else in Toskar's environment stays out. Stopping a server also stops the processes it started.
 
 Remote servers use Streamable HTTP. A server that only speaks the older HTTP+SSE transport is detected and used that way. A server that forgets its session is reconnected, and the call runs again.
 
@@ -70,16 +70,16 @@ Keys, tokens, passwords, connection strings with a password, and every header ar
 
 Services that use MCP's OAuth sign-in are added by signing in in a browser window:
 
-1. Yggdrasil finds the service's sign-in from its protected resource metadata (RFC 9728) and authorization server metadata (RFC 8414). Services from before RFC 9728 use their address's `/authorize` and `/token`.
+1. Toskar finds the service's sign-in from its protected resource metadata (RFC 9728) and authorization server metadata (RFC 8414). Services from before RFC 9728 use their address's `/authorize` and `/token`.
 2. It registers itself as an app (RFC 7591), unless you gave a client ID under Custom.
-3. You sign in and choose what Yggdrasil may use. The code is exchanged with PKCE (S256) and a resource indicator (RFC 8707).
-4. The browser returns to `/mcp/oauth/callback` on Yggdrasil's own address. A one-time state value, valid for 15 minutes, protects it. The window closes, and the card shows the tools.
+3. You sign in and choose what Toskar may use. The code is exchanged with PKCE (S256) and a resource indicator (RFC 8707).
+4. The browser returns to `/mcp/oauth/callback` on Toskar's own address. A one-time state value, valid for 15 minutes, protects it. The window closes, and the card shows the tools.
 
 Access tokens are refreshed before they expire. **Sign out** forgets the tokens.
 
-Calls to a tool source on the web are recorded under Settings → What left this computer, as connected services are. A tool source on this computer is not sent anything by Yggdrasil, but the server itself may reach its service; Brave Search does.
+Calls to a tool source on the web are recorded under Settings → What left this computer, as connected services are. A tool source on this computer is not sent anything by Toskar, but the server itself may reach its service; Brave Search does.
 
-## Yggdrasil as an MCP server
+## Toskar as an MCP server
 
 `/mcp` on the API's address is an MCP server over Streamable HTTP. It offers three tools:
 
@@ -89,9 +89,9 @@ Calls to a tool source on the web are recorded under Settings → What left this
 | `list_local_models` | Auto, the installed chat models, and deployed specialized AIs. |
 | `search_my_knowledge` | Passages from connected knowledge (Mimir) that match a query. |
 
-**API Access → Use Yggdrasil in other AI apps** gives the settings for Claude Desktop, Claude Code, Cursor, VS Code, and other apps, ready to copy. Apps that start a program, such as Claude Desktop, use `toskarctl mcp`. It is a bridge that passes each message to `/mcp`. `TOSKAR_URL` sets the address and `TOSKAR_API_KEY` the key. Existing settings that run `yggctl mcp` with `YGGDRASIL_URL` and `YGGDRASIL_API_KEY` keep working. If Yggdrasil is not running, the app is told so. The settings name the server `toskar`, and the server introduces itself as Toskar. Entries made earlier under the name `yggdrasil` keep working; there is no need to add the new one beside them.
+**API Access → Use Toskar in other AI apps** gives the settings for Claude Desktop, Claude Code, Cursor, VS Code, and other apps, ready to copy. Apps that start a program, such as Claude Desktop, use `toskarctl mcp`. It is a bridge that passes each message to `/mcp`. `TOSKAR_URL` sets the address and `TOSKAR_API_KEY` the key. Existing settings that run `yggctl mcp` with `YGGDRASIL_URL` and `YGGDRASIL_API_KEY` keep working. If Toskar is not running, the app is told so. The settings name the server `toskar`, and the server introduces itself as Toskar. Entries made earlier under the name `yggdrasil` keep working; there is no need to add the new one beside them.
 
-`/mcp` is checked like `/v1`. On this computer a key is optional. When the API is open to the network a key is required, and the key's permissions for knowledge, memory, and tools apply. A request that carries an `Origin` header from any site other than Yggdrasil's own page is refused, so a web page cannot use your local AI through your browser.
+`/mcp` is checked like `/v1`. On this computer a key is optional. When the API is open to the network a key is required, and the key's permissions for knowledge, memory, and tools apply. A request that carries an `Origin` header from any site other than Toskar's own page is refused, so a web page cannot use your local AI through your browser.
 
 ## API
 
@@ -109,7 +109,7 @@ Calls to a tool source on the web are recorded under Settings → What left this
 | GET | `/api/v1/mcp/import` | Servers in other apps on this computer, secrets hidden |
 | POST | `/api/v1/mcp/parse` | Read pasted text (`{"text"}`) into specs and what each still needs |
 | GET | `/api/v1/mcp/share` | The address and command other apps use |
-| POST, DELETE | `/mcp` | Yggdrasil's MCP server |
+| POST, DELETE | `/mcp` | Toskar's MCP server |
 | GET | `/mcp/oauth/callback` | Where a sign-in returns |
 
 Tool sources are stored in the `mcp_servers` table (migration 020) without secret values.

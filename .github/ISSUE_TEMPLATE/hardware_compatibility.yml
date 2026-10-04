@@ -1,12 +1,12 @@
 name: Hardware compatibility
-description: Report how Yggdrasil Core behaves on a specific computer.
+description: Report how Toskar Core behaves on a specific computer.
 title: "[Hardware]: "
 labels: ["hardware"]
 body:
   - type: markdown
     attributes:
       value: |
-        Hardware reports are contributions. They show which machines Yggdrasil Core has actually been tried on.
+        Hardware reports are contributions. They show which machines Toskar Core has actually been tried on.
         Remove private hostnames and addresses if you do not want them public.
   - type: dropdown
     id: result
@@ -70,7 +70,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Yggdrasil version
+      label: Toskar version
     validations:
       required: true
   - type: input

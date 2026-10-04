@@ -3,7 +3,7 @@ name: Screenshots
 # Captures the README screenshots, the walkthrough, and the App Store images
 # from demo data. Run by the Release workflow after a release is published,
 # which attaches the README screenshots and the walkthrough to the release so
-# yggdrasil.yeix.io shows the ones that match it. Run it by hand with a tag
+# toskar.ai shows the ones that match it. Run it by hand with a tag
 # to attach them to an existing release, or without one to only capture.
 
 on:

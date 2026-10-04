@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "title": "Yggdrasil",
-  "description": "Run private AI on the hardware you already own. Yggdrasil Desktop is the packaged app. Yggdrasil Core is the open-source engine behind it.",
-  "layoutDescription": "Yggdrasil Desktop is the packaged local-AI app. Yggdrasil Core is the open-source headless engine: a daemon, a local web UI, and an HTTP API.",
-  "footer": "Yggdrasil Desktop and Yggdrasil Core, from Yeix.",
+  "title": "Toskar",
+  "description": "Run private AI on the hardware you already own. Toskar Desktop is the packaged app. Toskar Core is the open-source engine behind it.",
+  "layoutDescription": "Toskar Desktop is the packaged local-AI app. Toskar Core is the open-source headless engine: a daemon, a local web UI, and an HTTP API.",
+  "footer": "Toskar Desktop and Toskar Core, from Yeix.",
   "issuesLabel": "Core issues",
   "about": {
     "eyebrow": "Local AI",
     "headline": "Your computers. Your models. Your AI.",
-    "lead": "Run private AI on the hardware you already own. Yggdrasil recommends models that fit, connects your computers, and handles the infrastructure so you can just use it.",
+    "lead": "Run private AI on the hardware you already own. Toskar recommends models that fit, connects your computers, and handles the infrastructure so you can just use it.",
     "highlights": [
       {
         "title": "Stays on your machines",
@@ -20,7 +20,7 @@
       },
       {
         "title": "An open engine",
-        "text": "Yggdrasil Core is AGPL-3.0-or-later. Desktop is a separate product and is not in the Core packages."
+        "text": "Toskar Core is AGPL-3.0-or-later. Desktop is a separate product and is not in the Core packages."
       }
     ],
     "shots": [
@@ -58,8 +58,8 @@
   },
   "download": {
     "title": "Download",
-    "description": "Yggdrasil Desktop is the packaged app. This page lists Yggdrasil Core packages: Homebrew, headless archives, apt, deb, and rpm.",
-    "intro": "Yggdrasil Desktop is not in this list. The files below are Yggdrasil Core, the open-source engine. macOS can install Core with Homebrew. Debian and Ubuntu can use apt. The release files are headless archives and Linux packages, not the Desktop app.",
+    "description": "Toskar Desktop is the packaged app. This page lists Toskar Core packages: Homebrew, headless archives, apt, deb, and rpm.",
+    "intro": "Toskar Desktop is not in this list. The files below are Toskar Core, the open-source engine. macOS can install Core with Homebrew. Debian and Ubuntu can use apt. The release files are headless archives and Linux packages, not the Desktop app.",
     "empty": "No Core packages are listed right now.",
     "issuesPrompt": "Found a bug in Core or want something added?"
   }

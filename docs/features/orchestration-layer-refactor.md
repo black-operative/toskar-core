@@ -1,4 +1,4 @@
-# Yggdrasil Core — Orchestration Layer Refactor
+# Toskar Core — Orchestration Layer Refactor
 
 ## Feature Specification
 
@@ -13,18 +13,18 @@
 
 ## 1. Product Goal
 
-Yggdrasil should not require a normal user to understand model routing, tool selection, agent roles, context budgets, memory retrieval, retries, fallback models, parallelism, verification passes, execution nodes, or runtime placement.
+Toskar should not require a normal user to understand model routing, tool selection, agent roles, context budgets, memory retrieval, retries, fallback models, parallelism, verification passes, execution nodes, or runtime placement.
 
 The default experience should be:
 
 ```text
-Install Yggdrasil
+Install Toskar
       ↓
 Choose or install a model
       ↓
 Ask for something
       ↓
-Yggdrasil figures out how to accomplish it
+Toskar figures out how to accomplish it
 ```
 
 > **The default orchestrator should be invisible, adaptive, and good enough that most users never need to configure it.**
@@ -127,7 +127,7 @@ Owns health/reliability signals:
 Recommended conceptual default:
 
 ```text
-Yggdrasil Default
+Toskar Default
 
 Model selection:       Auto
 Tool selection:        Auto
@@ -626,7 +626,7 @@ Preferred nodes
 Denied nodes
 Prefer local node
 Prefer fastest node
-Allow remote Yggdrasil nodes
+Allow remote Toskar nodes
 Retry count
 Fallback models
 Fallback nodes
@@ -707,7 +707,7 @@ Best balance of continuity and accuracy.
 The current boilerplate default should become an intelligent system profile:
 
 ```text
-Yggdrasil Default
+Toskar Default
 
 Model policy:      Auto
 Tool policy:       Auto within permissions
@@ -735,7 +735,7 @@ Consider making the system default:
 Example:
 
 ```text
-Yggdrasil Default
+Toskar Default
 [Duplicate] [Reset to defaults]
 ```
 
@@ -1037,7 +1037,7 @@ Migration should:
 
 The refactor is successful when:
 
-1. A new user can use Yggdrasil without configuring a profile.
+1. A new user can use Toskar without configuring a profile.
 2. The default profile performs automatic orchestration.
 3. Simple requests remain simple and fast.
 4. Complex requests can escalate to planning, tools, workers, or verification.
@@ -1074,7 +1074,7 @@ The desired end state is:
 ```text
 Normal user
    ↓
-Ask Yggdrasil
+Ask Toskar
    ↓
 Automatic orchestration
    ↓
@@ -1100,4 +1100,4 @@ Execution policy
 
 The orchestration system should become more capable without making the normal product feel more complicated.
 
-> **Complexity belongs inside Yggdrasil unless the user explicitly asks to control it.**
+> **Complexity belongs inside Toskar unless the user explicitly asks to control it.**

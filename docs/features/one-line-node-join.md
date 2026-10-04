@@ -1,36 +1,36 @@
-# Yggdrasil Core — One-Line Node Join
+# Toskar Core — One-Line Node Join
 
 ## Feature Specification — V1
 
 ### Status
 
 **Type:** Feature  
-**Target:** Yggdrasil Core / Bifrost  
-**Primary goal:** Make adding a computer to an existing Yggdrasil network as easy as joining a K3s node to a cluster.
+**Target:** Toskar Core / Bifrost  
+**Primary goal:** Make adding a computer to an existing Toskar network as easy as joining a K3s node to a cluster.
 
 ---
 
 ## 1. Goal
 
-A user should be able to add a new computer to an existing Yggdrasil network with a single command.
+A user should be able to add a new computer to an existing Toskar network with a single command.
 
 Typical workflow:
 
-1. Open Yggdrasil on an existing trusted computer.
+1. Open Toskar on an existing trusted computer.
 2. Generate a temporary join command.
 3. SSH into the new computer.
 4. Paste the command.
-5. The new computer installs/configures Core if needed, securely joins the Yggdrasil network, and becomes available to Norn.
+5. The new computer installs/configures Core if needed, securely joins the Toskar network, and becomes available to Norn.
 
 The experience should feel like:
 
 ```bash
-curl -sfL https://yggdrasil.yeix.io/install.sh | sh -s -- join \
+curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh -s -- join \
   --server https://192.168.1.10:7332 \
   --token ygj_abc123...
 ```
 
-or, if Yggdrasil Core is already installed:
+or, if Toskar Core is already installed:
 
 ```bash
 sudo toskar join \
@@ -46,7 +46,7 @@ The exact syntax may evolve, but the product requirement is:
 
 ## 2. Why This Matters
 
-Yggdrasil's central product goal is to make local AI feel as easy as SaaS AI.
+Toskar's central product goal is to make local AI feel as easy as SaaS AI.
 
 Today, multi-computer local AI can require users to understand:
 
@@ -59,7 +59,7 @@ Today, multi-computer local AI can require users to understand:
 - firewall rules,
 - peer configuration.
 
-That complexity directly conflicts with Yggdrasil's mission.
+That complexity directly conflicts with Toskar's mission.
 
 A one-line join flow turns:
 
@@ -95,7 +95,7 @@ Instead, the join flow should become a **non-interactive bootstrap path into Bif
 Conceptually:
 
 ```text
-Existing Yggdrasil Network
+Existing Toskar Network
         │
         │ generate join token
         ▼
@@ -110,7 +110,7 @@ New Node
 Bifrost Trust Establishment
         │
         ▼
-Normal Paired Yggdrasil Node
+Normal Paired Toskar Node
 ```
 
 Once joining is complete, the temporary token is no longer used.
@@ -132,9 +132,9 @@ toskarctl join-token create
 Example output:
 
 ```text
-Join a computer to this Yggdrasil network:
+Join a computer to this Toskar network:
 
-curl -sfL https://yggdrasil.yeix.io/install.sh | sh -s -- join \
+curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh -s -- join \
   --server https://192.168.1.10:7332 \
   --token ygj_7PH4W8J2K6...
 
@@ -204,7 +204,7 @@ The join system should follow these rules:
 Introduce a temporary bootstrap credential:
 
 ```text
-Yggdrasil Join Token
+Toskar Join Token
 ```
 
 Example format:
@@ -225,7 +225,7 @@ The token should be:
 
 The raw token should be shown only when created.
 
-Yggdrasil should never log the full token.
+Toskar should never log the full token.
 
 ---
 
@@ -274,7 +274,7 @@ Advanced options can come later.
 
 A join token should authorize only:
 
-> "Enroll one new Yggdrasil node into this network."
+> "Enroll one new Toskar node into this network."
 
 It should **not** authorize:
 
@@ -399,7 +399,7 @@ toskarctl join-token create --print-command
 Potential output:
 
 ```bash
-curl -sfL https://yggdrasil.yeix.io/install.sh | \
+curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | \
   sudo sh -s -- join \
   --server https://10.0.0.5:7332 \
   --token ygj_7PH4W8J2K6 \
@@ -433,7 +433,7 @@ The best user experience eventually combines installation and joining.
 Example:
 
 ```bash
-curl -sfL https://yggdrasil.yeix.io/install.sh | \
+curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | \
   sudo sh -s -- join \
   --server https://10.0.0.5:7332 \
   --token ygj_...
@@ -452,10 +452,10 @@ Installer responsibilities:
 Example completion:
 
 ```text
-✓ Yggdrasil Core installed
+✓ Toskar Core installed
 ✓ Connected to 10.0.0.5
 ✓ Node identity created
-✓ Joined Yggdrasil network "home"
+✓ Joined Toskar network "home"
 
 Node:
   name: gpu-box
@@ -508,7 +508,7 @@ The command should return a non-zero exit status on failure and produce useful t
 
 ## 16. Idempotency
 
-Running the join command on a node that is already part of the same Yggdrasil network should not corrupt its identity.
+Running the join command on a node that is already part of the same Toskar network should not corrupt its identity.
 
 Expected result:
 
@@ -517,12 +517,12 @@ This computer is already joined to "home".
 Node ID: node_9a12...
 ```
 
-If the node belongs to a different Yggdrasil network, do not silently replace trust.
+If the node belongs to a different Toskar network, do not silently replace trust.
 
 Example:
 
 ```text
-This computer is already paired with another Yggdrasil network.
+This computer is already paired with another Toskar network.
 
 Use:
   toskarctl leave
@@ -694,12 +694,12 @@ Static peers may still be supported as an advanced/manual mechanism.
 
 ## 22. Controller / Network Identity
 
-The one-line join feature makes it useful to formalize the concept of a Yggdrasil network identity.
+The one-line join feature makes it useful to formalize the concept of a Toskar network identity.
 
 Conceptually:
 
 ```text
-Yggdrasil Network
+Toskar Network
   id
   name
   trust root / network identity
@@ -716,7 +716,7 @@ V1 can use the node on which the join token was generated as the bootstrap autho
 
 ## 23. Multi-Controller Future
 
-Future Yggdrasil networks may have more than one trusted node capable of issuing joins.
+Future Toskar networks may have more than one trusted node capable of issuing joins.
 
 Potential behavior:
 
@@ -794,7 +794,7 @@ node.revoked
 
 ## 26. Security Against Token Theft
 
-A join token is effectively a temporary invitation to the Yggdrasil network.
+A join token is effectively a temporary invitation to the Toskar network.
 
 Mitigations:
 
@@ -847,7 +847,7 @@ Examples:
 ```text
 Join failed: this join token has expired.
 
-Generate a new join command from an existing Yggdrasil computer.
+Generate a new join command from an existing Toskar computer.
 ```
 
 ### Used token
@@ -870,7 +870,7 @@ No credentials were sent.
 ### Server unreachable
 
 ```text
-Could not reach Yggdrasil at 10.0.0.5:7332.
+Could not reach Toskar at 10.0.0.5:7332.
 
 Check:
 - the server address
@@ -915,7 +915,7 @@ Windows should have an equivalent PowerShell one-liner.
 Example conceptual form:
 
 ```powershell
-irm https://yggdrasil.yeix.io/install.ps1 | iex
+irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex
 ```
 
 The final implementation should not copy insecure command patterns merely for visual similarity; arguments and execution flow must be designed carefully.
@@ -952,7 +952,7 @@ toskarctl join ... --output json
 
 ## 32. Kubernetes Relationship
 
-Kubernetes-native Yggdrasil deployment is a separate feature.
+Kubernetes-native Toskar deployment is a separate feature.
 
 However, one-line join could be useful for:
 
@@ -960,7 +960,7 @@ However, one-line join could be useful for:
 - edge workers,
 - hybrid clusters,
 - automatically enrolling machines before installing K3s/Kubernetes,
-- Yggdrasil Grid experiments.
+- Toskar Grid experiments.
 
 Do not make Kubernetes a dependency of the join flow.
 
@@ -968,13 +968,13 @@ Do not make Kubernetes a dependency of the join flow.
 
 ## 33. Grid Relationship
 
-The future Yggdrasil Grid depends on easy node enrollment.
+The future Toskar Grid depends on easy node enrollment.
 
 A future experience might be:
 
 ```text
 Machine A
-Yggdrasil Core installed
+Toskar Core installed
 
 Generate join command
       ↓
@@ -987,7 +987,7 @@ paste command
 
       ↓
 
-Yggdrasil Team
+Toskar Team
 3 computers
 
       ↓
@@ -1027,7 +1027,7 @@ toskarctl network status
 toskarctl leave
 ```
 
-Exact CLI naming should follow the existing Yggdrasil CLI conventions before implementation.
+Exact CLI naming should follow the existing Toskar CLI conventions before implementation.
 
 ---
 
@@ -1082,7 +1082,7 @@ Do not require:
 
 - public Internet relay,
 - cloud account,
-- central hosted Yggdrasil service,
+- central hosted Toskar service,
 - Kubernetes,
 - multi-controller consensus,
 - role-based enrollment policies,
@@ -1154,7 +1154,7 @@ Add:
 
 The feature is complete when:
 
-1. A user can generate a join command from an existing Yggdrasil network.
+1. A user can generate a join command from an existing Toskar network.
 2. The command contains everything needed for the normal join case.
 3. The user can SSH into a new supported machine and paste the command.
 4. No manual certificate copying is required.
@@ -1170,7 +1170,7 @@ The feature is complete when:
 14. The node reconnects after restart without repeating the join process.
 15. The node becomes visible to Norn as a normal compute target.
 16. Re-running the command on an already joined node is safe.
-17. A node cannot silently replace membership in another Yggdrasil network.
+17. A node cannot silently replace membership in another Toskar network.
 18. Unused join tokens can be revoked.
 19. Failures return useful terminal messages and non-zero exit codes.
 20. Joining works without mDNS or a GUI on the remote node.
@@ -1179,14 +1179,14 @@ The feature is complete when:
 
 ## 40. Product Outcome
 
-The feature succeeds when adding a server to Yggdrasil feels like adding a K3s worker:
+The feature succeeds when adding a server to Toskar feels like adding a K3s worker:
 
 ```text
 SSH to computer
         ↓
 Paste one command
         ↓
-Computer appears in Yggdrasil
+Computer appears in Toskar
         ↓
 Done
 ```

@@ -69,7 +69,7 @@ EOF
     cat >> "$cfg" <<EOF
 maintainer: YEIXIO LLC <hello@yeix.io>
 description: Local AI daemon and web UI
-homepage: https://yggdrasil.yeix.io
+homepage: https://toskar.ai
 license: AGPL-3.0-or-later
 contents:
   - src: ${ROOT}/${stage}/toskar
@@ -146,7 +146,7 @@ EOF
     cat >> "$cfg" <<EOF
 maintainer: YEIXIO LLC <hello@yeix.io>
 description: Transitional package for toskar. Yggdrasil is now Toskar; this package can be removed.
-homepage: https://yggdrasil.yeix.io
+homepage: https://toskar.ai
 license: AGPL-3.0-or-later
 section: oldlibs
 contents:

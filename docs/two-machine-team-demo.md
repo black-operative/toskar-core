@@ -15,7 +15,7 @@ With desktop **A** and laptop **B** on the same LAN:
 
 ## Prerequisites
 
-- Yggdrasil installed (or running from source) on both machines.
+- Toskar installed (or running from source) on both machines.
 - Discovery enabled on both.
 - At least one GGUF model installed where roles need it:
   - **Same model on both** + pin worker → B, **or**
@@ -26,7 +26,7 @@ With desktop **A** and laptop **B** on the same LAN:
 
 ### 1. Pair A and B
 
-1. Open Yggdrasil on A and B.
+1. Open Toskar on A and B.
 2. Enable discovery if prompted.
 3. On A, find B in the cluster/nodes UI and start pairing.
 4. On B, approve the incoming offer.

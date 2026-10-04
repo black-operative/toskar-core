@@ -1,10 +1,10 @@
-# Yggdrasil Code of Conduct
+# Toskar Code of Conduct
 
 ## Our Commitment
 
-We are committed to making participation in the Yggdrasil community a welcoming, respectful, and productive experience for everyone, regardless of experience level, background, identity, or circumstance.
+We are committed to making participation in the Toskar community a welcoming, respectful, and productive experience for everyone, regardless of experience level, background, identity, or circumstance.
 
-Yggdrasil is built around experimentation, collaboration, and making local AI accessible across a wide range of hardware and platforms. We welcome developers, testers, documentation contributors, hardware enthusiasts, researchers, and users of all experience levels.
+Toskar is built around experimentation, collaboration, and making local AI accessible across a wide range of hardware and platforms. We welcome developers, testers, documentation contributors, hardware enthusiasts, researchers, and users of all experience levels.
 
 Participation in this project should be constructive, professional, and respectful.
 
@@ -42,7 +42,7 @@ Examples of unacceptable behavior include:
 
 ## Technical Discussions
 
-Yggdrasil deals with operating systems, AI models, hardware, networking, model runtimes, performance, and other areas where reasonable technical disagreements are common.
+Toskar deals with operating systems, AI models, hardware, networking, model runtimes, performance, and other areas where reasonable technical disagreements are common.
 
 Contributors are encouraged to challenge ideas.
 
@@ -95,11 +95,11 @@ Do not publicly disclose an exploitable vulnerability before maintainers have ha
 
 Security vulnerabilities should be reported using the process described in `SECURITY.md`.
 
-Attempts to exploit other users, access systems without authorization, expose credentials, or intentionally damage Yggdrasil installations are not considered good-faith research.
+Attempts to exploit other users, access systems without authorization, expose credentials, or intentionally damage Toskar installations are not considered good-faith research.
 
 ## Project Spaces
 
-This Code of Conduct applies to official Yggdrasil community spaces, including:
+This Code of Conduct applies to official Toskar community spaces, including:
 
 - GitHub Issues;
 - GitHub Discussions;
@@ -109,7 +109,7 @@ This Code of Conduct applies to official Yggdrasil community spaces, including:
 - official community channels;
 - other spaces operated by the project.
 
-It may also apply when someone is publicly representing the Yggdrasil project or community.
+It may also apply when someone is publicly representing the Toskar project or community.
 
 ## Enforcement
 
@@ -172,7 +172,7 @@ A technical disagreement or rejected contribution is not, by itself, a Code of C
 
 ## Attribution
 
-This Code of Conduct is informed by the Contributor Covenant and adapted for the Yggdrasil open-source project.
+This Code of Conduct is informed by the Contributor Covenant and adapted for the Toskar open-source project.
 
 For more information about the Contributor Covenant:
 

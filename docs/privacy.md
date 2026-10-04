@@ -1,6 +1,6 @@
 # Privacy
 
-Yggdrasil Core does not send usage telemetry by default.
+Toskar Core does not send usage telemetry by default.
 
 A search of this repository found no analytics or crash-reporting client (no Sentry, PostHog, Mixpanel, Amplitude, Google Analytics, or a metrics upload). The `internal/tools/plausible.go` file checks whether a tool call looks like a real path or command. It is not the Plausible analytics product. Metrics stored by the daemon stay in the local SQLite database.
 
@@ -8,7 +8,7 @@ If that changes, this document should name what is collected, where it is sent, 
 
 ## What is stored on this computer
 
-Everything Yggdrasil keeps is in the data directory. [Configuration](configuration.md#data-directory) lists every path. In short:
+Everything Toskar keeps is in the data directory. [Configuration](configuration.md#data-directory) lists every path. In short:
 
 | Path | Contents |
 | --- | --- |
@@ -31,7 +31,7 @@ The diagnostic bundle is written to omit secrets, private keys, and API key mate
 
 ## Encryption
 
-Yggdrasil does not encrypt its own files, and encryption is not required to use it.
+Toskar does not encrypt its own files, and encryption is not required to use it.
 
 - **At rest:** the database, `artifacts/`, `knowledge/`, and the other files above are plain files on disk. `secrets/` is readable only by your user account (`0700`/`0600`), and API keys are bcrypt hashes. Turn on full-disk encryption to keep everything encrypted while the computer is off or locked: FileVault on macOS, BitLocker or Device Encryption on Windows, and LUKS on Linux.
 - **To the internet:** web search, page reads, model and runtime downloads, community ratings, and the built-in services use HTTPS. Addresses you enter, such as an external server, a webhook, an MCP server, or your own map services, are encrypted when they use `https://`. Email requires TLS or STARTTLS except for a mail server on this computer.

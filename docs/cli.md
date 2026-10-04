@@ -1,8 +1,8 @@
 # Command line
 
-Yggdrasil Core installs two programs:
+Toskar Core installs two programs:
 
-- **`toskar`** runs Yggdrasil: the API, the web UI, models, schedules, and the connection to other computers.
+- **`toskar`** runs Toskar: the API, the web UI, models, schedules, and the connection to other computers.
 - **`toskarctl`** talks to a running daemon from a terminal or a script.
 
 Their names from before the rename, `yggdrasil-daemon` and `yggctl`, are installed as links to them, so launchd agents, scripts, and MCP settings that run the old names keep working. The join command one computer prints for another says `yggctl join`, which works on that computer whatever version it runs.
@@ -36,10 +36,10 @@ How it is started depends on how it was installed:
 | `toskarctl version` (or `about`) | Version, license, and corresponding source |
 | `toskarctl paths` | Default data, model, runtime, log, and database paths |
 | `toskarctl automations …` | Manage scheduled automations (below) |
-| `toskarctl mcp` | Let an app that starts MCP servers as programs, such as Claude Desktop, use Yggdrasil (below) |
+| `toskarctl mcp` | Let an app that starts MCP servers as programs, such as Claude Desktop, use Toskar (below) |
 | `toskarctl join-token create [--ttl 15m]` | Make a one-time join token and print the command that adds a computer to this network ([Clustering](clustering.md#joining-with-one-command)) |
 | `toskarctl join-token list`, `revoke <id>` | List recent join tokens, or stop an unused one |
-| `toskarctl join --server … --token … --fingerprint … [--name …] [--wait 60s]` | Join this computer to the network that made the command, optionally renaming it, and waiting for Yggdrasil to start. Exits 0 when joined or already joined, 1 when refused, 2 for a usage error |
+| `toskarctl join --server … --token … --fingerprint … [--name …] [--wait 60s]` | Join this computer to the network that made the command, optionally renaming it, and waiting for Toskar to start. Exits 0 when joined or already joined, 1 when refused, 2 for a usage error |
 | `toskarctl network` | This computer's address, fingerprint, network, and paired computers |
 | `toskarctl leave` | Leave the network: tell each paired computer, then forget them all |
 | `toskarctl completion <bash\|zsh\|fish>` | Print a shell completion script |
@@ -76,7 +76,7 @@ toskarctl automations delete AUTOMATION_ID
 
 ### MCP bridge
 
-Apps such as Claude Desktop start MCP servers as programs. `toskarctl mcp` is that program: it reads MCP messages on standard input, sends each to the daemon's `/mcp` endpoint, and writes the replies to standard output. API Access → **Use Yggdrasil in other AI apps** shows the exact configuration to paste for Claude Desktop, Claude Code, Cursor, VS Code, and other apps. See [MCP](mcp.md).
+Apps such as Claude Desktop start MCP servers as programs. `toskarctl mcp` is that program: it reads MCP messages on standard input, sends each to the daemon's `/mcp` endpoint, and writes the replies to standard output. API Access → **Use Toskar in other AI apps** shows the exact configuration to paste for Claude Desktop, Claude Code, Cursor, VS Code, and other apps. See [MCP](mcp.md).
 
 ### Shell completion
 

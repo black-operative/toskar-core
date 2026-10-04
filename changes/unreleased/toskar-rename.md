@@ -1,0 +1,4 @@
+### Changed
+
+- **Yggdrasil is now Toskar.** The engine is Toskar Core, and the apps are Toskar Desktop and Toskar Mobile; the site is [toskar.ai](https://toskar.ai). Yggdrasil stays in the story, as the world tree Ratatoskr runs along, and Toskar is named after him. An existing install keeps working without changes: its data folder and database, `YGGDRASIL_*` environment variables, `yggdrasil-daemon` and `yggctl`, `ygg_` API keys and `ygj_` join tokens, the `Yggdrasil-*` headers, the OpenAI `yggdrasil` object, MCP settings that name `yggdrasil`, the `yggdrasil.service` name, and pairing with computers on 1.5.0 all still work. The `product` field in `/health`, `/about`, and `/version` stays `Yggdrasil`, and `owned_by` in `/v1/models` stays `yggdrasil`, within contract 1.x.
+- The docs, README, user guide, API description, and project policies say Toskar, and links point to toskar.ai.

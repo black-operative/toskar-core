@@ -1,6 +1,6 @@
 # Support
 
-Use this repository for Yggdrasil Core. Desktop and mobile applications are separate products. File core bugs here when the daemon, web UI, API, runtime, or pairing is what failed.
+Use this repository for Toskar Core. Desktop and mobile applications are separate products. File core bugs here when the daemon, web UI, API, runtime, or pairing is what failed.
 
 | You want | Where |
 | --- | --- |
@@ -25,4 +25,4 @@ GitHub Issues are the queue for bugs and actionable requests. GitHub Discussions
 
 There is no separate chat server for this project.
 
-Published builds are listed at [yggdrasil.yeix.io/download](https://yggdrasil.yeix.io/download).
+Published builds are listed at [toskar.ai/download](https://toskar.ai/download).

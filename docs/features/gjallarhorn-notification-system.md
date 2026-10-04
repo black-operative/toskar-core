@@ -1,4 +1,4 @@
-# Yggdrasil Core — Gjallarhorn Notification System
+# Toskar Core — Gjallarhorn Notification System
 
 ## Feature Specification — V1
 
@@ -6,13 +6,13 @@
 
 **Type:** Platform Feature  
 **Subsystem name:** Gjallarhorn  
-**Primary goal:** Provide a durable, privacy-conscious notification and delivery system for Yggdrasil automations, health events, approvals, long-running jobs, and other background activity.
+**Primary goal:** Provide a durable, privacy-conscious notification and delivery system for Toskar automations, health events, approvals, long-running jobs, and other background activity.
 
 ---
 
 ## 1. Goal
 
-Yggdrasil needs a first-class notification subsystem because scheduled jobs, condition watches, long-running tasks, health monitoring, training, downloads, and remote workflows may complete or fail when the user is not actively looking at the application.
+Toskar needs a first-class notification subsystem because scheduled jobs, condition watches, long-running tasks, health monitoring, training, downloads, and remote workflows may complete or fail when the user is not actively looking at the application.
 
 The scheduler should not own email, push, webhook, or desktop-notification logic directly.
 
@@ -40,7 +40,7 @@ Gjallarhorn
 
 The product principle is:
 
-> **Yggdrasil should notify users when something matters without forcing every subsystem to implement its own delivery logic.**
+> **Toskar should notify users when something matters without forcing every subsystem to implement its own delivery logic.**
 
 ---
 
@@ -64,7 +64,7 @@ Potential producers include:
 - remote access events,
 - security events.
 
-If each feature implements delivery separately, Yggdrasil will accumulate duplicated logic for:
+If each feature implements delivery separately, Toskar will accumulate duplicated logic for:
 
 - retries,
 - email delivery,
@@ -88,7 +88,7 @@ Recommended subsystem name:
 
 Gjallarhorn is Heimdall's horn in Norse mythology and is used to signal important events.
 
-That maps cleanly to the Yggdrasil subsystem model:
+That maps cleanly to the Toskar subsystem model:
 
 ```text
 Norn       scheduling / placement
@@ -105,7 +105,7 @@ Gjallarhorn notifications / delivery
 
 ## 4. Notification as a Durable Object
 
-Every user-facing notification should first become a durable Yggdrasil notification.
+Every user-facing notification should first become a durable Toskar notification.
 
 Delivery channels are secondary.
 
@@ -144,7 +144,7 @@ Automation completed
       ↓
 Create Notification
       ↓
-Store in Yggdrasil
+Store in Toskar
       ↓
 Fan out to configured channels
 ```
@@ -304,22 +304,22 @@ They should not be the only record.
 
 ## 10. Mobile Push
 
-Mobile push is particularly important because scheduled jobs may run while Yggdrasil Mobile is not active.
+Mobile push is particularly important because scheduled jobs may run while Toskar Mobile is not active.
 
 Conceptual architecture:
 
 ```text
-Local Yggdrasil Core
+Local Toskar Core
         │
         │ outbound HTTPS
         ▼
-Yggdrasil Push Relay
+Toskar Push Relay
         │
         ▼
 APNs
         │
         ▼
-Yggdrasil Mobile
+Toskar Mobile
 ```
 
 The push relay should be narrowly scoped.
@@ -358,7 +358,7 @@ Tradeoff:
 Push contains only:
 
 ```text
-You have a new Yggdrasil notification.
+You have a new Toskar notification.
 ```
 
 Mobile retrieves the full notification from Core when connectivity is available.
@@ -396,7 +396,7 @@ TLS policy
 
 This preserves a fully self-hosted option.
 
-### Yggdrasil-managed relay
+### Toskar-managed relay
 
 Future optional hosted service:
 
@@ -931,7 +931,7 @@ Grid capacity degraded
 
 ## 34. Device Registration
 
-Yggdrasil Mobile should register a push destination.
+Toskar Mobile should register a push destination.
 
 Conceptual flow:
 
@@ -940,7 +940,7 @@ Mobile
   ↓
 APNs token
   ↓
-Yggdrasil Push Relay registration
+Toskar Push Relay registration
   ↓
 device destination ID
   ↓
@@ -953,7 +953,7 @@ Avoid exposing APNs device tokens directly to models or arbitrary tools.
 
 ## 35. Multiple Devices
 
-One Yggdrasil user/environment may have:
+One Toskar user/environment may have:
 
 ```text
 iPhone
@@ -1052,7 +1052,7 @@ Avoid retrying permanently invalid destinations indefinitely.
 
 ## 40. Self-Hosted Operation
 
-A user should be able to run Yggdrasil without Yeix.io-hosted notification infrastructure.
+A user should be able to run Toskar without Yeix.io-hosted notification infrastructure.
 
 Self-hosted paths:
 
@@ -1357,7 +1357,7 @@ Do not require:
 - notification marketplace,
 - rich mobile actions,
 - guaranteed remote retrieval of private push content,
-- mandatory Yggdrasil cloud accounts.
+- mandatory Toskar cloud accounts.
 
 These can be added later through providers/plugins.
 
@@ -1503,7 +1503,7 @@ other messaging systems
 
 The feature is complete when:
 
-1. Yggdrasil can persist a notification independently of delivery.
+1. Toskar can persist a notification independently of delivery.
 2. Notifications appear in an in-app Notification Center.
 3. Users can mark notifications read.
 4. Users can dismiss notifications.
@@ -1530,7 +1530,7 @@ The feature is complete when:
 
 Mobile push is complete when:
 
-1. Yggdrasil Mobile can register a push destination.
+1. Toskar Mobile can register a push destination.
 2. Core can request push delivery through the relay.
 3. Push delivery does not require an inbound connection to Core.
 4. APNs credentials are never exposed to Core users/models.
@@ -1578,4 +1578,4 @@ Gjallarhorn
 
 The user should not need to understand APNs, SMTP, retry queues, webhook signatures, or delivery-state machines.
 
-> **Yggdrasil decides when something matters. Gjallarhorn makes sure the user hears about it.**
+> **Toskar decides when something matters. Gjallarhorn makes sure the user hears about it.**

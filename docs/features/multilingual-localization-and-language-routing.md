@@ -1,11 +1,11 @@
-# Yggdrasil Core — Multilingual Localization and Language Routing
+# Toskar Core — Multilingual Localization and Language Routing
 
 ## Feature Specification
 
 ### Status
 
 **Type:** Product Experience / Internationalization / Model Capability  
-**Primary goal:** Make Yggdrasil usable in as many languages as reasonably possible across the application UI, assistant responses, model routing, retrieval, notifications, and connected workflows.
+**Primary goal:** Make Toskar usable in as many languages as reasonably possible across the application UI, assistant responses, model routing, retrieval, notifications, and connected workflows.
 
 **Primary subsystems:** Desktop/Mobile UI, Huginn, Muninn, Mimir, Gungnir, Norn, Gjallarhorn, Community Model Ratings.
 
@@ -13,14 +13,14 @@
 
 ## 1. Product Goal
 
-Yggdrasil should support multilingual users at three separate but coordinated layers:
+Toskar should support multilingual users at three separate but coordinated layers:
 
 ```text
 Application language
 → menus, buttons, dialogs, validation, dates, numbers, notifications
 
 Assistant language
-→ the language Yggdrasil understands and responds in
+→ the language Toskar understands and responds in
 
 Model language capability
 → how well a particular model performs in each language
@@ -29,7 +29,7 @@ Model language capability
 The default experience should be:
 
 ```text
-Install Yggdrasil
+Install Toskar
         ↓
 Detect system language
         ↓
@@ -82,7 +82,7 @@ Advanced message formatting if needed
 → ICU MessageFormat
 ```
 
-Yggdrasil should not build its own pluralization, locale fallback, or date/number system.
+Toskar should not build its own pluralization, locale fallback, or date/number system.
 
 ---
 
@@ -327,7 +327,7 @@ Do not require sending user content to an external translation service merely to
 
 Models are not equally strong across languages.
 
-Yggdrasil should track language capability as model metadata.
+Toskar should track language capability as model metadata.
 
 Conceptual:
 
@@ -552,7 +552,7 @@ Example:
 
 ```text
 Email body: original language
-Yggdrasil UI around it: localized
+Toskar UI around it: localized
 ```
 
 Credentials and connector permissions remain independent of language preferences.
@@ -810,7 +810,7 @@ Conceptual:
 
 ---
 
-# Part XVII — Related Yggdrasil Features
+# Part XVII — Related Toskar Features
 
 ## 32. Integration Points
 
@@ -1048,7 +1048,7 @@ Complete when:
 Target experience:
 
 ```text
-User installs Yggdrasil on a German Mac
+User installs Toskar on a German Mac
         ↓
 UI opens in German
         ↓
@@ -1062,7 +1062,7 @@ Muninn retrieves relevant context
         ↓
 Mimir can retrieve English or German knowledge
         ↓
-Yggdrasil answers naturally in German
+Toskar answers naturally in German
         ↓
 dates, numbers, notifications, and UI stay localized
 ```
@@ -1078,4 +1078,4 @@ Model: multilingual
 
 The user should not need to manually translate anything or understand which model/runtime makes that possible.
 
-> **Yggdrasil should make multilingual local AI feel automatic.**
+> **Toskar should make multilingual local AI feel automatic.**

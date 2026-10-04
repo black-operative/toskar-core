@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: Yggdrasil Control Plane API
+  title: Toskar Control Plane API
   version: 1.4.0
   description: >-
-    Local AI control plane API for Yggdrasil, its OpenAI-compatible routes, and its MCP server.
+    Local AI control plane API for Toskar, its OpenAI-compatible routes, and its MCP server.
     On the default loopback bind no key is needed. When the daemon listens on any other address,
     every /api/v1, /v1, and /mcp route needs Authorization: Bearer YOUR_API_KEY; /about and /source do not.
     Errors are {"error": {"code", "message", "details"}}. docs/api.md describes the behavior of each route.
@@ -828,14 +828,14 @@ paths:
           description: Nothing could be read
   /api/v1/mcp/share:
     get:
-      summary: The address and command other apps use to reach Yggdrasil's MCP server
+      summary: The address and command other apps use to reach Toskar's MCP server
       operationId: mcpShare
       responses:
         "200":
           description: Address, command, args, and whether a key is needed
   /mcp:
     post:
-      summary: Yggdrasil's MCP server (Streamable HTTP, JSON-RPC). Tools ask_local_ai, list_local_models, search_my_knowledge.
+      summary: Toskar's MCP server (Streamable HTTP, JSON-RPC). Tools ask_local_ai, list_local_models, search_my_knowledge.
       description: >-
         Checked like /v1. A request with an Origin header from another site is refused.
       operationId: mcpServer
@@ -1207,7 +1207,7 @@ paths:
           description: The chat failed; the message says why
   /api/v1/capabilities:
     get:
-      summary: "Capability inventory: what Yggdrasil can do right now"
+      summary: "Capability inventory: what Toskar can do right now"
       operationId: getCapabilities
       parameters:
         - name: ask
@@ -1498,8 +1498,8 @@ paths:
                       token: {type: string, description: "ygj_…, shown only now"}
                       server: {type: string, description: "This computer's Bifrost address, host:port"}
                       fingerprint: {type: string, description: "sha256: of this computer's public key"}
-                      command: {type: string, description: "yggctl join … for a computer with Yggdrasil installed"}
-                      install_command: {type: string, description: "Installs Yggdrasil on Linux or macOS, then joins"}
+                      command: {type: string, description: "yggctl join … for a computer with Toskar installed"}
+                      install_command: {type: string, description: "Installs Toskar on Linux or macOS, then joins"}
                       windows_command: {type: string, description: "The same in PowerShell"}
         "409":
           description: Other computers can't reach this one
@@ -1930,7 +1930,7 @@ paths:
                 $ref: "#/components/schemas/Error"
   /api/v1/profiles/{id}/reset:
     post:
-      summary: Put a built-in profile back to how Yggdrasil ships it
+      summary: Put a built-in profile back to how Toskar ships it
       operationId: resetProfile
       parameters:
         - name: id
@@ -5392,7 +5392,7 @@ components:
             server: {type: string, description: "Default https://ntfy.sh"}
             topic: {type: string, pattern: "^[A-Za-z0-9_-]{1,64}$"}
             content: {type: string, enum: [full, private], description: "private sends only a generic notice; the default on ntfy.sh"}
-            open_url: {type: string, description: This Yggdrasil's address; tapping a notification opens it there}
+            open_url: {type: string, description: This Toskar's address; tapping a notification opens it there}
         categories: {type: array, items: {type: string}, description: Empty receives every category}
         min_severity: {type: string, enum: [info, success, warning, error]}
         digest:

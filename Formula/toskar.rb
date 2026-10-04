@@ -1,7 +1,7 @@
 # Homebrew formula written by the core release workflow.
 class Toskar < Formula
   desc "Local AI daemon and web UI"
-  homepage "https://yggdrasil.yeix.io"
+  homepage "https://toskar.ai"
   version "1.5.0"
   license "AGPL-3.0-or-later"
 

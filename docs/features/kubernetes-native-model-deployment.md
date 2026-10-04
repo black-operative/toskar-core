@@ -1,28 +1,28 @@
-# Yggdrasil Core — Kubernetes-Native Model Deployment
+# Toskar Core — Kubernetes-Native Model Deployment
 
 ## Feature Specification — V1
 
 ### Status
 
 **Type:** Feature  
-**Target:** Yggdrasil Core  
+**Target:** Toskar Core  
 **Initial implementation:** Kubernetes backend using standard Kubernetes resources  
-**Future extension:** Yggdrasil Operator and CRDs
+**Future extension:** Toskar Operator and CRDs
 
 ---
 
 ## 1. Goal
 
-Allow Yggdrasil Core to run natively inside Kubernetes and use a Kubernetes cluster as a model execution environment.
+Allow Toskar Core to run natively inside Kubernetes and use a Kubernetes cluster as a model execution environment.
 
-Yggdrasil should be able to:
+Toskar should be able to:
 
 - discover usable compute resources in the cluster,
 - understand which nodes can run which models,
 - deploy model runtimes to appropriate Kubernetes nodes,
 - start, stop, restart, and monitor model workloads,
 - route inference requests to deployed model instances,
-- expose model health and placement through the normal Yggdrasil APIs,
+- expose model health and placement through the normal Toskar APIs,
 - integrate Kubernetes resources into Norn's placement decisions.
 
 The user-facing concept should remain simple:
@@ -35,23 +35,23 @@ The user should not need to manually author Deployments, Services, node affinity
 
 ## 2. Product Principle
 
-Kubernetes should become another Yggdrasil execution target.
+Kubernetes should become another Toskar execution target.
 
-Today, Norn can reason about Yggdrasil computers and place workloads on them.
+Today, Norn can reason about Toskar computers and place workloads on them.
 
 With Kubernetes support:
 
 ```text
 Norn
 ├── Local computer
-├── Paired Yggdrasil computer
+├── Paired Toskar computer
 └── Kubernetes cluster
     ├── Node A
     ├── Node B
     └── Node C
 ```
 
-Yggdrasil should not attempt to replace the Kubernetes scheduler.
+Toskar should not attempt to replace the Kubernetes scheduler.
 
 Norn decides **what placement characteristics are required**.
 
@@ -61,7 +61,7 @@ Kubernetes decides **which exact node receives the Pod** based on those constrai
 
 ## 3. Non-Goal: Rebuilding Kubernetes Scheduling
 
-Yggdrasil should not become a competing container scheduler.
+Toskar should not become a competing container scheduler.
 
 Do not implement:
 
@@ -75,7 +75,7 @@ Instead:
 ```text
 Norn determines intent
         ↓
-Yggdrasil translates intent
+Toskar translates intent
         ↓
 Kubernetes resources/constraints
         ↓
@@ -97,7 +97,7 @@ Examples of placement intent:
 
 ### Control Plane
 
-Yggdrasil Core runs as a Kubernetes workload.
+Toskar Core runs as a Kubernetes workload.
 
 Suggested V1:
 
@@ -120,7 +120,7 @@ Each deployed model runs as a Kubernetes-managed workload.
 Conceptually:
 
 ```text
-Yggdrasil Core
+Toskar Core
       │
       ▼
 Kubernetes API
@@ -148,7 +148,7 @@ Do **not** require a Kubernetes Operator for the first implementation.
 
 Core can directly create and manage standard Kubernetes resources.
 
-This keeps the first release smaller and lets Yggdrasil validate:
+This keeps the first release smaller and lets Toskar validate:
 
 - resource discovery,
 - model placement,
@@ -161,10 +161,10 @@ This keeps the first release smaller and lets Yggdrasil validate:
 
 ### Later: Probably Yes
 
-An Operator becomes valuable when Yggdrasil wants declarative Kubernetes-native resources such as:
+An Operator becomes valuable when Toskar wants declarative Kubernetes-native resources such as:
 
 ```yaml
-apiVersion: yggdrasil.yeix.io/v1alpha1
+apiVersion: toskar.ai/v1alpha1
 kind: ModelDeployment
 metadata:
   name: qwen-coder
@@ -182,7 +182,7 @@ At that stage the Operator can reconcile desired state continuously.
 Potential future CRDs:
 
 - `ModelDeployment`
-- `YggdrasilNode`
+- `ToskarNode`
 - `ModelProfile`
 - `ModelGrid`
 - `ModelCache`
@@ -215,7 +215,7 @@ Possible implementations:
 ```text
 ComputeBackend
 ├── LocalNodeBackend
-├── YggdrasilNodeBackend
+├── ToskarNodeBackend
 └── KubernetesBackend
 ```
 
@@ -225,7 +225,7 @@ Norn should operate on common placement concepts wherever practical.
 
 ## 7. Resource Discovery
 
-Yggdrasil must understand the cluster before it can recommend or deploy models.
+Toskar must understand the cluster before it can recommend or deploy models.
 
 V1 should discover:
 
@@ -258,7 +258,7 @@ Status: Ready
 
 Do not depend exclusively on free-form node labels for hardware capability.
 
-Where Kubernetes does not expose enough hardware metadata directly, Yggdrasil may introduce an optional node inventory component later.
+Where Kubernetes does not expose enough hardware metadata directly, Toskar may introduce an optional node inventory component later.
 
 ---
 
@@ -266,7 +266,7 @@ Where Kubernetes does not expose enough hardware metadata directly, Yggdrasil ma
 
 V1 should avoid requiring a privileged node agent unless necessary.
 
-However, an optional Yggdrasil node agent may become useful for:
+However, an optional Toskar node agent may become useful for:
 
 - detailed GPU inventory,
 - VRAM information not exposed through standard resources,
@@ -327,7 +327,7 @@ CrashLoopBackOff
 Unknown
 ```
 
-Yggdrasil should translate Kubernetes-specific states into clear user-facing model states.
+Toskar should translate Kubernetes-specific states into clear user-facing model states.
 
 Example:
 
@@ -335,7 +335,7 @@ Example:
 Kubernetes:
 0/4 nodes are available: insufficient nvidia.com/gpu
 
-Yggdrasil:
+Toskar:
 No cluster node currently has enough available GPU capacity for this model.
 ```
 
@@ -385,7 +385,7 @@ Examples may include:
 - Ollama-compatible worker,
 - future runtime adapters.
 
-Yggdrasil should generate runtime-specific configuration from its existing runtime abstraction.
+Toskar should generate runtime-specific configuration from its existing runtime abstraction.
 
 Conceptually:
 
@@ -407,7 +407,7 @@ Do not make Kubernetes-specific concepts leak unnecessarily into normal model co
 
 ## 12. Resource Requests and Limits
 
-Yggdrasil should generate reasonable Kubernetes resource requests.
+Toskar should generate reasonable Kubernetes resource requests.
 
 Examples:
 
@@ -443,7 +443,7 @@ Potential resource environments include:
 - CPU-only workers,
 - future vendor-neutral device interfaces.
 
-Yggdrasil should normalize accelerator capability internally.
+Toskar should normalize accelerator capability internally.
 
 Example:
 
@@ -474,7 +474,7 @@ Possible signals:
 - affinity preferences,
 - taints/tolerations,
 - user-defined labels,
-- current Yggdrasil workload pressure.
+- current Toskar workload pressure.
 
 Generated Kubernetes constructs may include:
 
@@ -501,7 +501,7 @@ Advanced mode may expose placement rules.
 
 ## 15. Model Fit in Kubernetes
 
-Existing Yggdrasil fit logic should be extended to cluster resources.
+Existing Toskar fit logic should be extended to cluster resources.
 
 Potential results:
 
@@ -560,7 +560,7 @@ Disadvantages:
 
 ### Future
 
-Possible Yggdrasil-aware model cache:
+Possible Toskar-aware model cache:
 
 ```text
 Model requested
@@ -578,13 +578,13 @@ Model cache locality should eventually influence placement.
 
 The cluster must not require each user to manually preload models.
 
-Yggdrasil should support automated model acquisition.
+Toskar should support automated model acquisition.
 
 Possible V1 patterns:
 
 - init container downloads the model,
 - model cache volume populated before runtime starts,
-- Yggdrasil cache service,
+- Toskar cache service,
 - preexisting mounted model directory.
 
 Credentials for private model repositories must use Kubernetes Secrets.
@@ -602,7 +602,7 @@ Use Kubernetes Services for normal internal routing.
 Example:
 
 ```text
-Yggdrasil Core
+Toskar Core
      │
      ▼
 ClusterIP Service
@@ -615,7 +615,7 @@ Core should route model requests internally without exposing every runtime publi
 
 ### External Exposure
 
-Yggdrasil Core itself may be exposed using:
+Toskar Core itself may be exposed using:
 
 - ClusterIP,
 - LoadBalancer,
@@ -638,7 +638,7 @@ Do not automatically expose model runtime Pods directly to the Internet.
 
 ## 19. API Authentication
 
-Existing Yggdrasil authentication rules still apply.
+Existing Toskar authentication rules still apply.
 
 If Core is reachable beyond loopback or outside a trusted local boundary:
 
@@ -715,7 +715,7 @@ Do not require multi-namespace orchestration for V1.
 
 ## 22. Health Monitoring
 
-Heimdall should translate Kubernetes health into Yggdrasil health.
+Heimdall should translate Kubernetes health into Toskar health.
 
 Signals include:
 
@@ -770,7 +770,7 @@ Strongly consider startup probes for large models so Kubernetes does not kill a 
 
 Kubernetes already provides restart/reconciliation behavior.
 
-Yggdrasil should use it rather than fighting it.
+Toskar should use it rather than fighting it.
 
 Examples:
 
@@ -780,17 +780,17 @@ Kubernetes restarts container.
 
 Heimdall observes restarts.
 
-Repeated restart failures become a Yggdrasil model failure.
+Repeated restart failures become a Toskar model failure.
 
 ### Node disappears
 
 Kubernetes marks node unavailable and reschedules where permitted.
 
-Yggdrasil observes state and reports that the model is recovering.
+Toskar observes state and reports that the model is recovering.
 
 ### Model cannot fit after rescheduling
 
-Yggdrasil marks deployment degraded/failed and explains the placement issue.
+Toskar marks deployment degraded/failed and explains the placement issue.
 
 Do not create an independent infinite restart loop inside Core.
 
@@ -828,7 +828,7 @@ New request
 Scale back to one
 ```
 
-This should integrate with Yggdrasil's existing model lifecycle concepts.
+This should integrate with Toskar's existing model lifecycle concepts.
 
 ---
 
@@ -864,7 +864,7 @@ Routing signals may include:
 
 Not required for V1.
 
-Design APIs so a future Yggdrasil installation can understand:
+Design APIs so a future Toskar installation can understand:
 
 ```text
 Clusters
@@ -955,7 +955,7 @@ Avoid requiring users to manually edit generated Kubernetes resources.
 
 ## 30. Observability
 
-Yggdrasil should expose Kubernetes model status through existing diagnostics.
+Toskar should expose Kubernetes model status through existing diagnostics.
 
 Potential future Prometheus metrics:
 
@@ -977,7 +977,7 @@ Do not make a full observability stack mandatory for V1.
 
 ## 31. Existing Kubernetes Ecosystem
 
-Yggdrasil should coexist with common Kubernetes GPU/container infrastructure.
+Toskar should coexist with common Kubernetes GPU/container infrastructure.
 
 Potential integrations to consider:
 
@@ -995,11 +995,11 @@ Do not duplicate functionality that established Kubernetes components already pr
 
 ## 32. Operator Phase
 
-After direct Kubernetes support is stable, evaluate a Yggdrasil Operator.
+After direct Kubernetes support is stable, evaluate a Toskar Operator.
 
 ### Why an Operator may be valuable
 
-Operators are useful when desired Yggdrasil state should live in the Kubernetes API.
+Operators are useful when desired Toskar state should live in the Kubernetes API.
 
 Example:
 
@@ -1041,7 +1041,7 @@ An Operator introduces:
 - upgrade/migration concerns,
 - more Kubernetes-specific code.
 
-Yggdrasil should first prove that model deployment works well using standard Kubernetes resources.
+Toskar should first prove that model deployment works well using standard Kubernetes resources.
 
 ---
 
@@ -1079,11 +1079,11 @@ Future specialized-model training workload.
 Future distributed single-model execution across multiple nodes.
 ```
 
-The `ModelGrid` concept could eventually connect directly to Yggdrasil's distributed-inference research.
+The `ModelGrid` concept could eventually connect directly to Toskar's distributed-inference research.
 
 ---
 
-## 34. Relationship to Yggdrasil Grid
+## 34. Relationship to Toskar Grid
 
 Kubernetes integration and Grid are different features.
 
@@ -1117,7 +1117,7 @@ A future Kubernetes-backed Model Grid might use:
 
 ## 35. User Experience
 
-Normal Yggdrasil UI could eventually show:
+Normal Toskar UI could eventually show:
 
 ```text
 Computers & Compute
@@ -1212,7 +1212,7 @@ V1 must satisfy:
 
 Include:
 
-- Yggdrasil Core running inside Kubernetes.
+- Toskar Core running inside Kubernetes.
 - Official Helm chart.
 - Kubernetes API integration.
 - Node/resource discovery.
@@ -1321,38 +1321,38 @@ Only after K0-K5 are stable, decide whether CRDs/Operator improve the product en
 
 The initial Kubernetes feature is successful when:
 
-1. Yggdrasil Core can run as a Kubernetes workload.
+1. Toskar Core can run as a Kubernetes workload.
 2. Core can authenticate using a dedicated ServiceAccount.
 3. Core does not require cluster-admin.
 4. Core can discover Kubernetes nodes and relevant allocatable resources.
 5. Norn can identify Kubernetes as a valid placement target.
-6. Yggdrasil can deploy a supported model runtime through the Kubernetes API.
+6. Toskar can deploy a supported model runtime through the Kubernetes API.
 7. Kubernetes schedules the model using generated resource requirements and placement constraints.
-8. Yggdrasil can detect when the model becomes ready.
+8. Toskar can detect when the model becomes ready.
 9. Inference can be routed through the model's internal Service.
-10. Yggdrasil can stop and delete a deployed model cleanly.
-11. OOMKilled, CrashLoopBackOff, FailedScheduling, and similar states are translated into useful Yggdrasil errors.
+10. Toskar can stop and delete a deployed model cleanly.
+11. OOMKilled, CrashLoopBackOff, FailedScheduling, and similar states are translated into useful Toskar errors.
 12. Model workloads are not publicly exposed by default.
 13. Secrets are stored using Kubernetes Secrets where required.
 14. Helm can install Core and its RBAC/configuration into a clean supported cluster.
-15. Existing non-Kubernetes Yggdrasil execution continues to work unchanged.
+15. Existing non-Kubernetes Toskar execution continues to work unchanged.
 
 ---
 
 ## 42. Product Outcome
 
-The feature succeeds when a Kubernetes user can install Yggdrasil Core into a cluster and then manage AI models through the same Yggdrasil concepts used everywhere else.
+The feature succeeds when a Kubernetes user can install Toskar Core into a cluster and then manage AI models through the same Toskar concepts used everywhere else.
 
 The user should be able to say:
 
 > "Deploy this model to my cluster."
 
-Norn should determine what the model requires, translate that into Kubernetes placement intent, let Kubernetes schedule it, and then expose the resulting model as a normal Yggdrasil inference target.
+Norn should determine what the model requires, translate that into Kubernetes placement intent, let Kubernetes schedule it, and then expose the resulting model as a normal Toskar inference target.
 
 The long-term result is a unified control plane:
 
 ```text
-Yggdrasil Core
+Toskar Core
       │
       ▼
 Norn
@@ -1362,4 +1362,4 @@ Norn
 └── future Model Grids
 ```
 
-Kubernetes should feel like a natural extension of Yggdrasil's existing compute model, not a separate product.
+Kubernetes should feel like a natural extension of Toskar's existing compute model, not a separate product.

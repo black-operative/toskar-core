@@ -1,11 +1,11 @@
-# Yggdrasil Core — AI Experience Platform
+# Toskar Core — AI Experience Platform
 
 ## Feature Specification
 
 ### Status
 
 **Type:** Platform Architecture / Product Experience  
-**Primary goal:** Build the infrastructure around interchangeable local models so Yggdrasil behaves like one coherent AI system rather than a collection of model runtimes.
+**Primary goal:** Build the infrastructure around interchangeable local models so Toskar behaves like one coherent AI system rather than a collection of model runtimes.
 
 **Primary subsystems:**
 - **Huginn** — orchestration, routing, planning, verification
@@ -20,14 +20,14 @@
 
 ## 1. Product Goal
 
-Yggdrasil should make a local model feel like a complete AI product.
+Toskar should make a local model feel like a complete AI product.
 
 The model itself is one interchangeable component inside a broader system. A normal user should not need to understand system prompts, context windows, memory retrieval, tool schemas, model routing, structured outputs, retries, hardware placement, providers, artifacts, citations, or connector credentials.
 
 The desired experience is:
 
 ```text
-Ask Yggdrasil for something
+Ask Toskar for something
         ↓
 gather the right context
         ↓
@@ -62,7 +62,7 @@ A raw model generates tokens. A strong AI product also provides:
 - artifact handling,
 - polished presentation.
 
-Yggdrasil should deliberately own those layers.
+Toskar should deliberately own those layers.
 
 Conceptually:
 
@@ -70,7 +70,7 @@ Conceptually:
 Models
 = interchangeable intelligence
 
-Yggdrasil
+Toskar
 = context
 + memory
 + retrieval
@@ -95,7 +95,7 @@ Yggdrasil
                          USER
                            │
                            ▼
-                    Yggdrasil Client
+                    Toskar Client
                            │
                            ▼
                         HUGINN
@@ -205,7 +205,7 @@ Owns notifications:
 Every model request should be assembled from product-controlled layers:
 
 ```text
-Yggdrasil system policy
+Toskar system policy
 + profile instructions
 + tool-use constraints
 + permission policy
@@ -544,7 +544,7 @@ The runtime should support:
 - artifacts,
 - normalized errors.
 
-Tools may execute on another Yggdrasil node.
+Tools may execute on another Toskar node.
 
 ---
 
@@ -993,7 +993,7 @@ privacy level
 
 ## 37. Unified Capability Inventory
 
-Yggdrasil should know:
+Toskar should know:
 
 ```text
 which models exist
@@ -1407,7 +1407,7 @@ These requirements came out of building Mimir and Train Your Own AI (#48, #51) a
 
 Web pages, files, Mimir passages, tool results, memories, and connector data can contain text that reads like instructions. Context assembly must keep them from being treated as instructions.
 
-- Every Context Bundle item (§42) carries a trust level: **trusted** (Yggdrasil policy, profile and specialized-AI instructions, the user's own message) or **untrusted** (everything retrieved or returned by a tool).
+- Every Context Bundle item (§42) carries a trust level: **trusted** (Toskar policy, profile and specialized-AI instructions, the user's own message) or **untrusted** (everything retrieved or returned by a tool).
 - Untrusted content is never placed in the system role. It is delimited, labelled with its source, and introduced as reference material.
 - A tool call that follows untrusted content is held to the stricter permission: an Allow tool that would act externally (send, write, execute, purchase) becomes Ask for that call.
 - Tool results that contain instructions are passed through as data; the model is told they are data.
@@ -1443,12 +1443,12 @@ Model routing (§13) must understand:
 
 - The full message array is honored, not only the last user message.
 - Callers can opt into memory and connected knowledge per request or per API key.
-- Progress and tool activity are available to streaming clients (as OpenAI-compatible tool-call deltas or a Yggdrasil extension field).
+- Progress and tool activity are available to streaming clients (as OpenAI-compatible tool-call deltas or a Toskar extension field).
 - Advanced controls (reasoning level, tools, placement) are settable per request within the key's permissions.
 
 ## 63. What Left This Computer
 
-Yggdrasil is local-first, so each run records where its data went:
+Toskar is local-first, so each run records where its data went:
 
 - web searches and page fetches (queries and URLs),
 - paired computers that received prompts, context, or training examples,
@@ -1542,9 +1542,9 @@ All items, ordered by how much a person using chat will notice them. The standar
 The intended long-term experience is:
 
 ```text
-User asks Yggdrasil
+User asks Toskar
         ↓
-Yggdrasil understands the task
+Toskar understands the task
         ↓
 recalls relevant context
         ↓
@@ -1565,4 +1565,4 @@ returns a polished answer/artifact
 
 The user should not need to know which model, provider, node, context strategy, or retry path made it possible.
 
-> **Yggdrasil should be the intelligence layer around local models—not merely the program that starts them.**
+> **Toskar should be the intelligence layer around local models—not merely the program that starts them.**
