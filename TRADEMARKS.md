@@ -12,7 +12,7 @@ A fork should use its own name, icon, and visual identity. Do not present an uno
 
 Brand assets in this repository:
 
-- The Yggdrasil mark (the logo). Its source is `docs/brand/logo/`; `docs/brand/yggdrasil-logo.png`, `assets/brand/generated/`, and the icons in `web/public/` are rendered from it.
+- The Yggdrasil mark (the logo). Its source is `docs/brand/logo/`; `docs/brand/toskar-logo.png`, `assets/brand/generated/`, and the icons in `web/public/` are rendered from it.
 - Ratatoskr, the Yggdrasil mascot: the squirrel character, his poses, and his artwork (`docs/brand/mascot/`, `web/src/lib/ratatoskr/`).
 
 Logos and the mascot shipped with the web UI in this repository are for running Yggdrasil Core. They are not a general brand license. A fork should not use Ratatoskr as its own mascot.

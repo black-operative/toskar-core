@@ -1,10 +1,10 @@
 [Desktop Entry]
 Type=Application
-Name=Yggdrasil
+Name=Toskar
 GenericName=Local AI Control Plane
 Comment=Local AI control plane for your computers
-Exec=yggdrasil
-Icon=yggdrasil
+Exec=toskar
+Icon=toskar
 Terminal=false
 Categories=Utility;Development;
 StartupNotify=true

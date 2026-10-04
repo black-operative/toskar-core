@@ -48,7 +48,7 @@ fi
 # Linux desktop integration assets (hicolor + .desktop)
 if [[ "${GOOS}" == "linux" ]]; then
   mkdir -p "${OUT_DIR}/share/applications"
-  cp packaging/linux/yggdrasil.desktop "${OUT_DIR}/share/applications/"
+  cp packaging/linux/toskar.desktop "${OUT_DIR}/share/applications/"
   if [[ -d assets/brand/generated/linux ]]; then
     mkdir -p "${OUT_DIR}/share/icons/hicolor"
     cp -R assets/brand/generated/linux/. "${OUT_DIR}/share/icons/hicolor/"
@@ -77,8 +77,8 @@ Shell completion for toskarctl (bash, zsh, fish):
 yggdrasil-daemon and yggctl, the names from before the rename, still work.
 
 Linux icon theme (if included):
-  share/icons/hicolor/<size>/apps/yggdrasil.png
-  share/applications/yggdrasil.desktop   # Icon=yggdrasil
+  share/icons/hicolor/<size>/apps/toskar.png
+  share/applications/toskar.desktop   # Icon=toskar
 
 Commit: ${COMMIT}
 Built:  ${DATE}

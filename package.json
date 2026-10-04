@@ -1,5 +1,5 @@
 {
-  "name": "yggdrasil-core",
+  "name": "toskar-core",
   "private": true,
   "packageManager": "pnpm@9.15.0"
 }

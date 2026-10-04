@@ -2,8 +2,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/logo/yggdrasil-mark.svg">
-    <img src="docs/brand/logo/yggdrasil-mark-light.svg" alt="Yggdrasil" width="148">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/logo/toskar-mark.svg">
+    <img src="docs/brand/logo/toskar-mark-light.svg" alt="Yggdrasil" width="148">
   </picture>
 </p>
 

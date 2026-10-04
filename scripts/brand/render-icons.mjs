@@ -1,5 +1,5 @@
 // Renders the Linux hicolor icons from the vector sources in docs/brand/logo.
-// Sizes of 48 px and up use yggdrasil-icon.svg. Smaller sizes use the small
+// Sizes of 48 px and up use toskar-icon.svg. Smaller sizes use the small
 // mark on the same tile with the same padding, so they stay legible.
 // Uses the Playwright install in scripts/screenshots; run `make icons`.
 import { createRequire } from 'node:module'
@@ -25,8 +25,8 @@ function smallIcon(smallMark) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="${TILE}"/><g transform="${PADDING}">${inner}</g></svg>`
 }
 
-const full = await logo('yggdrasil-icon.svg')
-const small = smallIcon(await logo('yggdrasil-mark-small.svg'))
+const full = await logo('toskar-icon.svg')
+const small = smallIcon(await logo('toskar-mark-small.svg'))
 
 const browser = await chromium.launch()
 try {
@@ -41,7 +41,7 @@ try {
     )
     const dir = path.join(root, 'assets/brand/generated/linux', `${size}x${size}`, 'apps')
     await mkdir(dir, { recursive: true })
-    const out = path.join(dir, 'yggdrasil.png')
+    const out = path.join(dir, 'toskar.png')
     await page.screenshot({ path: out, clip: { x: 0, y: 0, width: size, height: size } })
     console.log(path.relative(root, out))
   }

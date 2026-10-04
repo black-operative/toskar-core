@@ -5,7 +5,7 @@ import { logoLore } from '@/lib/lore'
 
 /**
  * The Yggdrasil mark, drawn inline so it follows the theme. Geometry is copied
- * from docs/brand/logo/yggdrasil-mark.svg and yggdrasil-mark-small.svg; teal
+ * from docs/brand/logo/toskar-mark.svg and toskar-mark-small.svg; teal
  * and gold come from the interface tokens. At 32 px and below it switches to
  * the small mark, which stays legible at favicon sizes.
  */
