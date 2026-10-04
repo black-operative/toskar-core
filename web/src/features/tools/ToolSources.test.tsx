@@ -135,7 +135,7 @@ describe('ToolSources', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Sign in and add Linear' }))
     await screen.findByText(/needs you to sign in/)
     // The window opened during the click is sent to the sign-in.
-    expect(open).toHaveBeenCalledWith('about:blank', 'yggdrasil-sign-in', expect.any(String))
+    expect(open).toHaveBeenCalledWith('about:blank', 'toskar-sign-in', expect.any(String))
     expect(popup.location.href).toBe('https://linear.example/authorize?x=1')
     expect(await screen.findByRole('button', { name: 'Sign in to Linear' })).toBeInTheDocument()
     open.mockRestore()

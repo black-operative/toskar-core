@@ -99,9 +99,9 @@ describe('the page', () => {
 
   it('remembers the App language for the next start, and forgets it for the system default', async () => {
     await applyLanguage('en')
-    expect(localStorage.getItem('ygg.ui_locale')).toBe('en')
+    expect(localStorage.getItem('toskar.ui_locale')).toBe('en')
     await applyLanguage('')
-    expect(localStorage.getItem('ygg.ui_locale')).toBeNull()
+    expect(localStorage.getItem('toskar.ui_locale')).toBeNull()
   })
 })
 

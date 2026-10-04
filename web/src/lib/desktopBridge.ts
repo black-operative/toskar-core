@@ -145,7 +145,7 @@ export function routeExternalLinks(doc: Document = document): () => void {
  */
 export function preopenSignInWindow(): Window | null {
   if (isDesktopShell()) return null
-  return window.open('about:blank', 'yggdrasil-sign-in', 'width=520,height=720')
+  return window.open('about:blank', 'toskar-sign-in', 'width=520,height=720')
 }
 
 /**

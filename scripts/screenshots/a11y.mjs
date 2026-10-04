@@ -72,7 +72,7 @@ try {
         await context.addInitScript(
           ({ theme, onboarded }) => {
             localStorage.setItem(
-              'yggdrasil-ui',
+              'toskar-ui',
               JSON.stringify({ state: { onboardingComplete: onboarded, advancedMode: true, theme }, version: 0 }),
             )
           },

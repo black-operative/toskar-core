@@ -106,6 +106,7 @@ export type MediaKind = 'images' | 'video'
 import { hasEventRelay, onRelayedEvent, saveFromDaemon, signInReturnAddress } from '@/lib/desktopBridge'
 import i18n from '@/i18n'
 import { formatLocale } from '@/i18n/format'
+import { moveStored } from '@/lib/storage'
 
 /** The service's error envelope: a stable code, its English message, and the values the message needs. */
 interface ServiceError {
@@ -190,8 +191,12 @@ export const CLIENT_CONTRACT = '1.0'
 // computer (#237).
 export const CLIENT_CONTRACT_HEADER = 'Yggdrasil-Client-Contract'
 
-const storedApiKeyName = 'yggdrasil.apiKey'
-const storedApiKeyIdName = 'yggdrasil.apiKeyId'
+const storedApiKeyName = 'toskar.apiKey'
+const storedApiKeyIdName = 'toskar.apiKeyId'
+if (typeof window !== 'undefined') {
+  moveStored('yggdrasil.apiKey', storedApiKeyName)
+  moveStored('yggdrasil.apiKeyId', storedApiKeyIdName)
+}
 
 export function storedApiKey(): string {
   if (typeof window === 'undefined') return ''

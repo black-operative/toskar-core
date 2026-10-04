@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { moveStored } from '@/lib/storage'
 
 export type ThemePreference = 'light' | 'dark' | 'system'
 
@@ -47,6 +48,9 @@ export function applyTheme(preference: ThemePreference) {
   document.documentElement.style.colorScheme = resolved
 }
 
+// Moved before the store reads it (#237).
+moveStored('yggdrasil-ui', 'toskar-ui')
+
 export const useUIStore = create<UIState>()(
   persist(
     (set) => ({
@@ -74,7 +78,7 @@ export const useUIStore = create<UIState>()(
       },
     }),
     {
-      name: 'yggdrasil-ui',
+      name: 'toskar-ui',
       onRehydrateStorage: () => (state) => {
         applyTheme(state?.theme ?? defaultUIState.theme)
       },

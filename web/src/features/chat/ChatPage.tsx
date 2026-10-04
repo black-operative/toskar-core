@@ -42,6 +42,7 @@ import { toolDisplayName } from './toolNames'
 import { useChatFollow } from './useChatFollow'
 import { RatingDialogHost, RatingPrompt } from '@/features/models/ratings'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { moveStored } from '@/lib/storage'
 
 type TeamStep = {
   role: string
@@ -61,7 +62,8 @@ type RunMode = 'automatic' | 'local'
 
 /** How much work a message gets (spec §15). Auto lets Yggdrasil decide. */
 type Effort = 'auto' | 'fast' | 'balanced' | 'thorough'
-const EFFORT_KEY = 'ygg.chat.effort'
+const EFFORT_KEY = 'toskar.chat.effort'
+moveStored('ygg.chat.effort', EFFORT_KEY)
 // The efforts, in order; their names and hints are chat:effort.<id> in the catalog.
 const EFFORTS: Effort[] = ['auto', 'fast', 'balanced', 'thorough']
 

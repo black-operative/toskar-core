@@ -23,7 +23,7 @@ export function openSignIn(url: string, popup?: Window | null) {
     popup.location.href = url
     return
   }
-  window.open(url, 'yggdrasil-sign-in', 'width=520,height=720')
+  window.open(url, 'toskar-sign-in', 'width=520,height=720')
 }
 
 /** A one-line summary of how a server is reached. */

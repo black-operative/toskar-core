@@ -299,7 +299,11 @@ main{max-width:28rem;text-align:center}h1{font-size:1.25rem;margin:0 0 .5rem}p{c
 {{else}}<h1 class="bad">Sign-in did not finish</h1><p>{{.Error}}</p>{{end}}
 </main>
 <script>
-try { if (window.opener) window.opener.postMessage({ type: 'yggdrasil-mcp-sign-in', ok: {{.OK}} }, '*') } catch (e) {}
+try { if (window.opener) {
+  // Both names: a page from before the Toskar rename listens for the old one.
+  window.opener.postMessage({ type: 'toskar-mcp-sign-in', ok: {{.OK}} }, '*')
+  window.opener.postMessage({ type: 'yggdrasil-mcp-sign-in', ok: {{.OK}} }, '*')
+} } catch (e) {}
 {{if .OK}}setTimeout(function () { window.close() }, 1500){{end}}
 </script></body></html>`))
 

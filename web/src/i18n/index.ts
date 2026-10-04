@@ -1,5 +1,6 @@
 import i18n, { type FormatterModule, type Resource } from 'i18next'
 import { notifyDesktopLanguage } from '@/lib/desktopBridge'
+import { moveStored } from '@/lib/storage'
 import { initReactI18next } from 'react-i18next'
 import { directionOf, languages, pseudoLocale, pseudoLocales, pseudoRtlLocale, sourceLanguage } from './languages'
 import { pseudoLocalize, pseudoRtlLocalize } from './pseudo'
@@ -53,7 +54,8 @@ const numberFormatter: FormatterModule = {
 export const availableLanguages = Object.keys(resources)
 
 /** Where the last applied language is kept, so the next start shows it before settings load. */
-const storedKey = 'ygg.ui_locale'
+const storedKey = 'toskar.ui_locale'
+moveStored('ygg.ui_locale', storedKey)
 
 function readStored(): string {
   try {

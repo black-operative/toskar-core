@@ -29,7 +29,9 @@ export function ToolSources() {
   })
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
-      if ((e.data as { type?: string } | null)?.type === 'yggdrasil-mcp-sign-in') {
+      // The old name comes from a computer on a version before the rename (#237).
+      const type = (e.data as { type?: string } | null)?.type
+      if (type === 'toskar-mcp-sign-in' || type === 'yggdrasil-mcp-sign-in') {
         void queryClient.invalidateQueries({ queryKey: SOURCES_KEY })
         void queryClient.invalidateQueries({ queryKey: ['tools'] })
       }

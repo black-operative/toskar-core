@@ -34,7 +34,7 @@ let failed = false
 try {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' })
   await context.addInitScript(() =>
-    localStorage.setItem('yggdrasil-ui', JSON.stringify({ state: { onboardingComplete: true, advancedMode: true, theme: 'dark' }, version: 0 })),
+    localStorage.setItem('toskar-ui', JSON.stringify({ state: { onboardingComplete: true, advancedMode: true, theme: 'dark' }, version: 0 })),
   )
   const page = await context.newPage()
   // A page that throws while moving between pages is a bug, and the logged
