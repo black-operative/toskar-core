@@ -2,6 +2,7 @@ package contracts
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 )
@@ -18,14 +19,28 @@ import (
 // tests/contract checks that no field in the contract is removed or renamed.
 const ContractVersion = "1.5"
 
-// Headers that carry the contract version.
+// Headers that carry the contract version. Each has a name from before the
+// Toskar rename that is still sent and accepted, so clients and computers
+// on older versions keep working (#237).
 const (
-	// ContractHeader is on every API response.
-	ContractHeader = "Yggdrasil-Contract"
+	// ContractHeader is on every API response, and so is
+	// LegacyContractHeader.
+	ContractHeader       = "Toskar-Contract"
+	LegacyContractHeader = "Yggdrasil-Contract"
 	// ClientContractHeader is what a client may send: the contract it was
-	// built for.
-	ClientContractHeader = "Yggdrasil-Client-Contract"
+	// built for. LegacyClientContractHeader is accepted too.
+	ClientContractHeader       = "Toskar-Client-Contract"
+	LegacyClientContractHeader = "Yggdrasil-Client-Contract"
 )
+
+// ClientContract is the contract a request says its client was built for,
+// from either header (the new name wins), and the header it came in.
+func ClientContract(h http.Header) (version, header string) {
+	if v := h.Get(ClientContractHeader); v != "" {
+		return v, ClientContractHeader
+	}
+	return h.Get(LegacyClientContractHeader), LegacyClientContractHeader
+}
 
 // ContractInfo describes the contract in /api/v1/version.
 type ContractInfo struct {
@@ -51,12 +66,18 @@ func ContractMajor(v string) (int, bool) {
 // to this build. Any minor version of the same major works; an empty
 // version means the client did not say, which is allowed.
 func CheckClientContract(v string) error {
+	return CheckClientContractHeader(v, ClientContractHeader)
+}
+
+// CheckClientContractHeader is CheckClientContract for a version read from
+// header, which a malformed version's message names.
+func CheckClientContractHeader(v, header string) error {
 	if strings.TrimSpace(v) == "" {
 		return nil
 	}
 	client, ok := ContractMajor(v)
 	if !ok {
-		return fmt.Errorf("%s must look like 1.0", ClientContractHeader)
+		return fmt.Errorf("%s must look like 1.0", header)
 	}
 	server, _ := ContractMajor(ContractVersion)
 	switch {

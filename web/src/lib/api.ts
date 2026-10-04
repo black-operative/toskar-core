@@ -184,6 +184,10 @@ export function normalizePairingSession(raw: Record<string, unknown>): PairingSe
  * different major version with 426 and says which side to update.
  */
 export const CLIENT_CONTRACT = '1.0'
+// The name from before the Toskar rename, which every version of the daemon
+// accepts and allows in CORS. Toskar-Client-Contract works only with newer
+// ones, and the phone and desktop apps can point this UI at an older
+// computer (#237).
 export const CLIENT_CONTRACT_HEADER = 'Yggdrasil-Client-Contract'
 
 const storedApiKeyName = 'yggdrasil.apiKey'

@@ -4864,7 +4864,7 @@ components:
           description: URL of the corresponding source for this build.
         contract:
           type: object
-          description: The client contract this build speaks (major.minor). Also in the Yggdrasil-Contract header on every response.
+          description: The client contract this build speaks (major.minor). Also in the Toskar-Contract and Yggdrasil-Contract headers on every response.
           properties:
             version:
               type: string

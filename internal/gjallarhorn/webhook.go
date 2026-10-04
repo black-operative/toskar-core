@@ -20,12 +20,16 @@ import (
 	"github.com/yeixio/yggdrasil-core/internal/locale"
 )
 
-// Webhook request headers (§13).
+// Webhook request headers (§13). Each is also sent under its name from
+// before the Toskar rename, with the same value, so receivers that check
+// the old names keep working (#237).
 const (
 	// SignatureHeader is "t=<unix seconds>,v1=<hex HMAC-SHA256 of "<t>.<body>">",
 	// keyed with the destination's signing secret.
-	SignatureHeader      = "Yggdrasil-Signature"
-	NotificationIDHeader = "Yggdrasil-Notification-Id"
+	SignatureHeader            = "Toskar-Signature"
+	NotificationIDHeader       = "Toskar-Notification-Id"
+	LegacySignatureHeader      = "Yggdrasil-Signature"
+	LegacyNotificationIDHeader = "Yggdrasil-Notification-Id"
 )
 
 // WebhookPayload is the JSON a webhook receives (§13). Fields are only added.
@@ -148,8 +152,11 @@ func sendWebhook(ctx context.Context, client *http.Client, cfg WebhookConfig, se
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", "Toskar-Gjallarhorn/1")
-	req.Header.Set(SignatureHeader, Sign(secret, now, body))
+	sig := Sign(secret, now, body)
+	req.Header.Set(SignatureHeader, sig)
+	req.Header.Set(LegacySignatureHeader, sig)
 	req.Header.Set(NotificationIDHeader, n.ID)
+	req.Header.Set(LegacyNotificationIDHeader, n.ID)
 	resp, err := client.Do(req)
 	if err != nil {
 		return fmt.Errorf("could not reach the webhook: %s", shortNetErr(err))

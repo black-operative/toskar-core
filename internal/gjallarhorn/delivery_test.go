@@ -99,12 +99,16 @@ func deliveryOf(t *testing.T, hub *Hub, id string) Delivery {
 // delivery is recorded in What left this computer (§13, §63).
 func TestWebhookSignedAndRecorded(t *testing.T) {
 	var got struct {
-		body []byte
-		sig  string
+		body           []byte
+		sig, legacySig string
+		id, legacyID   string
 	}
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		got.body, _ = io.ReadAll(r.Body)
 		got.sig = r.Header.Get(SignatureHeader)
+		got.legacySig = r.Header.Get(LegacySignatureHeader)
+		got.id = r.Header.Get(NotificationIDHeader)
+		got.legacyID = r.Header.Get(LegacyNotificationIDHeader)
 	}))
 	defer srv.Close()
 	hub, eg, clock := deliveryHub(t)
@@ -129,6 +133,10 @@ func TestWebhookSignedAndRecorded(t *testing.T) {
 	}
 	if want := Sign(secret, *clock, got.body); got.sig != want {
 		t.Fatalf("signature %q, want %q", got.sig, want)
+	}
+	// Receivers written before the Toskar rename check the old names.
+	if got.legacySig != got.sig || got.id != n.ID || got.legacyID != n.ID {
+		t.Fatalf("legacy signature %q, ids %q / %q, want %q", got.legacySig, got.id, got.legacyID, n.ID)
 	}
 	var p WebhookPayload
 	_ = json.Unmarshal(got.body, &p)

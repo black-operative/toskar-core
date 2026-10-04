@@ -42,3 +42,44 @@ func TestClientContractOnResponses(t *testing.T) {
 		t.Fatalf("browsers cannot read the contract header: %q", exposed)
 	}
 }
+
+// The contract headers have names from before the Toskar rename, which
+// older apps and computers send and read; both work (#237).
+func TestClientContractLegacyHeaders(t *testing.T) {
+	srv := NewServer(Dependencies{})
+	do := func(method string, set map[string]string) *httptest.ResponseRecorder {
+		req := httptest.NewRequest(method, "/api/v1/version", nil)
+		for k, v := range set {
+			req.Header.Set(k, v)
+		}
+		rec := httptest.NewRecorder()
+		srv.Handler().ServeHTTP(rec, req)
+		return rec
+	}
+	rec := do(http.MethodGet, nil)
+	if rec.Header().Get(contracts.LegacyContractHeader) != contracts.ContractVersion {
+		t.Fatalf("old header missing: %q", rec.Header().Get(contracts.LegacyContractHeader))
+	}
+	if rec := do(http.MethodGet, map[string]string{contracts.LegacyClientContractHeader: "2.0"}); rec.Code != http.StatusUpgradeRequired {
+		t.Fatalf("old client header ignored: %d", rec.Code)
+	}
+	if rec := do(http.MethodGet, map[string]string{contracts.LegacyClientContractHeader: "abc"}); !strings.Contains(rec.Body.String(), contracts.LegacyClientContractHeader) {
+		t.Fatalf("message should name the header that was sent: %s", rec.Body)
+	}
+	// The new name wins when a client sends both.
+	if rec := do(http.MethodGet, map[string]string{contracts.ClientContractHeader: "1.0", contracts.LegacyClientContractHeader: "2.0"}); rec.Code != http.StatusOK {
+		t.Fatalf("new header should win: %d", rec.Code)
+	}
+	pre := do(http.MethodOptions, nil)
+	allowed, exposed := pre.Header().Get("Access-Control-Allow-Headers"), pre.Header().Get("Access-Control-Expose-Headers")
+	for _, h := range []string{contracts.ClientContractHeader, contracts.LegacyClientContractHeader} {
+		if !strings.Contains(allowed, h) {
+			t.Fatalf("browsers cannot send %s: %q", h, allowed)
+		}
+	}
+	for _, h := range []string{contracts.ContractHeader, contracts.LegacyContractHeader} {
+		if !strings.Contains(exposed, h) {
+			t.Fatalf("browsers cannot read %s: %q", h, exposed)
+		}
+	}
+}

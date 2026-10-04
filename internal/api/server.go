@@ -810,8 +810,8 @@ func writeErrFrom(w http.ResponseWriter, status int, code string, err error) {
 func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Access-Control-Request-Private-Network, "+contracts.ClientContractHeader)
-		w.Header().Set("Access-Control-Expose-Headers", contracts.ContractHeader)
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Access-Control-Request-Private-Network, "+contracts.ClientContractHeader+", "+contracts.LegacyClientContractHeader)
+		w.Header().Set("Access-Control-Expose-Headers", contracts.ContractHeader+", "+contracts.LegacyContractHeader)
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
 		// Chrome / WebKit Private Network Access: Wails webview → 127.0.0.1 API.
 		w.Header().Set("Access-Control-Allow-Private-Network", "true")
@@ -829,7 +829,9 @@ func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 func (s *Server) contractMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set(contracts.ContractHeader, contracts.ContractVersion)
-		if err := contracts.CheckClientContract(r.Header.Get(contracts.ClientContractHeader)); err != nil && r.Method != http.MethodOptions {
+		w.Header().Set(contracts.LegacyContractHeader, contracts.ContractVersion)
+		version, header := contracts.ClientContract(r.Header)
+		if err := contracts.CheckClientContractHeader(version, header); err != nil && r.Method != http.MethodOptions {
 			writeErr(w, http.StatusUpgradeRequired, "CONTRACT_MISMATCH", err.Error(), map[string]any{"contract": contracts.ContractVersion})
 			return
 		}
