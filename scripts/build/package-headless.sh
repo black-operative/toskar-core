@@ -56,7 +56,7 @@ if [[ "${GOOS}" == "linux" ]]; then
 fi
 
 cat > "${OUT_DIR}/README.txt" <<EOF
-Yggdrasil ${VERSION} — headless / web-only package (${GOOS}/${GOARCH})
+Toskar ${VERSION} — headless / web-only package (${GOOS}/${GOARCH})
 
 This build runs the control-plane daemon and serves the web UI. There is no
 native desktop window; open a browser after starting the daemon.

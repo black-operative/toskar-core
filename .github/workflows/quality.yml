@@ -14,6 +14,8 @@ on:
 jobs:
   real-models:
     if: vars.QUALITY_DAEMON_URL != ''
+    # The label is set on the self-hosted runner itself; rename it there
+    # before changing it here, or the job waits for a runner forever.
     runs-on: [self-hosted, yggdrasil-models]
     steps:
       - uses: actions/checkout@v4

@@ -30,6 +30,9 @@ for arch in amd64 arm64; do
   )
 done
 
+# Origin and Label keep the names from before the rename (#237): apt refuses
+# to update from a repository whose Origin or Label changed until each person
+# accepts it with --allow-releaseinfo-change.
 cat > "$OUT/dists/stable/Release" <<EOF
 Origin: Yggdrasil
 Label: Yggdrasil
@@ -37,7 +40,7 @@ Suite: stable
 Codename: stable
 Architectures: amd64 arm64
 Components: main
-Description: Yggdrasil core packages
+Description: Toskar core packages
 EOF
 apt-ftparchive release "$OUT/dists/stable" >> "$OUT/dists/stable/Release"
 echo "Apt repository: $OUT"

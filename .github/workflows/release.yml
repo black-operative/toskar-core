@@ -66,7 +66,7 @@ jobs:
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v3
         with:
-          name: Yggdrasil ${{ github.ref_name }}
+          name: Toskar ${{ github.ref_name }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
           body_path: /tmp/release-body.md
@@ -156,7 +156,7 @@ jobs:
             echo "Documentation already published for ${version}"
             exit 0
           fi
-          git commit -m "docs: publish Yggdrasil ${version}"
+          git commit -m "docs: publish Toskar ${version}"
           git push --force origin HEAD:documentation
           if [ -z "$(gh pr list --head documentation --base main --state open --json number --jq '.[0].number')" ]; then
             gh pr create --base main --head documentation \
@@ -186,13 +186,14 @@ jobs:
     steps:
       - name: Start the matching desktop release
         env:
-          DESKTOP_TOKEN: ${{ secrets.YGGDRASIL_DESKTOP_TOKEN }}
+          # TOSKAR_DESKTOP_TOKEN, or the secret's name from before the rename (#237).
+          DESKTOP_TOKEN: ${{ secrets.TOSKAR_DESKTOP_TOKEN || secrets.YGGDRASIL_DESKTOP_TOKEN }}
           VERSION: ${{ github.ref_name }}
         run: |
           set -euo pipefail
           if [ -z "${DESKTOP_TOKEN}" ]; then
             # The release itself succeeded, so this is a warning, not a failure.
-            echo "::warning title=Desktop not notified::YGGDRASIL_DESKTOP_TOKEN is not set, so yggdrasil-desktop was not told about ${VERSION}. Its daily backup check will find the release, or start its Release workflow by hand. See docs/release-checklist.md."
+            echo "::warning title=Desktop not notified::TOSKAR_DESKTOP_TOKEN is not set, so yggdrasil-desktop was not told about ${VERSION}. Its daily backup check will find the release, or start its Release workflow by hand. See docs/release-checklist.md."
             exit 0
           fi
           GH_TOKEN="$DESKTOP_TOKEN" gh api repos/yeixio/yggdrasil-desktop/dispatches \
