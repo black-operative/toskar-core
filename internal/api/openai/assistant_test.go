@@ -133,3 +133,38 @@ func TestProgressAndSources(t *testing.T) {
 		t.Errorf("plain stream has extension fields:\n%s", rec.Body)
 	}
 }
+
+// The extension object is "toskar", and "yggdrasil", its name from before
+// the rename, still works both ways (#237).
+func TestToskarAndYggdrasilExtension(t *testing.T) {
+	h := testHandler(t)
+	meta := &contracts.MessageMeta{Sources: []contracts.Citation{{Kind: "web", Title: "Weather", URL: "https://example.com"}}}
+	chat := &scriptChat{chunks: []pluginapi.ChatChunk{{Content: "ok", Done: true}}, emit: func(o *turnopts.Options) { o.Meta(meta) }}
+	h.Chat = chat
+	perms := auth.DefaultAPIKeyPermissions()
+	h.Permissions = func(*http.Request) (auth.APIKeyPermissions, error) { return perms, nil }
+
+	rec := post(h, `{"model":"profile:general","messages":[{"role":"user","content":"hi"}],"toskar":{"memory":true}}`)
+	if rec.Code != http.StatusOK || !chat.opts.Memory {
+		t.Fatalf("toskar controls ignored: %d %+v", rec.Code, chat.opts)
+	}
+	var out struct {
+		Toskar    struct{ Sources []contracts.Citation } `json:"toskar"`
+		Yggdrasil struct{ Sources []contracts.Citation } `json:"yggdrasil"`
+	}
+	if err := json.Unmarshal(rec.Body.Bytes(), &out); err != nil || len(out.Toskar.Sources) != 1 || len(out.Yggdrasil.Sources) != 1 {
+		t.Fatalf("response should carry both: %s", rec.Body)
+	}
+
+	// The new name wins when a request sends both.
+	post(h, `{"model":"profile:general","messages":[{"role":"user","content":"hi"}],"toskar":{"memory":false},"yggdrasil":{"memory":true}}`)
+	if chat.opts.Memory {
+		t.Fatal("yggdrasil won over toskar")
+	}
+
+	// A stream's chunks carry the extension under both names too.
+	rec = post(h, `{"model":"profile:general","stream":true,"messages":[{"role":"user","content":"hi"}],"toskar":{"progress":true}}`)
+	if body := rec.Body.String(); !strings.Contains(body, `"toskar":{"files"`) || !strings.Contains(body, `"yggdrasil":{"files"`) {
+		t.Fatalf("stream lacks the extension under both names:\n%s", body)
+	}
+}

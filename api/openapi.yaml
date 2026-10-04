@@ -1132,8 +1132,10 @@ paths:
     post:
       summary: OpenAI-compatible chat completions
       description: >-
-        temperature and max_tokens are accepted and ignored. The yggdrasil object asks for
+        temperature and max_tokens are accepted and ignored. The toskar object asks for
         memory, knowledge, tools, effort, and placement, within what the API key allows.
+        yggdrasil, its name from before the rename, works too; toskar wins when both are
+        sent. Responses carry the answer's extension fields under both names.
       operationId: openaiChatCompletions
       requestBody:
         required: true
@@ -1178,30 +1180,10 @@ paths:
                         schema:
                           type: object
                           additionalProperties: true
+                toskar:
+                  $ref: "#/components/schemas/AssistantOptions"
                 yggdrasil:
-                  type: object
-                  properties:
-                    memory:
-                      type: boolean
-                    knowledge:
-                      type: boolean
-                    knowledge_sources:
-                      type: array
-                      items:
-                        type: string
-                    tools:
-                      type: array
-                      items:
-                        type: string
-                    effort:
-                      type: string
-                      enum: [auto, fast, balanced, thorough]
-                    placement:
-                      type: string
-                      enum: [local, automatic]
-                    progress:
-                      type: boolean
-                      description: Stream progress and tool activity as chunks with an empty delta and a yggdrasil field
+                  $ref: "#/components/schemas/AssistantOptions"
       responses:
         "200":
           description: A chat.completion, or with stream, server-sent chat.completion.chunk events ending with data [DONE]
@@ -4703,6 +4685,31 @@ components:
       scheme: bearer
       description: An API key from the API Access page, or TOSKAR_API_KEY
   schemas:
+    AssistantOptions:
+      type: object
+      description: The assistant's own controls for an OpenAI-compatible request, sent as toskar (or yggdrasil, its name from before the rename)
+      properties:
+        memory:
+          type: boolean
+        knowledge:
+          type: boolean
+        knowledge_sources:
+          type: array
+          items:
+            type: string
+        tools:
+          type: array
+          items:
+            type: string
+        effort:
+          type: string
+          enum: [auto, fast, balanced, thorough]
+        placement:
+          type: string
+          enum: [local, automatic]
+        progress:
+          type: boolean
+          description: Stream progress and tool activity as chunks with an empty delta and the toskar and yggdrasil fields
     RuntimeSample:
       type: object
       properties:

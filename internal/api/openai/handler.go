@@ -47,8 +47,11 @@ type chatCompletionRequest struct {
 	MaxTokens   int                     `json:"max_tokens"`
 	// ReasoningEffort is OpenAI's low, medium, or high.
 	ReasoningEffort string `json:"reasoning_effort"`
-	// Yggdrasil holds the assistant's own controls (§62).
-	Yggdrasil *yggdrasilOptions `json:"yggdrasil"`
+	// Toskar holds the assistant's own controls (§62). Yggdrasil is its name
+	// from before the rename, still accepted; Toskar wins when both are sent
+	// (#237).
+	Toskar    *assistantOptions `json:"toskar"`
+	Yggdrasil *assistantOptions `json:"yggdrasil"`
 	// ResponseFormat asks for JSON: json_object, or json_schema with a schema (§27).
 	ResponseFormat *responseFormat `json:"response_format"`
 }
@@ -61,9 +64,9 @@ type responseFormat struct {
 	} `json:"json_schema"`
 }
 
-// yggdrasilOptions are the request's assistant controls. Each one can only
+// assistantOptions are the request's assistant controls. Each one can only
 // use what the API key allows.
-type yggdrasilOptions struct {
+type assistantOptions struct {
 	Memory           *bool    `json:"memory"`
 	Knowledge        *bool    `json:"knowledge"`
 	KnowledgeSources []string `json:"knowledge_sources"`
@@ -71,7 +74,7 @@ type yggdrasilOptions struct {
 	Effort           string   `json:"effort"`
 	Placement        string   `json:"placement"`
 	// Progress streams the turn's progress and tool activity as chunks with
-	// an empty delta and a yggdrasil field.
+	// an empty delta and the extension fields.
 	Progress bool `json:"progress"`
 }
 
@@ -88,7 +91,9 @@ func (h *Handler) HandleModels(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "MODELS_LIST_FAILED", err.Error())
 		return
 	}
-	// "auto" lets Yggdrasil pick an installed model for each request.
+	// "auto" lets Toskar pick an installed model for each request.
+	// owned_by stays "yggdrasil" within contract 1.x: clients may match on
+	// it, and it changes with the next major contract version (#237).
 	data := make([]map[string]any, 0, len(items)+1)
 	data = append(data, map[string]any{"id": "auto", "object": "model", "owned_by": "yggdrasil"})
 	for _, p := range items {
@@ -187,7 +192,7 @@ func (h *Handler) HandleChatCompletions(w http.ResponseWriter, r *http.Request) 
 			writeError(w, http.StatusInternalServerError, "STREAM_UNSUPPORTED", "streaming not supported")
 			return
 		}
-		if req.Yggdrasil != nil && req.Yggdrasil.Progress {
+		if o := req.assistant(); o != nil && o.Progress {
 			opts.Progress = func(eventType string, payload map[string]any) { sw.progress(profileID, eventType, payload) }
 		}
 	}
@@ -245,7 +250,7 @@ func (h *Handler) HandleChatCompletions(w http.ResponseWriter, r *http.Request) 
 		h.writeNonStream(w, stream, profileID, extension)
 		return
 	}
-	h.writeStream(sw, r, stream, profileID, extension, req.Yggdrasil != nil && req.Yggdrasil.Progress)
+	h.writeStream(sw, r, stream, profileID, extension, req.assistant() != nil && req.assistant().Progress)
 }
 
 func (h *Handler) writeNonStream(w http.ResponseWriter, stream <-chan pluginapi.ChatChunk, model string, extension func() map[string]any) {
@@ -264,7 +269,7 @@ func (h *Handler) writeNonStream(w http.ResponseWriter, stream <-chan pluginapi.
 		"choices": []any{map[string]any{"index": 0, "message": map[string]any{"role": "assistant", "content": content.String()}, "finish_reason": "stop"}},
 	}
 	if ext := extension(); ext != nil {
-		out["yggdrasil"] = ext
+		withExtension(out, ext)
 	}
 	writeJSON(w, out)
 }
@@ -290,11 +295,10 @@ func (h *Handler) writeStream(sw *streamWriter, r *http.Request, stream <-chan p
 		}
 	}
 	if ext := extension(); progress && ext != nil {
-		sw.data(map[string]any{
+		sw.data(withExtension(map[string]any{
 			"id": id, "object": "chat.completion.chunk", "model": model,
-			"choices":   []any{map[string]any{"index": 0, "delta": map[string]any{}, "finish_reason": nil}},
-			"yggdrasil": ext,
-		})
+			"choices": []any{map[string]any{"index": 0, "delta": map[string]any{}, "finish_reason": nil}},
+		}, ext))
 	}
 	sw.done()
 	if h.Bus != nil {
@@ -341,9 +345,9 @@ func splitMessages(messages []pluginapi.ChatMessage) (message string, history []
 // turnOptions applies the request's controls within the key's permissions.
 // Asking for something the key does not allow is refused, not ignored.
 func turnOptions(req chatCompletionRequest, perms auth.APIKeyPermissions) (*turnopts.Options, string, string, error) {
-	y := req.Yggdrasil
+	y := req.assistant()
 	if y == nil {
-		y = &yggdrasilOptions{}
+		y = &assistantOptions{}
 	}
 	opts := &turnopts.Options{}
 	use := func(level string, asked *bool, what string) (bool, error) {
@@ -449,7 +453,7 @@ func (s *streamWriter) done() {
 var progressFields = []string{"tool_id", "query", "steps", "parallel", "index", "step", "status", "model_id", "model_name", "reason", "effort", "issues", "fixed", "remaining", "error", "name"}
 
 // progress writes one event as a chunk with an empty delta, so OpenAI
-// clients ignore it and Yggdrasil-aware ones can show it.
+// clients ignore it and Toskar-aware ones can show it.
 func (s *streamWriter) progress(model, eventType string, payload map[string]any) {
 	event := map[string]any{"type": eventType}
 	for _, k := range progressFields {
@@ -457,11 +461,27 @@ func (s *streamWriter) progress(model, eventType string, payload map[string]any)
 			event[k] = v
 		}
 	}
-	s.data(map[string]any{
+	s.data(withExtension(map[string]any{
 		"id": "chatcmpl-ygg", "object": "chat.completion.chunk", "model": model,
-		"choices":   []any{map[string]any{"index": 0, "delta": map[string]any{}, "finish_reason": nil}},
-		"yggdrasil": map[string]any{"event": event},
-	})
+		"choices": []any{map[string]any{"index": 0, "delta": map[string]any{}, "finish_reason": nil}},
+	}, map[string]any{"event": event}))
+}
+
+// assistant is the request's assistant controls, under either name.
+func (r chatCompletionRequest) assistant() *assistantOptions {
+	if r.Toskar != nil {
+		return r.Toskar
+	}
+	return r.Yggdrasil
+}
+
+// withExtension adds the answer's extension fields to a response or chunk
+// as "toskar", and as "yggdrasil", its name from before the rename, which
+// clients written for contract 1.x read (#237).
+func withExtension(out, ext map[string]any) map[string]any {
+	out["toskar"] = ext
+	out["yggdrasil"] = ext
+	return out
 }
 
 func writeJSON(w http.ResponseWriter, v any) {

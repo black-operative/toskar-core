@@ -554,7 +554,7 @@ Returns `auto` and profiles, not raw files on disk:
 }
 ```
 
-Built-in profile ids include `general-assistant`, `programming`, and `research`.
+Built-in profile ids include `general-assistant`, `programming`, and `research`. `owned_by` stays `yggdrasil` for contract 1.x, since clients may match on it.
 
 ### `POST /v1/chat/completions`
 
@@ -572,13 +572,13 @@ The API gets the same assistant as chat: planning, web look-ups, connected servi
 - **Messages:** the whole `messages` array is used. The last `user` message is the turn, and earlier `user` and `assistant` messages are its history. `system` (and `developer`) messages are the calling app's instructions. They cannot change what tools may do.
 - **Effort:** `reasoning_effort` maps to effort. `minimal` and `low` give Fast, `medium` gives Balanced, and `high` gives Thorough.
 
-The optional `yggdrasil` object holds the assistant's own controls:
+The optional `toskar` object holds the assistant's own controls. Its name from before the rename, `yggdrasil`, works too; when a request sends both, `toskar` wins.
 
 ```json
 {
   "model": "auto",
   "messages": [{"role": "user", "content": "What did we decide about the release?"}],
-  "yggdrasil": {
+  "toskar": {
     "memory": true,
     "knowledge": true,
     "knowledge_sources": ["<mimir source id>"],
@@ -597,7 +597,7 @@ The optional `yggdrasil` object holds the assistant's own controls:
 | `tools` | Narrow the profile's tools to these ids. A request can never add a tool or loosen a policy. |
 | `effort` | `auto`, `fast`, `balanced`, or `thorough`; it takes precedence over `reasoning_effort`. |
 | `placement` | `local` or `automatic`. |
-| `progress` | With `"stream": true`, progress and tool activity arrive as chunks with an empty `delta` and a `yggdrasil.event`, such as `{"type": "tool.started", "tool_id": "internet.search"}`. Before `[DONE]`, a last such chunk carries `yggdrasil.sources`, `steps`, `notice`, and `files`. Clients that ignore unknown fields see a plain OpenAI stream. |
+| `progress` | With `"stream": true`, progress and tool activity arrive as chunks with an empty `delta` and a `toskar.event`, such as `{"type": "tool.started", "tool_id": "internet.search"}`. Before `[DONE]`, a last such chunk carries `toskar.sources`, `steps`, `notice`, and `files`. Each chunk has the same object as `yggdrasil` too, for clients written before the rename. Clients that ignore unknown fields see a plain OpenAI stream. |
 
 `response_format` asks for JSON:
 - **Types:** `{"type": "json_object"}`, or `{"type": "json_schema", "json_schema": {"schema": {...}}}` with a JSON Schema. Yggdrasil checks `type`, `properties`, `required`, `enum`, and `items`.
@@ -606,7 +606,7 @@ The optional `yggdrasil` object holds the assistant's own controls:
 - **Retry:** an answer that still does not fit is asked for once more, with the problems named.
 - **Result:** the response content is compact JSON. When nothing fits, the request fails with 422 and lists the problems. A streamed request gets the JSON as one chunk.
 
-A non-streaming response has a `yggdrasil` object with the answer's `sources`, `steps`, `notice`, and `files` when there are any.
+A non-streaming response has a `toskar` object, and the same object as `yggdrasil`, with the answer's `sources`, `steps`, `notice`, and `files` when there are any.
 
 Each API key has `permissions` that a request can only narrow:
 - `memory` and `knowledge` are `never`, `on_request`, or `always`. The defaults are `on_request` for memory and `always` for knowledge.
