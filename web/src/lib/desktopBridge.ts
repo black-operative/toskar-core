@@ -195,11 +195,29 @@ export function hasEventRelay(): boolean {
   return Boolean(wailsGoApp()?.HasEventRelay && wailsRuntime()?.EventsOn)
 }
 
+/**
+ * The desktop shell's event names, and the ones a shell from before the
+ * Toskar rename sends (#237). A shell sends one name or the other, never
+ * both, so listening to both delivers each event once.
+ */
+const relayEvents = ['toskar:event', 'ygg:event']
+const lifecycleEvents = ['toskar:lifecycle', 'ygg:lifecycle']
+
+/** Listens to each of names; returns one function that stops them all. */
+function onEach(
+  on: (name: string, handler: (...data: unknown[]) => void) => () => void,
+  names: string[],
+  handler: (...data: unknown[]) => void,
+): () => void {
+  const stops = names.map((name) => on(name, handler))
+  return () => stops.forEach((stop) => stop())
+}
+
 /** Hears each event's JSON from the desktop shell's relay. Returns an unsubscribe function. */
 export function onRelayedEvent(handler: (json: string) => void): () => void {
   const runtime = wailsRuntime()
   if (!runtime?.EventsOn) return () => {}
-  return runtime.EventsOn('ygg:event', (...data: unknown[]) => {
+  return onEach(runtime.EventsOn, relayEvents, (...data: unknown[]) => {
     if (typeof data[0] === 'string') handler(data[0])
   })
 }
@@ -231,7 +249,7 @@ export function onDesktopLifecycle(
   if (!runtime?.EventsOn) {
     return () => {}
   }
-  return runtime.EventsOn('ygg:lifecycle', (...data: unknown[]) => {
+  return onEach(runtime.EventsOn, lifecycleEvents, (...data: unknown[]) => {
     const raw = data[0]
     if (raw && typeof raw === 'object') {
       const obj = raw as Record<string, unknown>

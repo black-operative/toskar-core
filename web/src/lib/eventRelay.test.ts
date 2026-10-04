@@ -9,19 +9,22 @@ type Handler = (...data: unknown[]) => void
 const w = window as unknown as { go?: unknown; runtime?: unknown }
 
 /** Pretends to be the desktop shell; send() relays one event's JSON. */
-function shell() {
-  const handlers = new Set<Handler>()
+function shell(eventName = 'toskar:event') {
+  // The page listens to the event's name and the one from before the rename
+  // (#237); the shell sends on one of them.
+  const handlers = new Map<string, Set<Handler>>()
   w.go = { main: { App: { HasEventRelay: vi.fn().mockResolvedValue(true) } } }
   w.runtime = {
     EventsOn: (name: string, handler: Handler) => {
-      expect(name).toBe('ygg:event')
-      handlers.add(handler)
-      return () => handlers.delete(handler)
+      expect(['toskar:event', 'ygg:event']).toContain(name)
+      if (!handlers.has(name)) handlers.set(name, new Set())
+      handlers.get(name)!.add(handler)
+      return () => handlers.get(name)!.delete(handler)
     },
   }
   return {
-    send: (event: unknown) => handlers.forEach((h) => h(JSON.stringify(event))),
-    listening: () => handlers.size,
+    send: (event: unknown) => handlers.get(eventName)?.forEach((h) => h(JSON.stringify(event))),
+    listening: () => handlers.get(eventName)?.size ?? 0,
   }
 }
 
@@ -50,6 +53,16 @@ describe('subscribeEvents', () => {
     relay.send({ type: 'tool.started', payload: { tool_id: 'internet.search' } })
     expect(onOpen).toHaveBeenCalledTimes(1)
     expect(onEvent).toHaveBeenCalledWith({ type: 'tool.started', payload: { tool_id: 'internet.search' } })
+    stop()
+    expect(relay.listening()).toBe(0)
+  })
+
+  it('hears a shell from before the rename, which sends ygg:event', () => {
+    const relay = shell('ygg:event')
+    const onEvent = vi.fn()
+    const stop = subscribeEvents({ onEvent })
+    relay.send({ type: 'tool.started', payload: { tool_id: 'internet.search' } })
+    expect(onEvent).toHaveBeenCalledTimes(1)
     stop()
     expect(relay.listening()).toBe(0)
   })

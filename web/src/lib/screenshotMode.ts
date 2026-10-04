@@ -23,7 +23,8 @@ export function readScreenshotLaunch(): ScreenshotLaunch | null {
   if (typeof window === 'undefined') {
     return null
   }
-  const fromBoot = (window as YggdrasilWindow).__YGGDRASIL_SCREENSHOT__
+  const w = window as YggdrasilWindow
+  const fromBoot = w.__TOSKAR_SCREENSHOT__ ?? w.__YGGDRASIL_SCREENSHOT__
   if (fromBoot?.enabled) {
     const screen = fromBoot.screen || 'chat'
     return { enabled: true, screen, path: screenshotPath(screen) }

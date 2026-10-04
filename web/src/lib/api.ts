@@ -227,7 +227,7 @@ export function getApiBase(): string {
     return ''
   }
   const w = window as YggdrasilWindow
-  return w.__YGGDRASIL_API_BASE__ ?? ''
+  return w.__TOSKAR_API_BASE__ ?? w.__YGGDRASIL_API_BASE__ ?? ''
 }
 
 async function parseJson<T>(response: Response): Promise<T | null> {

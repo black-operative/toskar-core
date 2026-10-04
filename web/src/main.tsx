@@ -7,7 +7,7 @@ import '@/index.css'
 
 async function bootstrap() {
   // Desktop (Wails) serves the UI and proxies /api to the daemon same-origin.
-  // Leave __YGGDRASIL_API_BASE__ unset so fetch('/api/v1/...') stays same-origin
+  // Leave __TOSKAR_API_BASE__ unset so fetch('/api/v1/...') stays same-origin
   // and avoids WebKit "Load failed" on POST (Private Network Access / CORS).
   // Vite dev mode uses the proxy in vite.config.ts instead.
 
