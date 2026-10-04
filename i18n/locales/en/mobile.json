@@ -177,7 +177,16 @@
     "alsoDeleteModels": "Also delete downloaded models",
     "resetting": "Resetting…",
     "confirmReset": "Yes, reset",
-    "resetFailed": "Could not reset Toskar."
+    "resetFailed": "Could not reset Toskar.",
+    "chatOnPhone": "Chat on this iPhone",
+    "webLookup": "Look up current information",
+    "webLookupCopy": "When a question needs current information, like weather or news, this iPhone searches the web with DuckDuckGo and reads the best page before answering. Only the search words leave the phone. Answers list their sources.",
+    "memory": "Memory",
+    "memoryCopy": "Say “Remember that …” in a chat and it is kept on this iPhone for future chats. Turning memory off keeps what is saved.",
+    "memoryEmpty": "Nothing remembered yet.",
+    "forgetMemory": "Forget",
+    "forgetMemoryLabel": "Forget “{{memory}}”",
+    "resetCopyMemories": "Restore the welcome setup. Clears chats and memories on this iPhone and forgets the connected computer."
   },
   "language": {
     "title": "Language",
@@ -243,7 +252,8 @@
     "empty": {
       "title": "What can I help you with?",
       "phone": "Talk to the AI on this iPhone. Nothing you write leaves it.",
-      "computer": "Toskar picks the right model and computer, looks things up when it needs to, and shows what it used."
+      "computer": "Toskar picks the right model and computer, looks things up when it needs to, and shows what it used.",
+      "phoneLookup": "Talk to the AI on this iPhone. Only search words leave it, when a question needs current information."
     },
     "unsent": {
       "notSent": "Not sent",
@@ -259,7 +269,8 @@
       "wantsToRunSummary": "{{tool}} wants to run: {{summary}}",
       "deny": "Deny",
       "allowOnce": "Allow once"
-    }
+    },
+    "phoneAutoHint": "Picks the best model on this iPhone for each message"
   },
   "effort": {
     "title": "Effort",
@@ -340,7 +351,11 @@
     "loadingModel": "Loading the model…",
     "loadingModelOn": "Loading the model on {{node}}…",
     "generating": "Generating response…",
-    "generatingOn": "Generating on {{node}}…"
+    "generatingOn": "Generating on {{node}}…",
+    "loadingNamed": "Loading {{model}}…",
+    "summarizing": "Summarizing earlier messages…",
+    "reasoning": "Reasoning…",
+    "writingAnswer": "Writing the answer…"
   },
   "realms": {
     "about": "{{norse}}. {{rune}}. About this name",
@@ -369,5 +384,66 @@
       "story": "Forseti, son of Baldr, sits in Glitnir, a hall with pillars of gold and a roof of silver. Everyone who brings a dispute to him leaves reconciled.",
       "runeName": "Isa, the rune of stillness"
     }
+  },
+  "phoneChat": {
+    "kinds": {
+      "chat": "a quick question",
+      "current": "a question about current information",
+      "coding": "a coding question",
+      "research": "a question that needs a detailed answer"
+    },
+    "steps": {
+      "autoChose": "Auto chose {{model}} for {{kind}}",
+      "searched": "Searched the web for “{{query}}”",
+      "read": "Read {{host}}",
+      "fallbackOutOfMemory": "{{failed}} ran out of memory, so {{model}} answered instead",
+      "fallbackFailed": "{{failed}} could not load, so {{model}} answered instead"
+    },
+    "notices": {
+      "fallback": "{{failed}} couldn't run on this iPhone, so {{model}} answered. The answer may be less detailed.",
+      "noWeb": "I couldn't reach the web, so this answer comes from what the model already knows and may be out of date.",
+      "webOff": "Web lookup is off in Settings, so this answer may be out of date."
+    },
+    "errors": {
+      "outOfMemory": "This iPhone ran out of memory for {{model}}. Close other apps, or pick a smaller model.",
+      "couldNotLoad": "{{model}} could not be loaded. Reinstall it from Models, or pick another model.",
+      "couldNotAnswer": "{{model}} could not answer this time. Try again, or pick another model."
+    },
+    "currentSource": "Current conditions (wttr.in)"
+  },
+  "memory": {
+    "saved": "Got it. I'll remember: “{{memory}}”.",
+    "savedStep": "Saved to memory: {{memory}}",
+    "already": "I already remember that: “{{memory}}”.",
+    "sensitive": "I didn't save that because it looks like a password, key, or card number. A password manager is the safer place for those.",
+    "forgot": "Done. I forgot: “{{memory}}”.",
+    "removedStep": "Removed from memory: {{memory}}",
+    "notFound": "I couldn't find a memory like that. Settings lists everything I remember.",
+    "none": "I don't remember anything yet. Say “Remember that …” and I'll keep it for future chats.",
+    "list": "Here's what I remember:",
+    "more_one": "…and {{count}} more in Settings.",
+    "more_other": "…and {{count}} more in Settings.",
+    "offSaved": "Memory is off, so I won't use it until you turn it back on in Settings.",
+    "offList": "Memory is off, so I'm not using these right now."
+  },
+  "context": {
+    "usage": "Context usage",
+    "full": "Context {{percent}} full",
+    "title": "Context",
+    "used": "{{used}} / {{limit}} tokens",
+    "usedEstimated": "~{{used}} / {{limit}} tokens",
+    "limit": "{{limit}} tokens",
+    "rows": {
+      "instructions": "Instructions and memory",
+      "conversation": "Conversation",
+      "webResults": "Web results"
+    },
+    "nearFull": "Nearly full: as the chat grows, its oldest messages are sent as a summary. Start a new chat for a fresh window.",
+    "summarized_one": "The oldest message was sent as a summary so the conversation fits. Every message is still saved.",
+    "summarized_other": "The {{count}} oldest messages were sent as a summary so the conversation fits. Every message is still saved.",
+    "omitted_one": "The oldest message did not fit and was left out. Every message is still saved.",
+    "omitted_other": "The {{count}} oldest messages did not fit and were left out. Every message is still saved.",
+    "empty": "Send a message to see how much of this model’s memory the chat is using.",
+    "hint": "The window is how much of the chat the model can read at once on this iPhone."
   }
 }
