@@ -193,10 +193,10 @@ jobs:
           set -euo pipefail
           if [ -z "${DESKTOP_TOKEN}" ]; then
             # The release itself succeeded, so this is a warning, not a failure.
-            echo "::warning title=Desktop not notified::TOSKAR_DESKTOP_TOKEN is not set, so yggdrasil-desktop was not told about ${VERSION}. Its daily backup check will find the release, or start its Release workflow by hand. See docs/release-checklist.md."
+            echo "::warning title=Desktop not notified::TOSKAR_DESKTOP_TOKEN is not set, so toskar-desktop was not told about ${VERSION}. Its daily backup check will find the release, or start its Release workflow by hand. See docs/release-checklist.md."
             exit 0
           fi
-          GH_TOKEN="$DESKTOP_TOKEN" gh api repos/yeixio/yggdrasil-desktop/dispatches \
+          GH_TOKEN="$DESKTOP_TOKEN" gh api repos/yeixio/toskar-desktop/dispatches \
             -f event_type=core-release \
             -f "client_payload[version]=${VERSION#v}"
-          echo "Told yggdrasil-desktop about ${VERSION}."
+          echo "Told toskar-desktop about ${VERSION}."
