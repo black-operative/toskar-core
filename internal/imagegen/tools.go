@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/remotetools"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/remotetools"
 )
 
 // GenerateTool is image.generate: make an image from a description.

@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/store"
 )
 
 func TestOpenMigrates(t *testing.T) {

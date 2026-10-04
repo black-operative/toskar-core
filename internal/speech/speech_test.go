@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // fakePython is a stand-in interpreter: it ignores the script and answers

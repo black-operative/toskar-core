@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"sort"
 
-	"github.com/yeixio/yggdrasil-core/internal/replylang"
+	"github.com/yeixio/toskar-core/internal/replylang"
 )
 
 // SourceLanguage is a language a source is written in, and how many of its

@@ -9,7 +9,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/google/uuid"
-	"github.com/yeixio/yggdrasil-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/automations"
 )
 
 const runSelect = `

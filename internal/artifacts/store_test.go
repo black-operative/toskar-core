@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
-	"github.com/yeixio/yggdrasil-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/store"
 )
 
 func newStore(t *testing.T) (*Store, string) {

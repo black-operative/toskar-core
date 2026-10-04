@@ -4,7 +4,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 	"golang.org/x/text/language"
 )
 

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/store"
 )
 
 func count(t *testing.T, db *store.DB, q string) int {

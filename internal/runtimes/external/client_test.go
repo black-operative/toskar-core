@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func fakeServer(t *testing.T) (*httptest.Server, *map[string]any) {

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 const automationsUsage = `usage: toskarctl automations <list|get|create|update|delete|run|pause|resume>

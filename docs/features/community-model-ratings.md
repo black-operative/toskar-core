@@ -429,7 +429,7 @@ snapshots/
   2026-09-28.json
 ```
 
-Do not place high-frequency generated rating commits into `yggdrasil-core`.
+Do not place high-frequency generated rating commits into `toskar-core`.
 
 ---
 

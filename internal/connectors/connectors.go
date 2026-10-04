@@ -17,8 +17,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Field is one value a service needs to connect, such as a token.

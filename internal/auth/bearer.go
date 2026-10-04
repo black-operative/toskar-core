@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // ErrAPIKeyRequired means a non-loopback listener has no API key configured.

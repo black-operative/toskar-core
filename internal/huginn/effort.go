@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/locale"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Effort is how much work a request should get (spec §15). Auto lets Huginn

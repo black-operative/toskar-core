@@ -9,7 +9,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Enter admits work from another computer, waiting for this computer's own

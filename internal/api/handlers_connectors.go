@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/connectors"
+	"github.com/yeixio/toskar-core/internal/connectors"
 )
 
 // BindConnectors attaches the connected services routes (spec §32).

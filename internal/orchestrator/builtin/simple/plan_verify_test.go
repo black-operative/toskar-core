@@ -6,9 +6,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/huginn"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/huginn"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // planEnv answers in order, records events, and is safe for the parallel

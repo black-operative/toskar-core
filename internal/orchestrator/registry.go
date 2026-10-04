@@ -3,7 +3,7 @@ package orchestrator
 import (
 	"fmt"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // Registry holds orchestrator implementations.

@@ -25,7 +25,7 @@ Typical workflow:
 The experience should feel like:
 
 ```bash
-curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh -s -- join \
+curl -sfL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | sh -s -- join \
   --server https://192.168.1.10:7332 \
   --token ygj_abc123...
 ```
@@ -134,7 +134,7 @@ Example output:
 ```text
 Join a computer to this Toskar network:
 
-curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh -s -- join \
+curl -sfL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | sh -s -- join \
   --server https://192.168.1.10:7332 \
   --token ygj_7PH4W8J2K6...
 
@@ -399,7 +399,7 @@ toskarctl join-token create --print-command
 Potential output:
 
 ```bash
-curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | \
+curl -sfL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | \
   sudo sh -s -- join \
   --server https://10.0.0.5:7332 \
   --token ygj_7PH4W8J2K6 \
@@ -433,7 +433,7 @@ The best user experience eventually combines installation and joining.
 Example:
 
 ```bash
-curl -sfL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | \
+curl -sfL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | \
   sudo sh -s -- join \
   --server https://10.0.0.5:7332 \
   --token ygj_...
@@ -915,7 +915,7 @@ Windows should have an equivalent PowerShell one-liner.
 Example conceptual form:
 
 ```powershell
-irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex
+irm https://github.com/yeixio/toskar-core/releases/latest/download/install.ps1 | iex
 ```
 
 The final implementation should not copy insecure command patterns merely for visual similarity; arguments and execution flow must be designed carefully.

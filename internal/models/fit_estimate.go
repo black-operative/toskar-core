@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Runtime-memory thresholds and buffers live here so the model cards and the

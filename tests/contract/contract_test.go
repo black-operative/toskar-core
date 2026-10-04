@@ -19,12 +19,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/gjallarhorn"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/gjallarhorn"
+	"github.com/yeixio/toskar-core/internal/runlog"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 const snapshotFile = "testdata/contract.json"

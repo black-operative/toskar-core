@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/gjallarhorn"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/gjallarhorn"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 // Model crashes notify only when they repeat (Gjallarhorn §23, §29): one

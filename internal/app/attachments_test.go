@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 func TestAttachmentsReachTheTurnAsData(t *testing.T) {

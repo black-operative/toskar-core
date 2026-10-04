@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/muninn"
+	"github.com/yeixio/toskar-core/internal/muninn"
 )
 
 // BindMemory attaches the persistent memory routes.

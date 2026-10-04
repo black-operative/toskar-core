@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/auth"
-	"github.com/yeixio/yggdrasil-core/internal/discovery"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/auth"
+	"github.com/yeixio/toskar-core/internal/discovery"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Manager tracks local, discovered, and paired nodes.

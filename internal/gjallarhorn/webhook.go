@@ -17,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 // Webhook request headers (§13). Each is also sent under its name from

@@ -3,7 +3,7 @@ package places
 import (
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/leakcheck"
+	"github.com/yeixio/toskar-core/internal/leakcheck"
 )
 
 // Goroutines the tests start must be gone when they end (#231).

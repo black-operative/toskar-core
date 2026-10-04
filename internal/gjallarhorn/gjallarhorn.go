@@ -15,8 +15,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 // Categories.

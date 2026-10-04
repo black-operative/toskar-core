@@ -10,9 +10,9 @@ import (
 	"context"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 
-	"github.com/yeixio/yggdrasil-core/internal/replylang"
+	"github.com/yeixio/toskar-core/internal/replylang"
 )
 
 // Protocol is the remote tool protocol version. A peer that does not

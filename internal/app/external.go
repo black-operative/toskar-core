@@ -5,13 +5,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/api"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/internal/runtimes/external"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/api"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/internal/runtimes/external"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // externalKeySecret names the external server's API key in the secrets

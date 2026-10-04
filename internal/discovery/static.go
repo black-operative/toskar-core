@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // ProbeStaticPeers fetches /internal/v1/node from each host:port and returns discovered nodes.

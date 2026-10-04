@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"strings"
 
-	modelhealth "github.com/yeixio/yggdrasil-core/internal/models/health"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // A chat error reaches the client as text: most come from a runtime, a model,

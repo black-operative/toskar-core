@@ -10,7 +10,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/auth"
+	"github.com/yeixio/toskar-core/internal/auth"
 )
 
 // The handshake, over Bifrost (port 7332):

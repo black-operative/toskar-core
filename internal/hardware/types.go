@@ -4,7 +4,7 @@ import (
 	"context"
 	"runtime"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func detectCPU(ctx context.Context) (contracts.CPUInfo, error) {

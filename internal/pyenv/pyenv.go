@@ -25,8 +25,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // UVVersion is the uv release the daemon installs.

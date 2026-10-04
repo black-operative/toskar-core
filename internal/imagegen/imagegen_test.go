@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/store"
 )
 
 // fakeCLI stands in for sd-cli: it records its arguments and writes a small

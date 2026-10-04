@@ -14,7 +14,7 @@ VERSION="${VERSION:-0.1.0-dev}"
 PKG_VERSION="$(printf '%s' "$VERSION" | sed 's/-/~/')"
 COMMIT="$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
 DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-LDFLAGS="-X github.com/yeixio/yggdrasil-core/internal/version.Version=${VERSION} -X github.com/yeixio/yggdrasil-core/internal/version.Commit=${COMMIT} -X github.com/yeixio/yggdrasil-core/internal/version.BuildDate=${DATE}"
+LDFLAGS="-X github.com/yeixio/toskar-core/internal/version.Version=${VERSION} -X github.com/yeixio/toskar-core/internal/version.Commit=${COMMIT} -X github.com/yeixio/toskar-core/internal/version.BuildDate=${DATE}"
 
 if ! command -v nfpm >/dev/null 2>&1; then
   echo "nfpm is required. Install it with: go install github.com/goreleaser/nfpm/v2/cmd/nfpm@v2.41.3" >&2

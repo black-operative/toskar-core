@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/imagegen"
+	"github.com/yeixio/toskar-core/internal/imagegen"
 )
 
 // BindImages attaches image generation setup (Gungnir §17).

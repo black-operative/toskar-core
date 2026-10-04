@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func TestListDoesNotDeadlockWithSingleConn(t *testing.T) {

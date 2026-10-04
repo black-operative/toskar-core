@@ -1,6 +1,6 @@
 package models
 
-import "github.com/yeixio/yggdrasil-core/pkg/contracts"
+import "github.com/yeixio/toskar-core/pkg/contracts"
 
 // CatalogEntry is a model in the curated manifest.
 type CatalogEntry struct {

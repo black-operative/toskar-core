@@ -3,7 +3,7 @@ package ratings
 import (
 	"context"
 
-	"github.com/yeixio/yggdrasil-core/internal/models"
+	"github.com/yeixio/toskar-core/internal/models"
 )
 
 // confidenceWeight is how much a cohort's ratings count in recommendations:

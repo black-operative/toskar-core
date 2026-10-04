@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/replylang"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/replylang"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // voices is the Piper voice read-aloud uses for each language when no voice

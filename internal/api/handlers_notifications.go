@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/gjallarhorn"
+	"github.com/yeixio/toskar-core/internal/gjallarhorn"
 )
 
 // BindNotifications attaches the notification center routes (Gjallarhorn).

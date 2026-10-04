@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 // Every turn knows the date and time where the person is.

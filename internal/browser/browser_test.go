@@ -14,8 +14,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/store"
 )
 
 func TestGuard(t *testing.T) {

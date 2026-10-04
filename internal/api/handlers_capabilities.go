@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/inventory"
+	"github.com/yeixio/toskar-core/internal/inventory"
 )
 
 // CapabilitySource builds the capability inventory (spec §37).

@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/cache"
 )
 
 // fakeOSM serves Nominatim, Overpass, and OSRM answers for Juneau.

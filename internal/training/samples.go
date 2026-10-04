@@ -5,7 +5,7 @@ import (
 	"embed"
 	"fmt"
 
-	"github.com/yeixio/yggdrasil-core/internal/models"
+	"github.com/yeixio/toskar-core/internal/models"
 )
 
 //go:embed samples/*

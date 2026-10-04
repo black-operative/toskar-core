@@ -3,16 +3,16 @@
 One line, on Linux or macOS. It installs the package or archive below for this computer, checks it against `SHA256SUMS.txt`, and starts Toskar as a service:
 
 ```bash
-curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh
+curl -fsSL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | sh
 ```
 
-On Windows, in PowerShell: `irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex`. To add a computer to an existing network, use the command `toskarctl join-token create` prints.
+On Windows, in PowerShell: `irm https://github.com/yeixio/toskar-core/releases/latest/download/install.ps1 | iex`. To add a computer to an existing network, use the command `toskarctl join-token create` prints.
 
 macOS. Homebrew installs Toskar Core from this repository. It does not install Toskar Desktop. The short command `brew install yggdrasil` is a different Homebrew cask.
 
 ```bash
-brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core
-brew install yeixio/yggdrasil/toskar
+brew tap yeixio/toskar https://github.com/yeixio/toskar-core
+brew install yeixio/toskar/toskar
 toskar
 ```
 
@@ -29,7 +29,7 @@ Open `http://127.0.0.1:7331`.
 Debian and Ubuntu:
 
 ```bash
-echo "deb [trusted=yes] https://raw.githubusercontent.com/yeixio/yggdrasil-core/apt stable main" | sudo tee /etc/apt/sources.list.d/yggdrasil.list
+echo "deb [trusted=yes] https://raw.githubusercontent.com/yeixio/toskar-core/apt stable main" | sudo tee /etc/apt/sources.list.d/yggdrasil.list
 sudo apt-get update
 sudo apt-get install toskar
 ```

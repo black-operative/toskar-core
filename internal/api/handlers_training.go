@@ -9,9 +9,9 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
-	"github.com/yeixio/yggdrasil-core/internal/models"
-	"github.com/yeixio/yggdrasil-core/internal/training"
+	"github.com/yeixio/toskar-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/models"
+	"github.com/yeixio/toskar-core/internal/training"
 )
 
 // BindTraining attaches the Train Your Own AI routes. catalog lists the

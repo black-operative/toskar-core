@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"sync"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/events"
 )
 
 // Manager coordinates runtime adapters and persistence.

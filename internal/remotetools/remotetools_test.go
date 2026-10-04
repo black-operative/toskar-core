@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // fakeTool is a portable tool that upper-cases its input file. Prepare and

@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/yeixio/yggdrasil-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/events"
 )
 
 // Downloader handles resumable HTTP downloads with integrity verification.

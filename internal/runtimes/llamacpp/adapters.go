@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // llama-server applies every loaded LoRA adapter at full strength unless a

@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // history builds n exchanges of about size characters each.

@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 // GitHub reads issues and pull requests, and can comment on them.

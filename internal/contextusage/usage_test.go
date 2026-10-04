@@ -5,8 +5,8 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func TestMeasureScalesToRuntimeTokens(t *testing.T) {

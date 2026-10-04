@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Translations live in `i18n/locales/<language>/` and are fixed by pull request. A small fix can go straight to a pull request without an issue. [CONTRIBUTING.md](https://github.com/yeixio/yggdrasil-core/blob/main/CONTRIBUTING.md#translations) explains how.
+        Translations live in `i18n/locales/<language>/` and are fixed by pull request. A small fix can go straight to a pull request without an issue. [CONTRIBUTING.md](https://github.com/yeixio/toskar-core/blob/main/CONTRIBUTING.md#translations) explains how.
   - type: dropdown
     id: kind
     attributes:

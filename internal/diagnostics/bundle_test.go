@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 func TestWriteBundleExcludesSecrets(t *testing.T) {

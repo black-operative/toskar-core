@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/leakcheck"
+	"github.com/yeixio/toskar-core/internal/leakcheck"
 )
 
 // The test binary doubles as an MCP server over stdio when MCP_FAKE is

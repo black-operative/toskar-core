@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/artifacts"
 )
 
 // videoFixture installs a video "model" made of the fixture's files.

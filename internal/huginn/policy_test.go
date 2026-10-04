@@ -3,7 +3,7 @@ package huginn
 import (
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func TestBudgetWithProfileControls(t *testing.T) {

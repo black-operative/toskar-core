@@ -13,7 +13,7 @@ import (
 	"sync"
 	"unicode"
 
-	userguide "github.com/yeixio/yggdrasil-core/docs/user-guide"
+	userguide "github.com/yeixio/toskar-core/docs/user-guide"
 )
 
 // Passage is one paragraph or list of steps from a section.

@@ -11,7 +11,7 @@ const (
 	// LicenseID is the SPDX identifier for this program.
 	LicenseID = "AGPL-3.0-or-later"
 	// Repository is the upstream source repository.
-	Repository = "https://github.com/yeixio/yggdrasil-core"
+	Repository = "https://github.com/yeixio/toskar-core"
 )
 
 // Build-time variables set via -ldflags.

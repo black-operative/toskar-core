@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/inventory"
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/internal/structured"
-	"github.com/yeixio/yggdrasil-core/internal/tools"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/inventory"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/internal/structured"
+	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // setupOptions lists what Yggdrasil can install to add a missing ability,

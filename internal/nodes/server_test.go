@@ -11,12 +11,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/auth"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/discovery"
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/auth"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/discovery"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func setupInternalServer(t *testing.T) (*InternalServer, *auth.NodeIdentity, *auth.PairingManager, *auth.NodeIdentity) {

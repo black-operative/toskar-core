@@ -5,10 +5,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 func TestToolCallsAreRecordedAsEgress(t *testing.T) {

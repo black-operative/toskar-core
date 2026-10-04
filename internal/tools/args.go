@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/yeixio/yggdrasil-core/internal/structured"
+	"github.com/yeixio/toskar-core/internal/structured"
 )
 
 // ErrInvalidArgs is returned for a call whose arguments have the wrong type.

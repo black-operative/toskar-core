@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/models/hfclient"
+	"github.com/yeixio/toskar-core/internal/models/hfclient"
 )
 
 func TestSearchFiltersGGUF(t *testing.T) {

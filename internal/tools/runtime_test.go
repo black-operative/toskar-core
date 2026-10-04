@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/events"
 )
 
 func TestCanonical(t *testing.T) {

@@ -3,8 +3,8 @@ package app
 import (
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // A profile's roles keep their own models and computers; the chat's model

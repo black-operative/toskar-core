@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // recordingEnv is scriptedEnv that keeps what was emitted.

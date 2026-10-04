@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/ledongthuc/pdf"
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/mimir"
 )
 
 const sampleDoc = "# Quarterly report\n\nSales grew **12%** in *Q3*, led by `widgets`.\n\n## Highlights\n\n- New customers\n- Lower costs\n  - Shipping\n\n1. Hire\n2. Expand\n\n| Region | Sales |\n| --- | --- |\n| North | 120 |\n| South | 95 |\n\n```\ntotal = 215\n```\n\n---\n\n> Numbers are unaudited.\n"

@@ -3,9 +3,9 @@ package automations
 import (
 	"context"
 	"errors"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	"github.com/yeixio/yggdrasil-core/internal/structured"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/structured"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 	"strconv"
 	"strings"
 	"unicode/utf8"

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/yeixio/yggdrasil-core/internal/personal"
+	"github.com/yeixio/toskar-core/internal/personal"
 )
 
 // personalKey is the setting that holds how the person likes answers.

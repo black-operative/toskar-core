@@ -19,7 +19,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/yeixio/yggdrasil-core/internal/remotetools"
+	"github.com/yeixio/toskar-core/internal/remotetools"
 )
 
 // Limits.

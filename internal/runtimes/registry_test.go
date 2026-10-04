@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/runtimes/external"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/runtimes/external"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func TestRegistryKeepsRegistrationOrder(t *testing.T) {

@@ -3,11 +3,11 @@ package app
 import (
 	"context"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/gjallarhorn"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	"github.com/yeixio/yggdrasil-core/internal/training"
+	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/gjallarhorn"
+	"github.com/yeixio/toskar-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/training"
 )
 
 type boolSettings interface {

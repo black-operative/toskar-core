@@ -4,7 +4,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // ScoreFits grades every catalog model against hardware.

@@ -9,13 +9,13 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/auth"
-	"github.com/yeixio/yggdrasil-core/internal/huginn"
-	"github.com/yeixio/yggdrasil-core/internal/mcp"
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
-	"github.com/yeixio/yggdrasil-core/internal/turnopts"
-	"github.com/yeixio/yggdrasil-core/internal/version"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/auth"
+	"github.com/yeixio/toskar-core/internal/huginn"
+	"github.com/yeixio/toskar-core/internal/mcp"
+	"github.com/yeixio/toskar-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/turnopts"
+	"github.com/yeixio/toskar-core/internal/version"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // mcpBackend is what Yggdrasil's MCP server offers other apps: the local AI,

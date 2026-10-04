@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 var tireShop = Specialist{
@@ -110,7 +110,7 @@ func TestToolsForConnectedServices(t *testing.T) {
 		}
 		return false
 	}
-	gh := ToolsFor(Chat, "What open issues are there in yeixio/yggdrasil-core?", available)
+	gh := ToolsFor(Chat, "What open issues are there in yeixio/toskar-core?", available)
 	if !has(gh, "github.search") || has(gh, "homeassistant.states") {
 		t.Errorf("issues question offered %v", gh)
 	}

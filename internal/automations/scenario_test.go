@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
-	"github.com/yeixio/yggdrasil-core/internal/store/repositories"
+	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/store/repositories"
 )
 
 // These scenarios drive the stored schedule, the runner, and the notifier together.

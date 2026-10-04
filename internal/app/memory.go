@@ -7,11 +7,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/muninn"
-	"github.com/yeixio/yggdrasil-core/internal/personal"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/muninn"
+	"github.com/yeixio/toskar-core/internal/personal"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // memoryOn reports whether persistent memory feeds this conversation: the

@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	modelhealth "github.com/yeixio/yggdrasil-core/internal/models/health"
-	"github.com/yeixio/yggdrasil-core/internal/share"
+	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
+	"github.com/yeixio/toskar-core/internal/share"
 )
 
 func TestChatExplainsTrainingOnThisComputer(t *testing.T) {

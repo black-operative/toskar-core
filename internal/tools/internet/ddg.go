@@ -12,7 +12,7 @@ import (
 
 	"golang.org/x/net/html"
 
-	"github.com/yeixio/yggdrasil-core/internal/netguard"
+	"github.com/yeixio/toskar-core/internal/netguard"
 )
 
 const maxSearchBytes = 1 << 20

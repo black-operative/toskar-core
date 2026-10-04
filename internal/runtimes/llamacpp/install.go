@@ -14,7 +14,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 const runtimeID = "llamacpp"

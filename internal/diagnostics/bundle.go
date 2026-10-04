@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/version"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/version"
 )
 
 // Options controls diagnostic bundle contents.

@@ -10,7 +10,7 @@ import (
 	"math"
 	"unicode/utf8"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Semantic search (AI experience spec §61). When an embedding model is

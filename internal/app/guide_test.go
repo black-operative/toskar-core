@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/guide"
+	"github.com/yeixio/toskar-core/internal/guide"
 )
 
 func TestGuideReachesTheTurn(t *testing.T) {

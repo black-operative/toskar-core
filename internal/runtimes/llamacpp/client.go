@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // Client streams OpenAI-compatible chat completions from llama-server.

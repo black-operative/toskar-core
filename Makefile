@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null || echo unknown)
-LDFLAGS := -X github.com/yeixio/yggdrasil-core/internal/version.Commit=$(COMMIT)
+LDFLAGS := -X github.com/yeixio/toskar-core/internal/version.Commit=$(COMMIT)
 
 .PHONY: help start ui frontend daemon run-daemon run-web all tidy test vet fmt lint ci quality quality-real test-cluster package-headless screenshots appstore-screenshots icons
 

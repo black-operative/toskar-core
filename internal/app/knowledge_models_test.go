@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
-	"github.com/yeixio/yggdrasil-core/internal/share"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/share"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func testKnowledgeModels(a *App, installed ...contracts.Model) (*knowledgeModels, *[]string) {

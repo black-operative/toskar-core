@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/automations"
 )
 
 type previewExec struct {

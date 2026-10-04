@@ -3,7 +3,7 @@ package models
 import (
 	"encoding/json"
 
-	rootmanifests "github.com/yeixio/yggdrasil-core/manifests"
+	rootmanifests "github.com/yeixio/toskar-core/manifests"
 )
 
 // NewCatalogEmbedded loads the embedded catalog from repo manifests.

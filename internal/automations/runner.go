@@ -7,9 +7,9 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	modelhealth "github.com/yeixio/yggdrasil-core/internal/models/health"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/locale"
+	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
 )
 
 const (

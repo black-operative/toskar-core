@@ -9,8 +9,8 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // ReplyReserveTokens leaves room for the model's answer when older messages are kept.

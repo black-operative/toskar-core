@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/automations"
 )
 
 func TestDecide(t *testing.T) {

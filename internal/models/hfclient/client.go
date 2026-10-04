@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/yeixio/yggdrasil-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/cache"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 var preferredQuants = []string{"q4_k_m", "q5_k_m", "q4_k_s", "q8_0", "q4_0"}

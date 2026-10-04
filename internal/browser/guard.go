@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/netguard"
+	"github.com/yeixio/toskar-core/internal/netguard"
 )
 
 // ErrPrivate is a request for this computer or the local network.

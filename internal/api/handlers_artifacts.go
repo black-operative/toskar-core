@@ -11,9 +11,9 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/imagegen"
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/imagegen"
+	"github.com/yeixio/toskar-core/internal/mimir"
 )
 
 // BindArtifacts attaches the file routes: chat attachments and files the

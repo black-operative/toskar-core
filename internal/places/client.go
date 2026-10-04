@@ -15,7 +15,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/cache"
 )
 
 // Default public services. Their usage policies ask for light use, an
@@ -125,7 +125,7 @@ func (c *Client) get(ctx context.Context, rawURL string, form url.Values, detail
 	}
 	ua := c.UserAgent
 	if ua == "" {
-		ua = "Toskar (+https://github.com/yeixio/yggdrasil-core)"
+		ua = "Toskar (+https://github.com/yeixio/toskar-core)"
 	}
 	req.Header.Set("User-Agent", ua)
 	req.Header.Set("Accept", "application/json")

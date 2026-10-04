@@ -13,12 +13,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
-	"github.com/yeixio/yggdrasil-core/internal/models"
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/models"
+	"github.com/yeixio/toskar-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 type fakePython struct {

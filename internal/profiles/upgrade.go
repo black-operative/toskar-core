@@ -1,8 +1,8 @@
 package profiles
 
 import (
-	"github.com/yeixio/yggdrasil-core/internal/tools"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // UpgradeGeneralTools moves an untouched built-in General Assistant onto the

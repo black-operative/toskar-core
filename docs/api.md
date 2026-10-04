@@ -26,18 +26,18 @@ Bifrost, on port 7332, is a separate server. Its protected routes require a pair
   "version": "1.4.0",
   "commit": "abc1234",
   "license": "AGPL-3.0-or-later",
-  "source": "https://github.com/yeixio/yggdrasil-core/tree/v1.4.0"
+  "source": "https://github.com/yeixio/toskar-core/tree/v1.4.0"
 }
 ```
 
 `GET /api/v1/version` includes `license` and `source` as well. The Settings page links to that source URL.
 
-A release build, which sets `version.Version` from the tag, points `source` at `https://github.com/yeixio/yggdrasil-core/tree/v<version>`. A development build with a known commit points at `.../tree/<commit>`. A build with neither points at the repository itself.
+A release build, which sets `version.Version` from the tag, points `source` at `https://github.com/yeixio/toskar-core/tree/v<version>`. A development build with a known commit points at `.../tree/<commit>`. A build with neither points at the repository itself.
 
 If you distribute or operate a modified Toskar Core over a network, set the source URL so users can obtain the corresponding source for your modified version:
 
 ```text
--X github.com/yeixio/yggdrasil-core/internal/version.SourceURL=<url-of-your-corresponding-source>
+-X github.com/yeixio/toskar-core/internal/version.SourceURL=<url-of-your-corresponding-source>
 ```
 
 The same text is printed by `toskar -version` and by `toskarctl version` or `toskarctl about`.

@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // PairingState represents pairing session states.

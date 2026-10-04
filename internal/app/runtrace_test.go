@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/orchestrator/builtin/simple"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/orchestrator/builtin/simple"
+	"github.com/yeixio/toskar-core/internal/runlog"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func TestRunTraceFromStreamAndEvents(t *testing.T) {

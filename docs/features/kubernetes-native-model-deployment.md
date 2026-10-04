@@ -103,7 +103,7 @@ Suggested V1:
 
 ```text
 Deployment
-└── yggdrasil-core
+└── toskar-core
     ├── API
     ├── Norn
     ├── Heimdall
@@ -893,7 +893,7 @@ Suggested structure:
 
 ```text
 charts/
-└── yggdrasil-core/
+└── toskar-core/
     ├── Chart.yaml
     ├── values.yaml
     └── templates/
@@ -912,14 +912,14 @@ Helm should install:
 Example:
 
 ```bash
-helm install yggdrasil ./charts/yggdrasil-core
+helm install toskar ./charts/toskar-core
 ```
 
 Future:
 
 ```bash
 helm repo add yggdrasil ...
-helm install yggdrasil yggdrasil/yggdrasil-core
+helm install toskar toskar/toskar-core
 ```
 
 Do not publish chart installation commands until the chart actually exists and is tested.

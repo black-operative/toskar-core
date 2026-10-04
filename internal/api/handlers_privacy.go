@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/retention"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/retention"
 )
 
 // Privacy is what left this computer and how long run records are kept

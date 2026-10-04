@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/yeixio/yggdrasil-core/internal/screenshot"
+	"github.com/yeixio/toskar-core/internal/screenshot"
 )
 
 func main() {

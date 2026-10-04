@@ -8,12 +8,12 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/auth"
-	"github.com/yeixio/yggdrasil-core/internal/diagnostics"
-	"github.com/yeixio/yggdrasil-core/internal/huginn"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/auth"
+	"github.com/yeixio/toskar-core/internal/diagnostics"
+	"github.com/yeixio/toskar-core/internal/huginn"
+	"github.com/yeixio/toskar-core/internal/locale"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func (s *Server) handleRecommendModels(w http.ResponseWriter, r *http.Request) {

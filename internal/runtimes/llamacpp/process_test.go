@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func TestHealthReportsMissingLlamaServerLocation(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func TestActiveWorkCountsStreamingTurns(t *testing.T) {

@@ -11,7 +11,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func platformCPU(ctx context.Context) (contracts.CPUInfo, error) {

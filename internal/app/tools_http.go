@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 type toolView struct {

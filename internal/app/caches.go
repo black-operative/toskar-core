@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/cache"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/inventory"
+	"github.com/yeixio/toskar-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/inventory"
 )
 
 // Cache policies (spec §36). Web lookups are personal: they say what the

@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/benchmark"
-	"github.com/yeixio/yggdrasil-core/internal/share"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/benchmark"
+	"github.com/yeixio/toskar-core/internal/share"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // A benchmark unloads other models before loading each one, so it waits for

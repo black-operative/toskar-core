@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
-	"github.com/yeixio/yggdrasil-core/internal/replylang"
+	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/replylang"
 )
 
 // replyLanguage is the language a turn's answer is written in (multilingual

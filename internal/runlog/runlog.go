@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/locale"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Statuses.

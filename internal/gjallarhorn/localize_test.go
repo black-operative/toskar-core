@@ -6,7 +6,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 type recordingChannel struct {

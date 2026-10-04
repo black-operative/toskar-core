@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/auth"
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/auth"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 func TestStartRefusesNonLoopbackWithoutAPIKey(t *testing.T) {

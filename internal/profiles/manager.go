@@ -7,8 +7,8 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/yeixio/yggdrasil-core/internal/tools"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Manager handles profile CRUD in SQLite.

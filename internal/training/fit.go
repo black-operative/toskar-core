@@ -5,8 +5,8 @@ import (
 	"math"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/models"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/models"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // PresetSettings fills Hyper for a preset before fit adjustments. Iterations

@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 // Calendar reads and changes events over CalDAV with an app password

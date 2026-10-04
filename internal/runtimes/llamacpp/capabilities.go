@@ -4,7 +4,7 @@ import (
 	"context"
 	"runtime"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // Capabilities reports llama.cpp runtime features for this host.

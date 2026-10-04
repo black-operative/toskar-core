@@ -11,17 +11,17 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/nodes"
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
-	"github.com/yeixio/yggdrasil-core/internal/runtimes/external"
-	"github.com/yeixio/yggdrasil-core/internal/scheduler"
-	"github.com/yeixio/yggdrasil-core/internal/share"
-	"github.com/yeixio/yggdrasil-core/internal/structured"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/nodes"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/internal/runlog"
+	"github.com/yeixio/toskar-core/internal/runtimes/external"
+	"github.com/yeixio/toskar-core/internal/scheduler"
+	"github.com/yeixio/toskar-core/internal/share"
+	"github.com/yeixio/toskar-core/internal/structured"
+	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 func (a *App) peerClient(n contracts.Node) *nodes.Client {

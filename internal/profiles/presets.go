@@ -3,7 +3,7 @@ package profiles
 import (
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // PresetIDs for built-in profile templates.

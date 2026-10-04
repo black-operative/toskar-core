@@ -18,7 +18,7 @@ import (
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 
-	"github.com/yeixio/yggdrasil-core/internal/netguard"
+	"github.com/yeixio/toskar-core/internal/netguard"
 )
 
 // maxDownload is the largest file brought into a chat.

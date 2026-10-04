@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/netguard"
+	"github.com/yeixio/toskar-core/internal/netguard"
 )
 
 func TestParseDuckHTML(t *testing.T) {

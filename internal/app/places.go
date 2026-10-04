@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/cache"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/places"
-	"github.com/yeixio/yggdrasil-core/internal/version"
+	"github.com/yeixio/toskar-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/places"
+	"github.com/yeixio/toskar-core/internal/version"
 )
 
 // registerPlaces adds places and routes with OpenStreetMap services
@@ -19,7 +19,7 @@ func (a *App) registerPlaces(cfg config.Config) {
 	c := &places.Client{
 		Geocoder: cfg.PlacesGeocoderURL, Overpass: cfg.PlacesOverpassURL, Router: cfg.PlacesRouterURL,
 		HTTP:      &http.Client{Timeout: 25 * time.Second},
-		UserAgent: "Toskar/" + version.Version + " (+https://github.com/yeixio/yggdrasil-core)",
+		UserAgent: "Toskar/" + version.Version + " (+https://github.com/yeixio/toskar-core)",
 		Cache:     cache.New[[]byte](places.CachePolicy),
 		Record: func(ctx context.Context, host, detail string) {
 			if a.Egress != nil {

@@ -14,7 +14,7 @@ EXT=""
 if [[ "${GOOS}" == "windows" ]]; then
   EXT=".exe"
 fi
-LDFLAGS="-X github.com/yeixio/yggdrasil-core/internal/version.Version=${VERSION} -X github.com/yeixio/yggdrasil-core/internal/version.Commit=${COMMIT} -X github.com/yeixio/yggdrasil-core/internal/version.BuildDate=${DATE}"
+LDFLAGS="-X github.com/yeixio/toskar-core/internal/version.Version=${VERSION} -X github.com/yeixio/toskar-core/internal/version.Commit=${COMMIT} -X github.com/yeixio/toskar-core/internal/version.BuildDate=${DATE}"
 
 NAME="toskar-${VERSION}-${GOOS}-${GOARCH}-headless"
 OUT_DIR="dist/${NAME}"

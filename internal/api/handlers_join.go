@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/join"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/join"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Network is the one-line join (#40): join tokens on a computer in the

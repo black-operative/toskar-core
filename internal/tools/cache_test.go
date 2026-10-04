@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/runlog"
 )
 
 type countingTool struct{ calls int }

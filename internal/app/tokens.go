@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/cache"
-	"github.com/yeixio/yggdrasil-core/internal/contextusage"
-	"github.com/yeixio/yggdrasil-core/internal/gguf"
-	"github.com/yeixio/yggdrasil-core/internal/runtimes/llamacpp"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/contextusage"
+	"github.com/yeixio/toskar-core/internal/gguf"
+	"github.com/yeixio/toskar-core/internal/runtimes/llamacpp"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // tokenCountPolicy keeps counts from the model's tokenizer, so a long

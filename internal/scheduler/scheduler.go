@@ -3,8 +3,8 @@ package scheduler
 import (
 	"context"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Scheduler (Norn) performs deterministic placement.

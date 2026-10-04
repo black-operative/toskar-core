@@ -3,7 +3,7 @@ package app
 import (
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/cache"
 )
 
 func TestWebCacheKeysAndPrivacy(t *testing.T) {

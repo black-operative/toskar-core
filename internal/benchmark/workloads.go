@@ -1,6 +1,6 @@
 package benchmark
 
-import "github.com/yeixio/yggdrasil-core/pkg/contracts"
+import "github.com/yeixio/toskar-core/pkg/contracts"
 
 // Workloads returns the built-in workload catalog.
 func Workloads() []contracts.BenchmarkWorkload {

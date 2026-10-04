@@ -3,7 +3,7 @@ package scheduler
 import (
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func TestScorePinnedNodeWins(t *testing.T) {

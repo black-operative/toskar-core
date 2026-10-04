@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 const runtimeID = "external-openai"

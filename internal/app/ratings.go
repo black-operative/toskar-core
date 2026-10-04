@@ -6,13 +6,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/models"
-	modelhealth "github.com/yeixio/yggdrasil-core/internal/models/health"
-	"github.com/yeixio/yggdrasil-core/internal/ratings"
-	"github.com/yeixio/yggdrasil-core/internal/version"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/models"
+	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
+	"github.com/yeixio/toskar-core/internal/ratings"
+	"github.com/yeixio/toskar-core/internal/version"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // newRatings sets up community model ratings (#37). Ratings stay on this
@@ -31,7 +31,7 @@ func (a *App) newRatings(cfg config.Config) *ratings.Service {
 		Client: &ratings.Client{
 			ServiceURL: cfg.RatingsURL, SummaryURL: cfg.RatingsSummaryURL,
 			HTTP:      &http.Client{Timeout: 20 * time.Second},
-			UserAgent: "Toskar/" + version.Version + " (+https://github.com/yeixio/yggdrasil-core)",
+			UserAgent: "Toskar/" + version.Version + " (+https://github.com/yeixio/toskar-core)",
 		},
 		// Hardware detection is slow on some computers, and it is the same
 		// from one minute to the next.

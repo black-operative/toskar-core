@@ -15,14 +15,14 @@ import (
 	"unicode/utf8"
 
 	"github.com/google/uuid"
-	"github.com/yeixio/yggdrasil-core/internal/api"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/join"
-	"github.com/yeixio/yggdrasil-core/internal/nodes"
-	"github.com/yeixio/yggdrasil-core/internal/version"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/api"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/join"
+	"github.com/yeixio/toskar-core/internal/nodes"
+	"github.com/yeixio/toskar-core/internal/version"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // networkKey is the setting for this computer's network ID: made with the
@@ -89,7 +89,7 @@ func (a *App) admitJoining(ctx context.Context, node join.JoiningNode) (string, 
 
 // installerBase is where the install scripts are: attached to each
 // release (#40).
-const installerBase = "https://github.com/yeixio/yggdrasil-core/releases/latest/download"
+const installerBase = "https://github.com/yeixio/toskar-core/releases/latest/download"
 
 // errNotReachable is a computer other computers cannot reach.
 var errNotReachable = contracts.Errorf("JOIN_NOT_REACHABLE", nil,

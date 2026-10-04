@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/api"
-	"github.com/yeixio/yggdrasil-core/internal/cache"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/retention"
+	"github.com/yeixio/toskar-core/internal/api"
+	"github.com/yeixio/toskar-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/retention"
 )
 
 // retentionKey is the setting for how long run records are kept, in days.

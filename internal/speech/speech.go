@@ -20,8 +20,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
-	"github.com/yeixio/yggdrasil-core/internal/remotetools"
+	"github.com/yeixio/toskar-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/remotetools"
 )
 
 //go:embed transcribe.py

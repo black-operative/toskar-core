@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/automations"
 )
 
 func (s *Server) handleListAutomations(w http.ResponseWriter, r *http.Request) {

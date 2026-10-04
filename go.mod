@@ -1,4 +1,4 @@
-module github.com/yeixio/yggdrasil-core
+module github.com/yeixio/toskar-core
 
 go 1.26.3
 

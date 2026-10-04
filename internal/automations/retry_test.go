@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/automations"
 )
 
 func TestClassifyFailure(t *testing.T) {

@@ -1,6 +1,6 @@
 package runtimes
 
-import "github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+import "github.com/yeixio/toskar-core/pkg/pluginapi"
 
 // Runtime re-exports the plugin runtime interface.
 type Runtime = pluginapi.Runtime

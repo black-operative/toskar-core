@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 func TestHelpTopic(t *testing.T) {

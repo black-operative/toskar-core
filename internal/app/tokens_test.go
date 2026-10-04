@@ -6,9 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/cache"
-	"github.com/yeixio/yggdrasil-core/internal/runtimes"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/cache"
+	"github.com/yeixio/toskar-core/internal/runtimes"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // runningRuntime reports a fixed list of running models.

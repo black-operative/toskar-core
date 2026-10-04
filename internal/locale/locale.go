@@ -13,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	yggdrasil "github.com/yeixio/yggdrasil-core"
+	toskar "github.com/yeixio/toskar-core"
 	"golang.org/x/text/feature/plural"
 	"golang.org/x/text/language"
 	"golang.org/x/text/language/display"
@@ -38,7 +38,7 @@ var (
 func load() catalog {
 	loadOnce.Do(func() {
 		loaded = catalog{text: map[string]map[string]string{}}
-		entries, err := fs.ReadDir(yggdrasil.Catalog, "i18n/locales")
+		entries, err := fs.ReadDir(toskar.Catalog, "i18n/locales")
 		if err != nil {
 			return
 		}
@@ -47,10 +47,10 @@ func load() catalog {
 				continue
 			}
 			lang := dir.Name()
-			files, _ := fs.Glob(yggdrasil.Catalog, path.Join("i18n/locales", lang, "*.json"))
+			files, _ := fs.Glob(toskar.Catalog, path.Join("i18n/locales", lang, "*.json"))
 			table := map[string]string{}
 			for _, file := range files {
-				raw, err := fs.ReadFile(yggdrasil.Catalog, file)
+				raw, err := fs.ReadFile(toskar.Catalog, file)
 				if err != nil {
 					continue
 				}

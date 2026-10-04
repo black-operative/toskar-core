@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/share"
+	"github.com/yeixio/toskar-core/internal/share"
 )
 
 // Training unloads models only once no chat is using this computer, and

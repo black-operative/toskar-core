@@ -12,8 +12,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 const token = "github_pat_SECRET123456789"

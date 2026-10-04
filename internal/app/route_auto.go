@@ -6,13 +6,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/huginn"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	modelhealth "github.com/yeixio/yggdrasil-core/internal/models/health"
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/internal/ratings"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/huginn"
+	"github.com/yeixio/toskar-core/internal/locale"
+	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/internal/ratings"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // errNoModel is returned when Auto has nothing to choose from.

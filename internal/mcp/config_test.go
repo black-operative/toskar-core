@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 func TestParseWhatReadmesSay(t *testing.T) {

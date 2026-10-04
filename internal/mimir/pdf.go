@@ -14,7 +14,7 @@ import (
 
 	"github.com/ledongthuc/pdf"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // maxPDFPages caps the pages read from one file.

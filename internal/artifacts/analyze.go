@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/mimir"
 )
 
 // Limits for spreadsheet.analyze, so a large workbook still answers quickly.

@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 // HomeAssistant reads device states and calls services, such as turning a

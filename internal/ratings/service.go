@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Tags are the reasons a rating may give.

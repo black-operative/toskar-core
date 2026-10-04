@@ -19,7 +19,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/pyenv"
 )
 
 // Languages are the languages the bundled recognition models read (multilingual

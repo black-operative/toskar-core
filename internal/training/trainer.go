@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/models"
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/models"
+	"github.com/yeixio/toskar-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Trainer is a fine-tuning backend. The job runner and the UI depend only on

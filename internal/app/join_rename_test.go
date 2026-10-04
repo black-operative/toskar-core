@@ -5,8 +5,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/discovery"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/discovery"
 )
 
 // fakeAdvertise replaces mDNS for the test and records the names announced.

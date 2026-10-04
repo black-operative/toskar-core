@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/structured"
-	"github.com/yeixio/yggdrasil-core/internal/turnopts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/structured"
+	"github.com/yeixio/toskar-core/internal/turnopts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // jsonFormat reads OpenAI's response_format. It reports whether JSON was

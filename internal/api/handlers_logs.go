@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/logs"
+	"github.com/yeixio/toskar-core/internal/logs"
 )
 
 func (s *Server) handleListLogs(w http.ResponseWriter, r *http.Request) {

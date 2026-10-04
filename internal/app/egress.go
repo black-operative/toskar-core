@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 // recordToolEgress records a tool call that sends data off this computer:

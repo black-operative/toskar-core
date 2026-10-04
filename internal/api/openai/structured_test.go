@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/turnopts"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/turnopts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // queueChat answers each turn with the next reply and records what it saw.

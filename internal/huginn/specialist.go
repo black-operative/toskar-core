@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/locale"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Specialist is a deployed specialized AI that Auto may route to (spec §61):

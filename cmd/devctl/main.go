@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/version"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/version"
 )
 
 func main() {

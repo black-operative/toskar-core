@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
-	"github.com/yeixio/yggdrasil-core/internal/structured"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/runlog"
+	"github.com/yeixio/toskar-core/internal/structured"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // ensureStructured makes sure a condition automation's result ends with

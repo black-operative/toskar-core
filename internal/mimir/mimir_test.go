@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/store"
 )
 
 func newTestStore(t *testing.T) *Store {

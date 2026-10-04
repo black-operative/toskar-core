@@ -5,8 +5,8 @@ import (
 	"strconv"
 
 	"github.com/grandcat/zeroconf"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/version"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/version"
 )
 
 // Advertiser publishes mDNS service records.

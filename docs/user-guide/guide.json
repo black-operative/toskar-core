@@ -14,7 +14,7 @@
       "title": "Install and start your first chat",
       "paragraphs": [
         "Toskar Desktop is distributed separately from this Core release. The release files are Toskar Core. Verify them against SHA256SUMS.txt. Core archives are not code-signed.",
-        "On macOS, Homebrew installs Core: brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core, then brew install yeixio/yggdrasil/yggdrasil, then run toskar. On Debian and Ubuntu, add the apt repository shown in the release notes and install the yggdrasil package. RPM packages for x86_64 and aarch64 are attached to each release. The deb and rpm packages install a system service that starts Toskar at boot. Windows and other systems use the headless archive.",
+        "On macOS, Homebrew installs Core: brew tap yeixio/toskar https://github.com/yeixio/toskar-core, then brew install yeixio/toskar/toskar, then run toskar. On Debian and Ubuntu, add the apt repository shown in the release notes and install the toskar package. RPM packages for x86_64 and aarch64 are attached to each release. The deb and rpm packages install a system service that starts Toskar at boot. Windows and other systems use the headless archive.",
         "The daemon serves the web UI at http://127.0.0.1:7331. Only this computer can reach it until you turn on local network access."
       ],
       "steps": [

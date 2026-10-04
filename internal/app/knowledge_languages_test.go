@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // With an English and a multilingual embedding model installed, knowledge

@@ -6,12 +6,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/artifacts"
-	"github.com/yeixio/yggdrasil-core/internal/huginn"
-	"github.com/yeixio/yggdrasil-core/internal/mimir"
-	modelhealth "github.com/yeixio/yggdrasil-core/internal/models/health"
-	"github.com/yeixio/yggdrasil-core/internal/muninn"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/artifacts"
+	"github.com/yeixio/toskar-core/internal/huginn"
+	"github.com/yeixio/toskar-core/internal/mimir"
+	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
+	"github.com/yeixio/toskar-core/internal/muninn"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func installed(id, name string, mem uint64) contracts.Model {

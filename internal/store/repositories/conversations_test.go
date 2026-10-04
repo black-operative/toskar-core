@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/internal/store/repositories"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/store/repositories"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func TestConversationDeleteAndModel(t *testing.T) {

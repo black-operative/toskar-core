@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	modelhealth "github.com/yeixio/yggdrasil-core/internal/models/health"
-	"github.com/yeixio/yggdrasil-core/internal/runtimes"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
+	"github.com/yeixio/toskar-core/internal/runtimes"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // llamaStopper unloads the failed llama-server. StopModel interrupts, then kills if it is still running.

@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Hardware is a computer's class: never a name, serial, or address.

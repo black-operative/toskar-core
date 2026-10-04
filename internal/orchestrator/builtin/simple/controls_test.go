@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/structured"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/structured"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func runWith(t *testing.T, env *planEnv, prompt string, o contracts.OrchestrationPolicy) string {

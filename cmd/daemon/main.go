@@ -12,12 +12,12 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/yeixio/yggdrasil-core/internal/app"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/ocr"
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
-	"github.com/yeixio/yggdrasil-core/internal/training"
-	"github.com/yeixio/yggdrasil-core/internal/version"
+	"github.com/yeixio/toskar-core/internal/app"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/ocr"
+	"github.com/yeixio/toskar-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/training"
+	"github.com/yeixio/toskar-core/internal/version"
 )
 
 func main() {

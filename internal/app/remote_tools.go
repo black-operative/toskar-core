@@ -3,11 +3,11 @@ package app
 import (
 	"context"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/remotetools"
-	"github.com/yeixio/yggdrasil-core/internal/share"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/remotetools"
+	"github.com/yeixio/toskar-core/internal/share"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // newToolNetwork places heavy tools, such as images and transcription, on

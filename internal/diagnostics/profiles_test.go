@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 // A bundle carries the runtime summary and profiles for memory problems.

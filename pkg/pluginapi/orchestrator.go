@@ -3,7 +3,7 @@ package pluginapi
 import (
 	"context"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // OrchestratorCapabilities describes orchestrator features.

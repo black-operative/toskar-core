@@ -13,7 +13,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Identity is which model a rating is about. Ratings of different formats,

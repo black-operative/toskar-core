@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 // mcpCommand bridges an app that starts MCP servers as programs, such as

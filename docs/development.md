@@ -12,8 +12,8 @@ Linux package builds also need `nfpm` 2.41.3, as used by the release workflow. D
 ## Setup
 
 ```bash
-git clone https://github.com/yeixio/yggdrasil-core.git
-cd yggdrasil-core
+git clone https://github.com/yeixio/toskar-core.git
+cd toskar-core
 make start
 ```
 
@@ -24,7 +24,7 @@ make start
 A fork that serves a modified daemon over the network sets its own source URL at build time:
 
 ```text
--X github.com/yeixio/yggdrasil-core/internal/version.SourceURL=<url-of-your-corresponding-source>
+-X github.com/yeixio/toskar-core/internal/version.SourceURL=<url-of-your-corresponding-source>
 ```
 
 ## Run

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Profile is an alias for the public contract.

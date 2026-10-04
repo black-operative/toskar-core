@@ -21,13 +21,13 @@ Toskar detects your hardware, recommends and manages models, starts the right ru
 
 The daemon (`toskar`), the local web UI, and the HTTP API are in this repository. Toskar Desktop and Toskar Mobile are separate clients, developed outside this repository.
 
-**Status:** Stable. See the latest [GitHub Release](https://github.com/yeixio/yggdrasil-core/releases).
+**Status:** Stable. See the latest [GitHub Release](https://github.com/yeixio/toskar-core/releases).
 
 [Quick start](#quick-start) · [Documentation](#documentation) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md)
 
-[![CI](https://github.com/yeixio/yggdrasil-core/actions/workflows/ci.yml/badge.svg)](https://github.com/yeixio/yggdrasil-core/actions/workflows/ci.yml)
-[![Security](https://github.com/yeixio/yggdrasil-core/actions/workflows/security.yml/badge.svg)](https://github.com/yeixio/yggdrasil-core/actions/workflows/security.yml)
-[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyeixio%2Fyggdrasil-core%2Fcoverage%2Fcoverage.json)](https://github.com/yeixio/yggdrasil-core/actions/workflows/ci.yml)
+[![CI](https://github.com/yeixio/toskar-core/actions/workflows/ci.yml/badge.svg)](https://github.com/yeixio/toskar-core/actions/workflows/ci.yml)
+[![Security](https://github.com/yeixio/toskar-core/actions/workflows/security.yml/badge.svg)](https://github.com/yeixio/toskar-core/actions/workflows/security.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyeixio%2Ftoskar-core%2Fcoverage%2Fcoverage.json)](https://github.com/yeixio/toskar-core/actions/workflows/ci.yml)
 [![License: AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg)](LICENSE)
 
 ## Design principle
@@ -85,19 +85,19 @@ Open `http://127.0.0.1:7331` after the daemon is running. The API listens on `12
 Homebrew installs the Core daemon from this repository. Toskar Desktop is a separate product. The Homebrew cask named `yggdrasil` is a different project.
 
 ```bash
-brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core
-brew install yeixio/yggdrasil/toskar
+brew tap yeixio/toskar https://github.com/yeixio/toskar-core
+brew install yeixio/toskar/toskar
 toskar
 ```
 
-A tagged release writes `Formula/toskar.rb` and merges it to `main`. An install from before the rename upgrades on its own: `brew upgrade` moves the `yggdrasil` formula to `toskar`. Headless archives are also attached to [GitHub Releases](https://github.com/yeixio/yggdrasil-core/releases). See [packaging/release-install.md](packaging/release-install.md).
+A tagged release writes `Formula/toskar.rb` and merges it to `main`. An install from before the rename upgrades on its own: `brew upgrade` moves the `yggdrasil` formula to `toskar`. A tap added before the rename as `yeixio/yggdrasil` keeps working; there is no need to add the new one. Headless archives are also attached to [GitHub Releases](https://github.com/yeixio/toskar-core/releases). See [packaging/release-install.md](packaging/release-install.md).
 
 ### Linux
 
 Debian and Ubuntu use the apt repository on the `apt` branch. That repository is unsigned.
 
 ```bash
-echo "deb [trusted=yes] https://raw.githubusercontent.com/yeixio/yggdrasil-core/apt stable main" | sudo tee /etc/apt/sources.list.d/yggdrasil.list
+echo "deb [trusted=yes] https://raw.githubusercontent.com/yeixio/toskar-core/apt stable main" | sudo tee /etc/apt/sources.list.d/yggdrasil.list
 sudo apt-get update
 sudo apt-get install toskar
 ```
@@ -113,8 +113,8 @@ The GitHub Release includes an unsigned `toskar-<version>-windows-amd64-headless
 Go 1.26.3 or newer, Node.js 22, and pnpm 9.
 
 ```bash
-git clone https://github.com/yeixio/yggdrasil-core.git
-cd yggdrasil-core
+git clone https://github.com/yeixio/toskar-core.git
+cd toskar-core
 make start
 ```
 
@@ -336,8 +336,8 @@ Hardware reports, runtime notes, documentation, and code all help. Read [CONTRIB
 
 ## Community
 
-- **Questions and brainstorming:** [GitHub Discussions](https://github.com/yeixio/yggdrasil-core/discussions)
-- **Bugs and actionable feature requests:** [GitHub Issues](https://github.com/yeixio/yggdrasil-core/issues)
+- **Questions and brainstorming:** [GitHub Discussions](https://github.com/yeixio/toskar-core/discussions)
+- **Bugs and actionable feature requests:** [GitHub Issues](https://github.com/yeixio/toskar-core/issues)
 - **Security vulnerabilities:** [SECURITY.md](SECURITY.md)
 - **Contributing code:** [CONTRIBUTING.md](CONTRIBUTING.md)
 

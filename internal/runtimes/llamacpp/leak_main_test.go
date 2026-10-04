@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/leakcheck"
+	"github.com/yeixio/toskar-core/internal/leakcheck"
 )
 
 // The test binary doubles as a fake llama-server (see reap_unix_test.go).

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/personal"
+	"github.com/yeixio/toskar-core/internal/personal"
 )
 
 // PersonalStore reads and saves how the person likes answers (spec §38).

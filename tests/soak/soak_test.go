@@ -23,8 +23,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/app"
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/app"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 func freePort(t *testing.T) string {

@@ -4,7 +4,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 func TestAdvertisedTXTSaysWhereTheAPIIs(t *testing.T) {

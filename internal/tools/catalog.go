@@ -5,7 +5,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Capability IDs are the user-facing groups. Individual tools stay the model API.

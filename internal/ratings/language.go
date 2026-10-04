@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // A rating can say the language the person used the model in (multilingual

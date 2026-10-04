@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 // Digest gathers a destination's notices into one message a day (#111).

@@ -19,8 +19,8 @@ Go 1.26.3+, Node.js 22, and pnpm 9. Details, commands, and CI are in [docs/devel
 ## Repository setup
 
 ```bash
-git clone https://github.com/yeixio/yggdrasil-core.git
-cd yggdrasil-core
+git clone https://github.com/yeixio/toskar-core.git
+cd toskar-core
 make start
 ```
 
@@ -133,7 +133,7 @@ Do not file a public issue for a vulnerability. Use [SECURITY.md](SECURITY.md).
 
 ## Looking for something to work on?
 
-Start with issues labeled [good first issue](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22), [help wanted](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22), [hardware](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3Ahardware), or [documentation](https://github.com/yeixio/yggdrasil-core/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation).
+Start with issues labeled [good first issue](https://github.com/yeixio/toskar-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22), [help wanted](https://github.com/yeixio/toskar-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22), [hardware](https://github.com/yeixio/toskar-core/issues?q=is%3Aissue+is%3Aopen+label%3Ahardware), or [documentation](https://github.com/yeixio/toskar-core/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation).
 
 Hardware reports are genuine contributions. Toskar has a large heterogeneous hardware surface, and CI does not generate tokens on those GPUs. A report that names the machine, the model, and the result is more useful than a guess.
 

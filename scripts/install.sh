@@ -1,8 +1,8 @@
 #!/bin/sh
 # Install Toskar Core and, optionally, join a network (#40).
 #
-#   curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh
-#   curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | \
+#   curl -fsSL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | sh
+#   curl -fsSL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | \
 #     sh -s -- join --server 192.168.1.10:7332 --token ygj_… --fingerprint sha256:…
 #
 # Linux: the release's .deb (apt) or .rpm (dnf, yum), which run Toskar as
@@ -25,7 +25,7 @@ TOSKAR_PREFIX="${TOSKAR_PREFIX:-${YGGDRASIL_PREFIX:-}}"
 TOSKAR_BIN_DIR="${TOSKAR_BIN_DIR:-${YGGDRASIL_BIN_DIR:-}}"
 TOSKAR_NO_SERVICE="${TOSKAR_NO_SERVICE:-${YGGDRASIL_NO_SERVICE:-}}"
 
-REPO="yeixio/yggdrasil-core"
+REPO="yeixio/toskar-core"
 API="${TOSKAR_URL:-${YGGDRASIL_URL:-http://127.0.0.1:7331}}"
 
 say() { printf '%s\n' "$*"; }

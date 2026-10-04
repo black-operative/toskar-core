@@ -24,7 +24,7 @@ import (
 	"github.com/emersion/go-imap/client"
 	gomail "github.com/emersion/go-message/mail"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 // Email reads and sends mail over IMAP and SMTP with an app password

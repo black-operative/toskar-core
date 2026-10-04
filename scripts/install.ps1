@@ -1,7 +1,7 @@
 # Install Toskar Core on Windows and, optionally, join a network (#40).
 #
-#   irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex
-#   & ([scriptblock]::Create((irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1))) `
+#   irm https://github.com/yeixio/toskar-core/releases/latest/download/install.ps1 | iex
+#   & ([scriptblock]::Create((irm https://github.com/yeixio/toskar-core/releases/latest/download/install.ps1))) `
 #     join -Server 192.168.1.10:7332 -Token ygj_… -Fingerprint sha256:…
 #
 # Installs the release's headless archive in %LOCALAPPDATA%\Programs\Toskar,
@@ -22,7 +22,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
-$Repo = 'yeixio/yggdrasil-core'
+$Repo = 'yeixio/toskar-core'
 function Get-Setting([string]$Name) {
     $v = [Environment]::GetEnvironmentVariable("TOSKAR_$Name")
     if ($v) { return $v }

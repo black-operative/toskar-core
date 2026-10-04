@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/yeixio/yggdrasil-core/internal/huginn"
-	"github.com/yeixio/yggdrasil-core/internal/locale"
+	"github.com/yeixio/toskar-core/internal/huginn"
+	"github.com/yeixio/toskar-core/internal/locale"
 )
 
 // chooseSpecialist routes a message to a deployed specialized AI when it is

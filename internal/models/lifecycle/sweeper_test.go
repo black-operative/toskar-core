@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/models/lifecycle"
+	"github.com/yeixio/toskar-core/internal/models/lifecycle"
 )
 
 func TestSweeperUnloadsIdle(t *testing.T) {

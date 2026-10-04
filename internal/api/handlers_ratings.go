@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/ratings"
+	"github.com/yeixio/toskar-core/internal/ratings"
 )
 
 // Ratings is community model ratings (#37).

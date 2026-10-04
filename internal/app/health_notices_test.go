@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/gjallarhorn"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/gjallarhorn"
 )
 
 func healthEvent(typ string, payload map[string]any) events.Event { return events.New(typ, payload) }

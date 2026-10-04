@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/imagegen"
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/imagegen"
+	"github.com/yeixio/toskar-core/internal/pyenv"
 )
 
 // newImageSetup keeps stable-diffusion.cpp with the runtimes and image

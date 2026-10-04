@@ -13,7 +13,7 @@ Use this repository for Toskar Core. Desktop and mobile applications are separat
 | A translation, or a new language | [Translation form](.github/ISSUE_TEMPLATE/translation.yml), or a pull request ([how](CONTRIBUTING.md#translations)) |
 | A vulnerability | [SECURITY.md](SECURITY.md). Not a public issue. |
 | A code of conduct report | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Email conduct@yeix.io. Not a public issue. |
-| A question or an idea to discuss | [GitHub Discussions](https://github.com/yeixio/yggdrasil-core/discussions) |
+| A question or an idea to discuss | [GitHub Discussions](https://github.com/yeixio/toskar-core/discussions) |
 
 GitHub Issues are the queue for bugs and actionable requests. GitHub Discussions are the place for questions and brainstorming. Categories:
 

@@ -3,7 +3,7 @@
 Release CI builds a `.deb` and `.rpm` for amd64 and arm64, and publishes an unsigned apt repository on the `apt` branch.
 
 ```bash
-echo "deb [trusted=yes] https://raw.githubusercontent.com/yeixio/yggdrasil-core/apt stable main" | sudo tee /etc/apt/sources.list.d/yggdrasil.list
+echo "deb [trusted=yes] https://raw.githubusercontent.com/yeixio/toskar-core/apt stable main" | sudo tee /etc/apt/sources.list.d/yggdrasil.list
 sudo apt-get update
 sudo apt-get install toskar
 ```

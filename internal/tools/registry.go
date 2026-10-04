@@ -7,15 +7,15 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/internal/runlog"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools/filesystem"
-	"github.com/yeixio/yggdrasil-core/internal/tools/git"
-	"github.com/yeixio/yggdrasil-core/internal/tools/internet"
-	"github.com/yeixio/yggdrasil-core/internal/tools/terminal"
+	"github.com/yeixio/toskar-core/internal/tools/filesystem"
+	"github.com/yeixio/toskar-core/internal/tools/git"
+	"github.com/yeixio/toskar-core/internal/tools/internet"
+	"github.com/yeixio/toskar-core/internal/tools/terminal"
 )
 
 // PendingCall awaits user decision.

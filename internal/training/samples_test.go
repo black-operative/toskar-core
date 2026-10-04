@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/models"
+	"github.com/yeixio/toskar-core/internal/models"
 )
 
 func TestCreateExampleTeachesBothConcepts(t *testing.T) {

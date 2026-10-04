@@ -52,7 +52,7 @@ For a server or any computer you reach over SSH, without mDNS or a screen, join 
    If Toskar isn't installed there yet, use the second command `join-token create` prints instead. It installs Toskar, starts it as a service, and joins:
 
    ```text
-   curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh -s -- join --server … --token … --fingerprint …
+   curl -fsSL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | sh -s -- join --server … --token … --fingerprint …
    ```
 
    On Linux it installs the release's `.deb` (apt) or `.rpm` (dnf, yum, rpm) and the `toskar` systemd service, using `sudo` when not run as root. On macOS it installs the headless archive in `~/.local/lib/toskar` with a launchd agent (`ai.toskar.toskar`), or with `sudo` in `/usr/local/lib/toskar` with a launchd daemon that runs as the person who ran `sudo`, for a Mac nobody is logged in to. Each download is checked against the release's `SHA256SUMS.txt`, and a Toskar that is already installed and running is left as it is. Windows has the same in PowerShell, from `install.ps1`, which installs in `%LOCALAPPDATA%\Programs\Toskar` and starts at sign-in with a scheduled task named Toskar. Installing over a setup from before the rename replaces its launchd service (`io.yeix.yggdrasil`) or scheduled task (Yggdrasil), and leaves its old install folder as a link to the new one, so settings that run programs from there keep working.
@@ -83,7 +83,7 @@ cloud-init, with the token made beforehand:
 
 ```yaml
 runcmd:
-  - curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh -s -- join --server 10.0.0.5:7332 --token ygj_… --fingerprint sha256:… --name worker-01
+  - curl -fsSL https://github.com/yeixio/toskar-core/releases/latest/download/install.sh | sh -s -- join --server 10.0.0.5:7332 --token ygj_… --fingerprint sha256:… --name worker-01
 ```
 
 Ansible, making the token on an existing computer for each new one:

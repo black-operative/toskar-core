@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/pyenv"
 )
 
 // fakePython stands in for the OCR environment's interpreter. It saves the

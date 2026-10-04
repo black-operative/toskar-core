@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/automations"
-	"github.com/yeixio/yggdrasil-core/internal/store"
-	"github.com/yeixio/yggdrasil-core/internal/store/repositories"
+	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/internal/store"
+	"github.com/yeixio/toskar-core/internal/store/repositories"
 )
 
 func TestAutomationPersistence(t *testing.T) {

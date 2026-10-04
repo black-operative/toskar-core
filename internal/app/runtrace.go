@@ -3,10 +3,10 @@ package app
 import (
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/huginn"
-	"github.com/yeixio/yggdrasil-core/internal/orchestrator/builtin/simple"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
-	"github.com/yeixio/yggdrasil-core/pkg/pluginapi"
+	"github.com/yeixio/toskar-core/internal/huginn"
+	"github.com/yeixio/toskar-core/internal/orchestrator/builtin/simple"
+	"github.com/yeixio/toskar-core/internal/runlog"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // minLoad is the shortest model start counted as load time; a model that is

@@ -3,7 +3,7 @@ package app
 import (
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // An answer keeps its context reading, so the gauge shows it when the chat

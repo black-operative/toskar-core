@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 // Tool groups, by capability. A request is offered whole groups.

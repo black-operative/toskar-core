@@ -1,5 +1,5 @@
-// Package yggdrasil holds files the whole module shares.
-package yggdrasil
+// Package toskar holds files the whole module shares.
+package toskar
 
 import "embed"
 

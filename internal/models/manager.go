@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Manager coordinates catalog, downloads, and installed state.

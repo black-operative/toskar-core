@@ -3,7 +3,7 @@ package huginn
 import (
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // Language ranks: how well a model writes the language an answer is in

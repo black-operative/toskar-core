@@ -143,7 +143,7 @@ func register(ctx context.Context, c *http.Client, o *OAuth, registrationURL, cl
 	}
 	body := map[string]any{
 		"client_name":                "Toskar",
-		"client_uri":                 "https://github.com/yeixio/yggdrasil-core",
+		"client_uri":                 "https://github.com/yeixio/toskar-core",
 		"redirect_uris":              []string{o.RedirectURI},
 		"grant_types":                []string{"authorization_code", "refresh_token"},
 		"response_types":             []string{"code"},

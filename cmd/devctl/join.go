@@ -12,7 +12,7 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/config"
 )
 
 const joinUsage = `usage: toskarctl join --server <host:port> --token <ygj_…> --fingerprint <sha256:…> [--name <name>] [--wait 60s] [--output json]

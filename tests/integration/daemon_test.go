@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yeixio/yggdrasil-core/internal/app"
+	"github.com/yeixio/toskar-core/internal/app"
 )
 
 // freePort returns a port nothing is listening on, so this test never

@@ -4,10 +4,10 @@ import (
 	"context"
 	"path/filepath"
 
-	"github.com/yeixio/yggdrasil-core/internal/browser"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/egress"
-	"github.com/yeixio/yggdrasil-core/internal/pyenv"
+	"github.com/yeixio/toskar-core/internal/browser"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/egress"
+	"github.com/yeixio/toskar-core/internal/pyenv"
 )
 
 // registerBrowser adds web pages in an isolated browser (Gungnir §26): each

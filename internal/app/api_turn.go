@@ -3,10 +3,10 @@ package app
 import (
 	"slices"
 
-	"github.com/yeixio/yggdrasil-core/internal/profiles"
-	"github.com/yeixio/yggdrasil-core/internal/tools"
-	"github.com/yeixio/yggdrasil-core/internal/turnopts"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/profiles"
+	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/turnopts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // narrowTools limits a profile's tools to what an API key and request

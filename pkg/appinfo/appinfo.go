@@ -2,7 +2,7 @@
 // needs. The shell is a separate module, so it cannot import internal/config.
 package appinfo
 
-import "github.com/yeixio/yggdrasil-core/internal/config"
+import "github.com/yeixio/toskar-core/internal/config"
 
 // DefaultDataDir is the OS data directory the daemon uses when started without flags.
 func DefaultDataDir() string {

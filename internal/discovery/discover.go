@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/grandcat/zeroconf"
-	"github.com/yeixio/yggdrasil-core/internal/config"
-	"github.com/yeixio/yggdrasil-core/internal/events"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/config"
+	"github.com/yeixio/toskar-core/internal/events"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 // DiscoveredNode is a node found via mDNS.

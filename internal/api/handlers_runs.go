@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/yggdrasil-core/internal/runlog"
+	"github.com/yeixio/toskar-core/internal/runlog"
 )
 
 // RunStore reads run traces (spec §35).

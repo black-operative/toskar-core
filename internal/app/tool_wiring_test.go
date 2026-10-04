@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/codeexec"
-	"github.com/yeixio/yggdrasil-core/internal/remotetools"
-	"github.com/yeixio/yggdrasil-core/internal/speech"
+	"github.com/yeixio/toskar-core/internal/codeexec"
+	"github.com/yeixio/toskar-core/internal/remotetools"
+	"github.com/yeixio/toskar-core/internal/speech"
 )
 
 // Tools that read or attach chat files get the file store. They were once

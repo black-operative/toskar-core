@@ -15,7 +15,7 @@ import (
 	"github.com/emersion/go-imap/client"
 	"github.com/emersion/go-imap/server"
 
-	"github.com/yeixio/yggdrasil-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/tools"
 )
 
 // fakeSMTP accepts one message at a time and keeps what it was sent.

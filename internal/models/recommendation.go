@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 const memorySafetyMargin = 0.85

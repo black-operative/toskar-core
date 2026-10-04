@@ -3,8 +3,8 @@ package models_test
 import (
 	"testing"
 
-	"github.com/yeixio/yggdrasil-core/internal/models"
-	"github.com/yeixio/yggdrasil-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/internal/models"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func communityFixture(t *testing.T) (*models.Catalog, []models.PurposePreset, contracts.HardwareInventory, []string) {
