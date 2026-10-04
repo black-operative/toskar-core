@@ -17,9 +17,9 @@ cd yggdrasil-core
 make start
 ```
 
-`make` with no target prints `make help`. `make start` installs web dependencies, writes `web/dist`, builds `bin/yggdrasil-daemon` and `bin/yggctl`, and runs the daemon with `TOSKAR_WEB_UI_DIR` set to `web/dist`. Open `http://127.0.0.1:7331`.
+`make` with no target prints `make help`. `make start` installs web dependencies, writes `web/dist`, builds `bin/toskar` and `bin/toskarctl`, and runs the daemon with `TOSKAR_WEB_UI_DIR` set to `web/dist`. Open `http://127.0.0.1:7331`.
 
-`make daemon` stamps the current git commit into both binaries. A build from this tree reports `0.1.0-dev` unless `-ldflags` sets `internal/version.Version`. `yggctl version` and `yggdrasil-daemon -version` print the license and the corresponding-source URL. `yggctl completion <bash|zsh|fish>` prints the completion scripts in `cmd/devctl/completions/`, which the packages also install. Update those scripts when you add a `yggctl` command. Release packaging sets the version as well, so a tagged build points at `tree/v<version>`.
+`make daemon` stamps the current git commit into both binaries. A build from this tree reports `0.1.0-dev` unless `-ldflags` sets `internal/version.Version`. `toskarctl version` and `toskar -version` print the license and the corresponding-source URL. `toskarctl completion <bash|zsh|fish>` prints the completion scripts in `cmd/devctl/completions/`, which the packages also install. Update those scripts when you add a `toskarctl` command. Release packaging sets the version as well, so a tagged build points at `tree/v<version>`.
 
 A fork that serves a modified daemon over the network sets its own source URL at build time:
 
@@ -38,7 +38,7 @@ That is the same as `make run-daemon`. It rebuilds `web/dist` and the binaries, 
 Optional data directory, after `make daemon`:
 
 ```bash
-TOSKAR_WEB_UI_DIR="$PWD/web/dist" ./bin/yggdrasil-daemon -data-dir "$PWD/.ygg-dev-data"
+TOSKAR_WEB_UI_DIR="$PWD/web/dist" ./bin/toskar -data-dir "$PWD/.ygg-dev-data"
 ```
 
 `make ui` only builds the web UI. `make frontend` does that and runs the web tests. The Vite dev server is separate and proxies `/api` and `/v1` to the daemon:
@@ -110,7 +110,7 @@ The web check in CI is `pnpm lint`, `pnpm exec tsc -b --pretty false`, `pnpm tes
 
 [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs on pull requests and on pushes to `main`, on Ubuntu, in two jobs:
 
-- **go:** user-guide publish checks; changelog fragment checks; `gofmt`, `go vet`, golangci-lint, `go test ./...`; then cross-compiles of `yggdrasil-daemon` and `yggctl` for linux/amd64, linux/arm64, darwin/amd64, darwin/arm64, and windows/amd64 (`CGO_ENABLED=0`). These share one runner, so the module and build caches are reused.
+- **go:** user-guide publish checks; changelog fragment checks; `gofmt`, `go vet`, golangci-lint, `go test ./...`; then cross-compiles of `toskar` and `toskarctl` for linux/amd64, linux/arm64, darwin/amd64, darwin/arm64, and windows/amd64 (`CGO_ENABLED=0`). These share one runner, so the module and build caches are reused.
 - **frontend:** web lint, typecheck, test, and build.
 - **accessibility:** builds the web UI and runs `scripts/screenshots/a11y.mjs` (axe-core in Chromium) over every page, in both themes at 1440 and 390 px wide, then `scripts/screenshots/leaks.mjs` (the web leak check). New UI has to meet WCAG 2.2 AA: 4.5:1 text contrast, labeled controls, and headings in order.
 

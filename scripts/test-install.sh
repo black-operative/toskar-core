@@ -23,13 +23,16 @@ python3 -m http.server 18090 --bind 127.0.0.1 --directory dist >"$work/http.log"
 http_pid=$!
 for _ in $(seq 1 20); do curl -fsS -o /dev/null http://127.0.0.1:18090/SHA256SUMS.txt && break; sleep 0.5; done
 # The old name on purpose: install.sh still reads the names from before the
-# rename (#237); yggctl below gets the new one.
+# rename (#237); toskarctl below gets the new one.
 export YGGDRASIL_RELEASE_URL=http://127.0.0.1:18090
 
 echo "== install"
 sh scripts/install.sh
 systemctl is-active --quiet yggdrasil.service || { sudo journalctl -u yggdrasil --no-pager | tail -50; exit 1; }
+toskarctl version | head -1
+# The names from before the rename still run (#237).
 yggctl version | head -1
+yggdrasil-daemon -version | head -1
 curl -fsS http://127.0.0.1:7331/api/v1/health
 
 echo "== installing again leaves it running"
@@ -43,7 +46,7 @@ cat >"$work/issuer/config.json" <<EOF
 EOF
 stage="$(mktemp -d)"
 dpkg-deb -x dist/*.deb "$stage"
-"$stage/usr/bin/yggdrasil-daemon" --data-dir "$work/issuer" >"$work/issuer.log" 2>&1 &
+"$stage/usr/bin/toskar" --data-dir "$work/issuer" >"$work/issuer.log" 2>&1 &
 issuer_pid=$!
 for _ in $(seq 1 60); do curl -fsS -o /dev/null http://127.0.0.1:17431/api/v1/health && break; sleep 0.5; done
 
@@ -57,7 +60,7 @@ grep -q "Joined the Yggdrasil network" "$work/join.txt"
 
 echo "== the issuer sees it"
 sleep 3
-TOSKAR_URL=http://127.0.0.1:17431 yggctl network | tee "$work/network.txt"
+TOSKAR_URL=http://127.0.0.1:17431 toskarctl network | tee "$work/network.txt"
 grep -q "Paired computers" "$work/network.txt"
 
 echo "== running the command again says it already joined"

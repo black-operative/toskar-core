@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 // App is another app on this computer whose MCP servers can be imported.
@@ -70,7 +71,7 @@ func discoverIn(apps []App) []Found {
 			continue
 		}
 		for _, s := range specs {
-			if s.Command == "yggctl" || filepath.Base(s.Command) == "yggctl" {
+			if base := strings.TrimSuffix(filepath.Base(s.Command), ".exe"); base == "toskarctl" || base == "yggctl" {
 				// Yggdrasil itself, shared with that app.
 				continue
 			}

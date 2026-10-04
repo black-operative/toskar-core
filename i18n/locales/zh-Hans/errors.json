@@ -50,7 +50,7 @@
   "JOIN_BAD_REQUEST": "{{detail}}",
   "JOIN_FAILED": "{{detail}}",
   "JOIN_NOT_REACHABLE": "其他电脑无法连接到这台电脑。请打开“查找其他电脑”，然后重启 Yggdrasil。",
-  "JOIN_OTHER_NETWORK": "这台电脑已经在另一个 Yggdrasil 网络中。要加入此网络，请先运行 yggctl leave。",
+  "JOIN_OTHER_NETWORK": "这台电脑已经在另一个 Yggdrasil 网络中。要加入此网络，请先运行 toskarctl leave。",
   "JOIN_RATE_LIMITED": "来自此地址的加入尝试过多。请等几分钟后再试。",
   "JOIN_TOKEN_EXPIRED": "此加入令牌已过期。请在网络中的电脑上创建新的加入命令。",
   "JOIN_TOKEN_FAILED": "{{detail}}",

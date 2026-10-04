@@ -40,7 +40,7 @@ If you distribute or operate a modified Yggdrasil Core over a network, set the s
 -X github.com/yeixio/yggdrasil-core/internal/version.SourceURL=<url-of-your-corresponding-source>
 ```
 
-The same text is printed by `yggdrasil-daemon -version` and by `yggctl version` or `yggctl about`.
+The same text is printed by `toskar -version` and by `toskarctl version` or `toskarctl about`.
 
 ## Route reference
 

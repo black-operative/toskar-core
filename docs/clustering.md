@@ -1,6 +1,6 @@
 # Clustering
 
-Yggdrasil can use more than one computer. Each computer runs `yggdrasil-daemon`. Work is placed per role. One model is not split across machines.
+Yggdrasil can use more than one computer. Each computer runs `toskar`. Work is placed per role. One model is not split across machines.
 
 ## Discovery
 
@@ -41,7 +41,7 @@ Revoke a peer with `POST /api/v1/nodes/{id}/revoke`.
 
 For a server or any computer you reach over SSH, without mDNS or a screen, join it with a command made on a computer already in the network.
 
-1. On a computer in the network, run `yggctl join-token create`. It prints the command for the new computer:
+1. On a computer in the network, run `toskarctl join-token create`. It prints the command for the new computer:
 
    ```text
    yggctl join --server 192.168.1.10:7332 --token ygj_… --fingerprint sha256:…
@@ -61,7 +61,7 @@ For a server or any computer you reach over SSH, without mDNS or a screen, join 
 
 The Computers page does the same: **Add by command** makes a command, with tabs for a computer that has Yggdrasil, one to install it on (Linux, macOS), and Windows, a copy button, a countdown, **Revoke**, and the recent commands. It says when the computer has joined.
 
-The token lasts 15 minutes (`--ttl` up to `24h`) and works once. `yggctl join-token list` shows recent tokens, and `yggctl join-token revoke <id>` stops an unused one. Only a proof key derived from the token is stored, and the token is never logged.
+The token lasts 15 minutes (`--ttl` up to `24h`) and works once. `toskarctl join-token list` shows recent tokens, and `toskarctl join-token revoke <id>` stops an unused one. Only a proof key derived from the token is stored, and the token is never logged.
 
 How the join stays safe over Bifrost's plain HTTP:
 - **The right computer:** the command carries the issuing computer's key fingerprint. Before going on, the new computer checks that computer's signature on a fresh challenge, so a different machine at that address is refused before anything that proves the token is sent.
@@ -69,13 +69,13 @@ How the join stays safe over Bifrost's plain HTTP:
 - **One use:** the token is used up before the new computer is trusted, so two computers racing with one token can't both get in. Ten failed attempts from one address within 10 minutes pause joins from it.
 - **Records:** each join, refusal, token made, and token revoked is logged and published (`node.join.accepted`, `node.join.rejected`, `join_token.created`, `join_token.revoked`). A join also announces "Computer paired".
 
-Running the command again on a computer that already joined says so and changes nothing. A computer in another network is refused until it runs `yggctl leave`, which tells each paired computer it is leaving and forgets them all. Models, settings, and its identity stay. `yggctl network` shows this computer's address, fingerprint, network, and paired computers.
+Running the command again on a computer that already joined says so and changes nothing. A computer in another network is refused until it runs `toskarctl leave`, which tells each paired computer it is leaving and forgets them all. Models, settings, and its identity stay. `toskarctl network` shows this computer's address, fingerprint, network, and paired computers.
 
 ### Automating joins
 
 Every join command takes `--output json` and exits 0 when joined or already joined, 1 when refused, and 2 for a usage error, so provisioning tools can run them unattended.
 
-- **Make a token where you are:** run `yggctl join-token create --output json` on a computer in the network, over SSH from the provisioning machine if need be, and read `install_command` (or `command`, `token`, `server`, `fingerprint`) from it. Tokens can last up to a day (`--ttl 24h`) for a slow build, and each still works once, so make one per computer. The control API (`POST /api/v1/join-tokens`) does the same from scripts on that computer, or from elsewhere with an API key when the API listens beyond it.
+- **Make a token where you are:** run `toskarctl join-token create --output json` on a computer in the network, over SSH from the provisioning machine if need be, and read `install_command` (or `command`, `token`, `server`, `fingerprint`) from it. Tokens can last up to a day (`--ttl 24h`) for a slow build, and each still works once, so make one per computer. The control API (`POST /api/v1/join-tokens`) does the same from scripts on that computer, or from elsewhere with an API key when the API listens beyond it.
 - **Name it:** `--name gpu-box-3` renames the computer as it joins. A name already taken in the network gets `-2`, `-3`, and so on.
 - **Right after installing:** `--wait 60s` waits for Yggdrasil to start before joining. `install.sh` waits on its own.
 
@@ -90,7 +90,7 @@ Ansible, making the token on an existing computer for each new one:
 
 ```yaml
 - name: Make a join token
-  ansible.builtin.command: yggctl join-token create --ttl 30m --output json
+  ansible.builtin.command: toskarctl join-token create --ttl 30m --output json
   delegate_to: studio
   register: token
   changed_when: true

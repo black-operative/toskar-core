@@ -12,6 +12,8 @@ SHA256SUMS.txt
 /daemon
 /devctl
 /screenshot
+/toskarctl
+/toskar
 /yggctl
 /yggdrasil-daemon
 *.exe

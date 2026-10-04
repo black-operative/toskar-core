@@ -14,7 +14,7 @@ import (
 	"github.com/yeixio/yggdrasil-core/internal/config"
 )
 
-const automationsUsage = `usage: yggctl automations <list|get|create|update|delete|run|pause|resume>
+const automationsUsage = `usage: toskarctl automations <list|get|create|update|delete|run|pause|resume>
   list
   get <id>
   create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|interval> [--at <time>] [--every <duration>] [--weekday <0-6>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--disabled]

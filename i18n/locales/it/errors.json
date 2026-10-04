@@ -50,7 +50,7 @@
   "JOIN_BAD_REQUEST": "{{detail}}",
   "JOIN_FAILED": "{{detail}}",
   "JOIN_NOT_REACHABLE": "Gli altri computer non riescono a raggiungere questo. Attiva Trova altri computer, poi riavvia Yggdrasil.",
-  "JOIN_OTHER_NETWORK": "Questo computer fa già parte di un'altra rete Yggdrasil. Esegui prima yggctl leave per unirti a questa.",
+  "JOIN_OTHER_NETWORK": "Questo computer fa già parte di un'altra rete Yggdrasil. Esegui prima toskarctl leave per unirti a questa.",
   "JOIN_RATE_LIMITED": "Troppi tentativi di adesione da questo indirizzo. Attendi qualche minuto e riprova.",
   "JOIN_TOKEN_EXPIRED": "Questo token di adesione è scaduto. Crea un nuovo comando di adesione su un computer della rete.",
   "JOIN_TOKEN_FAILED": "{{detail}}",

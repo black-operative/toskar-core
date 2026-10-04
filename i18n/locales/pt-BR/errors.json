@@ -50,7 +50,7 @@
   "JOIN_BAD_REQUEST": "{{detail}}",
   "JOIN_FAILED": "{{detail}}",
   "JOIN_NOT_REACHABLE": "Outros computadores não conseguem acessar este. Ative Encontrar outros computadores e reinicie o Yggdrasil.",
-  "JOIN_OTHER_NETWORK": "Este computador já está em outra rede do Yggdrasil. Execute yggctl leave primeiro para entrar nesta.",
+  "JOIN_OTHER_NETWORK": "Este computador já está em outra rede do Yggdrasil. Execute toskarctl leave primeiro para entrar nesta.",
   "JOIN_RATE_LIMITED": "Tentativas de entrada demais deste endereço. Aguarde alguns minutos e tente de novo.",
   "JOIN_TOKEN_EXPIRED": "Este token de entrada expirou. Crie um novo comando de entrada em um computador da rede.",
   "JOIN_TOKEN_FAILED": "{{detail}}",

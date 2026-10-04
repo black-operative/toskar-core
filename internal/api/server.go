@@ -142,7 +142,7 @@ type Server struct {
 	connectors      *connectors.Manager
 	mcp             *mcp.Manager
 	mcpServer       *mcp.Server
-	yggctl          func() string
+	ctl             func() string
 	personal        PersonalStore
 	privacy         Privacy
 	ratings         Ratings

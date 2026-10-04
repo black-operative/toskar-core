@@ -60,8 +60,8 @@ if ($Command -eq 'join' -and (-not $Server -or -not $Token -or -not $Fingerprint
     exit 2
 }
 
-$Yggctl = Join-Path $Prefix 'yggctl.exe'
-$installed = (Get-Command yggctl.exe -ErrorAction SilentlyContinue)
+$Yggctl = Join-Path $Prefix 'toskarctl.exe'
+$installed = (Get-Command toskarctl.exe, yggctl.exe -ErrorAction SilentlyContinue | Select-Object -First 1)
 if ($installed -and (Test-Healthy)) {
     Write-Host '✓ Yggdrasil Core is already installed and running'
     $Yggctl = $installed.Source
@@ -98,10 +98,20 @@ if ($installed -and (Test-Healthy)) {
 
         # Stop a copy that is running before replacing its files.
         Stop-ScheduledTask -TaskName 'Yggdrasil' -ErrorAction SilentlyContinue
-        Get-Process yggdrasil-daemon -ErrorAction SilentlyContinue | Stop-Process -Force
+        Get-Process toskar, yggdrasil-daemon -ErrorAction SilentlyContinue | Stop-Process -Force
         if (Test-Path $Prefix) { Remove-Item -Recurse -Force $Prefix }
         New-Item -ItemType Directory -Path (Split-Path $Prefix) -Force | Out-Null
         Move-Item $src.FullName $Prefix
+        # The names from before the rename, for scheduled tasks and MCP settings
+        # that run them by path (#237). Hard links need no admin rights. An older
+        # release (TOSKAR_VERSION) has only the old names.
+        foreach ($pair in @(@('toskar.exe', 'yggdrasil-daemon.exe'), @('toskarctl.exe', 'yggctl.exe'))) {
+            $new = Join-Path $Prefix $pair[0]
+            $old = Join-Path $Prefix $pair[1]
+            if ((Test-Path $new) -and -not (Test-Path $old)) {
+                New-Item -ItemType HardLink -Path $old -Target $new | Out-Null
+            }
+        }
     } finally {
         Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
     }
@@ -112,7 +122,10 @@ if ($installed -and (Test-Healthy)) {
     }
     $env:Path = "$env:Path;$Prefix"
 
-    $action = New-ScheduledTaskAction -Execute (Join-Path $Prefix 'yggdrasil-daemon.exe') -WorkingDirectory $Prefix
+    $daemon = Join-Path $Prefix 'toskar.exe'
+    if (-not (Test-Path $daemon)) { $daemon = Join-Path $Prefix 'yggdrasil-daemon.exe' }
+    if (-not (Test-Path $Yggctl)) { $Yggctl = Join-Path $Prefix 'yggctl.exe' }
+    $action = New-ScheduledTaskAction -Execute $daemon -WorkingDirectory $Prefix
     $trigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
         -ExecutionTimeLimit ([TimeSpan]::Zero) -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
@@ -141,4 +154,4 @@ if ($Command -eq 'join') {
     & $Yggctl @joinArgs
     exit $LASTEXITCODE
 }
-Write-Host "Open $Api or run yggctl to use it."
+Write-Host "Open $Api or run $([System.IO.Path]::GetFileNameWithoutExtension($Yggctl)) to use it."

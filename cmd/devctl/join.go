@@ -15,21 +15,21 @@ import (
 	"github.com/yeixio/yggdrasil-core/internal/config"
 )
 
-const joinUsage = `usage: yggctl join --server <host:port> --token <ygj_…> --fingerprint <sha256:…> [--name <name>] [--wait 60s] [--output json]
+const joinUsage = `usage: toskarctl join --server <host:port> --token <ygj_…> --fingerprint <sha256:…> [--name <name>] [--wait 60s] [--output json]
 Joins this computer to the Yggdrasil network of the computer that made the
 join command. Run the command that computer printed, as it is.
   --name   rename this computer as it joins
   --wait   wait this long for Yggdrasil to start here, for provisioning scripts`
 
-const joinTokenUsage = `usage: yggctl join-token <create|list|revoke> [--output json]
+const joinTokenUsage = `usage: toskarctl join-token <create|list|revoke> [--output json]
   create [--ttl 15m]   make a one-time join token and print the command to run on the new computer
   list                 list tokens made in the last week
   revoke <id>          stop an unused token`
 
-const networkUsage = `usage: yggctl network [status] [--output json]
+const networkUsage = `usage: toskarctl network [status] [--output json]
 Shows this computer's network, its address and fingerprint, and the computers it trusts.`
 
-const leaveUsage = `usage: yggctl leave [--output json]
+const leaveUsage = `usage: toskarctl leave [--output json]
 Leaves the network: tells each paired computer, then forgets them all.
 Models, settings, and this computer's identity stay.`
 
@@ -201,6 +201,7 @@ func joinFailure(err error) error {
 	case "JOIN_UNREACHABLE":
 		msg += "\n\nCheck:\n- the server address\n- that its firewall allows TCP port 7332\n- that Yggdrasil is running there"
 	case "JOIN_TOKEN_EXPIRED", "JOIN_TOKEN_USED", "JOIN_TOKEN_REVOKED", "JOIN_TOKEN_INVALID":
+		// yggctl: that computer may be on a version from before the rename.
 		msg += "\n\nMake a new join command on a computer in the network: yggctl join-token create"
 	}
 	return &exitError{code: 1, msg: msg}
@@ -265,7 +266,7 @@ func joinTokenCommand(args []string, c daemonClient, out io.Writer, now func() t
 			return writeJSON(out, list)
 		}
 		if len(list) == 0 {
-			fmt.Fprintln(out, "No join tokens in the last week. Make one with: yggctl join-token create")
+			fmt.Fprintln(out, "No join tokens in the last week. Make one with: toskarctl join-token create")
 			return nil
 		}
 		tw := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
@@ -355,7 +356,7 @@ func networkCommand(args []string, c daemonClient, out io.Writer) error {
 		fmt.Fprintln(out, "\nOther computers can't reach this one: turn on discovery_enabled and restart Yggdrasil.")
 	}
 	if len(st.Peers) == 0 {
-		fmt.Fprintln(out, "\nNo paired computers. Add one with: yggctl join-token create")
+		fmt.Fprintln(out, "\nNo paired computers. Add one with: toskarctl join-token create")
 		return nil
 	}
 	fmt.Fprintln(out, "\nPaired computers:")

@@ -51,7 +51,7 @@ body:
     id: version
     attributes:
       label: Yggdrasil Core version
-      description: From `yggctl version`, the web UI, or the release tag.
+      description: From `toskarctl version`, the web UI, or the release tag.
       placeholder: 1.2.1
     validations:
       required: true

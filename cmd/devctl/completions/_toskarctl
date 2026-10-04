@@ -1,7 +1,7 @@
-#compdef yggctl
-# zsh completion for yggctl
+#compdef toskarctl yggctl
+# zsh completion for toskarctl
 
-_yggctl() {
+_toskarctl() {
   local -a commands
   commands=(
     'version:print the version, license, and source URL'
@@ -17,7 +17,7 @@ _yggctl() {
   )
 
   if (( CURRENT == 2 )); then
-    _describe -t commands 'yggctl command' commands
+    _describe -t commands 'toskarctl command' commands
     return
   fi
 
@@ -78,8 +78,8 @@ _yggctl() {
   esac
 }
 
-if [[ "${funcstack[1]}" == "_yggctl" ]]; then
-  _yggctl "$@"
+if [[ "${funcstack[1]}" == "_toskarctl" ]]; then
+  _toskarctl "$@"
 else
-  compdef _yggctl yggctl
+  compdef _toskarctl toskarctl yggctl
 fi

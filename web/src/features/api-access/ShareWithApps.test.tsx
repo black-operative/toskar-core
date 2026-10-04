@@ -18,18 +18,26 @@ function renderIt() {
 
 describe('ShareWithApps', () => {
   it('gives each app its settings, with the address and key when needed', async () => {
-    vi.mocked(api.mcpShare).mockResolvedValue({ url: 'http://127.0.0.1:7444/mcp', command: '/opt/homebrew/bin/yggctl', args: ['mcp'], needs_key: true })
+    vi.mocked(api.mcpShare).mockResolvedValue({ url: 'http://127.0.0.1:7444/mcp', command: '/opt/homebrew/bin/toskarctl', args: ['mcp'], needs_key: true })
     renderIt()
     const settings = await screen.findByLabelText('json settings')
-    expect(settings.textContent).toContain('"command": "/opt/homebrew/bin/yggctl"')
-    expect(settings.textContent).toContain('"YGGDRASIL_URL": "http://127.0.0.1:7444"')
-    expect(settings.textContent).toContain('"YGGDRASIL_API_KEY": "<your API key>"')
+    expect(settings.textContent).toContain('"command": "/opt/homebrew/bin/toskarctl"')
+    expect(settings.textContent).toContain('"TOSKAR_URL": "http://127.0.0.1:7444"')
+    expect(settings.textContent).toContain('"TOSKAR_API_KEY": "<your API key>"')
     fireEvent.click(screen.getByRole('tab', { name: 'Claude Code' }))
     expect(screen.getByLabelText('bash settings').textContent).toBe(
       'claude mcp add --transport http toskar http://127.0.0.1:7444/mcp --header "Authorization: Bearer <your API key>"',
     )
     fireEvent.click(screen.getByRole('tab', { name: 'VS Code' }))
     expect(screen.getByLabelText('json settings').textContent).toContain('"type": "http"')
+  })
+
+  it('gives yggctl, from an app built before the rename, the settings names it reads', async () => {
+    vi.mocked(api.mcpShare).mockResolvedValue({ url: 'http://127.0.0.1:7444/mcp', command: 'C:\\Apps\\yggctl.exe', args: ['mcp'], needs_key: true })
+    renderIt()
+    const settings = await screen.findByLabelText('json settings')
+    expect(settings.textContent).toContain('"YGGDRASIL_URL": "http://127.0.0.1:7444"')
+    expect(settings.textContent).toContain('"YGGDRASIL_API_KEY": "<your API key>"')
   })
 
   it('leaves out the address and key on the default local setup', async () => {

@@ -50,7 +50,7 @@
   "JOIN_BAD_REQUEST": "{{detail}}",
   "JOIN_FAILED": "{{detail}}",
   "JOIN_NOT_REACHABLE": "Other computers can't reach this one. Turn on Find other computers, then restart Yggdrasil.",
-  "JOIN_OTHER_NETWORK": "This computer is already in another Yggdrasil network. Run yggctl leave first to join this one.",
+  "JOIN_OTHER_NETWORK": "This computer is already in another Yggdrasil network. Run toskarctl leave first to join this one.",
   "JOIN_RATE_LIMITED": "Too many join attempts from this address. Wait a few minutes and try again.",
   "JOIN_TOKEN_EXPIRED": "This join token has expired. Make a new join command on a computer in the network.",
   "JOIN_TOKEN_FAILED": "{{detail}}",

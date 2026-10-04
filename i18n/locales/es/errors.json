@@ -50,7 +50,7 @@
   "JOIN_BAD_REQUEST": "{{detail}}",
   "JOIN_FAILED": "{{detail}}",
   "JOIN_NOT_REACHABLE": "Otros equipos no pueden llegar a este. Activa Buscar otras computadoras y reinicia Yggdrasil.",
-  "JOIN_OTHER_NETWORK": "Este equipo ya está en otra red de Yggdrasil. Ejecuta yggctl leave primero para unirte a esta.",
+  "JOIN_OTHER_NETWORK": "Este equipo ya está en otra red de Yggdrasil. Ejecuta toskarctl leave primero para unirte a esta.",
   "JOIN_RATE_LIMITED": "Demasiados intentos de unión desde esta dirección. Espera unos minutos y vuelve a intentarlo.",
   "JOIN_TOKEN_EXPIRED": "Este token de unión caducó. Crea un nuevo comando de unión en un equipo de la red.",
   "JOIN_TOKEN_FAILED": "{{detail}}",

@@ -34,9 +34,13 @@ build_binaries() {
   mkdir -p "$dest/web"
   echo "Building ${goos}/${goarch}"
   CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" go build -trimpath -ldflags "$LDFLAGS" \
-    -o "$dest/yggdrasil-daemon" ./cmd/daemon
+    -o "$dest/toskar" ./cmd/daemon
   CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" go build -trimpath -ldflags "$LDFLAGS" \
-    -o "$dest/yggctl" ./cmd/devctl
+    -o "$dest/toskarctl" ./cmd/devctl
+  # The names from before the rename: launchd agents, scripts, and MCP
+  # settings in other apps run them by path (#237).
+  ln -s toskar "$dest/yggdrasil-daemon"
+  ln -s toskarctl "$dest/yggctl"
   cp -R web/dist/. "$dest/web/"
   mkdir -p "$dest/completions"
   cp cmd/devctl/completions/* "$dest/completions/"
@@ -62,27 +66,42 @@ description: Local AI daemon and web UI
 homepage: https://yggdrasil.yeix.io
 license: AGPL-3.0-or-later
 contents:
-  - src: ${ROOT}/${stage}/yggdrasil-daemon
+  - src: ${ROOT}/${stage}/toskar
+    dst: /usr/bin/toskar
+    file_info:
+      mode: 0755
+  - src: ${ROOT}/${stage}/toskarctl
+    dst: /usr/bin/toskarctl
+    file_info:
+      mode: 0755
+  # The names from before the rename (#237).
+  - src: toskar
     dst: /usr/bin/yggdrasil-daemon
-    file_info:
-      mode: 0755
-  - src: ${ROOT}/${stage}/yggctl
+    type: symlink
+  - src: toskarctl
     dst: /usr/bin/yggctl
-    file_info:
-      mode: 0755
+    type: symlink
   - src: ${ROOT}/${stage}/web
     dst: /usr/share/yggdrasil/web
     type: tree
-  - src: ${ROOT}/cmd/devctl/completions/yggctl.bash
+  - src: ${ROOT}/cmd/devctl/completions/toskarctl.bash
+    dst: /usr/share/bash-completion/completions/toskarctl
+  - src: ${ROOT}/cmd/devctl/completions/toskarctl.fish
+    dst: /usr/share/fish/vendor_completions.d/toskarctl.fish
+  # bash and fish load a command's completion by its name, so yggctl gets a
+  # link to the same script, which completes both names.
+  - src: toskarctl
     dst: /usr/share/bash-completion/completions/yggctl
-  - src: ${ROOT}/cmd/devctl/completions/yggctl.fish
+    type: symlink
+  - src: toskarctl.fish
     dst: /usr/share/fish/vendor_completions.d/yggctl.fish
+    type: symlink
   # Debian and Fedora put packaged zsh completions in different fpath directories.
-  - src: ${ROOT}/cmd/devctl/completions/_yggctl
-    dst: /usr/share/zsh/vendor-completions/_yggctl
+  - src: ${ROOT}/cmd/devctl/completions/_toskarctl
+    dst: /usr/share/zsh/vendor-completions/_toskarctl
     packager: deb
-  - src: ${ROOT}/cmd/devctl/completions/_yggctl
-    dst: /usr/share/zsh/site-functions/_yggctl
+  - src: ${ROOT}/cmd/devctl/completions/_toskarctl
+    dst: /usr/share/zsh/site-functions/_toskarctl
     packager: rpm
   - src: ${ROOT}/packaging/linux/yggdrasil.service
     dst: /usr/lib/systemd/system/yggdrasil.service
@@ -116,9 +135,10 @@ package_windows() {
   mkdir -p "$stage/web"
   echo "Building windows/${goarch}"
   CGO_ENABLED=0 GOOS=windows GOARCH="$goarch" go build -trimpath -ldflags "$LDFLAGS" \
-    -o "$stage/yggdrasil-daemon.exe" ./cmd/daemon
+    -o "$stage/toskar.exe" ./cmd/daemon
   CGO_ENABLED=0 GOOS=windows GOARCH="$goarch" go build -trimpath -ldflags "$LDFLAGS" \
-    -o "$stage/yggctl.exe" ./cmd/devctl
+    -o "$stage/toskarctl.exe" ./cmd/devctl
+  # No links in a Windows archive: install.ps1 adds the old names (#237).
   cp -R web/dist/. "$stage/web/"
   tar -C dist -czf "dist/${name}.tar.gz" "$name"
   rm -rf "$stage"

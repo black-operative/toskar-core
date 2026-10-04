@@ -14,10 +14,10 @@ import (
 )
 
 // BindMCP attaches the MCP tool source routes, Yggdrasil's own MCP server
-// at /mcp, and the sign-in callback. yggctl says where the yggctl program
+// at /mcp, and the sign-in callback. ctl says where the toskarctl program
 // is, for the settings other apps use.
-func (s *Server) BindMCP(m *mcp.Manager, server *mcp.Server, yggctl func() string) {
-	s.mcp, s.mcpServer, s.yggctl = m, server, yggctl
+func (s *Server) BindMCP(m *mcp.Manager, server *mcp.Server, ctl func() string) {
+	s.mcp, s.mcpServer, s.ctl = m, server, ctl
 }
 
 func (s *Server) mcpRoutes(api *mux.Router) {
@@ -266,9 +266,9 @@ func (s *Server) handleMCPParse(w http.ResponseWriter, r *http.Request) {
 
 // handleMCPShare says how other apps reach Yggdrasil's MCP server.
 func (s *Server) handleMCPShare(w http.ResponseWriter, r *http.Request) {
-	yggctl := "yggctl"
-	if s.yggctl != nil {
-		yggctl = s.yggctl()
+	ctl := "toskarctl"
+	if s.ctl != nil {
+		ctl = s.ctl()
 	}
 	host, port := "127.0.0.1", 7331
 	needsKey := false
@@ -279,7 +279,7 @@ func (s *Server) handleMCPShare(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"url":       "http://" + host + ":" + strconv.Itoa(port) + "/mcp",
-		"command":   yggctl,
+		"command":   ctl,
 		"args":      []string{"mcp"},
 		"needs_key": needsKey,
 	})

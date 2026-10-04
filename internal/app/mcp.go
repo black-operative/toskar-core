@@ -143,24 +143,27 @@ func (a *App) mcpSample(ctx context.Context, system string, msgs []mcp.SampleMes
 	return text, choice.Model.ID, err
 }
 
-// yggctlPath is where yggctl is, for the settings other apps use to run
-// Yggdrasil's MCP bridge. It is installed beside the daemon.
-func yggctlPath() string {
-	name := "yggctl"
+// ctlPath is where toskarctl is, for the settings other apps use to run
+// Toskar's MCP bridge. It is installed beside the daemon; an app bundle
+// built before the rename has yggctl instead (#237).
+func ctlPath() string {
+	ext := ""
 	if runtime.GOOS == "windows" {
-		name += ".exe"
+		ext = ".exe"
 	}
-	if exe, err := os.Executable(); err == nil {
-		if p := filepath.Join(filepath.Dir(exe), name); fileExists(p) {
-			return p
+	for _, name := range []string{"toskarctl" + ext, "yggctl" + ext} {
+		if exe, err := os.Executable(); err == nil {
+			if p := filepath.Join(filepath.Dir(exe), name); fileExists(p) {
+				return p
+			}
+		}
+		for _, dir := range []string{"/opt/homebrew/bin", "/usr/local/bin", "/usr/bin"} {
+			if p := filepath.Join(dir, name); fileExists(p) {
+				return p
+			}
 		}
 	}
-	for _, dir := range []string{"/opt/homebrew/bin", "/usr/local/bin", "/usr/bin"} {
-		if p := filepath.Join(dir, name); fileExists(p) {
-			return p
-		}
-	}
-	return name
+	return "toskarctl" + ext
 }
 
 func fileExists(p string) bool {

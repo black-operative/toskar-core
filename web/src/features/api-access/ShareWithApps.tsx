@@ -23,11 +23,14 @@ function setupFor(app: AppID, share: MCPShare): { where: string; text: string; l
   const json = (v: unknown) => JSON.stringify(v, null, 2)
   switch (app) {
     case 'claude-desktop': {
-      // yggctl dials the default address unless told otherwise.
+      // toskarctl dials the default address unless told otherwise. It reads
+      // TOSKAR_ settings; yggctl, from an app built before the rename, may
+      // read only the YGGDRASIL_ ones (#237).
       const base = share.url.replace(/\/mcp$/, '')
+      const prefix = /(^|[\\/])toskarctl(\.exe)?$/.test(share.command) ? 'TOSKAR' : 'YGGDRASIL'
       const env: Record<string, string> = {}
-      if (base !== 'http://127.0.0.1:7331') env.YGGDRASIL_URL = base
-      if (share.needs_key) env.YGGDRASIL_API_KEY = KEY
+      if (base !== 'http://127.0.0.1:7331') env[`${prefix}_URL`] = base
+      if (share.needs_key) env[`${prefix}_API_KEY`] = KEY
       return {
         where: i18n.t('apiAccess:share.where.claudeDesktop'),
         language: 'json',

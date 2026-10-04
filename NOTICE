@@ -13,7 +13,7 @@ The full license text is in the LICENSE file.
 Yggdrasil trademarks, logos, and Rune-Y artwork are not granted by this
 license. See TRADEMARKS.md.
 
-Source for this program is the yggdrasil-core repository. A running daemon offers it at `GET /about` and `GET /source`, and the same notice is printed by `yggdrasil-daemon -version` and `yggctl version`. Release builds point at the tag for that version. Operators who run a modified version as a network service must set `version.SourceURL` to the corresponding source of that modified version. See section 13 of the GNU Affero General Public License.
+Source for this program is the yggdrasil-core repository. A running daemon offers it at `GET /about` and `GET /source`, and the same notice is printed by `toskar -version` and `toskarctl version`. Release builds point at the tag for that version. Operators who run a modified version as a network service must set `version.SourceURL` to the corresponding source of that modified version. See section 13 of the GNU Affero General Public License.
 
 Third-party components remain under their own licenses, including the
 Go module dependencies in go.mod, the web UI dependencies in

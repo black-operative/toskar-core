@@ -81,7 +81,7 @@ jobs:
           version: v2.14.0
       - name: Test
         run: go test ./... -coverprofile=coverage.out
-      - name: Cross-compile daemon and yggctl
+      - name: Cross-compile toskar and toskarctl
         env:
           CGO_ENABLED: "0"
         run: |
@@ -91,8 +91,8 @@ jobs:
             ext=""
             if [ "$GOOS" = "windows" ]; then ext=".exe"; fi
             echo "::group::${target}"
-            go build -o "bin/${GOOS}-${GOARCH}/yggdrasil-daemon${ext}" ./cmd/daemon
-            go build -o "bin/${GOOS}-${GOARCH}/yggctl${ext}" ./cmd/devctl
+            go build -o "bin/${GOOS}-${GOARCH}/toskar${ext}" ./cmd/daemon
+            go build -o "bin/${GOOS}-${GOARCH}/toskarctl${ext}" ./cmd/devctl
             echo "::endgroup::"
           done
       - name: Upload coverage profile

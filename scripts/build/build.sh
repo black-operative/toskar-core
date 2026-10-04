@@ -14,8 +14,8 @@ echo "Building frontend..."
 
 echo "Building daemon..."
 GOOS="${GOOS:-$(go env GOOS)}" GOARCH="${GOARCH:-$(go env GOARCH)}" \
-  go build -ldflags "$LDFLAGS" -o "bin/yggdrasil-daemon" ./cmd/daemon
+  go build -ldflags "$LDFLAGS" -o "bin/toskar" ./cmd/daemon
 
-go build -ldflags "$LDFLAGS" -o "bin/yggctl" ./cmd/devctl
+go build -ldflags "$LDFLAGS" -o "bin/toskarctl" ./cmd/devctl
 
 echo "Artifacts in bin/ (version=${VERSION} commit=${COMMIT})"

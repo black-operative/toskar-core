@@ -16,11 +16,17 @@ class Yggdrasil < Formula
   end
 
   def install
-    bin.install "yggdrasil-daemon"
-    bin.install "yggctl"
-    bash_completion.install "completions/yggctl.bash" => "yggctl"
-    zsh_completion.install "completions/_yggctl"
-    fish_completion.install "completions/yggctl.fish"
+    bin.install "toskar"
+    bin.install "toskarctl"
+    # The names from before the rename, for launchd agents and MCP settings
+    # that run them by path.
+    bin.install_symlink bin/"toskar" => "yggdrasil-daemon"
+    bin.install_symlink bin/"toskarctl" => "yggctl"
+    bash_completion.install "completions/toskarctl.bash" => "toskarctl"
+    bash_completion.install_symlink bash_completion/"toskarctl" => "yggctl"
+    zsh_completion.install "completions/_toskarctl"
+    fish_completion.install "completions/toskarctl.fish"
+    fish_completion.install_symlink fish_completion/"toskarctl.fish" => "yggctl.fish"
     (share/"yggdrasil").install "web"
   end
 
@@ -28,7 +34,7 @@ class Yggdrasil < Formula
     <<~EOS
       Start the daemon, then open the web UI:
 
-        yggdrasil-daemon
+        toskar
         open http://127.0.0.1:7331
     EOS
   end

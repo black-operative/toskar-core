@@ -33,7 +33,7 @@ curl -sfL https://yggdrasil.yeix.io/install.sh | sh -s -- join \
 or, if Yggdrasil Core is already installed:
 
 ```bash
-sudo yggdrasil-daemon join \
+sudo toskar join \
   --server https://192.168.1.10:7332 \
   --token ygj_abc123...
 ```
@@ -126,7 +126,7 @@ All normal communication should use the same Bifrost identity/certificate mechan
 From CLI:
 
 ```bash
-yggctl join-token create
+toskarctl join-token create
 ```
 
 Example output:
@@ -145,7 +145,7 @@ It can be used once.
 Or, if Core is already installed on the remote machine:
 
 ```text
-sudo yggdrasil-daemon join \
+sudo toskar join \
   --server https://192.168.1.10:7332 \
   --token ygj_7PH4W8J2K6...
 ```
@@ -370,7 +370,7 @@ If the Bifrost endpoint already has a certificate trusted by the joining machine
 The generated command may include a server identity fingerprint:
 
 ```bash
-yggdrasil-daemon join \
+toskar join \
   --server https://192.168.1.10:7332 \
   --token ygj_... \
   --fingerprint sha256:ABCD...
@@ -393,7 +393,7 @@ The issuing node should generate the full command.
 Example:
 
 ```bash
-yggctl join-token create --print-command
+toskarctl join-token create --print-command
 ```
 
 Potential output:
@@ -409,7 +409,7 @@ curl -sfL https://yggdrasil.yeix.io/install.sh | \
 If the runtime is already installed:
 
 ```bash
-sudo yggdrasil-daemon join \
+sudo toskar join \
   --server https://10.0.0.5:7332 \
   --token ygj_7PH4W8J2K6 \
   --fingerprint sha256:34D2...
@@ -474,7 +474,7 @@ Provide a native CLI command.
 Recommended shape:
 
 ```bash
-yggctl join \
+toskarctl join \
   --server https://10.0.0.5:7332 \
   --token ygj_...
 ```
@@ -482,10 +482,10 @@ yggctl join \
 or:
 
 ```bash
-yggdrasil-daemon join ...
+toskar join ...
 ```
 
-Prefer `yggctl join` if `yggctl` becomes the normal administrative CLI.
+Prefer `toskarctl join` if `toskarctl` becomes the normal administrative CLI.
 
 The CLI can communicate with the local daemon or perform bootstrap directly depending on implementation.
 
@@ -525,7 +525,7 @@ Example:
 This computer is already paired with another Yggdrasil network.
 
 Use:
-  yggctl leave
+  toskarctl leave
 
 before joining a different network.
 ```
@@ -541,7 +541,7 @@ Joining needs a corresponding clean removal path.
 Potential command:
 
 ```bash
-yggctl leave
+toskarctl leave
 ```
 
 Expected behavior:
@@ -556,7 +556,7 @@ Expected behavior:
 Optional destructive behavior may be separate:
 
 ```bash
-yggctl reset --identity
+toskarctl reset --identity
 ```
 
 Do not delete downloaded models simply because the node leaves a team.
@@ -603,7 +603,7 @@ A useful advanced feature is allowing the issuing side to preassign metadata.
 Example:
 
 ```bash
-yggctl join-token create \
+toskarctl join-token create \
   --label location=garage \
   --label purpose=inference
 ```
@@ -740,8 +740,8 @@ Users must be able to revoke unused tokens.
 CLI:
 
 ```bash
-yggctl join-token list
-yggctl join-token revoke <id>
+toskarctl join-token list
+toskarctl join-token revoke <id>
 ```
 
 Possible output:
@@ -945,7 +945,7 @@ The command should therefore support:
 Potential future option:
 
 ```bash
-yggctl join ... --output json
+toskarctl join ... --output json
 ```
 
 ---
@@ -1006,25 +1006,25 @@ Potential commands:
 
 ```bash
 # Generate join credential
-yggctl join-token create
+toskarctl join-token create
 
 # Generate copy/paste command
-yggctl join-token create --print-command
+toskarctl join-token create --print-command
 
 # List active/recent tokens
-yggctl join-token list
+toskarctl join-token list
 
 # Revoke token
-yggctl join-token revoke jt_1234
+toskarctl join-token revoke jt_1234
 
 # Join this machine
 yggctl join --server <address> --token <token>
 
 # Inspect membership
-yggctl network status
+toskarctl network status
 
 # Leave current network
-yggctl leave
+toskarctl leave
 ```
 
 Exact CLI naming should follow the existing Yggdrasil CLI conventions before implementation.

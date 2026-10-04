@@ -18,7 +18,7 @@ The API defaults to `7331` and Bifrost to `7332`. Stop the other process, or cha
 
 ## Where are the logs?
 
-`yggctl paths` prints the log directory. The daemon appends JSON to `logs/daemon.log` and to standard output. With the deb or rpm package, the service's output is in `journalctl -u yggdrasil`. llama-server writes its own log next to `daemon.log`.
+`toskarctl paths` prints the log directory. The daemon appends JSON to `logs/daemon.log` and to standard output. With the deb or rpm package, the service's output is in `journalctl -u yggdrasil`. llama-server writes its own log next to `daemon.log`.
 
 Remove API keys, tokens, personal data, private URLs, and credentials before you paste a log into an issue.
 

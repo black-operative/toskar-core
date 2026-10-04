@@ -18,7 +18,7 @@ help: ## Show targets
 
 start: ui daemon ## Build the web UI and daemon, then run it
 	@echo "Open http://127.0.0.1:7331"
-	TOSKAR_WEB_UI_DIR="$(CURDIR)/web/dist" ./bin/yggdrasil-daemon
+	TOSKAR_WEB_UI_DIR="$(CURDIR)/web/dist" ./bin/toskar
 
 run-daemon: start ## Alias of start
 
@@ -28,9 +28,9 @@ ui: ## Install web dependencies and build web/dist
 frontend: ## Install web dependencies, run web tests, and build web/dist
 	cd web && pnpm install && pnpm test && pnpm build
 
-daemon: ## Build bin/yggdrasil-daemon and bin/yggctl
-	go build -ldflags "$(LDFLAGS)" -o bin/yggdrasil-daemon ./cmd/daemon
-	go build -ldflags "$(LDFLAGS)" -o bin/yggctl ./cmd/devctl
+daemon: ## Build bin/toskar and bin/toskarctl
+	go build -ldflags "$(LDFLAGS)" -o bin/toskar ./cmd/daemon
+	go build -ldflags "$(LDFLAGS)" -o bin/toskarctl ./cmd/devctl
 
 run-web: ## Start the Vite dev server on http://127.0.0.1:5173
 	cd web && pnpm dev

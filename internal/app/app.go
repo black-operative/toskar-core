@@ -651,7 +651,7 @@ func New(opts Options) (*App, error) {
 	a.Notifications.SetEgress(a.Egress)
 	a.API.BindNotifications(a.Notifications)
 	a.API.BindConnectors(a.Connectors)
-	a.API.BindMCP(a.MCP, mcp.NewServer(a.mcpBackend()), yggctlPath)
+	a.API.BindMCP(a.MCP, mcp.NewServer(a.mcpBackend()), ctlPath)
 	a.API.BindPersonal(a)
 	a.API.BindPrivacy(a)
 	a.Ratings = a.newRatings(cfg)

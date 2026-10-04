@@ -37,7 +37,7 @@ The daemon knows it is sandboxed when macOS sets `APP_SANDBOX_CONTAINER_ID`. `TO
 - **Training without a bundle:** the trainer is reported as unavailable on this computer, with the reason, in `GET /training/backends`, the training plan, and the capabilities a paired computer sees. Norn chooses an eligible paired computer running Yggdrasil Core instead, and a paired computer that is sandboxed refuses runs it cannot do.
 - **Scanned PDFs without a bundle:** a scanned PDF fails with "text recognition is not included in this copy of Yggdrasil". PDFs with a text layer are read as usual.
 
-To bundle an environment, run `yggdrasil-daemon -python-envs`. It prints each environment as JSON: `name`, `python` version, `requirements`, `install_args`, `no_deps`, and `marker`. For each one you want to ship:
+To bundle an environment, run `toskar -python-envs`. It prints each environment as JSON: `name`, `python` version, `requirements`, `install_args`, `no_deps`, and `marker`. For each one you want to ship:
 
 1. Create `python/<name>/` beside the daemon, with a virtual environment of that Python version, for example `uv venv --python 3.12 python/<name>`.
 2. Install the `requirements` with the `install_args`, and with `--no-deps` when `no_deps` is true, for example `uv pip install --python python/<name>/bin/python …`.

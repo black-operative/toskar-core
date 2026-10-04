@@ -98,7 +98,7 @@ func screenshotGET(path string) (string, bool) {
 	case path == "/api/v1/benchmarks/workloads":
 		return `[]`, true
 	case path == "/api/v1/mcp/share":
-		return `{"url":"http://127.0.0.1:7331/mcp","command":"yggctl","args":["mcp"],"needs_key":false}`, true
+		return `{"url":"http://127.0.0.1:7331/mcp","command":"toskarctl","args":["mcp"],"needs_key":false}`, true
 	case path == "/api/v1/capabilities":
 		return screenshotCapabilities, true
 	// The daemon's memory over a quiet day, for the Diagnostics page.

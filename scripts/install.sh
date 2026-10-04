@@ -209,9 +209,15 @@ install_macos() {
 	# Downloaded with curl, so not quarantined; clear it anyway for archives
 	# fetched by a browser.
 	xattr -dr com.apple.quarantine "$prefix" 2>/dev/null || true
-	ln -sf "$prefix/yggdrasil-daemon" "$bindir/yggdrasil-daemon"
-	ln -sf "$prefix/yggctl" "$bindir/yggctl"
-	YGGCTL="$prefix/yggctl"
+	# toskar and toskarctl, and the names from before the rename, which an
+	# older release (TOSKAR_VERSION) has alone (#237).
+	for name in toskar toskarctl yggdrasil-daemon yggctl; do
+		[ -e "$prefix/$name" ] && ln -sf "$prefix/$name" "$bindir/$name"
+	done
+	daemon="$prefix/toskar"
+	[ -x "$daemon" ] || daemon="$prefix/yggdrasil-daemon"
+	YGGCTL="$prefix/toskarctl"
+	[ -x "$YGGCTL" ] || YGGCTL="$prefix/yggctl"
 	[ "$TOSKAR_NO_SERVICE" = "1" ] && return 0
 
 	label="io.yeix.yggdrasil"
@@ -240,7 +246,7 @@ install_macos() {
 <dict>
   <key>Label</key><string>${label}</string>
   ${user_key}
-  <key>ProgramArguments</key><array><string>${prefix}/yggdrasil-daemon</string></array>
+  <key>ProgramArguments</key><array><string>${daemon}</string></array>
   <key>EnvironmentVariables</key><dict><key>YGGDRASIL_WEB_UI_DIR</key><string>${prefix}/web</string>${env_home}</dict>
   <key>RunAtLoad</key><true/>
   <key>KeepAlive</key><true/>
@@ -255,8 +261,9 @@ EOF
 	fi
 }
 
-YGGCTL="yggctl"
-if command -v yggctl >/dev/null 2>&1 && healthy; then
+YGGCTL="toskarctl"
+command -v toskarctl >/dev/null 2>&1 || YGGCTL="yggctl"
+if command -v "$YGGCTL" >/dev/null 2>&1 && healthy; then
 	ok "Yggdrasil Core is already installed and running"
 else
 	case "$os" in
@@ -265,6 +272,12 @@ else
 	*) die "this script installs on Linux and macOS; on Windows use install.ps1" ;;
 	esac
 	ok "Yggdrasil Core installed"
+	# A package from before the rename has only yggctl.
+	if [ "$os" = "Linux" ] && ! command -v toskarctl >/dev/null 2>&1; then
+		YGGCTL="yggctl"
+	elif [ "$os" = "Linux" ]; then
+		YGGCTL="toskarctl"
+	fi
 	if [ "$TOSKAR_NO_SERVICE" != "1" ] || [ "$joining" -eq 1 ]; then
 		say "Waiting for Yggdrasil to start..."
 		wait_healthy || die "Yggdrasil didn't start within a minute; see its log (journalctl -u yggdrasil on Linux, the logs folder in ~/Library/Application Support/Toskar, or Yggdrasil for an install from before the rename, on macOS) and try again"
@@ -275,4 +288,4 @@ fi
 if [ "$joining" -eq 1 ]; then
 	TOSKAR_URL="$API" YGGDRASIL_URL="$API" exec "$YGGCTL" join "$@"
 fi
-say "Open ${API} or run yggctl to use it."
+say "Open ${API} or run ${YGGCTL##*/} to use it."

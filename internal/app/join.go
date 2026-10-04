@@ -125,6 +125,8 @@ func (a *App) CreateJoinToken(ctx context.Context, ttl time.Duration) (api.JoinT
 	a.Bus.Publish(events.New(events.JoinTokenCreated, map[string]any{"join_token_id": t.ID, "expires_at": t.ExpiresAt}))
 	created := api.JoinTokenCreated{
 		Token: raw, Server: server, Fingerprint: fp,
+		// yggctl, not toskarctl: the joining computer may be on a version
+		// from before the rename, and newer ones have yggctl too (#237).
 		Command: fmt.Sprintf("yggctl join --server %s --token %s --fingerprint %s", server, raw, fp),
 		InstallCommand: fmt.Sprintf("curl -fsSL %s/install.sh | sh -s -- join --server %s --token %s --fingerprint %s",
 			installerBase, server, raw, fp),
@@ -196,7 +198,7 @@ func (a *App) JoinNetwork(ctx context.Context, req api.JoinRequest) (api.JoinRes
 				return err
 			}
 			if mine != "" && mine != h.NetworkID && len(a.pairedPeers(ctx)) > 0 {
-				return contracts.Errorf("JOIN_OTHER_NETWORK", nil, "this computer is already in another Yggdrasil network; run yggctl leave first to join this one")
+				return contracts.Errorf("JOIN_OTHER_NETWORK", nil, "this computer is already in another Yggdrasil network; run toskarctl leave first to join this one")
 			}
 			return nil
 		},

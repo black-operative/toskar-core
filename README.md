@@ -19,7 +19,7 @@ Yggdrasil detects your hardware, recommends and manages models, starts the right
 
 **Your computers. Your models. Your AI.**
 
-The daemon (`yggdrasil-daemon`), the local web UI, and the HTTP API are in this repository. Yggdrasil Desktop and Yggdrasil Mobile are separate clients, developed outside this repository.
+The daemon (`toskar`), the local web UI, and the HTTP API are in this repository. Yggdrasil Desktop and Yggdrasil Mobile are separate clients, developed outside this repository.
 
 **Status:** Stable. See the latest [GitHub Release](https://github.com/yeixio/yggdrasil-core/releases).
 
@@ -87,7 +87,7 @@ Homebrew installs the Core daemon from this repository. Yggdrasil Desktop is a s
 ```bash
 brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core
 brew install yeixio/yggdrasil/yggdrasil
-yggdrasil-daemon
+toskar
 ```
 
 A tagged release writes `Formula/yggdrasil.rb` and merges it to `main`. Headless archives are also attached to [GitHub Releases](https://github.com/yeixio/yggdrasil-core/releases). See [packaging/release-install.md](packaging/release-install.md).
@@ -102,7 +102,7 @@ sudo apt-get update
 sudo apt-get install yggdrasil
 ```
 
-The package installs `yggdrasil-daemon`, `yggctl`, the web UI, and `yggdrasil.service`. RPM packages for x86_64 and aarch64 are on the GitHub Release. Install one with `sudo rpm -i` or `sudo dnf install`. Details are in [packaging/linux/README.md](packaging/linux/README.md).
+The package installs `toskar`, `toskarctl`, the web UI, and `yggdrasil.service`. RPM packages for x86_64 and aarch64 are on the GitHub Release. Install one with `sudo rpm -i` or `sudo dnf install`. Details are in [packaging/linux/README.md](packaging/linux/README.md).
 
 ### Windows
 
@@ -135,7 +135,7 @@ These exist in this repository today:
 - persistent memory across chats and models, which you can review, edit, and turn off per chat
 - Mimir connected knowledge: files, folders, uploads, scanned PDFs (text recognition), read-only SQL databases, and web APIs, searched by keyword and, with an embedding model, by meaning
 - tools for web search, files, shell, Git, and making files, with per-profile Allow, Ask, and Deny policies; connected services (GitHub, Home Assistant); and tools from MCP servers
-- Yggdrasil as an MCP server, so other AI apps can use it (`/mcp` and `yggctl mcp`)
+- Yggdrasil as an MCP server, so other AI apps can use it (`/mcp` and `toskarctl mcp`)
 - scheduled automations with conditional notifications, and a notification center
 - Train your own AI: a guided build of a specialized assistant from a base model, LoRA training on your examples (MLX on Apple Silicon, PyTorch on NVIDIA GPUs), and connected knowledge, with base-versus-specialized testing before deployment, training on a paired computer, and export as a GGUF file. See [docs/features/train-your-own-ai.md](docs/features/train-your-own-ai.md).
 - Bifrost discovery, pairing, and node-to-node calls, and Norn workload placement across paired nodes
@@ -223,35 +223,35 @@ Asset selection is per OS and CPU architecture. The Windows asset the installer 
 
 ## CLI
 
-Installed and source builds both provide `yggdrasil-daemon` and `yggctl`.
+Installed and source builds both provide `toskar` and `toskarctl`.
 
 ```bash
-yggdrasil-daemon
-yggdrasil-daemon -version
-yggctl version
-yggctl about
-yggctl paths
-yggctl automations list
+toskar
+toskar -version
+toskarctl version
+toskarctl about
+toskarctl paths
+toskarctl automations list
 ```
 
-`yggctl version` and `yggctl about` print the version, the AGPL license, the source URL, and the commit. `yggdrasil-daemon -version` prints that notice and exits. `yggctl paths` prints the data, model, runtime, log, and database directories. Status, nodes, and models are HTTP routes under `/api/v1/`. `yggdrasil-daemon -data-dir /path/to/dir` overrides the data directory. Every command and flag is in [docs/cli.md](docs/cli.md).
+`toskarctl version` and `toskarctl about` print the version, the AGPL license, the source URL, and the commit. `toskar -version` prints that notice and exits. `toskarctl paths` prints the data, model, runtime, log, and database directories. Status, nodes, and models are HTTP routes under `/api/v1/`. `toskar -data-dir /path/to/dir` overrides the data directory. Every command and flag is in [docs/cli.md](docs/cli.md).
 
 ### Shell completion
 
-`yggctl` completes its commands in bash, zsh, and fish. Homebrew and the deb and rpm packages install the completion files, so a new shell picks them up. Bash needs the `bash-completion` package. The macOS and Linux archives carry the same files in `completions/`.
+`toskarctl` completes its commands in bash, zsh, and fish. Homebrew and the deb and rpm packages install the completion files, so a new shell picks them up. Bash needs the `bash-completion` package. The macOS and Linux archives carry the same files in `completions/`.
 
 A source build prints the script for your shell:
 
 ```bash
 # bash, in ~/.bashrc
-eval "$(yggctl completion bash)"
+eval "$(toskarctl completion bash)"
 
 # zsh. Add fpath=(~/.zfunc $fpath) before compinit in ~/.zshrc, then start a new shell.
 mkdir -p ~/.zfunc
-yggctl completion zsh > ~/.zfunc/_yggctl
+toskarctl completion zsh > ~/.zfunc/_toskarctl
 
 # fish
-yggctl completion fish > ~/.config/fish/completions/yggctl.fish
+toskarctl completion fish > ~/.config/fish/completions/toskarctl.fish
 ```
 
 ## Configuration
@@ -287,7 +287,7 @@ The control API and the OpenAI-compatible API require a bearer token whenever th
 | [User guide](docs/user-guide/README.md) | Source for the public guide |
 | [Troubleshooting](docs/troubleshooting.md) | First checks when something fails |
 | [Configuration](docs/configuration.md) | Data directory, `config.json`, environment variables, settings |
-| [CLI](docs/cli.md) | `yggdrasil-daemon` and `yggctl` |
+| [CLI](docs/cli.md) | `toskar` and `toskarctl` |
 | [Capabilities](docs/capabilities.md) | Internet, Files, Shell, Git, connected services, and MCP |
 | [Tools](docs/tools.md) | Tool registry, permissions, and which tools a turn is offered |
 | [MCP](docs/mcp.md) | Add tools from MCP servers, and use Yggdrasil from other AI apps |

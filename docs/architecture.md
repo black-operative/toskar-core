@@ -1,13 +1,13 @@
 # Architecture
 
-Yggdrasil Core is one daemon process, `yggdrasil-daemon`, plus the web UI it serves. Desktop and mobile applications are separate clients. They are not built from this repository.
+Yggdrasil Core is one daemon process, `toskar`, plus the web UI it serves. Desktop and mobile applications are separate clients. They are not built from this repository.
 
 ```text
 client (web UI, desktop, mobile, curl, an app over MCP or the OpenAI API)
         |
         |  HTTP  /api/v1, /v1, /mcp     default 127.0.0.1:7331
         v
-  yggdrasil-daemon
+  toskar
         |
         +-- request pipeline: classify, route, assemble context, plan, run tools, check
         |     Huginn (routing) · Muninn (memory) · Mimir (knowledge) · artifacts (files)

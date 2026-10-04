@@ -6,14 +6,14 @@ One line, on Linux or macOS. It installs the package or archive below for this c
 curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh
 ```
 
-On Windows, in PowerShell: `irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex`. To add a computer to an existing network, use the command `yggctl join-token create` prints.
+On Windows, in PowerShell: `irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex`. To add a computer to an existing network, use the command `toskarctl join-token create` prints.
 
 macOS. Homebrew installs Yggdrasil Core from this repository. It does not install Yggdrasil Desktop. The short command `brew install yggdrasil` is a different Homebrew cask.
 
 ```bash
 brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core
 brew install yeixio/yggdrasil/yggdrasil
-yggdrasil-daemon
+toskar
 ```
 
 Or use the headless archive attached to this release:
@@ -21,7 +21,7 @@ Or use the headless archive attached to this release:
 ```bash
 tar -xzf yggdrasil-*-darwin-*-headless.tar.gz
 cd yggdrasil-*-darwin-*-headless
-./yggdrasil-daemon
+./toskar
 ```
 
 Open `http://127.0.0.1:7331`.
@@ -41,7 +41,7 @@ Windows amd64. The headless archive attached to this release is not code-signed.
 ```bash
 tar -xzf yggdrasil-*-windows-amd64-headless.tar.gz
 cd yggdrasil-*-windows-amd64-headless
-./yggdrasil-daemon.exe
+./toskar.exe
 ```
 
 Open `http://127.0.0.1:7331`.

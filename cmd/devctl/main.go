@@ -55,7 +55,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: yggctl <version|about|paths|automations|mcp|join|join-token|network|leave|completion>\n")
+	fmt.Fprintf(os.Stderr, "usage: toskarctl <version|about|paths|automations|mcp|join|join-token|network|leave|completion>\n")
 }
 
 // exit ends with err's message and exit status: 2 for usage, 1 otherwise.

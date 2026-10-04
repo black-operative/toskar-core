@@ -50,7 +50,7 @@
   "JOIN_BAD_REQUEST": "{{detail}}",
   "JOIN_FAILED": "{{detail}}",
   "JOIN_NOT_REACHABLE": "ほかのコンピュータからこのコンピュータに接続できません。「他のコンピュータを探す」をオンにして、Yggdrasilを再起動してください。",
-  "JOIN_OTHER_NETWORK": "このコンピュータはすでに別のYggdrasilネットワークに参加しています。このネットワークに参加するには、先に yggctl leave を実行してください。",
+  "JOIN_OTHER_NETWORK": "このコンピュータはすでに別のYggdrasilネットワークに参加しています。このネットワークに参加するには、先に toskarctl leave を実行してください。",
   "JOIN_RATE_LIMITED": "このアドレスからの参加の試行が多すぎます。数分待ってからもう一度お試しください。",
   "JOIN_TOKEN_EXPIRED": "この参加トークンは期限切れです。ネットワーク内のコンピュータで新しい参加コマンドを作成してください。",
   "JOIN_TOKEN_FAILED": "{{detail}}",

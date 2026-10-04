@@ -27,10 +27,10 @@ func TestCompletionPrintsEachShell(t *testing.T) {
 				t.Fatalf("%s script does not offer %q", shell, cmd)
 			}
 		}
-		// Status, nodes, and models are HTTP routes, not yggctl commands.
+		// Status, nodes, and models are HTTP routes, not toskarctl commands.
 		for _, word := range []string{"status", "nodes", "models"} {
 			if strings.Contains(out.String(), word) {
-				t.Fatalf("%s script offers %q, which is not a yggctl command", shell, word)
+				t.Fatalf("%s script offers %q, which is not a toskarctl command", shell, word)
 			}
 		}
 	}
@@ -39,7 +39,7 @@ func TestCompletionPrintsEachShell(t *testing.T) {
 func TestCompletionRejectsUnknownShell(t *testing.T) {
 	for _, args := range [][]string{nil, {"powershell"}, {"bash", "zsh"}} {
 		err := completionCommand(args, &bytes.Buffer{})
-		if err == nil || !strings.Contains(err.Error(), "usage: yggctl completion <bash|zsh|fish>") {
+		if err == nil || !strings.Contains(err.Error(), "usage: toskarctl completion <bash|zsh|fish>") {
 			t.Fatalf("args %v: want usage error, got %v", args, err)
 		}
 	}
@@ -71,19 +71,24 @@ func TestBashCompletionCandidates(t *testing.T) {
 		line string
 		want string
 	}{
-		{"yggctl ''", "version about paths automations mcp join join-token network leave completion"},
-		{"yggctl j", "join join-token"},
-		{"yggctl join-token ''", "create list revoke"},
-		{"yggctl join --f", "--fingerprint"},
-		{"yggctl a", "about automations"},
-		{"yggctl completion ''", "bash zsh fish"},
-		{"yggctl automations p", "pause"},
-		{"yggctl automations create --schedule ''", "once daily weekly interval"},
-		{"yggctl automations update abc --noti", "--notify"},
-		{"yggctl paths ''", ""},
+		{"toskarctl ''", "version about paths automations mcp join join-token network leave completion"},
+		{"toskarctl j", "join join-token"},
+		{"toskarctl join-token ''", "create list revoke"},
+		{"toskarctl join --f", "--fingerprint"},
+		{"toskarctl a", "about automations"},
+		{"toskarctl completion ''", "bash zsh fish"},
+		{"toskarctl automations p", "pause"},
+		{"toskarctl automations create --schedule ''", "once daily weekly interval"},
+		{"toskarctl automations update abc --noti", "--notify"},
+		{"toskarctl paths ''", ""},
 	}
+	// yggctl, the name from before the rename, completes the same way (#237).
+	cases = append(cases, struct {
+		line string
+		want string
+	}{"yggctl j", "join join-token"})
 	for _, tc := range cases {
-		src := `source "$1"; eval "COMP_WORDS=(` + tc.line + `)"; COMP_CWORD=$((${#COMP_WORDS[@]}-1)); _yggctl; echo "${COMPREPLY[*]}"`
+		src := `source "$1"; eval "COMP_WORDS=(` + tc.line + `)"; COMP_CWORD=$((${#COMP_WORDS[@]}-1)); _toskarctl; echo "${COMPREPLY[*]}"`
 		out, err := exec.Command(bash, "-c", src, "bash", script).CombinedOutput()
 		if err != nil {
 			t.Fatalf("%s: %v\n%s", tc.line, err, out)

@@ -9,18 +9,18 @@ import (
 // The packages install these same files, so the script a user prints and the
 // script a package installs do not drift.
 //
-//go:embed completions/yggctl.bash completions/_yggctl completions/yggctl.fish
+//go:embed completions/toskarctl.bash completions/_toskarctl completions/toskarctl.fish
 var completionFiles embed.FS
 
-const completionUsage = `usage: yggctl completion <bash|zsh|fish>
-  bash: eval "$(yggctl completion bash)"
-  zsh:  yggctl completion zsh > ~/.zfunc/_yggctl   (with ~/.zfunc on fpath before compinit)
-  fish: yggctl completion fish > ~/.config/fish/completions/yggctl.fish`
+const completionUsage = `usage: toskarctl completion <bash|zsh|fish>
+  bash: eval "$(toskarctl completion bash)"
+  zsh:  toskarctl completion zsh > ~/.zfunc/_toskarctl   (with ~/.zfunc on fpath before compinit)
+  fish: toskarctl completion fish > ~/.config/fish/completions/toskarctl.fish`
 
 var completionPaths = map[string]string{
-	"bash": "completions/yggctl.bash",
-	"zsh":  "completions/_yggctl",
-	"fish": "completions/yggctl.fish",
+	"bash": "completions/toskarctl.bash",
+	"zsh":  "completions/_toskarctl",
+	"fish": "completions/toskarctl.fish",
 }
 
 func completionCommand(args []string, out io.Writer) error {

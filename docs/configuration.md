@@ -16,7 +16,7 @@ Yggdrasil Core is configured in three places:
 
 An install from before the rename to Toskar keeps its `Yggdrasil` folder (`yggdrasil` on Linux) and its `yggdrasil.db`: when that folder exists and the Toskar one has no `config.json`, it is used as it is, and nothing is moved.
 
-Start the daemon with `-data-dir <path>` to use another directory, such as a second daemon for testing. A `config.json` that does not set `data_dir` belongs to the directory it is in. `yggctl paths` prints the default paths.
+Start the daemon with `-data-dir <path>` to use another directory, such as a second daemon for testing. A `config.json` that does not set `data_dir` belongs to the directory it is in. `toskarctl paths` prints the default paths.
 
 What lives there:
 
@@ -88,7 +88,7 @@ Restart the daemon after editing the file by hand. A changed `api_host` or `inte
 | `TOSKAR_PPROF` | | Serves Go's live profiles at `http://<address>/debug/pprof/`, such as `127.0.0.1:6060`, for diagnosing memory or CPU use. Only a loopback address is accepted. Off when unset. |
 | `TOSKAR_SANDBOXED` | | `1` behaves as if the daemon ran in the macOS App Sandbox (see [Runtimes](runtimes.md#python-environments-in-sandboxed-builds)). For testing. |
 
-`yggctl` reads two more: `TOSKAR_URL` (the daemon address, default `http://127.0.0.1:7331`) and `TOSKAR_API_KEY` (sent as the bearer token). See [CLI](cli.md).
+`toskarctl` reads two more: `TOSKAR_URL` (the daemon address, default `http://127.0.0.1:7331`) and `TOSKAR_API_KEY` (sent as the bearer token). See [CLI](cli.md).
 
 ## Settings
 

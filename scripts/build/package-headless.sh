@@ -29,9 +29,14 @@ fi
 echo "Building headless daemon (${GOOS}/${GOARCH})..."
 export CGO_ENABLED="${CGO_ENABLED:-0}"
 GOOS="${GOOS}" GOARCH="${GOARCH}" go build -trimpath -ldflags "${LDFLAGS}" \
-  -o "${OUT_DIR}/yggdrasil-daemon${EXT}" ./cmd/daemon
+  -o "${OUT_DIR}/toskar${EXT}" ./cmd/daemon
 GOOS="${GOOS}" GOARCH="${GOARCH}" go build -trimpath -ldflags "${LDFLAGS}" \
-  -o "${OUT_DIR}/yggctl${EXT}" ./cmd/devctl
+  -o "${OUT_DIR}/toskarctl${EXT}" ./cmd/devctl
+# The names from before the rename, for setups that run them by path (#237).
+if [[ "${GOOS}" != "windows" ]]; then
+  ln -s toskar "${OUT_DIR}/yggdrasil-daemon"
+  ln -s toskarctl "${OUT_DIR}/yggctl"
+fi
 
 cp -R web/dist/. "${OUT_DIR}/web/"
 
@@ -57,17 +62,19 @@ This build runs the control-plane daemon and serves the web UI. There is no
 native desktop window; open a browser after starting the daemon.
 
 Start:
-  ./yggdrasil-daemon${EXT}
+  ./toskar${EXT}
 
 Then open:
   http://127.0.0.1:7331
 
 Optional:
-  TOSKAR_WEB_UI_DIR=./web ./yggdrasil-daemon${EXT}
-  TOSKAR_API_HOST=0.0.0.0 ./yggdrasil-daemon${EXT}   # LAN bind (explicit)
+  TOSKAR_WEB_UI_DIR=./web ./toskar${EXT}
+  TOSKAR_API_HOST=0.0.0.0 ./toskar${EXT}   # LAN bind (explicit)
 
-Shell completion for yggctl (bash, zsh, fish):
-  completions/   # or print one with: ./yggctl completion <bash|zsh|fish>
+Shell completion for toskarctl (bash, zsh, fish):
+  completions/   # or print one with: ./toskarctl completion <bash|zsh|fish>
+
+yggdrasil-daemon and yggctl, the names from before the rename, still work.
 
 Linux icon theme (if included):
   share/icons/hicolor/<size>/apps/yggdrasil.png

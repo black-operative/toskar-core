@@ -10,9 +10,9 @@ sudo apt-get install yggdrasil
 
 Each package installs:
 
-- `/usr/bin/yggdrasil-daemon`
-- `/usr/bin/yggctl`
-- bash, zsh, and fish completion for `yggctl`
+- `/usr/bin/toskar`
+- `/usr/bin/toskarctl`
+- bash, zsh, and fish completion for `toskarctl`
 - `/usr/share/yggdrasil/web`
 - a systemd service, `yggdrasil.service`
 
