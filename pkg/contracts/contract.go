@@ -82,9 +82,9 @@ func CheckClientContractHeader(v, header string) error {
 	server, _ := ContractMajor(ContractVersion)
 	switch {
 	case client > server:
-		return fmt.Errorf("this app needs Yggdrasil contract %d.x, and this Yggdrasil speaks %s. Update Yggdrasil", client, ContractVersion)
+		return fmt.Errorf("this app needs Toskar contract %d.x, and this Toskar speaks %s. Update Toskar", client, ContractVersion)
 	case client < server:
-		return fmt.Errorf("this app was built for Yggdrasil contract %d.x, and this Yggdrasil speaks %s. Update the app", client, ContractVersion)
+		return fmt.Errorf("this app was built for Toskar contract %d.x, and this Toskar speaks %s. Update the app", client, ContractVersion)
 	}
 	return nil
 }

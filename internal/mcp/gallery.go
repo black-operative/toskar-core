@@ -82,7 +82,7 @@ var gallery = []Preset{
 		Description: "Look at a PostgreSQL database's tables, run read-only queries, and check its health.",
 		Homepage:    "https://github.com/crystaldba/postgres-mcp",
 		command:     "uvx", args: []string{"postgres-mcp", "--access-mode=restricted"},
-		Setup: "Yggdrasil connects in read-only mode. Use a database user that can only read, if you have one.",
+		Setup: "Toskar connects in read-only mode. Use a database user that can only read, if you have one.",
 		Fields: []Field{{Key: "uri", Label: "Connection address", Secret: true,
 			Placeholder: "postgresql://user:password@localhost:5432/dbname", env: "DATABASE_URI"}},
 		cues: []string{"postgres", "postgresql", "database", "table", "tables", "sql", "query", "schema"},

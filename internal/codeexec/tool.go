@@ -114,7 +114,7 @@ func (t *Tool) Execute(ctx context.Context, args map[string]any) (map[string]any
 	defer t.mu.Unlock()
 	py, err := t.Python.Ensure(ctx, Spec(), nil)
 	if errors.Is(err, pyenv.ErrSandboxed) {
-		return nil, fmt.Errorf("code cannot run in this copy of Yggdrasil: %w", err)
+		return nil, fmt.Errorf("code cannot run in this copy of Toskar: %w", err)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("the code environment could not be installed: %w", err)

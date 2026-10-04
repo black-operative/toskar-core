@@ -335,7 +335,7 @@ func dialSSE(ctx context.Context, rawURL string, opts HTTPOptions) (*sseTranspor
 		ref, err := url.Parse(e)
 		if err != nil {
 			t.Close()
-			return nil, fmt.Errorf("the tool source named an address Yggdrasil could not read")
+			return nil, fmt.Errorf("the tool source named an address Toskar could not read")
 		}
 		t.endpoint = base.ResolveReference(ref).String()
 		return t, nil

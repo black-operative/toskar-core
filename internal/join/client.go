@@ -64,7 +64,7 @@ type UnreachableError struct {
 }
 
 func (e *UnreachableError) Error() string {
-	return fmt.Sprintf("could not reach Yggdrasil at %s: %v", e.Server, e.Err)
+	return fmt.Sprintf("could not reach Toskar at %s: %v", e.Server, e.Err)
 }
 func (e *UnreachableError) Unwrap() error { return e.Err }
 
@@ -109,7 +109,7 @@ func (c *Client) post(ctx context.Context, path string, in, out any) error {
 		return &UnreachableError{Server: c.Server, Err: err}
 	}
 	if resp.StatusCode == http.StatusNotFound {
-		return &UnreachableError{Server: c.Server, Err: errors.New("it answered, but not as a Yggdrasil that can take joins; update Yggdrasil there")}
+		return &UnreachableError{Server: c.Server, Err: errors.New("it answered, but not as a Toskar that can take joins; update Toskar there")}
 	}
 	if resp.StatusCode != http.StatusOK {
 		var e ErrorResponse

@@ -99,7 +99,7 @@ func WriteBundle(destPath string, opts Options) error {
 		}
 	}
 
-	readme := `Yggdrasil diagnostic bundle
+	readme := `Toskar diagnostic bundle
 ===========================
 This archive excludes API secrets and private keys by default.
 Conversation/task database is included only when explicitly requested.

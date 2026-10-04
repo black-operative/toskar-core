@@ -205,7 +205,7 @@ func (c *Client) Summary(ctx context.Context) (Snapshot, string, error) {
 		return Snapshot{}, "", errors.Join(err, err2)
 	}
 	if snap.SchemaVersion != 1 {
-		return Snapshot{}, "", fmt.Errorf("the ratings summary is version %d, which this Yggdrasil does not read", snap.SchemaVersion)
+		return Snapshot{}, "", fmt.Errorf("the ratings summary is version %d, which this Toskar does not read", snap.SchemaVersion)
 	}
 	return snap, second, nil
 }

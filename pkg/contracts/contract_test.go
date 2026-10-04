@@ -14,7 +14,7 @@ func TestClientContract(t *testing.T) {
 			t.Errorf("%q refused: %v", ok, err)
 		}
 	}
-	for v, want := range map[string]string{"2.0": "Update Yggdrasil", "0.9": "must look like", "abc": "must look like"} {
+	for v, want := range map[string]string{"2.0": "Update Toskar", "0.9": "must look like", "abc": "must look like"} {
 		if err := CheckClientContract(v); err == nil || !strings.Contains(err.Error(), want) {
 			t.Errorf("%q: %v", v, err)
 		}

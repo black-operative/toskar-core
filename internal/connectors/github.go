@@ -22,7 +22,7 @@ func (GitHub) Description() string {
 func (GitHub) Scopes() string {
 	return "Create a fine-grained personal access token limited to the repositories you want. " +
 		"Read-only access to Issues and Pull requests is enough to search and read. " +
-		"Add Issues and Pull requests: Read and write only if Yggdrasil should comment."
+		"Add Issues and Pull requests: Read and write only if Toskar should comment."
 }
 
 func (GitHub) Fields() []Field {

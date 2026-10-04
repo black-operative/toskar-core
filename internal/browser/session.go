@@ -105,10 +105,10 @@ func (m *Manager) program() string {
 // Available reports whether a browser can run here, and why not.
 func (m *Manager) Available() (bool, string) {
 	if m.Sandboxed {
-		return false, "this copy of Yggdrasil runs in the macOS App Sandbox, which cannot start a browser"
+		return false, "this copy of Toskar runs in the macOS App Sandbox, which cannot start a browser"
 	}
 	if m.program() == "" {
-		return false, "no browser was found; install Google Chrome, Microsoft Edge, Chromium, or Brave to let Yggdrasil use web pages"
+		return false, "no browser was found; install Google Chrome, Microsoft Edge, Chromium, or Brave to let Toskar use web pages"
 	}
 	return true, ""
 }

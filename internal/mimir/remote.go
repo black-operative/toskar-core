@@ -200,7 +200,7 @@ func checkReadOnlyQuery(q string) error {
 	switch strings.ToUpper(m[1]) {
 	case "SELECT", "WITH", "VALUES":
 	default:
-		return fmt.Errorf("only SELECT queries can be connected; Yggdrasil reads the database and never changes it")
+		return fmt.Errorf("only SELECT queries can be connected; Toskar reads the database and never changes it")
 	}
 	if i := strings.Index(strings.TrimRight(strings.TrimSpace(q), ";"), ";"); i >= 0 {
 		return fmt.Errorf("enter one query, without other statements after it")

@@ -240,7 +240,7 @@ func (a *App) generateOnNode(ctx context.Context, nodeID, modelID, role, adapter
 	}
 	if n.Status != "" && n.Status != contracts.NodeStatusOnline {
 		return nil, fmt.Errorf( //nolint:staticcheck // ST1005: sentence shown in the UI
-			"%s is offline. Turn that computer on and open Yggdrasil, or change the role to Automatic placement.",
+			"%s is offline. Turn that computer on and open Toskar, or change the role to Automatic placement.",
 			nodeDisplayName(n),
 		)
 	}
@@ -331,7 +331,7 @@ func remoteUnreachableErr(n contracts.Node, err error) error {
 		return err
 	}
 	return fmt.Errorf( //nolint:staticcheck // ST1005: sentence shown in the UI
-		"%s is offline or unreachable. Check that Yggdrasil is running on that computer, or change placement to Automatic.",
+		"%s is offline or unreachable. Check that Toskar is running on that computer, or change placement to Automatic.",
 		nodeDisplayName(n),
 	)
 }

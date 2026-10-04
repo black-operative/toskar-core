@@ -65,7 +65,7 @@ func TestNtfyPrivateOnPublicServer(t *testing.T) {
 		t.Fatalf("defaults %+v", c)
 	}
 	m := ntfyMessageFor(c, Notification{Title: "Your bank balance", Body: "secret", Severity: SeverityInfo})
-	if m.Title != "Yggdrasil" || strings.Contains(m.Message, "secret") || m.Priority != 2 {
+	if m.Title != "Toskar" || strings.Contains(m.Message, "secret") || m.Priority != 2 {
 		t.Fatalf("private message %+v", m)
 	}
 	own := NtfyConfig{Server: "https://ntfy.example.com", Topic: "t"}

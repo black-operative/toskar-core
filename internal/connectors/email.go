@@ -40,7 +40,7 @@ func (Email) Description() string {
 func (Email) Scopes() string {
 	return "Use an app password, not your account password: Fastmail (Settings → Privacy & Security → App passwords), " +
 		"iCloud (appleid.apple.com → App-Specific Passwords), Gmail or Outlook (with two-step verification on), or Proton Mail Bridge's password. " +
-		"Yggdrasil reads without marking messages read, never deletes, and asks before sending, drafting, or archiving."
+		"Toskar reads without marking messages read, never deletes, and asks before sending, drafting, or archiving."
 }
 
 func (Email) Fields() []Field {

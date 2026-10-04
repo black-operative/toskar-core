@@ -39,7 +39,7 @@ end run`,
 			notice.Title, notice.Body,
 		}, nil, nil
 	case "linux":
-		return "notify-send", []string{"--app-name", "Yggdrasil", notice.Title, notice.Body}, nil, nil
+		return "notify-send", []string{"--app-name", "Toskar", notice.Title, notice.Body}, nil, nil
 	case "windows":
 		return "powershell", []string{
 				"-NoProfile", "-NonInteractive", "-Command", windowsNotifyScript,

@@ -37,7 +37,7 @@ func Attachable(name string) bool {
 // into passages of about chunkRunes.
 func FilePassages(name string, raw []byte) ([]Passage, error) {
 	if !Attachable(name) {
-		return nil, fmt.Errorf("%s is not a file type Yggdrasil can read", filepath.Base(name))
+		return nil, fmt.Errorf("%s is not a file type Toskar can read", filepath.Base(name))
 	}
 	if len(raw) > maxFileBytes {
 		return nil, fmt.Errorf("%s is larger than %d MB", filepath.Base(name), maxFileBytes>>20)

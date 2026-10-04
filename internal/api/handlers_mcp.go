@@ -287,7 +287,7 @@ func (s *Server) handleMCPShare(w http.ResponseWriter, r *http.Request) {
 
 var callbackPage = template.Must(template.New("callback").Parse(`<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yggdrasil sign-in</title>
+<title>Toskar sign-in</title>
 <style>
 :root{color-scheme:light dark;--bg:#f7f6f2;--ink:#1d1d1b;--muted:#6b6b66;--ok:#2f7d4f;--bad:#b3362b}
 @media (prefers-color-scheme:dark){:root{--bg:#141413;--ink:#ecebe6;--muted:#9a9993;--ok:#6cc08d;--bad:#ef7b6f}}
@@ -295,7 +295,7 @@ body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--
 main{max-width:28rem;text-align:center}h1{font-size:1.25rem;margin:0 0 .5rem}p{color:var(--muted);margin:0}
 .ok{color:var(--ok)}.bad{color:var(--bad)}
 </style></head><body><main>
-{{if .OK}}<h1 class="ok">Signed in to {{.Name}}</h1><p>Its tools are ready in Yggdrasil. You can close this window.</p>
+{{if .OK}}<h1 class="ok">Signed in to {{.Name}}</h1><p>Its tools are ready in Toskar. You can close this window.</p>
 {{else}}<h1 class="bad">Sign-in did not finish</h1><p>{{.Error}}</p>{{end}}
 </main>
 <script>

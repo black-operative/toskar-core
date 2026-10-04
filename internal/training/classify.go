@@ -60,7 +60,7 @@ func Classify(filename, text string) Recommendation {
 	if !rec.CanTrain {
 		rec.Use = UseKnowledge
 		if parseErr != nil {
-			rec.Reasons = append(rec.Reasons, "Yggdrasil could not read examples from this material ("+parseErr.Error()+").")
+			rec.Reasons = append(rec.Reasons, "Toskar could not read examples from this material ("+parseErr.Error()+").")
 		}
 		rec.Reasons = append(rec.Reasons,
 			"This is reference material, not examples of conversations.",

@@ -363,7 +363,7 @@ func (m *Manager) StartPairing(remoteNodeID string) (*auth.PairingSession, error
 	info, err := client.NodeInfo(context.Background())
 	if err != nil {
 		return nil, fmt.Errorf(
-			"cannot reach %s at %s (Bifrost). On that Mac: allow Local Network / Firewall for Yggdrasil, then retry. Detail: %w",
+			"cannot reach %s at %s (Bifrost). On that Mac: allow Local Network / Firewall for Toskar, then retry. Detail: %w",
 			firstNonEmpty(d.Node.Name, remoteNodeID), peerAddr, err,
 		)
 	}
@@ -429,7 +429,7 @@ func (m *Manager) ClaimPairing(ctx context.Context, remoteNodeID, code string) (
 		}
 		if err2 != nil {
 			return nil, fmt.Errorf(
-				"could not reach Bifrost on %s (%v). On that Mac: fully quit Yggdrasil (Cmd+Q), reopen it, keep Settings → Find other computers On, and allow Local Network for Yggdrasil",
+				"could not reach Bifrost on %s (%v). On that Mac: fully quit Toskar (Cmd+Q), reopen it, keep Settings → Find other computers On, and allow Local Network for Toskar",
 				ensureHostPort(addr, 7332), err,
 			)
 		}

@@ -22,7 +22,7 @@ const maxPDFPages = 2000
 
 // ErrNoText means a PDF has no text layer: it is scanned, and needs text
 // recognition (OCR) before it can be read.
-var ErrNoText = contracts.NewError("NO_TEXT_FOUND", nil, errors.New("no text found. Scanned PDFs need text recognition (OCR) before Yggdrasil can read them"))
+var ErrNoText = contracts.NewError("NO_TEXT_FOUND", nil, errors.New("no text found. Scanned PDFs need text recognition (OCR) before Toskar can read them"))
 
 // Recognizer reads text from scanned PDF pages. *ocr.Recognizer implements it.
 type Recognizer interface {

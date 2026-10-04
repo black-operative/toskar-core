@@ -34,7 +34,7 @@ func helpTopic(message string) string {
 	if len(strings.Fields(m)) > helpMaxWords || !mcpRe.MatchString(m) || !howToRe.MatchString(m) || buildRe.MatchString(m) {
 		return ""
 	}
-	if otherAppRe.MatchString(m) && strings.Contains(strings.ToLower(m), "yggdrasil") {
+	if lower := strings.ToLower(m); otherAppRe.MatchString(m) && (strings.Contains(lower, "toskar") || strings.Contains(lower, "yggdrasil")) {
 		return "mcpServer"
 	}
 	return "mcpTools"

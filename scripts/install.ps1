@@ -1,4 +1,4 @@
-# Install Yggdrasil Core on Windows and, optionally, join a network (#40).
+# Install Toskar Core on Windows and, optionally, join a network (#40).
 #
 #   irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1 | iex
 #   & ([scriptblock]::Create((irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1))) `
@@ -6,7 +6,7 @@
 #
 # Installs the release's headless archive in %LOCALAPPDATA%\Programs\Toskar,
 # checked against SHA256SUMS.txt, adds it to your PATH, and starts it now and
-# at each sign-in with a scheduled task. An installed Yggdrasil that is
+# at each sign-in with a scheduled task. An installed Toskar that is
 # running is left as it is.
 #
 # Environment: TOSKAR_VERSION, TOSKAR_RELEASE_URL, TOSKAR_URL, as for
@@ -67,11 +67,11 @@ if ($Command -eq 'join' -and (-not $Server -or -not $Token -or -not $Fingerprint
 $Yggctl = Join-Path $Prefix 'toskarctl.exe'
 $installed = (Get-Command toskarctl.exe, yggctl.exe -ErrorAction SilentlyContinue | Select-Object -First 1)
 if ($installed -and (Test-Healthy)) {
-    Write-Host '✓ Yggdrasil Core is already installed and running'
+    Write-Host '✓ Toskar Core is already installed and running'
     $Yggctl = $installed.Source
 } else {
     if ($env:PROCESSOR_ARCHITECTURE -ne 'AMD64') {
-        Fail "Yggdrasil is built for 64-bit Intel and AMD Windows, not $($env:PROCESSOR_ARCHITECTURE)"
+        Fail "Toskar is built for 64-bit Intel and AMD Windows, not $($env:PROCESSOR_ARCHITECTURE)"
     }
     $tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("yggdrasil-" + [guid]::NewGuid())
     New-Item -ItemType Directory -Path $tmp | Out-Null
@@ -153,17 +153,17 @@ if ($installed -and (Test-Healthy)) {
     Register-ScheduledTask -TaskName $Task -Action $action -Trigger $trigger -Settings $settings `
         -Description 'Toskar Core' -Force | Out-Null
     Start-ScheduledTask -TaskName $Task
-    Write-Host '✓ Yggdrasil Core installed'
+    Write-Host '✓ Toskar Core installed'
 
-    Write-Host 'Waiting for Yggdrasil to start...'
+    Write-Host 'Waiting for Toskar to start...'
     $deadline = (Get-Date).AddMinutes(1)
     while (-not (Test-Healthy)) {
         if ((Get-Date) -gt $deadline) {
-            Fail "Yggdrasil didn't start within a minute; see the logs in $env:LOCALAPPDATA\Toskar\logs (or Yggdrasil\logs for an install from before the rename) and try again"
+            Fail "Toskar didn't start within a minute; see the logs in $env:LOCALAPPDATA\Toskar\logs (or Yggdrasil\logs for an install from before the rename) and try again"
         }
         Start-Sleep -Seconds 1
     }
-    Write-Host '✓ Yggdrasil Core is running'
+    Write-Host '✓ Toskar Core is running'
 }
 
 if ($Command -eq 'join') {

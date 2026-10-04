@@ -70,7 +70,7 @@ type Progress func(step, detail string)
 // ErrSandboxed means the daemon runs in the macOS App Sandbox, which refuses
 // to run programs downloaded into the app's container, so environments can
 // only come bundled with the app.
-var ErrSandboxed = contracts.NewError("SANDBOXED", nil, errors.New("this copy of Yggdrasil runs in the macOS App Sandbox, which cannot run a Python environment it downloads"))
+var ErrSandboxed = contracts.NewError("SANDBOXED", nil, errors.New("this copy of Toskar runs in the macOS App Sandbox, which cannot run a Python environment it downloads"))
 
 // Sandboxed reports whether the daemon runs in the macOS App Sandbox. macOS
 // sets APP_SANDBOX_CONTAINER_ID in every sandboxed process;

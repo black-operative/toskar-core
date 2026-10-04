@@ -143,7 +143,7 @@ func (a *App) answerCapabilityQuestion(ctx context.Context, conversationID, mess
 	if !ok {
 		return nil, false
 	}
-	meta := &contracts.MessageMeta{Steps: []contracts.ActivityStep{{Kind: "share", Text: "Checked what Yggdrasil can do right now"}}}
+	meta := &contracts.MessageMeta{Steps: []contracts.ActivityStep{{Kind: "share", Text: "Checked what Toskar can do right now"}}}
 	// "Can you generate images?" on a computer that could: offer the setup.
 	if asked := inventory.Ask(a.Capabilities(ctx), message); len(asked) == 1 && asked[0].Setup != nil {
 		meta.Setup = setupOffer(asked[0], "")

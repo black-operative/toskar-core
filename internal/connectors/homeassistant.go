@@ -22,7 +22,7 @@ func (HomeAssistant) Description() string {
 	return "Check lights, sensors, and other devices, and control them."
 }
 func (HomeAssistant) Scopes() string {
-	return "Home Assistant tokens act as the user who made them. Make a separate user for Yggdrasil, " +
+	return "Home Assistant tokens act as the user who made them. Make a separate user for Toskar, " +
 		"give it only the areas and devices it needs, and create a long-lived access token on that user's profile page."
 }
 

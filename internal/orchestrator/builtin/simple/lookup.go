@@ -110,7 +110,7 @@ func lookUp(ctx context.Context, env pluginapi.ExecutionEnvironment, profile con
 }
 
 // lookupGuidance tells the model how to use what was looked up.
-const lookupGuidance = "Yggdrasil already searched the web for this question; the results are in the reference material. Answer from them directly: state the facts and include the most relevant link. Do not mention the search, the results, or reference material. If they do not answer the question, say so."
+const lookupGuidance = "Toskar already searched the web for this question; the results are in the reference material. Answer from them directly: state the facts and include the most relevant link. Do not mention the search, the results, or reference material. If they do not answer the question, say so."
 
 // withoutWeb removes web tools for a turn whose lookup is already done, so a
 // small model answers instead of searching again.
@@ -137,7 +137,7 @@ func joinReference(parts ...string) string {
 }
 
 // serviceGuidance tells the model how to use data fetched from a connected service.
-const serviceGuidance = "Yggdrasil already fetched current data from the user's connected service; it is in the reference material. Answer from it directly. Do not mention the reference material. To change something, use the service's tools."
+const serviceGuidance = "Toskar already fetched current data from the user's connected service; it is in the reference material. Answer from it directly. Do not mention the reference material. To change something, use the service's tools."
 
 // withoutFetched removes the tools serviceFirst already called, so a small
 // model answers from their data instead of asking for it again.

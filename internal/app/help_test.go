@@ -13,9 +13,10 @@ func TestHelpTopic(t *testing.T) {
 		"How do I add an MCP server?":                          "mcpTools",
 		"where do I set up tool sources?":                      "mcpTools",
 		"How do I use Yggdrasil from Claude Desktop with MCP?": "mcpServer",
+		"How do I use Toskar from Claude Desktop with MCP?":    "mcpServer",
 		"How do I write an MCP server in Python?":              "", // a programming question, for the model
-		"What is MCP?":                                         "", // not a how-to
-		"How do I install Node.js?":                            "",
+		"What is MCP?":              "", // not a how-to
+		"How do I install Node.js?": "",
 		"Can you summarize this article about the MCP spec and how it works, with examples of servers people use?": "",
 	}
 	for msg, want := range cases {

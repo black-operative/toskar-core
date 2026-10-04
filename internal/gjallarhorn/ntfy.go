@@ -68,7 +68,7 @@ func validateNtfy(c NtfyConfig) error {
 	}
 	if c.OpenURL != "" {
 		if u, err := url.Parse(c.OpenURL); err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
-			return fmt.Errorf("the Yggdrasil address must be an http or https address")
+			return fmt.Errorf("the Toskar address must be an http or https address")
 		}
 	}
 	return nil
@@ -99,7 +99,7 @@ type ntfyMessage struct {
 }
 
 func ntfyMessageFor(c NtfyConfig, n Notification) ntfyMessage {
-	m := ntfyMessage{Topic: c.Topic, Title: "Yggdrasil", Message: n.text("notifications:sent.privatePush", nil), Priority: ntfyPriority(n.Severity)}
+	m := ntfyMessage{Topic: c.Topic, Title: "Toskar", Message: n.text("notifications:sent.privatePush", nil), Priority: ntfyPriority(n.Severity)}
 	if c.Content == "full" {
 		m.Title = n.Title
 		if n.RepeatCount > 1 {

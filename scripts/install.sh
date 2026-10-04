@@ -1,15 +1,15 @@
 #!/bin/sh
-# Install Yggdrasil Core and, optionally, join a network (#40).
+# Install Toskar Core and, optionally, join a network (#40).
 #
 #   curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | sh
 #   curl -fsSL https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.sh | \
 #     sh -s -- join --server 192.168.1.10:7332 --token ygj_… --fingerprint sha256:…
 #
-# Linux: the release's .deb (apt) or .rpm (dnf, yum), which run Yggdrasil as
+# Linux: the release's .deb (apt) or .rpm (dnf, yum), which run Toskar as
 # a systemd service. macOS: the release's headless archive in
 # /usr/local/lib/toskar (or ~/.local/lib/toskar without sudo), run by
 # launchd. Each download is checked against the release's SHA256SUMS.txt.
-# An installed Yggdrasil that is running is left as it is.
+# An installed Toskar that is running is left as it is.
 #
 # Environment (the YGGDRASIL_ names from before the rename work too):
 #   TOSKAR_VERSION      a release such as 1.5.0 (default: the latest)
@@ -38,7 +38,7 @@ die() {
 usage() {
 	cat <<'EOF'
 usage: install.sh [join --server <host:port> --token <ygj_…> --fingerprint <sha256:…>]
-Installs Yggdrasil Core, starts it as a service, and with join, joins this
+Installs Toskar Core, starts it as a service, and with join, joins this
 computer to the network that made the join command.
 EOF
 }
@@ -124,7 +124,7 @@ os="$(uname -s)"
 case "$(uname -m)" in
 x86_64 | amd64) arch="amd64" ;;
 aarch64 | arm64) arch="arm64" ;;
-*) die "this computer's processor ($(uname -m)) isn't one Yggdrasil is built for" ;;
+*) die "this computer's processor ($(uname -m)) isn't one Toskar is built for" ;;
 esac
 
 tmp="$(mktemp -d)"
@@ -284,22 +284,22 @@ EOF
 	rm -f "${plist%/*}/${old_label}.plist"
 	if ! launchctl bootstrap "$domain" "$plist" 2>/dev/null; then
 		# Over SSH there is no login window to start an agent in.
-		[ "$domain" = "system" ] && die "launchd couldn't start Yggdrasil"
-		launchctl bootstrap "user/$(id -u)" "$plist" || die "launchd couldn't start Yggdrasil; run this with sudo on a computer nobody is logged in to"
+		[ "$domain" = "system" ] && die "launchd couldn't start Toskar"
+		launchctl bootstrap "user/$(id -u)" "$plist" || die "launchd couldn't start Toskar; run this with sudo on a computer nobody is logged in to"
 	fi
 }
 
 YGGCTL="toskarctl"
 command -v toskarctl >/dev/null 2>&1 || YGGCTL="yggctl"
 if command -v "$YGGCTL" >/dev/null 2>&1 && healthy; then
-	ok "Yggdrasil Core is already installed and running"
+	ok "Toskar Core is already installed and running"
 else
 	case "$os" in
 	Linux) install_linux ;;
 	Darwin) install_macos ;;
 	*) die "this script installs on Linux and macOS; on Windows use install.ps1" ;;
 	esac
-	ok "Yggdrasil Core installed"
+	ok "Toskar Core installed"
 	# A package from before the rename has only yggctl.
 	if [ "$os" = "Linux" ] && ! command -v toskarctl >/dev/null 2>&1; then
 		YGGCTL="yggctl"
@@ -307,9 +307,9 @@ else
 		YGGCTL="toskarctl"
 	fi
 	if [ "$TOSKAR_NO_SERVICE" != "1" ] || [ "$joining" -eq 1 ]; then
-		say "Waiting for Yggdrasil to start..."
-		wait_healthy || die "Yggdrasil didn't start within a minute; see its log (journalctl -u toskar on Linux, the logs folder in ~/Library/Application Support/Toskar, or Yggdrasil for an install from before the rename, on macOS) and try again"
-		ok "Yggdrasil Core is running"
+		say "Waiting for Toskar to start..."
+		wait_healthy || die "Toskar didn't start within a minute; see its log (journalctl -u toskar on Linux, the logs folder in ~/Library/Application Support/Toskar, or Yggdrasil for an install from before the rename, on macOS) and try again"
+		ok "Toskar Core is running"
 	fi
 fi
 

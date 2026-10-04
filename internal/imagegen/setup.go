@@ -111,7 +111,7 @@ func (s *Setup) platform() (Archive, bool) {
 
 func (s *Setup) unsupported() string {
 	if s.Sandboxed {
-		return "this copy of Yggdrasil runs in the macOS App Sandbox, which cannot run a program it downloads"
+		return "this copy of Toskar runs in the macOS App Sandbox, which cannot run a program it downloads"
 	}
 	if _, ok := s.platform(); !ok {
 		return "stable-diffusion.cpp has no build for this kind of computer"

@@ -20,6 +20,9 @@ func TestAboutYggdrasil(t *testing.T) {
 		"How do I use an API key with Yggdrasil?": "Connect another app through the API",
 		"how to turn on notifications by email?":  "Notifications",
 		"what does the Team profile do?":          "Run a Team profile",
+		// The product's name, and the one from before the rename (#237).
+		"Can Toskar train its own AI?":         "Train your own AI",
+		"How do I use an API key with Toskar?": "Connect another app through the API",
 	}
 	for q, want := range cases {
 		ps := About(q)

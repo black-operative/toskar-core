@@ -193,7 +193,7 @@ func (p *PairingManager) ReceiveOffer(offer PairingOffer) (*PairingSession, erro
 		return nil, fmt.Errorf("invalid pairing code")
 	}
 	if !verifySignature(offer.FromCertPEM, offer.Signature, offerMessage(offer)) {
-		return nil, fmt.Errorf("pairing offer is not signed by its computer; update Yggdrasil on both computers")
+		return nil, fmt.Errorf("pairing offer is not signed by its computer; update Toskar on both computers")
 	}
 	if err := p.checkSameKey(context.Background(), offer.FromNodeID, []byte(offer.FromCertPEM)); err != nil {
 		return nil, err

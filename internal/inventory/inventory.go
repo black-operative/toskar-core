@@ -496,7 +496,7 @@ func Facts(s Snapshot, message string) string {
 	if len(lines) == 0 {
 		return ""
 	}
-	return "What Yggdrasil can do right now, from its capability inventory. Answer the question from these facts; do not claim abilities that are not listed as yes:\n" +
+	return "What Toskar can do right now, from its capability inventory. Answer the question from these facts; do not claim abilities that are not listed as yes:\n" +
 		strings.Join(lines, "\n")
 }
 

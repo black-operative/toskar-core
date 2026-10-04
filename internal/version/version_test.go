@@ -45,7 +45,7 @@ func TestOfferText(t *testing.T) {
 	Version, Commit, SourceURL = "1.2.0-beta.3", "abc1234", ""
 	text := CurrentOffer().Text()
 	for _, want := range []string{
-		"Yggdrasil Core 1.2.0-beta.3",
+		"Toskar Core 1.2.0-beta.3",
 		"Licensed under AGPL-3.0-or-later",
 		"Corresponding source:",
 		Repository + "/tree/v1.2.0-beta.3",

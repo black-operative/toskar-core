@@ -248,7 +248,7 @@ func TestOlderPeerIsNotEligible(t *testing.T) {
 			studio = f
 		}
 	}
-	if studio.Eligible || !strings.Contains(studio.Reason, "Update Yggdrasil on studio") {
+	if studio.Eligible || !strings.Contains(studio.Reason, "Update Toskar on studio") {
 		t.Fatalf("studio fit = %+v", studio)
 	}
 	if plan.Ready {

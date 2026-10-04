@@ -7,7 +7,7 @@ import (
 
 const (
 	// ProductName is the name used in the AGPL source offer.
-	ProductName = "Yggdrasil Core"
+	ProductName = "Toskar Core"
 	// LicenseID is the SPDX identifier for this program.
 	LicenseID = "AGPL-3.0-or-later"
 	// Repository is the upstream source repository.
@@ -62,7 +62,7 @@ func CorrespondingSource() string {
 
 // Text is the human-readable source offer printed by the CLI.
 func (o Offer) Text() string {
-	return fmt.Sprintf("Yggdrasil Core %s\nLicensed under %s\nCorresponding source:\n%s\nCommit: %s\n", o.Version, o.License, o.Source, o.Commit)
+	return fmt.Sprintf("Toskar Core %s\nLicensed under %s\nCorresponding source:\n%s\nCommit: %s\n", o.Version, o.License, o.Source, o.Commit)
 }
 
 // Info returns version metadata for API and UI surfaces.

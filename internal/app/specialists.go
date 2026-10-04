@@ -48,7 +48,7 @@ func (a *App) refuseSupporting(ctx context.Context, modelID string) error {
 			continue
 		}
 		if role := huginn.SupportRoleOf(m); role != "" {
-			return fmt.Errorf("%s is %s model. It helps Yggdrasil search and sort, but it cannot chat. Choose another model or Auto", huginn.Name(m), article(role))
+			return fmt.Errorf("%s is %s model. It helps Toskar search and sort, but it cannot chat. Choose another model or Auto", huginn.Name(m), article(role))
 		}
 	}
 	return nil

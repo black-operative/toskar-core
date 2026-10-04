@@ -65,7 +65,7 @@ func (s *Server) handleUploadArtifact(w http.ResponseWriter, r *http.Request) {
 	kept := artifacts.IsAudio(body.Name) || imagegen.IsEditable(body.Name)
 	if !kept && !mimir.Attachable(body.Name) {
 		writeErr(w, http.StatusBadRequest, "UNSUPPORTED_FILE",
-			fmt.Sprintf("Yggdrasil can't read %s yet. Attach a document, spreadsheet, PDF, code file, audio, or a PNG or JPEG image.", artifacts.CleanName(body.Name)),
+			fmt.Sprintf("Toskar can't read %s yet. Attach a document, spreadsheet, PDF, code file, audio, or a PNG or JPEG image.", artifacts.CleanName(body.Name)),
 			map[string]any{"name": artifacts.CleanName(body.Name)})
 		return
 	}
@@ -82,7 +82,7 @@ func (s *Server) handleUploadArtifact(w http.ResponseWriter, r *http.Request) {
 	// is attached rather than when the question is asked.
 	if !kept {
 		if _, err := mimir.FilePassages(body.Name, data); err != nil {
-			writeErr(w, http.StatusBadRequest, "UNREADABLE_FILE", fmt.Sprintf("Yggdrasil can't read %s: %s", artifacts.CleanName(body.Name), err.Error()),
+			writeErr(w, http.StatusBadRequest, "UNREADABLE_FILE", fmt.Sprintf("Toskar can't read %s: %s", artifacts.CleanName(body.Name), err.Error()),
 				map[string]any{"name": artifacts.CleanName(body.Name), "cause": err.Error()})
 			return
 		}

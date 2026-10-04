@@ -85,7 +85,7 @@ func (a *App) mcpAsk(ctx context.Context, prompt, model string) (string, error) 
 }
 
 func (a *App) mcpModels(ctx context.Context) ([]mcp.ModelInfo, error) {
-	out := []mcp.ModelInfo{{ID: huginn.AutoModelID, Name: "Auto", Description: "Yggdrasil picks an installed model for each question."}}
+	out := []mcp.ModelInfo{{ID: huginn.AutoModelID, Name: "Auto", Description: "Toskar picks an installed model for each question."}}
 	for _, m := range a.installedModels(ctx) {
 		if !m.Installed || huginn.Supporting(m) {
 			continue

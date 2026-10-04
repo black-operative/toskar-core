@@ -890,7 +890,7 @@ func (a *App) Start(ctx context.Context) error {
 		cfg = a.Config.Get()
 	}
 
-	a.Logger.Info("yggdrasil starting",
+	a.Logger.Info("toskar starting",
 		"version", version.Version,
 		"node_id", cfg.NodeID,
 		"data_dir", cfg.DataDir,
@@ -1042,7 +1042,7 @@ func (a *App) Shutdown(ctx context.Context) error {
 	if a.DB != nil {
 		_ = a.DB.Close()
 	}
-	a.Logger.Info("yggdrasil stopped")
+	a.Logger.Info("toskar stopped")
 	return nil
 }
 

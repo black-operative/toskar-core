@@ -50,7 +50,7 @@ func splitAuthToken(token string) ([]string, error) {
 	}
 	parts := strings.Split(string(raw), "|")
 	if len(parts) != 6 || parts[0] != authTokenVersion || parts[1] == "" {
-		return nil, fmt.Errorf("invalid token format; update Yggdrasil on both computers")
+		return nil, fmt.Errorf("invalid token format; update Toskar on both computers")
 	}
 	return parts, nil
 }

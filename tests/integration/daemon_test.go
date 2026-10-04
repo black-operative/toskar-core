@@ -120,7 +120,7 @@ func TestDaemonHealthAndHardware(t *testing.T) {
 		t.Fatalf("decode source: %v", err)
 	}
 	src, _ = offer["source"].(string)
-	if offer["name"] != "Yggdrasil Core" || offer["license"] != "AGPL-3.0-or-later" || src == "" {
+	if offer["name"] != "Toskar Core" || offer["license"] != "AGPL-3.0-or-later" || src == "" {
 		t.Fatalf("source offer: %#v", offer)
 	}
 

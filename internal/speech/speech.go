@@ -119,7 +119,7 @@ type Transcript struct {
 func (e *Engine) run(ctx context.Context, script []byte, cfg map[string]any, files map[string][]byte, out any) error {
 	py, err := e.Python.Ensure(ctx, Spec(), nil)
 	if errors.Is(err, pyenv.ErrSandboxed) {
-		return fmt.Errorf("speech is not included in this copy of Yggdrasil: %w", err)
+		return fmt.Errorf("speech is not included in this copy of Toskar: %w", err)
 	}
 	if err != nil {
 		return fmt.Errorf("speech could not be installed: %w", err)

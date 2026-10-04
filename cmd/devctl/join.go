@@ -16,10 +16,10 @@ import (
 )
 
 const joinUsage = `usage: toskarctl join --server <host:port> --token <ygj_…> --fingerprint <sha256:…> [--name <name>] [--wait 60s] [--output json]
-Joins this computer to the Yggdrasil network of the computer that made the
+Joins this computer to the Toskar network of the computer that made the
 join command. Run the command that computer printed, as it is.
   --name   rename this computer as it joins
-  --wait   wait this long for Yggdrasil to start here, for provisioning scripts`
+  --wait   wait this long for Toskar to start here, for provisioning scripts`
 
 const joinTokenUsage = `usage: toskarctl join-token <create|list|revoke> [--output json]
   create [--ttl 15m]   make a one-time join token and print the command to run on the new computer
@@ -53,7 +53,7 @@ func newDaemon() daemonClient {
 type notRunningError struct{ base string }
 
 func (e *notRunningError) Error() string {
-	return fmt.Sprintf("Yggdrasil isn't running on this computer (%s). Start it, for example with systemctl start yggdrasil, and try again", e.base)
+	return fmt.Sprintf("Toskar isn't running on this computer (%s). Start it, for example with systemctl start toskar, and try again", e.base)
 }
 
 // waitRunning waits up to d for the daemon to answer, as a provisioning
@@ -183,7 +183,7 @@ func joinCommand(args []string, c daemonClient, out io.Writer) error {
 		fmt.Fprintf(out, "This computer is already joined to %s's network.\n  network: %s\n  node:    %s (%s)\n", res.Server.Name, res.NetworkID, res.Node.Name, res.Node.ID)
 		return nil
 	}
-	fmt.Fprintf(out, "✓ Connected to %s (%s)\n✓ Joined the Yggdrasil network\n\nThis computer:\n  name:    %s\n  id:      %s\n  network: %s\n",
+	fmt.Fprintf(out, "✓ Connected to %s (%s)\n✓ Joined the Toskar network\n\nThis computer:\n  name:    %s\n  id:      %s\n  network: %s\n",
 		res.Server.Name, res.Server.Address, res.Node.Name, res.Node.ID, res.NetworkID)
 	return nil
 }
@@ -199,7 +199,7 @@ func joinFailure(err error) error {
 	case "JOIN_WRONG_SERVER":
 		msg = "Join stopped: " + e.Message
 	case "JOIN_UNREACHABLE":
-		msg += "\n\nCheck:\n- the server address\n- that its firewall allows TCP port 7332\n- that Yggdrasil is running there"
+		msg += "\n\nCheck:\n- the server address\n- that its firewall allows TCP port 7332\n- that Toskar is running there"
 	case "JOIN_TOKEN_EXPIRED", "JOIN_TOKEN_USED", "JOIN_TOKEN_REVOKED", "JOIN_TOKEN_INVALID":
 		// yggctl: that computer may be on a version from before the rename.
 		msg += "\n\nMake a new join command on a computer in the network: yggctl join-token create"
@@ -248,9 +248,9 @@ func joinTokenCommand(args []string, c daemonClient, out io.Writer, now func() t
 		if *output == "json" {
 			return writeJSON(out, t)
 		}
-		fmt.Fprintf(out, "Join a computer to this Yggdrasil network. On that computer, run:\n\n  %s\n", t.Command)
+		fmt.Fprintf(out, "Join a computer to this Toskar network. On that computer, run:\n\n  %s\n", t.Command)
 		if t.Install != "" {
-			fmt.Fprintf(out, "\nIf Yggdrasil isn't installed there yet, this installs it and joins (Linux, macOS):\n\n  %s\n", t.Install)
+			fmt.Fprintf(out, "\nIf Toskar isn't installed there yet, this installs it and joins (Linux, macOS):\n\n  %s\n", t.Install)
 		}
 		if t.Windows != "" {
 			fmt.Fprintf(out, "\nOn Windows, in PowerShell:\n\n  %s\n", t.Windows)
@@ -353,7 +353,7 @@ func networkCommand(args []string, c daemonClient, out io.Writer) error {
 	fmt.Fprintf(out, "This computer:\n  name:        %s\n  id:          %s\n  address:     %s\n  fingerprint: %s\n  network:     %s\n",
 		st.Node.Name, st.Node.ID, st.Node.Address, st.Node.Fingerprint, network)
 	if !st.Reachable {
-		fmt.Fprintln(out, "\nOther computers can't reach this one: turn on discovery_enabled and restart Yggdrasil.")
+		fmt.Fprintln(out, "\nOther computers can't reach this one: turn on discovery_enabled and restart Toskar.")
 	}
 	if len(st.Peers) == 0 {
 		fmt.Fprintln(out, "\nNo paired computers. Add one with: toskarctl join-token create")

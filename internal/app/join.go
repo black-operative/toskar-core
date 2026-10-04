@@ -93,7 +93,7 @@ const installerBase = "https://github.com/yeixio/yggdrasil-core/releases/latest/
 
 // errNotReachable is a computer other computers cannot reach.
 var errNotReachable = contracts.Errorf("JOIN_NOT_REACHABLE", nil,
-	"other computers can't reach this one: turn on Find other computers (discovery_enabled) and restart Yggdrasil")
+	"other computers can't reach this one: turn on Find other computers (discovery_enabled) and restart Toskar")
 
 // reachable reports whether paired computers can reach this computer's
 // Bifrost.
@@ -198,7 +198,7 @@ func (a *App) JoinNetwork(ctx context.Context, req api.JoinRequest) (api.JoinRes
 				return err
 			}
 			if mine != "" && mine != h.NetworkID && len(a.pairedPeers(ctx)) > 0 {
-				return contracts.Errorf("JOIN_OTHER_NETWORK", nil, "this computer is already in another Yggdrasil network; run toskarctl leave first to join this one")
+				return contracts.Errorf("JOIN_OTHER_NETWORK", nil, "this computer is already in another Toskar network; run toskarctl leave first to join this one")
 			}
 			return nil
 		},

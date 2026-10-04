@@ -27,7 +27,7 @@ const workerInstructions = "You are working on one part of a larger request. Wri
 	"the facts, numbers, names, and links that matter, from the reference material when there is some. " +
 	"Do not answer the whole request, and do not write an introduction or a conclusion."
 
-const planGuidance = "Yggdrasil worked through this request in parts; the notes from each part are in the reference material. " +
+const planGuidance = "Toskar worked through this request in parts; the notes from each part are in the reference material. " +
 	"Use them to answer the whole request in one reply, and compare or combine them where the request asks. " +
 	"Do not mention the notes or the parts."
 

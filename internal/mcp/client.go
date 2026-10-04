@@ -88,7 +88,7 @@ func Connect(ctx context.Context, t Transport, hooks Hooks, clientVersion string
 	}
 	if !supportedVersions[res.ProtocolVersion] {
 		t.Close()
-		return nil, fmt.Errorf("the server speaks MCP version %q, which Yggdrasil does not support yet", res.ProtocolVersion)
+		return nil, fmt.Errorf("the server speaks MCP version %q, which Toskar does not support yet", res.ProtocolVersion)
 	}
 	c.Server, c.Version, c.Instructions = res.ServerInfo, res.ProtocolVersion, res.Instructions
 	c.HasTools = res.Capabilities.Tools != nil
@@ -254,7 +254,7 @@ func (c *Client) call(ctx context.Context, method string, params, out any) error
 		}
 		if out != nil && len(resp.Result) > 0 {
 			if err := json.Unmarshal(resp.Result, out); err != nil {
-				return fmt.Errorf("the server sent a reply Yggdrasil could not read: %w", err)
+				return fmt.Errorf("the server sent a reply Toskar could not read: %w", err)
 			}
 		}
 		return nil
@@ -372,7 +372,7 @@ func (c *Client) serve(ctx context.Context, m message) (any, *rpcError) {
 		return map[string]any{"roots": roots}, nil
 	case "sampling/createMessage":
 		if c.hooks.Sample == nil {
-			return nil, &rpcError{Code: codeInvalidRequest, Message: "This server is not allowed to use the AI. Turn it on in Yggdrasil's Tools page."}
+			return nil, &rpcError{Code: codeInvalidRequest, Message: "This server is not allowed to use the AI. Turn it on in Toskar's Tools page."}
 		}
 		var p createMessageParams
 		if err := json.Unmarshal(m.Params, &p); err != nil {
@@ -387,7 +387,7 @@ func (c *Client) serve(ctx context.Context, m message) (any, *rpcError) {
 			msgs = append(msgs, SampleMessage{Role: pm.Role, Text: content.Text})
 		}
 		if len(msgs) == 0 {
-			return nil, &rpcError{Code: codeInvalidParams, Message: "Yggdrasil can only answer text messages."}
+			return nil, &rpcError{Code: codeInvalidParams, Message: "Toskar can only answer text messages."}
 		}
 		text, model, err := c.hooks.Sample(ctx, p.SystemPrompt, msgs, p.MaxTokens)
 		if err != nil {
@@ -401,7 +401,7 @@ func (c *Client) serve(ctx context.Context, m message) (any, *rpcError) {
 		// Yggdrasil cannot show a server's own form mid-call yet.
 		return map[string]any{"action": "decline"}, nil
 	}
-	return nil, &rpcError{Code: codeMethodNotFound, Message: "Yggdrasil does not support " + m.Method}
+	return nil, &rpcError{Code: codeMethodNotFound, Message: "Toskar does not support " + m.Method}
 }
 
 // contentText is the readable text of one content item.

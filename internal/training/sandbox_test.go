@@ -31,7 +31,7 @@ func TestSandboxedComputerTrainsOnAPairedOne(t *testing.T) {
 	}
 	local := fitNamed(plan.Fits, "local")
 	if local.Eligible || local.Label != FitUnsupported || !strings.Contains(local.Reason, "App Sandbox") ||
-		!strings.Contains(local.Reason, "Pair a computer running Yggdrasil Core") {
+		!strings.Contains(local.Reason, "Pair a computer running Toskar Core") {
 		t.Fatalf("local fit = %+v", local)
 	}
 	for _, b := range coord.svc.Backends(ctx) {

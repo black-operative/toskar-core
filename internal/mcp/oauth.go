@@ -157,10 +157,10 @@ func register(ctx context.Context, c *http.Client, o *OAuth, registrationURL, cl
 		ClientSecret string `json:"client_secret"`
 	}
 	if err := postJSON(ctx, c, registrationURL, body, &res); err != nil {
-		return fmt.Errorf("could not register Yggdrasil with the service: %w", err)
+		return fmt.Errorf("could not register Toskar with the service: %w", err)
 	}
 	if res.ClientID == "" {
-		return errors.New("the service did not give Yggdrasil a client ID")
+		return errors.New("the service did not give Toskar a client ID")
 	}
 	o.ClientID, o.ClientSecret = res.ClientID, res.ClientSecret
 	return nil

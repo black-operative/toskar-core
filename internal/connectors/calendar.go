@@ -30,7 +30,7 @@ func (Calendar) Description() string {
 }
 func (Calendar) Scopes() string {
 	return "Use an app password: Fastmail (https://caldav.fastmail.com), iCloud (https://caldav.icloud.com, with an app-specific password), " +
-		"Nextcloud (https://your-server/remote.php/dav), or your own CalDAV server. Yggdrasil asks before adding, changing, or cancelling an event."
+		"Nextcloud (https://your-server/remote.php/dav), or your own CalDAV server. Toskar asks before adding, changing, or cancelling an event."
 }
 
 func (Calendar) Fields() []Field {

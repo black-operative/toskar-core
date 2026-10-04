@@ -81,7 +81,7 @@ func (b *bridge) forward(msg []byte) {
 	}
 	resp, err := b.client.Do(req)
 	if err != nil {
-		b.fail(msg, "Yggdrasil is not running on this computer. Start it, then try again.")
+		b.fail(msg, "Toskar is not running on this computer. Start it, then try again.")
 		return
 	}
 	defer resp.Body.Close()
@@ -90,10 +90,10 @@ func (b *bridge) forward(msg []byte) {
 	case resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusNoContent:
 		return
 	case resp.StatusCode == http.StatusUnauthorized:
-		b.fail(msg, "Yggdrasil needs an API key. Create one on its API Access page and set TOSKAR_API_KEY.")
+		b.fail(msg, "Toskar needs an API key. Create one on its API Access page and set TOSKAR_API_KEY.")
 		return
 	case resp.StatusCode >= 300:
-		b.fail(msg, fmt.Sprintf("Yggdrasil answered with HTTP %d", resp.StatusCode))
+		b.fail(msg, fmt.Sprintf("Toskar answered with HTTP %d", resp.StatusCode))
 		return
 	}
 	if body = bytes.TrimSpace(body); len(body) > 0 {

@@ -74,7 +74,7 @@ func redirectURI(base string) (string, error) {
 	}
 	u, err := url.Parse(base)
 	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
-		return "", fmt.Errorf("%q is not Yggdrasil's address", base)
+		return "", fmt.Errorf("%q is not Toskar's address", base)
 	}
 	return u.Scheme + "://" + u.Host + CallbackPath, nil
 }

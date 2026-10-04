@@ -142,7 +142,7 @@ func (s *Service) Recover(ctx context.Context) error {
 	}
 	for _, j := range active {
 		now := time.Now()
-		j.State, j.Error, j.FinishedAt = StateFailed, "Yggdrasil stopped while this job was running. Start training again.", &now
+		j.State, j.Error, j.FinishedAt = StateFailed, "Toskar stopped while this job was running. Start training again.", &now
 		if err := s.d.Repo.SaveJob(ctx, j); err != nil {
 			return err
 		}
@@ -564,7 +564,7 @@ func (s *Service) AddConversations(ctx context.Context, aiID string, ids []strin
 		name = "1 saved chat"
 	}
 	rec := Recommendation{Use: UseTraining, CanTrain: true, ExampleCount: len(examples),
-		Reasons: []string{"Chats you had with Yggdrasil show the responses you want. Edit or remove any you do not want repeated."}}
+		Reasons: []string{"Chats you had with Toskar show the responses you want. Edit or remove any you do not want repeated."}}
 	return s.d.Repo.AddMaterial(ctx, Material{AIID: aiID, Name: name, Use: UseTraining, Recommended: rec}, examples)
 }
 
@@ -815,7 +815,7 @@ func (s *Service) supportsHere(t Trainer, hw contracts.HardwareInventory) (bool,
 // sandboxReason explains an environment that cannot run here, with what to
 // do instead.
 func sandboxReason(why string) string {
-	return "Training can't run on this computer: " + why + ". Pair a computer running Yggdrasil Core to train there."
+	return "Training can't run on this computer: " + why + ". Pair a computer running Toskar Core to train there."
 }
 
 func (s *Service) fitFor(n Node, caps map[string]peerCaps, info models.TrainingInfo, h Hyper, st DatasetStats, pinned bool) NodeFit {
@@ -835,9 +835,9 @@ func (s *Service) fitFor(n Node, caps map[string]peerCaps, info models.TrainingI
 		pc, ok := caps[n.ID]
 		switch {
 		case !ok:
-			return NodeFit{NodeID: n.ID, NodeName: n.Name, Label: FitUnsupported, Reason: "Yggdrasil did not ask " + n.Name + " about training."}
+			return NodeFit{NodeID: n.ID, NodeName: n.Name, Label: FitUnsupported, Reason: "Toskar did not ask " + n.Name + " about training."}
 		case errors.Is(pc.err, errOldPeer):
-			return NodeFit{NodeID: n.ID, NodeName: n.Name, Label: FitUnsupported, Reason: "Update Yggdrasil on " + n.Name + " to train there."}
+			return NodeFit{NodeID: n.ID, NodeName: n.Name, Label: FitUnsupported, Reason: "Update Toskar on " + n.Name + " to train there."}
 		case pc.err != nil:
 			return NodeFit{NodeID: n.ID, NodeName: n.Name, Label: FitUnsupported, Reason: "Could not reach " + n.Name + "."}
 		}

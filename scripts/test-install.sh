@@ -58,7 +58,7 @@ join_args="${install_command#* join }"
 echo "== install-and-join"
 # shellcheck disable=SC2086 # the join command's words
 sh scripts/install.sh join $join_args | tee "$work/join.txt"
-grep -q "Joined the Yggdrasil network" "$work/join.txt"
+grep -q "Joined the Toskar network" "$work/join.txt"
 
 echo "== the issuer sees it"
 sleep 3

@@ -229,7 +229,7 @@ func EstimateFit(in FitInput) NodeFit {
 
 	switch {
 	case capacity == 0:
-		fit.Label, fit.Reason = FitTight, "Yggdrasil could not read this computer's memory. Training may fail."
+		fit.Label, fit.Reason = FitTight, "Toskar could not read this computer's memory. Training may fail."
 	case float64(need) <= 0.7*float64(capacity):
 		fit.Label, fit.Reason = FitComfortable, "Fits in memory with room to spare."
 	case float64(need) <= 0.95*float64(capacity):

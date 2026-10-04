@@ -216,7 +216,7 @@ func joinICS(lines []string) string {
 
 // ics writes a new event as a VCALENDAR.
 func (e event) ics(now time.Time) string {
-	lines := []string{"BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Yggdrasil//Calendar//EN", "BEGIN:VEVENT",
+	lines := []string{"BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Toskar//Calendar//EN", "BEGIN:VEVENT",
 		"UID:" + e.UID, "DTSTAMP:" + now.UTC().Format(icalUTC), icsTime("DTSTART", e.Start, e.AllDay), icsTime("DTEND", e.End, e.AllDay),
 		"SUMMARY:" + icsText(e.Summary)}
 	if e.Location != "" {

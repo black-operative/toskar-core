@@ -390,7 +390,7 @@ func (s *Service) remoteCapabilities(ctx context.Context, nodeID string, repos [
 	return caps, nil
 }
 
-var errOldPeer = errors.New("that computer runs a Yggdrasil version without remote training")
+var errOldPeer = errors.New("that computer runs a Toskar version without remote training")
 
 func decodePeer(resp *http.Response, v any) error {
 	if resp.StatusCode >= 300 {

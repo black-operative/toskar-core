@@ -179,7 +179,7 @@ func (r *Recognizer) RecognizePDF(ctx context.Context, raw []byte, pages []int) 
 type errNotIncluded struct{}
 
 func (errNotIncluded) Error() string {
-	return "text recognition is not included in this copy of Yggdrasil, which runs in the macOS App Sandbox"
+	return "text recognition is not included in this copy of Toskar, which runs in the macOS App Sandbox"
 }
 
 func (errNotIncluded) Unwrap() error { return pyenv.ErrSandboxed }

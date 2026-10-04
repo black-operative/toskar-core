@@ -47,7 +47,7 @@ const MaxMemoryRunes = 500
 var ErrNotFound = contracts.NewError("MEMORY_NOT_FOUND", nil, errors.New("memory not found"))
 
 // ErrSensitive is returned for content that looks like a credential.
-var ErrSensitive = contracts.NewError("MEMORY_LOOKS_SECRET", nil, errors.New("that looks like a password, key, or token, so Yggdrasil did not save it"))
+var ErrSensitive = contracts.NewError("MEMORY_LOOKS_SECRET", nil, errors.New("that looks like a password, key, or token, so Toskar did not save it"))
 
 // Memory is one durable fact or preference.
 type Memory struct {

@@ -98,7 +98,7 @@ type Doer interface {
 const internalPrefix = "/internal/v1"
 
 // ErrOldPeer means the computer runs a Yggdrasil without remote tools.
-var ErrOldPeer = contracts.NewError("PEER_TOO_OLD", nil, errors.New("this computer needs a newer Yggdrasil to run tools for others"))
+var ErrOldPeer = contracts.NewError("PEER_TOO_OLD", nil, errors.New("this computer needs a newer Toskar to run tools for others"))
 
 // RemoteError is the tool's own error from the other computer, such as a
 // prompt that is too long. NotReady errors may be retried elsewhere.

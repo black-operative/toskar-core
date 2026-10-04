@@ -88,11 +88,15 @@ func load() {
 var stop = map[string]bool{}
 
 func init() {
+	// The last line is the product's name, and the one from before the
+	// rename (#237): it says a question is about the app (selfRe), not which
+	// part of the guide answers it.
 	for _, w := range strings.Fields(`a an the and or but if then of to in on at for from by with without about into over
 		is are was were be been being am do does did done can could would should will shall may might must
 		i me my mine you your yours we our us it its this that these those there here what which who whom whose
 		how why where when not no yes so as than too very just also only own same such get got make made
-		have has had having please tell show explain want need like use using used way thing things`) {
+		have has had having please tell show explain want need like use using used way thing things
+		toskar yggdrasil`) {
 		stop[w] = true
 	}
 }
@@ -156,8 +160,9 @@ func Search(question string, max int, min float64) []Passage {
 var (
 	// questionRe is a message asking something.
 	questionRe = regexp.MustCompile(`(?i)\?|^\s*(how|what|where|why|when|which|can|could|does|do|is|are|will|explain|tell me|show me|help)\b`)
-	// selfRe is a message about Yggdrasil itself.
-	selfRe = regexp.MustCompile(`(?i)\b(yggdrasil|this app|the app|your (own )?(features?|docs?|documentation|settings|capabilit\w*|guide)|you (support|offer|have|do)|in the (app|ui|settings)|what left this computer|this computer only|tool sources?|connected services?|specialized ais?|join (token|command)s?|paired computers?|team profile` +
+	// selfRe is a message about Toskar itself, under its name or the one
+	// from before the rename (#237).
+	selfRe = regexp.MustCompile(`(?i)\b(toskar|yggdrasil|this app|the app|your (own )?(features?|docs?|documentation|settings|capabilit\w*|guide)|you (support|offer|have|do)|in the (app|ui|settings)|what left this computer|this computer only|tool sources?|connected services?|specialized ais?|join (token|command)s?|paired computers?|team profile` +
 		// Privacy questions are about this app: "are my chats private?",
 		// "who can see my data?", "do I need encryption?".
 		`|my (data|chats?|conversations?|files|memories|messages|information) (is |are )?(private|encrypted|safe|secure|stored)` +
@@ -202,7 +207,7 @@ func Block(ps []Passage) string {
 		return ""
 	}
 	var b strings.Builder
-	b.WriteString("From Yggdrasil's user guide, for a question about Yggdrasil itself. Answer from these excerpts and name screens and buttons as they say; if they don't cover the question, say so instead of guessing:\n")
+	b.WriteString("From Toskar's user guide, for a question about Toskar itself. Answer from these excerpts and name screens and buttons as they say; if they don't cover the question, say so instead of guessing:\n")
 	for _, p := range ps {
 		b.WriteString("\n[" + p.Section + "]\n" + p.Text + "\n")
 	}

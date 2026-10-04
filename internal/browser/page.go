@@ -186,7 +186,7 @@ func (m *Manager) Click(ctx context.Context, key string, ref int) (Snapshot, err
 }
 
 // ErrSensitive is typing into a password, payment, or one-time-code field.
-var ErrSensitive = errors.New("that field asks for a password, payment details, or a code; Yggdrasil never types those. Ask the user to enter it themselves")
+var ErrSensitive = errors.New("that field asks for a password, payment details, or a code; Toskar never types those. Ask the user to enter it themselves")
 
 // Type types into a field; submit presses Enter after.
 func (m *Manager) Type(ctx context.Context, key string, ref int, text string, submit bool) (Snapshot, error) {

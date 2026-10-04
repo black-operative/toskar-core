@@ -35,7 +35,7 @@ func TestClientContractOnResponses(t *testing.T) {
 		t.Fatalf("same major refused: %d", rec.Code)
 	}
 	rec = do("2.0")
-	if rec.Code != http.StatusUpgradeRequired || !strings.Contains(rec.Body.String(), "Update Yggdrasil") || rec.Header().Get(contracts.ContractHeader) == "" {
+	if rec.Code != http.StatusUpgradeRequired || !strings.Contains(rec.Body.String(), "Update Toskar") || rec.Header().Get(contracts.ContractHeader) == "" {
 		t.Fatalf("other major: %d %s", rec.Code, rec.Body)
 	}
 	if exposed := rec.Header().Get("Access-Control-Expose-Headers"); !strings.Contains(exposed, contracts.ContractHeader) {
