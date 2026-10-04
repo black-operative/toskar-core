@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Three-node Bifrost cluster E2E (Docker Compose).
-# With YGGDRASIL_STUB_INFERENCE, also runs the two-node Team demo
+# With TOSKAR_STUB_INFERENCE, also runs the two-node Team demo
 # (worker pinned to B, orchestration.role + one final chat answer).
 set -euo pipefail
 

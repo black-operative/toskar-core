@@ -99,7 +99,7 @@ With desktop **A** and laptop **B** on the same LAN:
 `make test-cluster` runs the same placement story headless↔headless in Docker:
 
 1. Pair A and B (plus C for discovery/auth checks).
-2. Enable `YGGDRASIL_STUB_INFERENCE` so nodes seed a fake `stub-team` model (no GGUF download).
+2. Enable `TOSKAR_STUB_INFERENCE` so nodes seed a fake `stub-team` model (no GGUF download).
 3. Pin Programming roles: planner/reviewer → A, worker → B.
 4. `POST /api/v1/chat` on A and assert:
    - `orchestration.role` events place **worker on B**

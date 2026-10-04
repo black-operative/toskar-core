@@ -26,7 +26,7 @@ These features run their own programs, so they have their own status. "Manual ru
 | Text recognition (scanned PDFs) | Manual run | Untested | Untested | Untested | RapidOCR in a pinned Python environment, with headless OpenCV so Linux servers need no graphics libraries |
 | Meaning search (embedding model) | Manual run | Untested | Untested | Untested | Nomic Embed Text v1.5 in llama-server |
 | GGUF export | Manual run | Untested | Untested | Untested | `llama-export-lora` from the llama.cpp install |
-| Mac App Store build | Simulated | | | | `YGGDRASIL_SANDBOXED=1`; bundled Python environments are not yet packaged in the store build |
+| Mac App Store build | Simulated | | | | `TOSKAR_SANDBOXED=1`; bundled Python environments are not yet packaged in the store build |
 
 ## How to read the columns
 

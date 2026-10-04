@@ -100,7 +100,7 @@ On the default loopback bind, the control API and the OpenAI-compatible API do n
 
 Any other bind requires `Authorization: Bearer YOUR_API_KEY` on `/api/v1/*` and `/v1/*`. The daemon will not start that listener unless a key exists. Enabling local network access stores `0.0.0.0` and refuses the change when no key exists. The new socket applies the next time the daemon starts. The key check follows the configured host, so it applies as soon as the setting is saved.
 
-`YGGDRASIL_API_HOST=0.0.0.0` is how the Docker image listens. Set `YGGDRASIL_API_KEY` or the process exits before it accepts connections. See [API](api.md).
+The Docker image listens on `0.0.0.0`. Set `TOSKAR_API_KEY` or the process exits before it accepts connections. See [API](api.md).
 
 An API key on plain HTTP does not encrypt traffic. It limits who can call the API. TLS or mTLS for remote access is not implemented.
 

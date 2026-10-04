@@ -22,6 +22,6 @@ jobs:
           go-version: "1.26.x"
       - name: Quality set
         env:
-          YGGDRASIL_QUALITY_URL: ${{ vars.QUALITY_DAEMON_URL }}
-          YGGDRASIL_QUALITY_KEY: ${{ secrets.QUALITY_API_KEY }}
+          TOSKAR_QUALITY_URL: ${{ vars.QUALITY_DAEMON_URL }}
+          TOSKAR_QUALITY_KEY: ${{ secrets.QUALITY_API_KEY }}
         run: go test ./tests/quality -count=1 -v -timeout 60m

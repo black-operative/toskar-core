@@ -273,7 +273,7 @@ func (m *Manager) Path(ctx context.Context, modelID string) (string, error) {
 	return path, nil
 }
 
-// StubModelID is the fake model used when YGGDRASIL_STUB_INFERENCE is enabled.
+// StubModelID is the fake model used when TOSKAR_STUB_INFERENCE is enabled.
 const StubModelID = "stub-team"
 
 // EnsureStubModel registers and marks a tiny placeholder model as installed.

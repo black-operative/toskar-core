@@ -57,7 +57,7 @@ func writeProfiles(zw *zip.Writer) error {
 }
 
 // ServeProfiles serves Go's live profiles (net/http/pprof) on addr for
-// diagnosing a running daemon, such as YGGDRASIL_PPROF=127.0.0.1:6060. It
+// diagnosing a running daemon, such as TOSKAR_PPROF=127.0.0.1:6060. It
 // refuses any address that isn't on this computer, since profiles show the
 // program's internals. The server stops when ctx ends.
 func ServeProfiles(ctx context.Context, addr string) (net.Addr, error) {

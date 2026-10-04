@@ -6,6 +6,8 @@ After=network.target
 Type=simple
 User=yggdrasil
 Group=yggdrasil
+# The old name, so a drop-in setting either YGGDRASIL_ or TOSKAR_WEB_UI_DIR
+# overrides it.
 Environment=YGGDRASIL_WEB_UI_DIR=/usr/share/yggdrasil/web
 ExecStart=/usr/bin/yggdrasil-daemon
 Restart=on-failure

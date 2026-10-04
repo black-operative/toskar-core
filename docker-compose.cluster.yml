@@ -3,15 +3,15 @@ services:
     build: .
     hostname: node-a
     environment:
-      YGGDRASIL_NODE_ID: aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa
-      YGGDRASIL_NODE_NAME: Node-A
-      YGGDRASIL_ADVERTISE_HOST: node-a
-      YGGDRASIL_STATIC_PEERS: node-b:7332,node-c:7332
-      YGGDRASIL_API_HOST: "0.0.0.0"
-      YGGDRASIL_INTERNAL_HOST: "0.0.0.0"
-      YGGDRASIL_DISCOVERY_ENABLED: "true"
-      YGGDRASIL_STUB_INFERENCE: "true"
-      YGGDRASIL_API_KEY: "ygg_cluster_local_test_key"
+      TOSKAR_NODE_ID: aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa
+      TOSKAR_NODE_NAME: Node-A
+      TOSKAR_ADVERTISE_HOST: node-a
+      TOSKAR_STATIC_PEERS: node-b:7332,node-c:7332
+      TOSKAR_API_HOST: "0.0.0.0"
+      TOSKAR_INTERNAL_HOST: "0.0.0.0"
+      TOSKAR_DISCOVERY_ENABLED: "true"
+      TOSKAR_STUB_INFERENCE: "true"
+      TOSKAR_API_KEY: "ygg_cluster_local_test_key"
     volumes:
       - a-data:/data
     networks: [cluster]
@@ -20,15 +20,15 @@ services:
     build: .
     hostname: node-b
     environment:
-      YGGDRASIL_NODE_ID: bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
-      YGGDRASIL_NODE_NAME: Node-B
-      YGGDRASIL_ADVERTISE_HOST: node-b
-      YGGDRASIL_STATIC_PEERS: node-a:7332,node-c:7332
-      YGGDRASIL_API_HOST: "0.0.0.0"
-      YGGDRASIL_INTERNAL_HOST: "0.0.0.0"
-      YGGDRASIL_DISCOVERY_ENABLED: "true"
-      YGGDRASIL_STUB_INFERENCE: "true"
-      YGGDRASIL_API_KEY: "ygg_cluster_local_test_key"
+      TOSKAR_NODE_ID: bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+      TOSKAR_NODE_NAME: Node-B
+      TOSKAR_ADVERTISE_HOST: node-b
+      TOSKAR_STATIC_PEERS: node-a:7332,node-c:7332
+      TOSKAR_API_HOST: "0.0.0.0"
+      TOSKAR_INTERNAL_HOST: "0.0.0.0"
+      TOSKAR_DISCOVERY_ENABLED: "true"
+      TOSKAR_STUB_INFERENCE: "true"
+      TOSKAR_API_KEY: "ygg_cluster_local_test_key"
     volumes:
       - b-data:/data
     networks: [cluster]
@@ -37,15 +37,15 @@ services:
     build: .
     hostname: node-c
     environment:
-      YGGDRASIL_NODE_ID: cccccccc-cccc-4ccc-8ccc-cccccccccccc
-      YGGDRASIL_NODE_NAME: Node-C
-      YGGDRASIL_ADVERTISE_HOST: node-c
-      YGGDRASIL_STATIC_PEERS: node-a:7332,node-b:7332
-      YGGDRASIL_API_HOST: "0.0.0.0"
-      YGGDRASIL_INTERNAL_HOST: "0.0.0.0"
-      YGGDRASIL_DISCOVERY_ENABLED: "true"
-      YGGDRASIL_STUB_INFERENCE: "true"
-      YGGDRASIL_API_KEY: "ygg_cluster_local_test_key"
+      TOSKAR_NODE_ID: cccccccc-cccc-4ccc-8ccc-cccccccccccc
+      TOSKAR_NODE_NAME: Node-C
+      TOSKAR_ADVERTISE_HOST: node-c
+      TOSKAR_STATIC_PEERS: node-a:7332,node-b:7332
+      TOSKAR_API_HOST: "0.0.0.0"
+      TOSKAR_INTERNAL_HOST: "0.0.0.0"
+      TOSKAR_DISCOVERY_ENABLED: "true"
+      TOSKAR_STUB_INFERENCE: "true"
+      TOSKAR_API_KEY: "ygg_cluster_local_test_key"
     volumes:
       - c-data:/data
     networks: [cluster]
@@ -58,7 +58,7 @@ services:
       NODE_B_URL: http://node-b:7331
       NODE_C_URL: http://node-c:7331
       NODE_B_INTERNAL: http://node-b:7332
-      YGGDRASIL_API_KEY: "ygg_cluster_local_test_key"
+      TOSKAR_API_KEY: "ygg_cluster_local_test_key"
     depends_on:
       - node-a
       - node-b

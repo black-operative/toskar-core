@@ -3,7 +3,7 @@
 Yggdrasil Core is configured in three places:
 
 - **`config.json`** in the data directory: where the daemon listens, where it keeps files, and how it finds other computers. It is read at startup.
-- **Environment variables** (`YGGDRASIL_*`) override some `config.json` values. They are meant for containers and scripted nodes.
+- **Environment variables** (`TOSKAR_*`) override some `config.json` values. They are meant for containers and scripted nodes. Each also works under its name from before the rename, `YGGDRASIL_*`, such as `YGGDRASIL_API_PORT`; when both are set, `TOSKAR_*` wins.
 - **Settings** are stored in the database and changed in the app or through `PATCH /api/v1/settings`. Most take effect at once.
 
 ## Data directory
@@ -70,23 +70,23 @@ Restart the daemon after editing the file by hand. A changed `api_host` or `inte
 
 | Variable | Overrides | Notes |
 | --- | --- | --- |
-| `YGGDRASIL_API_HOST` | `api_host` | `0.0.0.0` makes the API reachable from other computers. The daemon will not start until a key exists or `YGGDRASIL_API_KEY` is set. |
-| `YGGDRASIL_API_PORT` | `api_port` | |
-| `YGGDRASIL_API_KEY` | | Stored, hashed, as an API key at startup if it is not already valid. |
-| `YGGDRASIL_INTERNAL_HOST` | `internal_host` | |
-| `YGGDRASIL_INTERNAL_PORT` | `internal_port` | |
-| `YGGDRASIL_DISCOVERY_ENABLED` | `discovery_enabled` | `1`, `true`, `yes`, or `on` turn it on; anything else turns it off. |
-| `YGGDRASIL_STATIC_PEERS` | `static_peers` | Comma-separated `host:port` list |
-| `YGGDRASIL_ADVERTISE_HOST` | `advertise_host` | |
-| `YGGDRASIL_NODE_ID` | `node_id` | For containers with a fixed identity |
-| `YGGDRASIL_NODE_NAME` | `node_name` | |
-| `YGGDRASIL_WEB_UI_DIR` | `web_ui_dir` | |
-| `YGGDRASIL_WEB_UI_ENABLED` | `web_ui_enabled` | |
-| `YGGDRASIL_STUB_INFERENCE` | | Answers with a stub model instead of llama.cpp. For tests and the Docker cluster check only. |
-| `YGGDRASIL_PPROF` | | Serves Go's live profiles at `http://<address>/debug/pprof/`, such as `127.0.0.1:6060`, for diagnosing memory or CPU use. Only a loopback address is accepted. Off when unset. |
-| `YGGDRASIL_SANDBOXED` | | `1` behaves as if the daemon ran in the macOS App Sandbox (see [Runtimes](runtimes.md#python-environments-in-sandboxed-builds)). For testing. |
+| `TOSKAR_API_HOST` | `api_host` | `0.0.0.0` makes the API reachable from other computers. The daemon will not start until a key exists or `TOSKAR_API_KEY` is set. |
+| `TOSKAR_API_PORT` | `api_port` | |
+| `TOSKAR_API_KEY` | | Stored, hashed, as an API key at startup if it is not already valid. |
+| `TOSKAR_INTERNAL_HOST` | `internal_host` | |
+| `TOSKAR_INTERNAL_PORT` | `internal_port` | |
+| `TOSKAR_DISCOVERY_ENABLED` | `discovery_enabled` | `1`, `true`, `yes`, or `on` turn it on; anything else turns it off. |
+| `TOSKAR_STATIC_PEERS` | `static_peers` | Comma-separated `host:port` list |
+| `TOSKAR_ADVERTISE_HOST` | `advertise_host` | |
+| `TOSKAR_NODE_ID` | `node_id` | For containers with a fixed identity |
+| `TOSKAR_NODE_NAME` | `node_name` | |
+| `TOSKAR_WEB_UI_DIR` | `web_ui_dir` | |
+| `TOSKAR_WEB_UI_ENABLED` | `web_ui_enabled` | |
+| `TOSKAR_STUB_INFERENCE` | | Answers with a stub model instead of llama.cpp. For tests and the Docker cluster check only. |
+| `TOSKAR_PPROF` | | Serves Go's live profiles at `http://<address>/debug/pprof/`, such as `127.0.0.1:6060`, for diagnosing memory or CPU use. Only a loopback address is accepted. Off when unset. |
+| `TOSKAR_SANDBOXED` | | `1` behaves as if the daemon ran in the macOS App Sandbox (see [Runtimes](runtimes.md#python-environments-in-sandboxed-builds)). For testing. |
 
-`yggctl` reads two more: `YGGDRASIL_URL` (the daemon address, default `http://127.0.0.1:7331`) and `YGGDRASIL_API_KEY` (sent as the bearer token). See [CLI](cli.md).
+`yggctl` reads two more: `TOSKAR_URL` (the daemon address, default `http://127.0.0.1:7331`) and `TOSKAR_API_KEY` (sent as the bearer token). See [CLI](cli.md).
 
 ## Settings
 

@@ -17,7 +17,7 @@ cd yggdrasil-core
 make start
 ```
 
-`make` with no target prints `make help`. `make start` installs web dependencies, writes `web/dist`, builds `bin/yggdrasil-daemon` and `bin/yggctl`, and runs the daemon with `YGGDRASIL_WEB_UI_DIR` set to `web/dist`. Open `http://127.0.0.1:7331`.
+`make` with no target prints `make help`. `make start` installs web dependencies, writes `web/dist`, builds `bin/yggdrasil-daemon` and `bin/yggctl`, and runs the daemon with `TOSKAR_WEB_UI_DIR` set to `web/dist`. Open `http://127.0.0.1:7331`.
 
 `make daemon` stamps the current git commit into both binaries. A build from this tree reports `0.1.0-dev` unless `-ldflags` sets `internal/version.Version`. `yggctl version` and `yggdrasil-daemon -version` print the license and the corresponding-source URL. `yggctl completion <bash|zsh|fish>` prints the completion scripts in `cmd/devctl/completions/`, which the packages also install. Update those scripts when you add a `yggctl` command. Release packaging sets the version as well, so a tagged build points at `tree/v<version>`.
 
@@ -38,7 +38,7 @@ That is the same as `make run-daemon`. It rebuilds `web/dist` and the binaries, 
 Optional data directory, after `make daemon`:
 
 ```bash
-YGGDRASIL_WEB_UI_DIR="$PWD/web/dist" ./bin/yggdrasil-daemon -data-dir "$PWD/.ygg-dev-data"
+TOSKAR_WEB_UI_DIR="$PWD/web/dist" ./bin/yggdrasil-daemon -data-dir "$PWD/.ygg-dev-data"
 ```
 
 `make ui` only builds the web UI. `make frontend` does that and runs the web tests. The Vite dev server is separate and proxies `/api` and `/v1` to the daemon:
@@ -78,8 +78,8 @@ Leak checks (#231):
 
 ```bash
 node scripts/screenshots/leaks.mjs                               # web UI, after building web/dist; also in CI
-YGGDRASIL_SOAK=1 go test ./tests/soak -run TestSoak -v           # daemon, about 5 minutes
-YGGDRASIL_SOAK=1 YGGDRASIL_SOAK_ROUNDS=1000 go test ./tests/soak -v -timeout 60m
+TOSKAR_SOAK=1 go test ./tests/soak -run TestSoak -v           # daemon, about 5 minutes
+TOSKAR_SOAK=1 TOSKAR_SOAK_ROUNDS=1000 go test ./tests/soak -v -timeout 60m
 ```
 
 The web check moves between every page many times in one browser and fails if the heap, DOM nodes, or event listeners keep growing after warm-up, or if a page throws. The soak test runs a throwaway daemon (its own data directory, free ports, the stub model) through chats, cancelled streams, stopped turns, and event subscribers, and fails if goroutines, heap, or open files keep growing.

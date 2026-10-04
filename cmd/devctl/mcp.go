@@ -7,19 +7,21 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
+
+	"github.com/yeixio/yggdrasil-core/internal/config"
 )
 
 // mcpCommand bridges an app that starts MCP servers as programs, such as
 // Claude Desktop, to Yggdrasil's MCP endpoint: each line on stdin is
 // POSTed to /mcp, and each reply is written as a line on stdout.
 //
-// YGGDRASIL_URL changes the address (default http://127.0.0.1:7331), and
-// YGGDRASIL_API_KEY is sent as the bearer token when set.
+// TOSKAR_URL changes the address (default http://127.0.0.1:7331), and
+// TOSKAR_API_KEY is sent as the bearer token when set. The YGGDRASIL_ names
+// from before the rename work too, so existing app configs keep working.
 func mcpCommand(args []string, in io.Reader, out io.Writer) error {
-	base := strings.TrimRight(os.Getenv("YGGDRASIL_URL"), "/")
+	base := strings.TrimRight(config.Env("URL"), "/")
 	if base == "" {
 		base = "http://127.0.0.1:7331"
 	}
@@ -29,7 +31,7 @@ func mcpCommand(args []string, in io.Reader, out io.Writer) error {
 			i++
 		}
 	}
-	b := &bridge{endpoint: base + "/mcp", key: os.Getenv("YGGDRASIL_API_KEY"), out: out, client: http.DefaultClient}
+	b := &bridge{endpoint: base + "/mcp", key: config.Env("API_KEY"), out: out, client: http.DefaultClient}
 	return b.run(in)
 }
 
@@ -88,7 +90,7 @@ func (b *bridge) forward(msg []byte) {
 	case resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusNoContent:
 		return
 	case resp.StatusCode == http.StatusUnauthorized:
-		b.fail(msg, "Yggdrasil needs an API key. Create one on its API Access page and set YGGDRASIL_API_KEY.")
+		b.fail(msg, "Yggdrasil needs an API key. Create one on its API Access page and set TOSKAR_API_KEY.")
 		return
 	case resp.StatusCode >= 300:
 		b.fail(msg, fmt.Sprintf("Yggdrasil answered with HTTP %d", resp.StatusCode))

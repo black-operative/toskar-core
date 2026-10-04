@@ -27,7 +27,7 @@ How it is started depends on how it was installed:
 
 ## `yggctl`
 
-`yggctl` reaches the daemon at `YGGDRASIL_URL`, or `http://127.0.0.1:7331` when that is not set. When the daemon listens beyond this computer, set `YGGDRASIL_API_KEY` too. It is sent as the bearer token.
+`yggctl` reaches the daemon at `TOSKAR_URL`, or `http://127.0.0.1:7331` when that is not set. When the daemon listens beyond this computer, set `TOSKAR_API_KEY` too. It is sent as the bearer token.
 
 | Command | What it does |
 | --- | --- |

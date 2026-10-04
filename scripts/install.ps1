@@ -9,8 +9,8 @@
 # at each sign-in with a scheduled task. An installed Yggdrasil that is
 # running is left as it is.
 #
-# Environment: YGGDRASIL_VERSION, YGGDRASIL_RELEASE_URL, YGGDRASIL_URL, as for
-# install.sh.
+# Environment: TOSKAR_VERSION, TOSKAR_RELEASE_URL, TOSKAR_URL, as for
+# install.sh. The YGGDRASIL_ names from before the rename work too.
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)][ValidateSet('install', 'join')][string]$Command = 'install',
@@ -23,11 +23,19 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
 $Repo = 'yeixio/yggdrasil-core'
-$Api = if ($env:YGGDRASIL_URL) { $env:YGGDRASIL_URL.TrimEnd('/') } else { 'http://127.0.0.1:7331' }
-if ($env:YGGDRASIL_RELEASE_URL) {
-    $Base = $env:YGGDRASIL_RELEASE_URL.TrimEnd('/')
-} elseif ($env:YGGDRASIL_VERSION) {
-    $Base = "https://github.com/$Repo/releases/download/v$($env:YGGDRASIL_VERSION.TrimStart('v'))"
+function Get-Setting([string]$Name) {
+    $v = [Environment]::GetEnvironmentVariable("TOSKAR_$Name")
+    if ($v) { return $v }
+    return [Environment]::GetEnvironmentVariable("YGGDRASIL_$Name")
+}
+$ApiSetting = Get-Setting 'URL'
+$ReleaseUrl = Get-Setting 'RELEASE_URL'
+$Version = Get-Setting 'VERSION'
+$Api = if ($ApiSetting) { $ApiSetting.TrimEnd('/') } else { 'http://127.0.0.1:7331' }
+if ($ReleaseUrl) {
+    $Base = $ReleaseUrl.TrimEnd('/')
+} elseif ($Version) {
+    $Base = "https://github.com/$Repo/releases/download/v$($Version.TrimStart('v'))"
 } else {
     $Base = "https://github.com/$Repo/releases/latest/download"
 }
@@ -125,6 +133,8 @@ if ($installed -and (Test-Healthy)) {
 }
 
 if ($Command -eq 'join') {
+    # Both names, in case an older release that reads only the old one was installed.
+    $env:TOSKAR_URL = $Api
     $env:YGGDRASIL_URL = $Api
     $joinArgs = @('join', '--server', $Server, '--token', $Token, '--fingerprint', $Fingerprint)
     if ($Name) { $joinArgs += @('--name', $Name) }

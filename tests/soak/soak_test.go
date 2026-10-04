@@ -2,8 +2,8 @@
 // and event-stream connections, and fails if goroutines, heap, or open files
 // keep growing after warm-up (#231). It is slow, so it runs only when asked:
 //
-//	YGGDRASIL_SOAK=1 go test ./tests/soak -run TestSoak -v
-//	YGGDRASIL_SOAK=1 YGGDRASIL_SOAK_ROUNDS=1000 go test ./tests/soak -v -timeout 60m
+//	TOSKAR_SOAK=1 go test ./tests/soak -run TestSoak -v
+//	TOSKAR_SOAK=1 TOSKAR_SOAK_ROUNDS=1000 go test ./tests/soak -v -timeout 60m
 package soak_test
 
 import (
@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/yeixio/yggdrasil-core/internal/app"
+	"github.com/yeixio/yggdrasil-core/internal/config"
 )
 
 func freePort(t *testing.T) string {
@@ -63,22 +64,22 @@ func measure() sample {
 }
 
 func TestSoak(t *testing.T) {
-	if os.Getenv("YGGDRASIL_SOAK") != "1" {
-		t.Skip("set YGGDRASIL_SOAK=1 to run the soak test")
+	if config.Env("SOAK") != "1" {
+		t.Skip("set TOSKAR_SOAK=1 to run the soak test")
 	}
 	// About 2.5 seconds a round with the stub model: the default fits Go's
 	// 10-minute test timeout.
 	rounds := 120
-	if n, err := strconv.Atoi(os.Getenv("YGGDRASIL_SOAK_ROUNDS")); err == nil && n > 0 {
+	if n, err := strconv.Atoi(config.Env("SOAK_ROUNDS")); err == nil && n > 0 {
 		rounds = n
 	}
 
 	// A throwaway daemon: its own data directory, free ports, no discovery,
 	// and the stub model, so nothing reaches a real model or the network.
-	t.Setenv("YGGDRASIL_API_PORT", freePort(t))
-	t.Setenv("YGGDRASIL_INTERNAL_PORT", freePort(t))
-	t.Setenv("YGGDRASIL_DISCOVERY_ENABLED", "false")
-	t.Setenv("YGGDRASIL_STUB_INFERENCE", "true")
+	t.Setenv("TOSKAR_API_PORT", freePort(t))
+	t.Setenv("TOSKAR_INTERNAL_PORT", freePort(t))
+	t.Setenv("TOSKAR_DISCOVERY_ENABLED", "false")
+	t.Setenv("TOSKAR_STUB_INFERENCE", "true")
 	dir := t.TempDir()
 	d, err := app.New(app.Options{DataDir: dir})
 	if err != nil {

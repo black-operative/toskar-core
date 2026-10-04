@@ -11,16 +11,22 @@
 # launchd. Each download is checked against the release's SHA256SUMS.txt.
 # An installed Yggdrasil that is running is left as it is.
 #
-# Environment:
-#   YGGDRASIL_VERSION      a release such as 1.5.0 (default: the latest)
-#   YGGDRASIL_RELEASE_URL  where the release files are (overrides the version)
-#   YGGDRASIL_URL          the daemon's API (default http://127.0.0.1:7331)
-#   YGGDRASIL_PREFIX       macOS install directory
-#   YGGDRASIL_NO_SERVICE=1 install files only; do not register or start a service
+# Environment (the YGGDRASIL_ names from before the rename work too):
+#   TOSKAR_VERSION      a release such as 1.5.0 (default: the latest)
+#   TOSKAR_RELEASE_URL  where the release files are (overrides the version)
+#   TOSKAR_URL          the daemon's API (default http://127.0.0.1:7331)
+#   TOSKAR_PREFIX       macOS install directory
+#   TOSKAR_NO_SERVICE=1 install files only; do not register or start a service
 set -eu
 
+TOSKAR_VERSION="${TOSKAR_VERSION:-${YGGDRASIL_VERSION:-}}"
+TOSKAR_RELEASE_URL="${TOSKAR_RELEASE_URL:-${YGGDRASIL_RELEASE_URL:-}}"
+TOSKAR_PREFIX="${TOSKAR_PREFIX:-${YGGDRASIL_PREFIX:-}}"
+TOSKAR_BIN_DIR="${TOSKAR_BIN_DIR:-${YGGDRASIL_BIN_DIR:-}}"
+TOSKAR_NO_SERVICE="${TOSKAR_NO_SERVICE:-${YGGDRASIL_NO_SERVICE:-}}"
+
 REPO="yeixio/yggdrasil-core"
-API="${YGGDRASIL_URL:-http://127.0.0.1:7331}"
+API="${TOSKAR_URL:-${YGGDRASIL_URL:-http://127.0.0.1:7331}}"
 
 say() { printf '%s\n' "$*"; }
 ok() { printf '\342\234\223 %s\n' "$*"; }
@@ -55,10 +61,10 @@ if [ "$#" -gt 0 ]; then
 	esac
 fi
 
-if [ -n "${YGGDRASIL_RELEASE_URL:-}" ]; then
-	BASE="${YGGDRASIL_RELEASE_URL%/}"
-elif [ -n "${YGGDRASIL_VERSION:-}" ]; then
-	BASE="https://github.com/${REPO}/releases/download/v${YGGDRASIL_VERSION#v}"
+if [ -n "$TOSKAR_RELEASE_URL" ]; then
+	BASE="${TOSKAR_RELEASE_URL%/}"
+elif [ -n "$TOSKAR_VERSION" ]; then
+	BASE="https://github.com/${REPO}/releases/download/v${TOSKAR_VERSION#v}"
 else
 	BASE="https://github.com/${REPO}/releases/latest/download"
 fi
@@ -152,7 +158,7 @@ quietly() {
 }
 
 start_service_linux() {
-	[ "${YGGDRASIL_NO_SERVICE:-}" = "1" ] && return 0
+	[ "$TOSKAR_NO_SERVICE" = "1" ] && return 0
 	if command -v systemctl >/dev/null 2>&1; then
 		as_root systemctl daemon-reload || true
 		as_root systemctl enable --now yggdrasil.service >/dev/null 2>&1 || as_root systemctl restart yggdrasil.service
@@ -181,9 +187,9 @@ install_linux() {
 }
 
 install_macos() {
-	if [ -n "${YGGDRASIL_PREFIX:-}" ]; then
-		prefix="$YGGDRASIL_PREFIX"
-		bindir="${YGGDRASIL_BIN_DIR:-$prefix/bin}"
+	if [ -n "$TOSKAR_PREFIX" ]; then
+		prefix="$TOSKAR_PREFIX"
+		bindir="${TOSKAR_BIN_DIR:-$prefix/bin}"
 	elif [ "$(id -u)" -eq 0 ]; then
 		prefix="/usr/local/lib/yggdrasil"
 		bindir="/usr/local/bin"
@@ -206,7 +212,7 @@ install_macos() {
 	ln -sf "$prefix/yggdrasil-daemon" "$bindir/yggdrasil-daemon"
 	ln -sf "$prefix/yggctl" "$bindir/yggctl"
 	YGGCTL="$prefix/yggctl"
-	[ "${YGGDRASIL_NO_SERVICE:-}" = "1" ] && return 0
+	[ "$TOSKAR_NO_SERVICE" = "1" ] && return 0
 
 	label="io.yeix.yggdrasil"
 	if [ "$(id -u)" -eq 0 ]; then
@@ -226,6 +232,7 @@ install_macos() {
 		domain="gui/$(id -u)"
 		mkdir -p "$HOME/Library/LaunchAgents"
 	fi
+	# YGGDRASIL_WEB_UI_DIR, not TOSKAR_: older releases read only the old name.
 	cat >"$plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -258,7 +265,7 @@ else
 	*) die "this script installs on Linux and macOS; on Windows use install.ps1" ;;
 	esac
 	ok "Yggdrasil Core installed"
-	if [ "${YGGDRASIL_NO_SERVICE:-}" != "1" ] || [ "$joining" -eq 1 ]; then
+	if [ "$TOSKAR_NO_SERVICE" != "1" ] || [ "$joining" -eq 1 ]; then
 		say "Waiting for Yggdrasil to start..."
 		wait_healthy || die "Yggdrasil didn't start within a minute; see its log (journalctl -u yggdrasil on Linux, ~/Library/Application Support/Yggdrasil/logs on macOS) and try again"
 		ok "Yggdrasil Core is running"
@@ -266,6 +273,6 @@ else
 fi
 
 if [ "$joining" -eq 1 ]; then
-	YGGDRASIL_URL="$API" exec "$YGGCTL" join "$@"
+	TOSKAR_URL="$API" YGGDRASIL_URL="$API" exec "$YGGCTL" join "$@"
 fi
 say "Open ${API} or run yggctl to use it."

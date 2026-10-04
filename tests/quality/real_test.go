@@ -7,12 +7,12 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/yeixio/yggdrasil-core/internal/config"
 	"github.com/yeixio/yggdrasil-core/internal/runlog"
 	"github.com/yeixio/yggdrasil-core/pkg/contracts"
 )
@@ -37,7 +37,7 @@ func (d realDriver) do(t *testing.T, method, path string, body any, out any) int
 		t.Fatal(err)
 	}
 	req.Header.Set("Content-Type", "application/json")
-	if key := os.Getenv("YGGDRASIL_QUALITY_KEY"); key != "" {
+	if key := config.Env("QUALITY_KEY"); key != "" {
 		req.Header.Set("Authorization", "Bearer "+key)
 	}
 	resp, err := (&http.Client{Timeout: 10 * time.Minute}).Do(req)
@@ -61,7 +61,7 @@ func (d realDriver) do(t *testing.T, method, path string, body any, out any) int
 func (d realDriver) watch(t *testing.T, ctx context.Context, conversationID string) func() []Event {
 	t.Helper()
 	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, d.base+"/api/v1/events", nil)
-	if key := os.Getenv("YGGDRASIL_QUALITY_KEY"); key != "" {
+	if key := config.Env("QUALITY_KEY"); key != "" {
 		req.Header.Set("Authorization", "Bearer "+key)
 	}
 	resp, err := http.DefaultClient.Do(req)

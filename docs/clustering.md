@@ -11,9 +11,9 @@ The service's port is Bifrost's (7332). Its TXT record carries `node_id`, `name`
 When mDNS cannot see peers, set static addresses:
 
 - `static_peers` in `config.json`, as `host:7332`
-- or `YGGDRASIL_STATIC_PEERS=host-a:7332,host-b:7332`
+- or `TOSKAR_STATIC_PEERS=host-a:7332,host-b:7332`
 
-`docker-compose.cluster.yml` uses static peers and `YGGDRASIL_STUB_INFERENCE=true`. That compose file checks pairing and placement without a real GGUF. It is not a GPU cluster.
+`docker-compose.cluster.yml` uses static peers and `TOSKAR_STUB_INFERENCE=true`. That compose file checks pairing and placement without a real GGUF. It is not a GPU cluster.
 
 If discovery is on at startup and Bifrost is still bound to loopback, the daemon sets the internal host to `0.0.0.0`. Changing discovery later can require a restart. Settings expose that as `discovery_needs_restart`.
 
@@ -57,7 +57,7 @@ For a server or any computer you reach over SSH, without mDNS or a screen, join 
 
    On Linux it installs the release's `.deb` (apt) or `.rpm` (dnf, yum, rpm) and the `yggdrasil` systemd service, using `sudo` when not run as root. On macOS it installs the headless archive in `~/.local/lib/yggdrasil` with a launchd agent, or with `sudo` in `/usr/local/lib/yggdrasil` with a launchd daemon that runs as the person who ran `sudo`, for a Mac nobody is logged in to. Each download is checked against the release's `SHA256SUMS.txt`, and a Yggdrasil that is already installed and running is left as it is. Windows has the same in PowerShell, from `install.ps1`, which installs in `%LOCALAPPDATA%\Programs\Yggdrasil` and starts at sign-in with a scheduled task.
 
-   `YGGDRASIL_VERSION` installs a particular release instead of the latest. Without `join`, the scripts only install.
+   `TOSKAR_VERSION` installs a particular release instead of the latest. Without `join`, the scripts only install.
 
 The Computers page does the same: **Add by command** makes a command, with tabs for a computer that has Yggdrasil, one to install it on (Linux, macOS), and Windows, a copy button, a countdown, **Revoke**, and the recent commands. It says when the computer has joined.
 

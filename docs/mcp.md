@@ -89,7 +89,7 @@ Calls to a tool source on the web are recorded under Settings → What left this
 | `list_local_models` | Auto, the installed chat models, and deployed specialized AIs. |
 | `search_my_knowledge` | Passages from connected knowledge (Mimir) that match a query. |
 
-**API Access → Use Yggdrasil in other AI apps** gives the settings for Claude Desktop, Claude Code, Cursor, VS Code, and other apps, ready to copy. Apps that start a program, such as Claude Desktop, use `yggctl mcp`. It is a bridge that passes each message to `/mcp`. `YGGDRASIL_URL` sets the address and `YGGDRASIL_API_KEY` the key. If Yggdrasil is not running, the app is told so.
+**API Access → Use Yggdrasil in other AI apps** gives the settings for Claude Desktop, Claude Code, Cursor, VS Code, and other apps, ready to copy. Apps that start a program, such as Claude Desktop, use `yggctl mcp`. It is a bridge that passes each message to `/mcp`. `TOSKAR_URL` sets the address and `TOSKAR_API_KEY` the key. The settings it gives still use `YGGDRASIL_URL` and `YGGDRASIL_API_KEY`, which every version of `yggctl` reads. If Yggdrasil is not running, the app is told so.
 
 `/mcp` is checked like `/v1`. On this computer a key is optional. When the API is open to the network a key is required, and the key's permissions for knowledge, memory, and tools apply. A request that carries an `Origin` header from any site other than Yggdrasil's own page is refused, so a web page cannot use your local AI through your browser.
 

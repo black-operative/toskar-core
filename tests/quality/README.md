@@ -32,8 +32,8 @@ cases check scripted behavior a real model may not produce.
   in-process with the web replaced by fixed pages, so it needs no model and no
   network.
 - **Real models:** start a daemon with models installed, then run
-  `make quality-real`, setting `YGGDRASIL_QUALITY_URL` if the daemon is not at
-  `http://127.0.0.1:7331`, and `YGGDRASIL_QUALITY_KEY` if it needs an API key.
+  `make quality-real`, setting `TOSKAR_QUALITY_URL` if the daemon is not at
+  `http://127.0.0.1:7331`, and `TOSKAR_QUALITY_KEY` if it needs an API key.
   Each case adds a profile and knowledge, which are removed afterwards, and a
   chat, which is kept so a failure can be read.
 - **On a schedule:** `.github/workflows/quality.yml` runs the real-model set

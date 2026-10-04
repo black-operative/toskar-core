@@ -22,6 +22,8 @@ trap cleanup EXIT
 python3 -m http.server 18090 --bind 127.0.0.1 --directory dist >"$work/http.log" 2>&1 &
 http_pid=$!
 for _ in $(seq 1 20); do curl -fsS -o /dev/null http://127.0.0.1:18090/SHA256SUMS.txt && break; sleep 0.5; done
+# The old name on purpose: install.sh still reads the names from before the
+# rename (#237); yggctl below gets the new one.
 export YGGDRASIL_RELEASE_URL=http://127.0.0.1:18090
 
 echo "== install"
@@ -55,7 +57,7 @@ grep -q "Joined the Yggdrasil network" "$work/join.txt"
 
 echo "== the issuer sees it"
 sleep 3
-YGGDRASIL_URL=http://127.0.0.1:17431 yggctl network | tee "$work/network.txt"
+TOSKAR_URL=http://127.0.0.1:17431 yggctl network | tee "$work/network.txt"
 grep -q "Paired computers" "$work/network.txt"
 
 echo "== running the command again says it already joined"

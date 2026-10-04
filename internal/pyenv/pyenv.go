@@ -25,6 +25,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/yeixio/yggdrasil-core/internal/config"
 	"github.com/yeixio/yggdrasil-core/pkg/contracts"
 )
 
@@ -73,9 +74,9 @@ var ErrSandboxed = contracts.NewError("SANDBOXED", nil, errors.New("this copy of
 
 // Sandboxed reports whether the daemon runs in the macOS App Sandbox. macOS
 // sets APP_SANDBOX_CONTAINER_ID in every sandboxed process;
-// YGGDRASIL_SANDBOXED=1 simulates it for testing.
+// TOSKAR_SANDBOXED=1 simulates it for testing.
 func Sandboxed() bool {
-	return os.Getenv("APP_SANDBOX_CONTAINER_ID") != "" || os.Getenv("YGGDRASIL_SANDBOXED") == "1"
+	return os.Getenv("APP_SANDBOX_CONTAINER_ID") != "" || config.Env("SANDBOXED") == "1"
 }
 
 // Manager owns the uv binary and the environments under Root.

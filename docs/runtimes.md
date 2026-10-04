@@ -30,7 +30,7 @@ On a Mac App Store build, the sandbox cannot `fork` a binary downloaded into the
 
 Training (MLX on Apple Silicon, PyTorch on NVIDIA GPUs) and text recognition for scanned PDFs run in Python environments. The daemon normally installs them under `runtimes/python` on first use: it downloads `uv`, a private Python, and pinned packages. A sandboxed app cannot run any of that.
 
-The daemon knows it is sandboxed when macOS sets `APP_SANDBOX_CONTAINER_ID`. `YGGDRASIL_SANDBOXED=1` simulates this for testing. When sandboxed:
+The daemon knows it is sandboxed when macOS sets `APP_SANDBOX_CONTAINER_ID`. `TOSKAR_SANDBOXED=1` simulates this for testing. When sandboxed:
 
 - **No downloads:** it never downloads or installs a Python environment.
 - **Bundled environments are used:** a current environment found in a `python` folder beside the daemon executable is used instead.

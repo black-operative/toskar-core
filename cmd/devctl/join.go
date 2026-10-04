@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"text/tabwriter"
 	"time"
@@ -43,11 +42,11 @@ type exitError struct {
 func (e *exitError) Error() string { return e.msg }
 
 func newDaemon() daemonClient {
-	base := strings.TrimRight(os.Getenv("YGGDRASIL_URL"), "/")
+	base := strings.TrimRight(config.Env("URL"), "/")
 	if base == "" {
 		base = "http://" + config.DefaultConfig().APIAddr()
 	}
-	return daemonClient{base: base, key: os.Getenv("YGGDRASIL_API_KEY"), client: &http.Client{Timeout: 60 * time.Second}}
+	return daemonClient{base: base, key: config.Env("API_KEY"), client: &http.Client{Timeout: 60 * time.Second}}
 }
 
 // notRunningError is a daemon that didn't answer at all.

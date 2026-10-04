@@ -53,8 +53,8 @@ func fakeWeb(a *app.App) {
 
 func (stubDriver) Run(t *testing.T, c Case) Result {
 	t.Helper()
-	t.Setenv("YGGDRASIL_STUB_INFERENCE", "1")
-	t.Setenv("YGGDRASIL_DISCOVERY_ENABLED", "false")
+	t.Setenv("TOSKAR_STUB_INFERENCE", "1")
+	t.Setenv("TOSKAR_DISCOVERY_ENABLED", "false")
 	a, err := app.New(app.Options{DataDir: t.TempDir(), Logger: slog.New(slog.NewTextHandler(io.Discard, nil))})
 	if err != nil {
 		t.Fatal(err)

@@ -338,7 +338,7 @@ func New(opts Options) (*App, error) {
 		Pairing:       pairing,
 		Identity:      identity,
 		hw:            &hardware.Detector{DataPath: cfg.DataDir},
-		stubInference: config.EnvTruthy("YGGDRASIL_STUB_INFERENCE"),
+		stubInference: config.EnvTruthy("STUB_INFERENCE"),
 		Health:        healthMonitor,
 	}
 	healthMonitor.Stopper = llamaStopper{rt: rtMgr}
@@ -833,13 +833,13 @@ func (a *App) authorizeControlRequest(r *http.Request) error {
 }
 
 // requireKeyForRemoteBind refuses a non-loopback control API with no key.
-// YGGDRASIL_API_KEY, when set, is hashed and stored if it is not already valid.
+// TOSKAR_API_KEY (or YGGDRASIL_API_KEY), when set, is hashed and stored if it is not already valid.
 func (a *App) requireKeyForRemoteBind(ctx context.Context) error {
 	cfg := a.Config.Get()
 	if !config.ListensBeyondLoopback(cfg.APIHost) {
 		return nil
 	}
-	if supplied := strings.TrimSpace(os.Getenv("YGGDRASIL_API_KEY")); supplied != "" {
+	if supplied := strings.TrimSpace(config.Env("API_KEY")); supplied != "" {
 		if _, err := a.APIKeys.Adopt(ctx, "bootstrap", supplied); err != nil {
 			return fmt.Errorf("configure API key: %w", err)
 		}
@@ -865,7 +865,7 @@ func (a *App) Start(ctx context.Context) error {
 	}()
 	// Live profiles for diagnosing a running daemon, only when asked for
 	// and only on this computer (#231).
-	if addr := os.Getenv("YGGDRASIL_PPROF"); addr != "" {
+	if addr := config.Env("PPROF"); addr != "" {
 		if got, err := diagnostics.ServeProfiles(ctx, addr); err != nil {
 			a.Logger.Warn("profiles not served", "error", err)
 		} else {

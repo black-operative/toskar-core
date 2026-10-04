@@ -87,7 +87,7 @@ Chat comes first, then automations, then background knowledge indexing, then ben
 Bifrost is the internal HTTP server on port 7332.
 
 - mDNS service type `_localai._tcp` on domain `local.`, with `node_id`, `name`, `version`, `pairing`, and `api_port` in its TXT record
-- optional static peers (`YGGDRASIL_STATIC_PEERS` or `config.json`) when mDNS is not available, including Docker
+- optional static peers (`TOSKAR_STATIC_PEERS` or `config.json`) when mDNS is not available, including Docker
 - pairing offer and approval before a peer is trusted
 - certificate-backed bearer tokens on protected routes such as remote chat, model control, and remote training
 

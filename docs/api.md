@@ -1,6 +1,6 @@
 # API
 
-The daemon listens on `http://127.0.0.1:7331` unless `config.json` or `YGGDRASIL_API_HOST` / `YGGDRASIL_API_PORT` say otherwise. This page lists every route and records behavior that matters when you call the server. [api/openapi.yaml](../api/openapi.yaml) describes every route below in OpenAPI 3.0. A test fails when a route is added to the daemon without it. [CLI](cli.md) and [Configuration](configuration.md) cover the command line and settings.
+The daemon listens on `http://127.0.0.1:7331` unless `config.json` or `TOSKAR_API_HOST` / `TOSKAR_API_PORT` say otherwise. This page lists every route and records behavior that matters when you call the server. [api/openapi.yaml](../api/openapi.yaml) describes every route below in OpenAPI 3.0. A test fails when a route is added to the daemon without it. [CLI](cli.md) and [Configuration](configuration.md) cover the command line and settings.
 
 ## Authentication
 
@@ -10,7 +10,7 @@ The web UI calls this setting local network access. Turning it on stores `api_ho
 
 Create a key from the web UI or `POST /api/v1/api-keys`. The response includes the secret once. The database stores a bcrypt hash and a prefix. The plaintext key is not written to disk. Revoke with `DELETE /api/v1/api-keys/{id}` and rotate with `POST /api/v1/api-keys/{id}/rotate`. Do not put the key in a URL or query string. Those requests are rejected.
 
-`YGGDRASIL_API_KEY`, when set, is hashed at startup if that secret is not already valid. The Docker image binds `0.0.0.0` and will not start until that variable is set or a key is already in the data directory. The cluster compose file sets a local test key for that reason.
+`TOSKAR_API_KEY`, when set, is hashed at startup if that secret is not already valid. The Docker image binds `0.0.0.0` and will not start until that variable is set or a key is already in the data directory. The cluster compose file sets a local test key for that reason.
 
 A bearer token on plain HTTP does not encrypt traffic. It stops anonymous use of a trusted LAN. TLS or mTLS for remote access is not implemented.
 

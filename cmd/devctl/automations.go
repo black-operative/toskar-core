@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -25,16 +24,16 @@ const automationsUsage = `usage: yggctl automations <list|get|create|update|dele
   pause <id>
   resume <id>
 Times: daily and weekly use HH:MM. once uses RFC3339. interval uses Go durations such as 6h.
-The daemon address is YGGDRASIL_URL, or 127.0.0.1:7331. A remote daemon uses YGGDRASIL_API_KEY.`
+The daemon address is TOSKAR_URL, or 127.0.0.1:7331. A remote daemon uses TOSKAR_API_KEY.`
 
 func automationsCommand(args []string, out io.Writer) error {
-	base := strings.TrimRight(os.Getenv("YGGDRASIL_URL"), "/")
+	base := strings.TrimRight(config.Env("URL"), "/")
 	if base == "" {
 		base = "http://" + config.DefaultConfig().APIAddr()
 	}
 	return runAutomations(args, daemonClient{
 		base:   base,
-		key:    os.Getenv("YGGDRASIL_API_KEY"),
+		key:    config.Env("API_KEY"),
 		client: &http.Client{},
 	}, out)
 }

@@ -2,7 +2,7 @@
 // of representative requests, each with the behavior it must have. By
 // default it runs against the stub model, in-process, with the model's
 // replies scripted, so CI checks routing, retrieval, planning, checking,
-// approvals, and history on every change. With YGGDRASIL_QUALITY_URL set
+// approvals, and history on every change. With TOSKAR_QUALITY_URL set
 // to a running daemon, the same cases run against real models, so defaults
 // can be changed with evidence.
 package quality
@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/yeixio/yggdrasil-core/internal/config"
 	"github.com/yeixio/yggdrasil-core/internal/huginn"
 	"github.com/yeixio/yggdrasil-core/internal/runlog"
 	"github.com/yeixio/yggdrasil-core/pkg/contracts"
@@ -106,7 +107,7 @@ func loadCases(t *testing.T) []Case {
 
 func TestQualitySet(t *testing.T) {
 	var d Driver = stubDriver{}
-	if url := os.Getenv("YGGDRASIL_QUALITY_URL"); url != "" {
+	if url := config.Env("QUALITY_URL"); url != "" {
 		d = realDriver{base: strings.TrimRight(url, "/")}
 	}
 	for _, c := range loadCases(t) {

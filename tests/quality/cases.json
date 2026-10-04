@@ -1,5 +1,5 @@
 {
-  "about": "The quality test set (spec §64): representative requests with the behavior they must have. They run against the stub model in CI, where `stub` scripts what the model says, and against real models with YGGDRASIL_QUALITY_URL. Checks marked real_only need a real model's answer.",
+  "about": "The quality test set (spec §64): representative requests with the behavior they must have. They run against the stub model in CI, where `stub` scripts what the model says, and against real models with TOSKAR_QUALITY_URL. Checks marked real_only need a real model's answer.",
   "cases": [
     {
       "id": "simple_question_stays_direct",

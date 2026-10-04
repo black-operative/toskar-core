@@ -18,7 +18,7 @@ help: ## Show targets
 
 start: ui daemon ## Build the web UI and daemon, then run it
 	@echo "Open http://127.0.0.1:7331"
-	YGGDRASIL_WEB_UI_DIR="$(CURDIR)/web/dist" ./bin/yggdrasil-daemon
+	TOSKAR_WEB_UI_DIR="$(CURDIR)/web/dist" ./bin/yggdrasil-daemon
 
 run-daemon: start ## Alias of start
 
@@ -62,8 +62,8 @@ ci: fmt lint vet test frontend ## Run the local CI checks
 quality: ## Run the quality test set against the stub model
 	go test ./tests/quality -count=1 -v
 
-quality-real: ## Run the quality test set against a running daemon (YGGDRASIL_QUALITY_URL, default http://127.0.0.1:7331)
-	YGGDRASIL_QUALITY_URL=$${YGGDRASIL_QUALITY_URL:-http://127.0.0.1:7331} go test ./tests/quality -count=1 -v -timeout 60m
+quality-real: ## Run the quality test set against a running daemon (TOSKAR_QUALITY_URL, default http://127.0.0.1:7331)
+	TOSKAR_QUALITY_URL=$${TOSKAR_QUALITY_URL:-http://127.0.0.1:7331} go test ./tests/quality -count=1 -v -timeout 60m
 
 test-cluster: ## Run the Docker cluster check
 	chmod +x scripts/cluster-e2e.sh

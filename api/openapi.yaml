@@ -4701,7 +4701,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      description: An API key from the API Access page, or YGGDRASIL_API_KEY
+      description: An API key from the API Access page, or TOSKAR_API_KEY
   schemas:
     RuntimeSample:
       type: object

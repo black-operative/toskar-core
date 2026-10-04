@@ -81,7 +81,7 @@ The export needs about the base model's size in free disk space, and the revisio
 
 - Discovery defaults to on. Both daemons need to be running.
 - Bifrost must be reachable on port 7332. On macOS, allow Local Network for the process.
-- mDNS does not cross every Docker or VPN boundary. Set `YGGDRASIL_STATIC_PEERS` or `static_peers` to `host:7332`.
+- mDNS does not cross every Docker or VPN boundary. Set `TOSKAR_STATIC_PEERS` or `static_peers` to `host:7332`.
 - After you enable discovery on a daemon that already bound Bifrost to loopback, restart it.
 
 ## Pairing fails
@@ -112,7 +112,7 @@ Note how long Yggdrasil has been running and what it was doing (chats, automatio
 2. If it keeps growing, export a second bundle an hour later. Two snapshots show what grew.
 3. Attach both to an issue.
 
-To look yourself, start the daemon with `YGGDRASIL_PPROF=127.0.0.1:6060` and run `go tool pprof http://127.0.0.1:6060/debug/pprof/heap`, or open `http://127.0.0.1:6060/debug/pprof/goroutine?debug=1`.
+To look yourself, start the daemon with `TOSKAR_PPROF=127.0.0.1:6060` and run `go tool pprof http://127.0.0.1:6060/debug/pprof/heap`, or open `http://127.0.0.1:6060/debug/pprof/goroutine?debug=1`.
 
 Stopping a model, a tool source, or Yggdrasil itself ends every process it started, including helpers such as the `node` process `npx` runs. If one is left behind, note its command line (`ps -ef | grep llama-server`) in the issue.
 

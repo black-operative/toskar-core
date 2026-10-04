@@ -33,3 +33,29 @@ func TestSplitCSVAndApplyEnv(t *testing.T) {
 		t.Fatalf("web ui: dir=%q enabled=%v", cfg.WebUIDir, cfg.WebUIEnabled)
 	}
 }
+
+// The TOSKAR_ names are read first; the YGGDRASIL_ names from before the
+// rename keep working, since existing configurations set them (#237).
+func TestEnvPrefersToskarAndFallsBack(t *testing.T) {
+	t.Setenv("TOSKAR_NODE_NAME", "")
+	t.Setenv("YGGDRASIL_NODE_NAME", "Old Name")
+	if got := Env("NODE_NAME"); got != "Old Name" {
+		t.Fatalf("fallback: got %q", got)
+	}
+	t.Setenv("TOSKAR_NODE_NAME", "New Name")
+	if got := Env("NODE_NAME"); got != "New Name" {
+		t.Fatalf("precedence: got %q", got)
+	}
+
+	t.Setenv("TOSKAR_API_PORT", "8331")
+	t.Setenv("YGGDRASIL_API_PORT", "7331")
+	t.Setenv("TOSKAR_STUB_INFERENCE", "true")
+	cfg := DefaultConfig()
+	ApplyEnvOverrides(&cfg)
+	if cfg.NodeName != "New Name" || cfg.APIPort != 8331 {
+		t.Fatalf("overrides: name=%q port=%d", cfg.NodeName, cfg.APIPort)
+	}
+	if !EnvTruthy("STUB_INFERENCE") {
+		t.Fatal("TOSKAR_STUB_INFERENCE=true not read")
+	}
+}

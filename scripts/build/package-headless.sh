@@ -63,8 +63,8 @@ Then open:
   http://127.0.0.1:7331
 
 Optional:
-  YGGDRASIL_WEB_UI_DIR=./web ./yggdrasil-daemon${EXT}
-  YGGDRASIL_API_HOST=0.0.0.0 ./yggdrasil-daemon${EXT}   # LAN bind (explicit)
+  TOSKAR_WEB_UI_DIR=./web ./yggdrasil-daemon${EXT}
+  TOSKAR_API_HOST=0.0.0.0 ./yggdrasil-daemon${EXT}   # LAN bind (explicit)
 
 Shell completion for yggctl (bash, zsh, fish):
   completions/   # or print one with: ./yggctl completion <bash|zsh|fish>

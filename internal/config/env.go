@@ -6,54 +6,66 @@ import (
 	"strings"
 )
 
-// ApplyEnvOverrides mutates cfg from YGGDRASIL_* environment variables.
-// Used for Docker / CI cluster nodes with fixed identities and static peers.
+// Env reads a setting from the environment: TOSKAR_<name>, or the name
+// from before the rename, YGGDRASIL_<name>, which existing Docker, systemd,
+// launchd, and MCP configurations set (#237). The new name wins when both
+// are set.
+func Env(name string) string {
+	if v := os.Getenv("TOSKAR_" + name); v != "" {
+		return v
+	}
+	return os.Getenv("YGGDRASIL_" + name)
+}
+
+// ApplyEnvOverrides mutates cfg from TOSKAR_* (or YGGDRASIL_*) environment
+// variables. Used for Docker / CI cluster nodes with fixed identities and
+// static peers.
 func ApplyEnvOverrides(cfg *Config) {
 	if cfg == nil {
 		return
 	}
-	if v := os.Getenv("YGGDRASIL_NODE_ID"); v != "" {
+	if v := Env("NODE_ID"); v != "" {
 		cfg.NodeID = v
 	}
-	if v := os.Getenv("YGGDRASIL_NODE_NAME"); v != "" {
+	if v := Env("NODE_NAME"); v != "" {
 		cfg.NodeName = v
 	}
-	if v := os.Getenv("YGGDRASIL_API_HOST"); v != "" {
+	if v := Env("API_HOST"); v != "" {
 		cfg.APIHost = v
 	}
-	if v := os.Getenv("YGGDRASIL_API_PORT"); v != "" {
+	if v := Env("API_PORT"); v != "" {
 		if n, err := strconv.Atoi(v); err == nil && n > 0 {
 			cfg.APIPort = n
 		}
 	}
-	if v := os.Getenv("YGGDRASIL_INTERNAL_HOST"); v != "" {
+	if v := Env("INTERNAL_HOST"); v != "" {
 		cfg.InternalHost = v
 	}
-	if v := os.Getenv("YGGDRASIL_INTERNAL_PORT"); v != "" {
+	if v := Env("INTERNAL_PORT"); v != "" {
 		if n, err := strconv.Atoi(v); err == nil && n > 0 {
 			cfg.InternalPort = n
 		}
 	}
-	if v := os.Getenv("YGGDRASIL_ADVERTISE_HOST"); v != "" {
+	if v := Env("ADVERTISE_HOST"); v != "" {
 		cfg.AdvertiseHost = v
 	}
-	if v := os.Getenv("YGGDRASIL_DISCOVERY_ENABLED"); v != "" {
+	if v := Env("DISCOVERY_ENABLED"); v != "" {
 		cfg.DiscoveryEnabled = parseBool(v)
 	}
-	if v := os.Getenv("YGGDRASIL_STATIC_PEERS"); v != "" {
+	if v := Env("STATIC_PEERS"); v != "" {
 		cfg.StaticPeers = splitCSV(v)
 	}
-	if v := os.Getenv("YGGDRASIL_WEB_UI_DIR"); v != "" {
+	if v := Env("WEB_UI_DIR"); v != "" {
 		cfg.WebUIDir = v
 	}
-	if v := os.Getenv("YGGDRASIL_WEB_UI_ENABLED"); v != "" {
+	if v := Env("WEB_UI_ENABLED"); v != "" {
 		cfg.WebUIEnabled = parseBool(v)
 	}
 }
 
-// EnvTruthy reports whether a YGGDRASIL_* (or any) env var is a truthy flag.
-func EnvTruthy(key string) bool {
-	return parseBool(os.Getenv(key))
+// EnvTruthy reports whether the setting Env(name) is a truthy flag.
+func EnvTruthy(name string) bool {
+	return parseBool(Env(name))
 }
 
 func parseBool(v string) bool {

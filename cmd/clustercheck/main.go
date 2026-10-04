@@ -11,6 +11,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/yeixio/yggdrasil-core/internal/config"
 )
 
 const (
@@ -417,7 +419,7 @@ func applyControlAuth(req *http.Request) {
 	if strings.Contains(req.URL.Path, "/internal/") {
 		return
 	}
-	if key := strings.TrimSpace(os.Getenv("YGGDRASIL_API_KEY")); key != "" {
+	if key := strings.TrimSpace(config.Env("API_KEY")); key != "" {
 		req.Header.Set("Authorization", "Bearer "+key)
 	}
 }
