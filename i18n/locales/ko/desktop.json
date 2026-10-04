@@ -16,5 +16,11 @@
     "stopping": "로컬 AI 서비스를 중지하는 중…",
     "backgroundMenuBar": "Toskar가 메뉴 막대에서 계속 실행 중이에요",
     "backgroundTray": "Toskar가 시스템 트레이에서 계속 실행 중이에요"
+  },
+  "conflict": {
+    "title": "다른 Toskar가 실행 중입니다",
+    "message": "{{other}}이(가) 이 앱에 필요한 주소({{address}})로 이 컴퓨터에서 이미 실행 중이라 이 앱의 서비스를 시작할 수 없습니다. 다른 쪽에는 별도의 모델, 채팅, 설정이 있습니다.\n\n그쪽을 종료하고 이 앱을 다시 열거나, 지금은 다른 쪽을 사용하세요.",
+    "quit": "종료",
+    "useOther": "다른 쪽 사용"
   }
 }

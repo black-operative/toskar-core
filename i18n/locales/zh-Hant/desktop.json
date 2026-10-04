@@ -16,5 +16,11 @@
     "stopping": "正在停止本機 AI 服務…",
     "backgroundMenuBar": "Toskar 仍在選單列中執行",
     "backgroundTray": "Toskar 仍在系統匣中執行"
+  },
+  "conflict": {
+    "title": "另一個 Toskar 正在執行",
+    "message": "{{other}} 已在這台電腦上執行，並佔用了本 App 所需的位址（{{address}}），因此本 App 無法啟動自己的服務。另一個有自己的模型、聊天和設定。\n\n請結束它後重新開啟本 App，或暫時使用另一個。",
+    "quit": "結束",
+    "useOther": "使用另一個"
   }
 }

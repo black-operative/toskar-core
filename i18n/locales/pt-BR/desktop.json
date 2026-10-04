@@ -16,5 +16,11 @@
     "stopping": "Parando o serviço de IA local…",
     "backgroundMenuBar": "O Toskar continua em execução na barra de menus",
     "backgroundTray": "O Toskar continua em execução na bandeja do sistema"
+  },
+  "conflict": {
+    "title": "Outra cópia do Toskar já está em execução",
+    "message": "{{other}} já está em execução neste computador no endereço de que este app precisa ({{address}}), então este app não pode iniciar o próprio serviço. A outra tem seus próprios modelos, conversas e configurações.\n\nFeche-a e abra este app de novo, ou use a outra por enquanto.",
+    "quit": "Sair",
+    "useOther": "Usar a outra"
   }
 }

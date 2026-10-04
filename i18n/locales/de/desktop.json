@@ -16,5 +16,11 @@
     "stopping": "Lokaler KI-Dienst wird gestoppt …",
     "backgroundMenuBar": "Toskar läuft weiter in der Menüleiste",
     "backgroundTray": "Toskar läuft weiter im Infobereich"
+  },
+  "conflict": {
+    "title": "Eine andere Toskar-Instanz läuft bereits",
+    "message": "{{other}} läuft bereits auf diesem Computer unter der Adresse, die diese App braucht ({{address}}), deshalb kann diese App ihren eigenen Dienst nicht starten. Die andere Instanz hat eigene Modelle, Chats und Einstellungen.\n\nBeende sie und öffne diese App erneut, oder nutze vorerst die andere.",
+    "quit": "Beenden",
+    "useOther": "Die andere nutzen"
   }
 }

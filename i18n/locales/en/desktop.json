@@ -16,5 +16,11 @@
     "stopping": "Stopping local AI service…",
     "backgroundMenuBar": "Toskar is still running in the menu bar",
     "backgroundTray": "Toskar is still running in the system tray"
+  },
+  "conflict": {
+    "title": "Another copy of Toskar is running",
+    "message": "{{other}} is already running on this computer at the address this app needs ({{address}}), so this app can't start its own. The other one has its own models, chats, and settings.\n\nQuit it and open this app again, or use the other one for now.",
+    "quit": "Quit",
+    "useOther": "Use the other one"
   }
 }
