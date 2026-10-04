@@ -255,6 +255,8 @@
     "knowledge:search.question",
     "mobile:answer.source",
     "mobile:answer.sources",
+    "mobile:chat.auto",
+    "mobile:chat.options.effort",
     "mobile:chat.speedWithPrompt",
     "mobile:effort.auto.label",
     "mobile:effort.title",
