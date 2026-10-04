@@ -62,7 +62,7 @@ func NewManager(dataDir string) (*Manager, error) {
 	path := filepath.Join(dataDir, "config.json")
 	m := &Manager{path: path, cfg: DefaultConfig()}
 	m.cfg.DataDir = dataDir
-	m.cfg.DBPath = filepath.Join(dataDir, "yggdrasil.db")
+	m.cfg.DBPath = DBPathIn(dataDir)
 	m.cfg.ModelsDir = filepath.Join(dataDir, "models")
 	m.cfg.RuntimesDir = filepath.Join(dataDir, "runtimes")
 	m.cfg.LogsDir = filepath.Join(dataDir, "logs")
@@ -124,7 +124,7 @@ func (m *Manager) load() error {
 		cfg.DataDir = filepath.Dir(m.path)
 	}
 	if cfg.DBPath == "" {
-		cfg.DBPath = filepath.Join(cfg.DataDir, "yggdrasil.db")
+		cfg.DBPath = DBPathIn(cfg.DataDir)
 	}
 	if cfg.ModelsDir == "" {
 		cfg.ModelsDir = filepath.Join(cfg.DataDir, "models")

@@ -10,9 +10,11 @@ Yggdrasil Core is configured in three places:
 
 | OS | Default |
 | --- | --- |
-| macOS | `~/Library/Application Support/Yggdrasil` |
-| Windows | `%LOCALAPPDATA%\Yggdrasil` |
-| Linux | `$XDG_DATA_HOME/yggdrasil`, or `~/.local/share/yggdrasil` |
+| macOS | `~/Library/Application Support/Toskar` |
+| Windows | `%LOCALAPPDATA%\Toskar` |
+| Linux | `$XDG_DATA_HOME/toskar`, or `~/.local/share/toskar` |
+
+An install from before the rename to Toskar keeps its `Yggdrasil` folder (`yggdrasil` on Linux) and its `yggdrasil.db`: when that folder exists and the Toskar one has no `config.json`, it is used as it is, and nothing is moved.
 
 Start the daemon with `-data-dir <path>` to use another directory, such as a second daemon for testing. A `config.json` that does not set `data_dir` belongs to the directory it is in. `yggctl paths` prints the default paths.
 
@@ -21,7 +23,7 @@ What lives there:
 | Path | Contents |
 | --- | --- |
 | `config.json` | The values below. Written with mode `0600`. |
-| `yggdrasil.db` | SQLite: models, profiles, chats, memories, settings, automations, specialized AIs and their examples, knowledge indexes and vectors, run records, notifications, API key hashes, paired computers. |
+| `toskar.db` | SQLite: models, profiles, chats, memories, settings, automations, specialized AIs and their examples, knowledge indexes and vectors, run records, notifications, API key hashes, paired computers. |
 | `models/` | Installed GGUF model files, and image and video models in `models/images/` and `models/video/`, one folder per model. |
 | `runtimes/llamacpp/` | `llama-server` and the other llama.cpp programs. |
 | `runtimes/python/` | `uv`, a private Python, and the environments for training (`envs/trainer-mlx`, `envs/trainer-peft`), text recognition (`envs/ocr`), running code (`envs/code`), and speech (`envs/speech`), each installed the first time it is needed. |
@@ -41,7 +43,7 @@ What lives there:
 | Key | Default | Meaning |
 | --- | --- | --- |
 | `data_dir` | the directory the file is in | Root of the paths below |
-| `db_path` | `<data_dir>/yggdrasil.db` | SQLite database |
+| `db_path` | `<data_dir>/toskar.db` (or an existing `yggdrasil.db`) | SQLite database |
 | `models_dir` | `<data_dir>/models` | Model files |
 | `runtimes_dir` | `<data_dir>/runtimes` | Runtime binaries and Python environments |
 | `logs_dir` | `<data_dir>/logs` | Log files |
@@ -90,7 +92,7 @@ Restart the daemon after editing the file by hand. A changed `api_host` or `inte
 
 ## Settings
 
-Settings are stored in `yggdrasil.db`. The app's Settings page shows them, and `GET /api/v1/settings` returns them together with the read-only paths, addresses, and node identity above.
+Settings are stored in `toskar.db`. The app's Settings page shows them, and `GET /api/v1/settings` returns them together with the read-only paths, addresses, and node identity above.
 
 | Setting | Default | Meaning |
 | --- | --- | --- |

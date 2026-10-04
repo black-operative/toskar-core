@@ -246,10 +246,10 @@ const screenshotNodes = `[
 ]`
 
 const screenshotSettings = `{
-  "data_dir": "/Users/demo/Library/Application Support/Yggdrasil",
-  "models_dir": "/Users/demo/Library/Application Support/Yggdrasil/models",
-  "runtimes_dir": "/Users/demo/Library/Application Support/Yggdrasil/runtimes",
-  "logs_dir": "/Users/demo/Library/Application Support/Yggdrasil/logs",
+  "data_dir": "/Users/demo/Library/Application Support/Toskar",
+  "models_dir": "/Users/demo/Library/Application Support/Toskar/models",
+  "runtimes_dir": "/Users/demo/Library/Application Support/Toskar/runtimes",
+  "logs_dir": "/Users/demo/Library/Application Support/Toskar/logs",
   "api_host": "127.0.0.1",
   "api_port": 7331,
   "lan_api_enabled": false,

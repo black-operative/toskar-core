@@ -95,7 +95,7 @@ func WriteBundle(destPath string, opts Options) error {
 	if opts.IncludeConversations {
 		dbPath := opts.Config.DBPath
 		if st, err := os.Stat(dbPath); err == nil && st.Size() < 32<<20 {
-			_ = addFile(zw, dbPath, "optional/yggdrasil.db")
+			_ = addFile(zw, dbPath, "optional/"+filepath.Base(dbPath))
 		}
 	}
 

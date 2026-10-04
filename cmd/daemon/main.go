@@ -81,7 +81,7 @@ func setupLogger(dataDir string) (*slog.Logger, io.Closer, error) {
 // printPythonEnvs describes each managed Python environment for packagers.
 // A sandboxed app (the Mac App Store build) cannot install them, so it ships
 // them signed in a "python" folder beside the daemon: python/<name>/ with
-// the interpreter, the packages, and a ".yggdrasil-requirements" file whose
+// the interpreter, the packages, and a ".toskar-requirements" file whose
 // content is "marker" exactly (see docs/runtimes.md).
 func printPythonEnvs() {
 	type env struct {

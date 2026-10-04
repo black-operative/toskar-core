@@ -209,7 +209,8 @@ func bundleEnv(t *testing.T, dir string, spec Spec, marker string) string {
 	if err := os.WriteFile(py, []byte("#!/bin/sh\n"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(dir, spec.Name, ".yggdrasil-requirements"), []byte(marker), 0o644); err != nil {
+	// The marker name from before the rename, as bundles built then carry (#237).
+	if err := os.WriteFile(filepath.Join(dir, spec.Name, legacyMarkerName), []byte(marker), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	return py
@@ -273,5 +274,25 @@ func TestSandboxDetection(t *testing.T) {
 	t.Setenv("APP_SANDBOX_CONTAINER_ID", "io.yeix.yggdrasil")
 	if !Sandboxed() || !New(t.TempDir()).Sandboxed {
 		t.Fatal("macOS sandbox not detected")
+	}
+}
+
+// An environment installed now carries the new marker name, and stays
+// current (#237).
+func TestInstalledEnvironmentHasTheToskarMarker(t *testing.T) {
+	dir := t.TempDir()
+	spec := Spec{Name: "env"}
+	py := interpreter(filepath.Join(dir, spec.Name))
+	if err := os.MkdirAll(filepath.Dir(py), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(py, []byte("#!/bin/sh\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, spec.Name, markerName), []byte(RequirementsKey(spec)), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if st := envStatus(spec, filepath.Join(dir, spec.Name)); !st.Installed {
+		t.Fatalf("status %+v", st)
 	}
 }

@@ -141,8 +141,24 @@ func interpreter(env string) string {
 // PythonPath is the interpreter inside an environment the manager installs.
 func (m *Manager) PythonPath(name string) string { return interpreter(m.envDir(name)) }
 
+// Marker names: environments built before the Toskar rename carry the old
+// one and stay current (#237).
+const (
+	markerName       = ".toskar-requirements"
+	legacyMarkerName = ".yggdrasil-requirements"
+)
+
 func (m *Manager) markerPath(name string) string {
-	return filepath.Join(m.envDir(name), ".yggdrasil-requirements")
+	return filepath.Join(m.envDir(name), markerName)
+}
+
+// readMarker reads an environment's requirements marker under either name.
+func readMarker(dir string) ([]byte, error) {
+	b, err := os.ReadFile(filepath.Join(dir, markerName))
+	if err != nil {
+		b, err = os.ReadFile(filepath.Join(dir, legacyMarkerName))
+	}
+	return b, err
 }
 
 func requirementsKey(spec Spec) string {
@@ -159,7 +175,8 @@ func requirementsKey(spec Spec) string {
 }
 
 // RequirementsKey is the content of an environment's requirements marker,
-// ".yggdrasil-requirements". A bundled environment must carry it, so the
+// ".toskar-requirements" (or ".yggdrasil-requirements" from before the
+// rename). A bundled environment must carry it, so the
 // daemon can tell it was built from the requirements it expects.
 func RequirementsKey(spec Spec) string { return requirementsKey(spec) }
 
@@ -181,7 +198,7 @@ func envStatus(spec Spec, dir string) Status {
 	if _, err := os.Stat(py); err != nil {
 		return st
 	}
-	marker, err := os.ReadFile(filepath.Join(dir, ".yggdrasil-requirements"))
+	marker, err := readMarker(dir)
 	if err != nil || string(marker) != requirementsKey(spec) {
 		st.Stale = true
 		return st

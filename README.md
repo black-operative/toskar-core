@@ -268,11 +268,11 @@ On first start the daemon writes `config.json` in the data directory.
 
 | OS | Data directory |
 | --- | --- |
-| macOS | `~/Library/Application Support/Yggdrasil` |
-| Windows | `%LOCALAPPDATA%\Yggdrasil` |
-| Linux | `$XDG_DATA_HOME/yggdrasil` or `~/.local/share/yggdrasil` |
+| macOS | `~/Library/Application Support/Toskar` |
+| Windows | `%LOCALAPPDATA%\Toskar` |
+| Linux | `$XDG_DATA_HOME/toskar` or `~/.local/share/toskar` |
 
-Models, runtimes, logs, `yggdrasil.db`, and `secrets/` live under that path. `TOSKAR_*` variables override bind addresses, node identity, static peers, and discovery. Every key, variable, and setting is in [docs/configuration.md](docs/configuration.md). See also [docs/privacy.md](docs/privacy.md).
+Models, runtimes, logs, `toskar.db`, and `secrets/` live under that path. An install from before the rename keeps its `Yggdrasil` folder and `yggdrasil.db`; nothing is moved. `TOSKAR_*` variables override bind addresses, node identity, static peers, and discovery. Every key, variable, and setting is in [docs/configuration.md](docs/configuration.md). See also [docs/privacy.md](docs/privacy.md).
 
 ## Security and privacy
 

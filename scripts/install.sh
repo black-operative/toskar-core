@@ -267,7 +267,7 @@ else
 	ok "Yggdrasil Core installed"
 	if [ "$TOSKAR_NO_SERVICE" != "1" ] || [ "$joining" -eq 1 ]; then
 		say "Waiting for Yggdrasil to start..."
-		wait_healthy || die "Yggdrasil didn't start within a minute; see its log (journalctl -u yggdrasil on Linux, ~/Library/Application Support/Yggdrasil/logs on macOS) and try again"
+		wait_healthy || die "Yggdrasil didn't start within a minute; see its log (journalctl -u yggdrasil on Linux, the logs folder in ~/Library/Application Support/Toskar, or Yggdrasil for an install from before the rename, on macOS) and try again"
 		ok "Yggdrasil Core is running"
 	fi
 fi

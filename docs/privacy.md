@@ -12,13 +12,13 @@ Everything Yggdrasil keeps is in the data directory. [Configuration](configurati
 
 | Path | Contents |
 | --- | --- |
-| `yggdrasil.db` | The audit of tool calls (what each was about, never file contents), chats and their messages, summaries of long conversations, memories, profiles, settings, model start and crash counts for community ratings (kept 90 days), automations and their results, specialized AIs and their examples, knowledge indexes and vectors, run records (traces, task history, what left this computer), notifications, API key hashes, paired computers, and join token records (a proof key and when each was used, never the token). |
+| `toskar.db` (`yggdrasil.db` in an install from before the rename) | The audit of tool calls (what each was about, never file contents), chats and their messages, summaries of long conversations, memories, profiles, settings, model start and crash counts for community ratings (kept 90 days), automations and their results, specialized AIs and their examples, knowledge indexes and vectors, run records (traces, task history, what left this computer), notifications, API key hashes, paired computers, and join token records (a proof key and when each was used, never the token). |
 | `artifacts/` | Files attached to chats and files the assistant made, one folder per chat. Deleting a chat deletes its files. |
 | `knowledge/` | Copies of content you pasted or uploaded as knowledge, and the recognized text of scanned PDFs. Linked files, folders, databases, and web APIs stay where they are. |
 | `training/` | Trained adapters, exported GGUF files, and downloaded training weights. |
 | `models/`, `runtimes/` | Model files, llama.cpp, and the Python environments for training and text recognition. |
 | `logs/` | JSON logs. They are not sent anywhere. |
-| `secrets/` | This computer's identity, and credentials for connected services, MCP tool sources, database and API knowledge, and notification destinations (SMTP passwords, ntfy access tokens, and webhook signing secrets). Directory mode `0700`, files `0600`. API keys are stored as bcrypt hashes in `yggdrasil.db`, never as plaintext. |
+| `secrets/` | This computer's identity, and credentials for connected services, MCP tool sources, database and API knowledge, and notification destinations (SMTP passwords, ntfy access tokens, and webhook signing secrets). Directory mode `0700`, files `0600`. API keys are stored as bcrypt hashes in the database, never as plaintext. |
 
 What you can see and remove:
 
@@ -33,7 +33,7 @@ The diagnostic bundle is written to omit secrets, private keys, and API key mate
 
 Yggdrasil does not encrypt its own files, and encryption is not required to use it.
 
-- **At rest:** `yggdrasil.db`, `artifacts/`, `knowledge/`, and the other files above are plain files on disk. `secrets/` is readable only by your user account (`0700`/`0600`), and API keys are bcrypt hashes. Turn on full-disk encryption to keep everything encrypted while the computer is off or locked: FileVault on macOS, BitLocker or Device Encryption on Windows, and LUKS on Linux.
+- **At rest:** the database, `artifacts/`, `knowledge/`, and the other files above are plain files on disk. `secrets/` is readable only by your user account (`0700`/`0600`), and API keys are bcrypt hashes. Turn on full-disk encryption to keep everything encrypted while the computer is off or locked: FileVault on macOS, BitLocker or Device Encryption on Windows, and LUKS on Linux.
 - **To the internet:** web search, page reads, model and runtime downloads, community ratings, and the built-in services use HTTPS. Addresses you enter, such as an external server, a webhook, an MCP server, or your own map services, are encrypted when they use `https://`. Email requires TLS or STARTTLS except for a mail server on this computer.
 - **Between your computers:** Bifrost (port 7332) is plain HTTP. Pairing uses a signed handshake and each request carries a token from a paired node, so other machines can't join or call it, but a chat placed on a paired computer, and its answer, cross the network unencrypted.
 - **Local network access:** the API on port 7331 is plain HTTP with a bearer key. See [API exposure](#api-exposure).

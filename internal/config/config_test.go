@@ -19,7 +19,7 @@ func TestConfigWithoutDataDirStaysInItsDirectory(t *testing.T) {
 		t.Fatal(err)
 	}
 	cfg := m.Get()
-	if cfg.DataDir != dir || cfg.DBPath != filepath.Join(dir, "yggdrasil.db") || cfg.ModelsDir != filepath.Join(dir, "models") {
+	if cfg.DataDir != dir || cfg.DBPath != filepath.Join(dir, "toskar.db") || cfg.ModelsDir != filepath.Join(dir, "models") {
 		t.Fatalf("config points outside %s: data %s, db %s, models %s", dir, cfg.DataDir, cfg.DBPath, cfg.ModelsDir)
 	}
 	if cfg.APIPort != 27331 {

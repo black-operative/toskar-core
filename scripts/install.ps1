@@ -125,7 +125,7 @@ if ($installed -and (Test-Healthy)) {
     $deadline = (Get-Date).AddMinutes(1)
     while (-not (Test-Healthy)) {
         if ((Get-Date) -gt $deadline) {
-            Fail "Yggdrasil didn't start within a minute; see the logs in $env:LOCALAPPDATA\Yggdrasil\logs and try again"
+            Fail "Yggdrasil didn't start within a minute; see the logs in $env:LOCALAPPDATA\Toskar\logs (or Yggdrasil\logs for an install from before the rename) and try again"
         }
         Start-Sleep -Seconds 1
     }
