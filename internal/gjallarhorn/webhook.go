@@ -147,7 +147,7 @@ func sendWebhook(ctx context.Context, client *http.Client, cfg WebhookConfig, se
 		return PermanentError{Err: err}
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", "Yggdrasil-Gjallarhorn/1")
+	req.Header.Set("User-Agent", "Toskar-Gjallarhorn/1")
 	req.Header.Set(SignatureHeader, Sign(secret, now, body))
 	req.Header.Set(NotificationIDHeader, n.ID)
 	resp, err := client.Do(req)

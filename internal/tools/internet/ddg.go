@@ -183,7 +183,7 @@ func get(ctx context.Context, client *http.Client, endpoint string, limit int64)
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("User-Agent", "Yggdrasil/0.1")
+	req.Header.Set("User-Agent", "Toskar/0.1")
 	res, err := client.Do(req)
 	if err != nil {
 		return "", err

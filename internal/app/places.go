@@ -19,7 +19,7 @@ func (a *App) registerPlaces(cfg config.Config) {
 	c := &places.Client{
 		Geocoder: cfg.PlacesGeocoderURL, Overpass: cfg.PlacesOverpassURL, Router: cfg.PlacesRouterURL,
 		HTTP:      &http.Client{Timeout: 25 * time.Second},
-		UserAgent: "Yggdrasil/" + version.Version + " (+https://github.com/yeixio/yggdrasil-core)",
+		UserAgent: "Toskar/" + version.Version + " (+https://github.com/yeixio/yggdrasil-core)",
 		Cache:     cache.New[[]byte](places.CachePolicy),
 		Record: func(ctx context.Context, host, detail string) {
 			if a.Egress != nil {

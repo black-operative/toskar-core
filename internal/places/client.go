@@ -125,7 +125,7 @@ func (c *Client) get(ctx context.Context, rawURL string, form url.Values, detail
 	}
 	ua := c.UserAgent
 	if ua == "" {
-		ua = "Yggdrasil (+https://github.com/yeixio/yggdrasil-core)"
+		ua = "Toskar (+https://github.com/yeixio/yggdrasil-core)"
 	}
 	req.Header.Set("User-Agent", ua)
 	req.Header.Set("Accept", "application/json")

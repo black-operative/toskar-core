@@ -31,7 +31,7 @@ func download(ctx context.Context, client *http.Client, url, path string, size i
 	if err != nil {
 		return err
 	}
-	req.Header.Set("User-Agent", "yggdrasil-daemon")
+	req.Header.Set("User-Agent", "toskar-daemon")
 	if offset > 0 {
 		req.Header.Set("Range", fmt.Sprintf("bytes=%d-", offset))
 	}

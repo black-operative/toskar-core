@@ -134,7 +134,7 @@ func sendNtfy(ctx context.Context, client *http.Client, c NtfyConfig, token stri
 		return PermanentError{Err: err}
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", "Yggdrasil-Gjallarhorn/1")
+	req.Header.Set("User-Agent", "Toskar-Gjallarhorn/1")
 	if token != "" {
 		req.Header.Set("Authorization", "Bearer "+token)
 	}

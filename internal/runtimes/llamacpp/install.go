@@ -193,7 +193,7 @@ func latestAsset(ctx context.Context) (assetInfo, error) {
 		return assetInfo{}, err
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
-	req.Header.Set("User-Agent", "yggdrasil-daemon")
+	req.Header.Set("User-Agent", "toskar-daemon")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return assetInfo{}, err

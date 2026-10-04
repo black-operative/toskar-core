@@ -376,7 +376,7 @@ func fetchAPI(ctx context.Context, name string, r Remote, sec remoteSecret) ([]d
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json, text/csv;q=0.9, text/plain;q=0.8, */*;q=0.5")
-	req.Header.Set("User-Agent", "Yggdrasil-Mimir")
+	req.Header.Set("User-Agent", "Toskar-Mimir")
 	for k, v := range sec.Headers {
 		req.Header.Set(k, v)
 	}

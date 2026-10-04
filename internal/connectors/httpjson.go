@@ -30,7 +30,7 @@ func call(ctx context.Context, c *http.Client, method, url string, header map[st
 		return err
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "Yggdrasil")
+	req.Header.Set("User-Agent", "Toskar")
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}

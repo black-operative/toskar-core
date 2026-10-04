@@ -31,7 +31,7 @@ func (a *App) newRatings(cfg config.Config) *ratings.Service {
 		Client: &ratings.Client{
 			ServiceURL: cfg.RatingsURL, SummaryURL: cfg.RatingsSummaryURL,
 			HTTP:      &http.Client{Timeout: 20 * time.Second},
-			UserAgent: "Yggdrasil/" + version.Version + " (+https://github.com/yeixio/yggdrasil-core)",
+			UserAgent: "Toskar/" + version.Version + " (+https://github.com/yeixio/yggdrasil-core)",
 		},
 		// Hardware detection is slow on some computers, and it is the same
 		// from one minute to the next.

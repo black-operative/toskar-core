@@ -70,7 +70,7 @@ func (c *Client) Search(ctx context.Context, query string, limit int) ([]contrac
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "Yggdrasil/0.1")
+	req.Header.Set("User-Agent", "Toskar/0.1")
 
 	resp, err := c.HTTP.Do(req)
 	if err != nil {
