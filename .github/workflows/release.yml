@@ -87,14 +87,14 @@ jobs:
           set -euo pipefail
           # The new formula is already written in the worktree. Keep a copy, then
           # discard that change so checkout can switch onto main.
-          cp Formula/yggdrasil.rb /tmp/yggdrasil.rb
+          cp Formula/toskar.rb /tmp/toskar.rb
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git fetch origin main
           git checkout -f -B formula origin/main
           mkdir -p Formula
-          cp /tmp/yggdrasil.rb Formula/yggdrasil.rb
-          git add Formula/yggdrasil.rb
+          cp /tmp/toskar.rb Formula/toskar.rb
+          git add Formula/toskar.rb
           if git diff --cached --quiet; then
             echo "Homebrew formula matches main"
           else
@@ -105,7 +105,7 @@ jobs:
             if [ -z "$(gh pr list --head formula --base main --state open --json number --jq '.[0].number')" ]; then
               gh pr create --base main --head formula \
                 --title "Publish the Homebrew formula for ${GITHUB_REF_NAME#v}" \
-                --body "Updates Formula/yggdrasil.rb from the ${GITHUB_REF_NAME} release."
+                --body "Updates Formula/toskar.rb from the ${GITHUB_REF_NAME} release."
             fi
             # The actions token opens the pull request but cannot approve it. A required review must not fail the release.
             if ! gh pr merge formula --squash --admin; then

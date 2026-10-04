@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Write Formula/yggdrasil.rb from the macOS archives in dist/SHA256SUMS.txt.
+# Write Formula/toskar.rb from the macOS archives in dist/SHA256SUMS.txt.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 VERSION="${VERSION:?VERSION is required}"
 TAG="v${VERSION#v}"
 SUMS="${ROOT}/dist/SHA256SUMS.txt"
-TMPL="${ROOT}/packaging/homebrew/yggdrasil.rb.tmpl"
-OUT="${ROOT}/Formula/yggdrasil.rb"
+TMPL="${ROOT}/packaging/homebrew/toskar.rb.tmpl"
+OUT="${ROOT}/Formula/toskar.rb"
 
 arm_file="yggdrasil-${VERSION}-darwin-arm64-headless.tar.gz"
 amd_file="yggdrasil-${VERSION}-darwin-amd64-headless.tar.gz"

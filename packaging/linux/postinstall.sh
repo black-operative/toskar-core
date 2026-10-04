@@ -5,6 +5,6 @@ if ! getent passwd yggdrasil >/dev/null 2>&1; then
 fi
 if command -v systemctl >/dev/null 2>&1; then
   systemctl daemon-reload || true
-  systemctl enable yggdrasil.service || true
-  systemctl restart yggdrasil.service || true
+  systemctl enable toskar.service || true
+  systemctl restart toskar.service || true
 fi

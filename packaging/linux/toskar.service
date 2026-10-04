@@ -1,9 +1,11 @@
 [Unit]
-Description=Yggdrasil local AI daemon
+Description=Toskar local AI daemon
 After=network.target
 
 [Service]
 Type=simple
+# The system user and its home keep the names from before the rename, so
+# existing data stays where it is (#237).
 User=yggdrasil
 Group=yggdrasil
 # The old name, so a drop-in setting either YGGDRASIL_ or TOSKAR_WEB_UI_DIR
@@ -14,3 +16,5 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
+# systemctl status yggdrasil, and scripts written before the rename, keep working.
+Alias=yggdrasil.service

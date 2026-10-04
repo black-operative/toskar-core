@@ -86,11 +86,11 @@ Homebrew installs the Core daemon from this repository. Yggdrasil Desktop is a s
 
 ```bash
 brew tap yeixio/yggdrasil https://github.com/yeixio/yggdrasil-core
-brew install yeixio/yggdrasil/yggdrasil
+brew install yeixio/yggdrasil/toskar
 toskar
 ```
 
-A tagged release writes `Formula/yggdrasil.rb` and merges it to `main`. Headless archives are also attached to [GitHub Releases](https://github.com/yeixio/yggdrasil-core/releases). See [packaging/release-install.md](packaging/release-install.md).
+A tagged release writes `Formula/toskar.rb` and merges it to `main`. An install from before the rename upgrades on its own: `brew upgrade` moves the `yggdrasil` formula to `toskar`. Headless archives are also attached to [GitHub Releases](https://github.com/yeixio/yggdrasil-core/releases). See [packaging/release-install.md](packaging/release-install.md).
 
 ### Linux
 
@@ -99,10 +99,10 @@ Debian and Ubuntu use the apt repository on the `apt` branch. That repository is
 ```bash
 echo "deb [trusted=yes] https://raw.githubusercontent.com/yeixio/yggdrasil-core/apt stable main" | sudo tee /etc/apt/sources.list.d/yggdrasil.list
 sudo apt-get update
-sudo apt-get install yggdrasil
+sudo apt-get install toskar
 ```
 
-The package installs `toskar`, `toskarctl`, the web UI, and `yggdrasil.service`. RPM packages for x86_64 and aarch64 are on the GitHub Release. Install one with `sudo rpm -i` or `sudo dnf install`. Details are in [packaging/linux/README.md](packaging/linux/README.md).
+The package installs `toskar`, `toskarctl`, the web UI, and `toskar.service`, which also answers to `yggdrasil.service`. An install from before the rename moves to the `toskar` package with `sudo apt-get upgrade`. RPM packages for x86_64 and aarch64 are on the GitHub Release. Install one with `sudo rpm -i` or `sudo dnf install`. Details are in [packaging/linux/README.md](packaging/linux/README.md).
 
 ### Windows
 

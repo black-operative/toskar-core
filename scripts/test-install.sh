@@ -28,7 +28,9 @@ export YGGDRASIL_RELEASE_URL=http://127.0.0.1:18090
 
 echo "== install"
 sh scripts/install.sh
-systemctl is-active --quiet yggdrasil.service || { sudo journalctl -u yggdrasil --no-pager | tail -50; exit 1; }
+systemctl is-active --quiet toskar.service || { sudo journalctl -u toskar --no-pager | tail -50; exit 1; }
+# The name from before the rename is an alias (#237).
+systemctl is-active --quiet yggdrasil.service
 toskarctl version | head -1
 # The names from before the rename still run (#237).
 yggctl version | head -1
@@ -45,7 +47,7 @@ cat >"$work/issuer/config.json" <<EOF
  "api_host":"127.0.0.1","api_port":17431,"internal_port":17432,"discovery_enabled":true,"node_name":"issuer"}
 EOF
 stage="$(mktemp -d)"
-dpkg-deb -x dist/*.deb "$stage"
+dpkg-deb -x dist/toskar_*.deb "$stage"
 "$stage/usr/bin/toskar" --data-dir "$work/issuer" >"$work/issuer.log" 2>&1 &
 issuer_pid=$!
 for _ in $(seq 1 60); do curl -fsS -o /dev/null http://127.0.0.1:17431/api/v1/health && break; sleep 0.5; done

@@ -133,9 +133,15 @@ trap 'rm -rf "$tmp"' EXIT INT TERM
 # download_release <pattern>: download the one release file matching an
 # extended regular expression, checked against SHA256SUMS.txt, and print its
 # path.
+# download_release <pattern> [<pattern from before the rename>]: the first
+# file in the release that matches, checked against SHA256SUMS.txt. An
+# older release (TOSKAR_VERSION) names its packages yggdrasil (#237).
 download_release() {
 	fetch "${BASE}/SHA256SUMS.txt" "$tmp/SHA256SUMS.txt" || die "couldn't download the release list from ${BASE}"
 	line="$(grep -E "  ($1)\$" "$tmp/SHA256SUMS.txt" | head -n 1 || true)"
+	if [ -z "$line" ] && [ -n "${2:-}" ]; then
+		line="$(grep -E "  ($2)\$" "$tmp/SHA256SUMS.txt" | head -n 1 || true)"
+	fi
 	[ -n "$line" ] || die "the release has no file for this computer (${os} ${arch})"
 	want="${line%% *}"
 	name="${line##* }"
@@ -161,18 +167,21 @@ start_service_linux() {
 	[ "$TOSKAR_NO_SERVICE" = "1" ] && return 0
 	if command -v systemctl >/dev/null 2>&1; then
 		as_root systemctl daemon-reload || true
-		as_root systemctl enable --now yggdrasil.service >/dev/null 2>&1 || as_root systemctl restart yggdrasil.service
+		# toskar.service, or yggdrasil.service from an older release.
+		unit="toskar.service"
+		systemctl cat "$unit" >/dev/null 2>&1 || unit="yggdrasil.service"
+		as_root systemctl enable --now "$unit" >/dev/null 2>&1 || as_root systemctl restart "$unit"
 	fi
 }
 
 install_linux() {
 	if command -v apt-get >/dev/null 2>&1 && command -v dpkg >/dev/null 2>&1; then
-		pkg="$(download_release "yggdrasil_[0-9][^ ]*_${arch}\.deb")"
+		pkg="$(download_release "toskar_[0-9][^ ]*_${arch}\.deb" "yggdrasil_[0-9][^ ]*_${arch}\.deb")"
 		quietly "apt-get couldn't install ${pkg##*/}" as_root apt-get install -y "$pkg"
 	elif command -v rpm >/dev/null 2>&1; then
 		rarch="x86_64"
 		[ "$arch" = "arm64" ] && rarch="aarch64"
-		pkg="$(download_release "yggdrasil-[0-9][^ ]*\.${rarch}\.rpm")"
+		pkg="$(download_release "toskar-[0-9][^ ]*\.${rarch}\.rpm" "yggdrasil-[0-9][^ ]*\.${rarch}\.rpm")"
 		if command -v dnf >/dev/null 2>&1; then
 			quietly "dnf couldn't install ${pkg##*/}" as_root dnf install -y "$pkg"
 		elif command -v yum >/dev/null 2>&1; then
@@ -280,7 +289,7 @@ else
 	fi
 	if [ "$TOSKAR_NO_SERVICE" != "1" ] || [ "$joining" -eq 1 ]; then
 		say "Waiting for Yggdrasil to start..."
-		wait_healthy || die "Yggdrasil didn't start within a minute; see its log (journalctl -u yggdrasil on Linux, the logs folder in ~/Library/Application Support/Toskar, or Yggdrasil for an install from before the rename, on macOS) and try again"
+		wait_healthy || die "Yggdrasil didn't start within a minute; see its log (journalctl -u toskar on Linux, the logs folder in ~/Library/Application Support/Toskar, or Yggdrasil for an install from before the rename, on macOS) and try again"
 		ok "Yggdrasil Core is running"
 	fi
 fi

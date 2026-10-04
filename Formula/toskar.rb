@@ -1,5 +1,5 @@
 # Homebrew formula written by the core release workflow.
-class Yggdrasil < Formula
+class Toskar < Formula
   desc "Local AI daemon and web UI"
   homepage "https://yggdrasil.yeix.io"
   version "1.5.0"

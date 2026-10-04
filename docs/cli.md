@@ -24,7 +24,7 @@ The daemon runs in the foreground and logs JSON to standard output and to `logs/
 
 How it is started depends on how it was installed:
 
-- **deb and rpm packages:** they install a systemd service, `yggdrasil.service`, and enable and start it. It runs as the system user `yggdrasil`, so its data directory is `/var/lib/yggdrasil/.local/share/toskar`, or `/var/lib/yggdrasil/.local/share/yggdrasil` for an install from before the rename. Use `sudo systemctl status yggdrasil`, `restart`, and `stop`. `journalctl -u yggdrasil` shows its log. Removing the package stops and disables the service.
+- **deb and rpm packages:** they install a systemd service, `toskar.service` (also reachable as `yggdrasil.service`), and enable and start it. It runs as the system user `yggdrasil`, so its data directory is `/var/lib/yggdrasil/.local/share/toskar`, or `/var/lib/yggdrasil/.local/share/yggdrasil` for an install from before the rename. Use `sudo systemctl status toskar`, `restart`, and `stop`. `journalctl -u toskar` shows its log. Removing the package stops and disables the service.
 - **Homebrew and the headless archives:** they install the programs only. Run `toskar` from a terminal or your own service manager.
 
 ## `toskarctl`

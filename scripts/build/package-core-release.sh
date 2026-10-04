@@ -25,7 +25,7 @@ if [[ ! -f web/dist/index.html ]]; then
   (cd web && pnpm install --frozen-lockfile && pnpm build)
 fi
 
-chmod +x packaging/linux/postinstall.sh packaging/linux/preremove.sh
+chmod +x packaging/linux/postinstall.sh packaging/linux/preremove.sh packaging/linux/start-after-rename.sh
 rm -rf dist
 mkdir -p dist
 
@@ -55,11 +55,17 @@ package_linux() {
   # Keep "~" out of the shell heredoc. On the release runner it expands to the home directory.
   {
     cat > "$cfg" <<EOF
-name: yggdrasil
+name: toskar
 arch: ${debarch}
 platform: linux
 EOF
     printf 'version: %s\n' "$PKG_VERSION" >> "$cfg"
+    # The package was called yggdrasil before the rename (#237). It takes
+    # over that package's files; rpm obsoletes it, so dnf upgrades to
+    # toskar, and apt gets there through the transitional yggdrasil
+    # package (package_transitional).
+    printf 'overrides:\n  deb:\n    replaces: ["yggdrasil (<< %s)"]\n  rpm:\n    replaces: ["yggdrasil < %s"]\n    provides: ["yggdrasil = %s"]\ndeb:\n  breaks: ["yggdrasil (<< %s)"]\n' \
+      "$PKG_VERSION" "$PKG_VERSION" "$PKG_VERSION" "$PKG_VERSION" >> "$cfg"
     cat >> "$cfg" <<EOF
 maintainer: YEIXIO LLC <hello@yeix.io>
 description: Local AI daemon and web UI
@@ -103,20 +109,55 @@ contents:
   - src: ${ROOT}/cmd/devctl/completions/_toskarctl
     dst: /usr/share/zsh/site-functions/_toskarctl
     packager: rpm
-  - src: ${ROOT}/packaging/linux/yggdrasil.service
-    dst: /usr/lib/systemd/system/yggdrasil.service
+  - src: ${ROOT}/packaging/linux/toskar.service
+    dst: /usr/lib/systemd/system/toskar.service
 scripts:
   postinstall: ${ROOT}/packaging/linux/postinstall.sh
   preremove: ${ROOT}/packaging/linux/preremove.sh
 rpm:
   arch: ${rpmarch}
+  scripts:
+    # After the obsoleted yggdrasil package's own scripts have run.
+    posttrans: ${ROOT}/packaging/linux/start-after-rename.sh
 EOF
   }
   # File names keep the human version. "~" in a path expands to the runner home directory.
-  nfpm package -p deb -f "$cfg" -t "dist/yggdrasil_${VERSION}_${debarch}.deb"
-  nfpm package -p rpm -f "$cfg" -t "dist/yggdrasil-${VERSION}-1.${rpmarch}.rpm"
+  nfpm package -p deb -f "$cfg" -t "dist/toskar_${VERSION}_${debarch}.deb"
+  nfpm package -p rpm -f "$cfg" -t "dist/toskar-${VERSION}-1.${rpmarch}.rpm"
   rm -f "$cfg"
   rm -rf "$stage"
+}
+
+# package_transitional builds an empty yggdrasil deb that depends on toskar,
+# so apt upgrade moves an install from before the rename over (#237). Its
+# postinstall turns toskar.service back on after the old package's
+# preremove has disabled it.
+package_transitional() {
+  local cfg
+  cfg="$(mktemp)"
+  {
+    cat > "$cfg" <<EOF
+name: yggdrasil
+arch: all
+platform: linux
+EOF
+    printf 'version: %s\n' "$PKG_VERSION" >> "$cfg"
+    printf 'depends: ["toskar (>= %s)"]\n' "$PKG_VERSION" >> "$cfg"
+    cat >> "$cfg" <<EOF
+maintainer: YEIXIO LLC <hello@yeix.io>
+description: Transitional package for toskar. Yggdrasil is now Toskar; this package can be removed.
+homepage: https://yggdrasil.yeix.io
+license: AGPL-3.0-or-later
+section: oldlibs
+contents:
+  - src: ${ROOT}/packaging/linux/TRANSITIONAL.md
+    dst: /usr/share/doc/yggdrasil/README
+scripts:
+  postinstall: ${ROOT}/packaging/linux/start-after-rename.sh
+EOF
+  }
+  nfpm package -p deb -f "$cfg" -t "dist/yggdrasil_${VERSION}_all.deb"
+  rm -f "$cfg"
 }
 
 package_darwin() {
@@ -148,6 +189,7 @@ package_windows() {
 want() { [[ -z "${ONLY:-}" || "${ONLY}" == "$1" ]]; }
 if want linux-amd64; then package_linux amd64 amd64 x86_64; fi
 if want linux-arm64; then package_linux arm64 arm64 aarch64; fi
+if want linux-amd64 || want linux-arm64; then package_transitional; fi
 if want darwin-arm64; then package_darwin arm64; fi
 if want darwin-amd64; then package_darwin amd64; fi
 if want windows-amd64; then package_windows amd64; fi
