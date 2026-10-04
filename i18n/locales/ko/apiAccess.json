@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "API 액세스",
-    "subtitle": "Yggdrasil API에 접속할 수 있는 위치와 보안 방식이에요.",
+    "subtitle": "Toskar API에 접속할 수 있는 위치와 보안 방식이에요.",
     "loading": "API 설정을 불러오는 중…"
   },
   "probe": {
@@ -35,19 +35,19 @@
     "lanHint": "이 컴퓨터의 LAN IP와 포트 <mono>{{port}}</mono>을(를) 사용하세요(예: <mono>http://192.168.x.x:{{port}}/v1</mono>).",
     "hideDocs": "API 문서 숨기기",
     "docs": "API 문서",
-    "docsBody": "Yggdrasil은 <mono>/v1</mono>에서 OpenAI 호환 API를 제공해요. 클라이언트가 위의 엔드포인트를 사용하도록 설정하고, 다른 컴퓨터에서 Yggdrasil에 접속할 수 있을 때는 <header/>을(를) 보내세요. `/api/v1`과 `/v1` 모두 이 헤더가 필요해요. 키는 일반 HTTP를 암호화하지 않아요.",
+    "docsBody": "Toskar는 <mono>/v1</mono>에서 OpenAI 호환 API를 제공해요. 클라이언트가 위의 엔드포인트를 사용하도록 설정하고, 다른 컴퓨터에서 Toskar에 접속할 수 있을 때는 <header/>을(를) 보내세요. `/api/v1`과 `/v1` 모두 이 헤더가 필요해요. 키는 일반 HTTP를 암호화하지 않아요.",
     "copied": "복사됨",
     "copyUrl": "URL 복사"
   },
   "lan": {
     "title": "로컬 네트워크 액세스",
     "on": "로컬 네트워크의 기기가 API 키로 연결할 수 있어요.",
-    "off": "이 컴퓨터의 앱만 Yggdrasil API를 사용할 수 있어요.",
+    "off": "이 컴퓨터의 앱만 Toskar API를 사용할 수 있어요.",
     "noKeys": "네트워크 액세스가 켜져 있지만 아직 API 키가 없어요. 다른 기기에서 연결하기 전에 키를 만드세요.",
-    "restart": "네트워크 액세스를 변경한 후에는 서버가 다시 바인딩되도록 Yggdrasil을 완전히 종료했다가 다시 여세요. 리스너가 더 이상 루프백이 아니면 모든 연결에 API 키가 필요해요. 일반 HTTP에서는 키가 트래픽을 암호화하지 않아요. API 테스트는 이 컴퓨터만 확인하며, 다른 기기에서 접속할 수 있는지는 확인하지 않아요.",
+    "restart": "네트워크 액세스를 변경한 후에는 서버가 다시 바인딩되도록 Toskar를 완전히 종료했다가 다시 여세요. 리스너가 더 이상 루프백이 아니면 모든 연결에 API 키가 필요해요. 일반 HTTP에서는 키가 트래픽을 암호화하지 않아요. API 테스트는 이 컴퓨터만 확인하며, 다른 기기에서 접속할 수 있는지는 확인하지 않아요.",
     "confirmTitle": "다른 컴퓨터의 액세스를 허용할까요?",
-    "confirmBody": "로컬 네트워크의 기기가 Yggdrasil에 연결할 수 있게 돼요. 모든 원격 연결에는 API 키가 필요해요.",
-    "confirmHttp": "일반 HTTP에서 사용하는 API 키는 트래픽을 암호화하지 않아요. 이 기능을 켠 후 서버가 네트워크에서 접속을 받도록 Yggdrasil을 종료했다가 다시 여세요.",
+    "confirmBody": "로컬 네트워크의 기기가 Toskar에 연결할 수 있게 돼요. 모든 원격 연결에는 API 키가 필요해요.",
+    "confirmHttp": "일반 HTTP에서 사용하는 API 키는 트래픽을 암호화하지 않아요. 이 기능을 켠 후 서버가 네트워크에서 접속을 받도록 Toskar를 종료했다가 다시 여세요.",
     "browserKey": "서버가 다시 바인딩된 후에도 이 브라우저가 계속 연결할 수 있도록 API 키를 만드세요. 전체 키는 한 번만 표시돼요.",
     "keyName": "키 이름",
     "defaultKeyName": "이 컴퓨터",
@@ -58,7 +58,7 @@
   },
   "keys": {
     "title": "API 키",
-    "description": "Yggdrasil과 통신하는 앱과 기기의 자격 증명이에요.",
+    "description": "Toskar와 통신하는 앱과 기기의 자격 증명이에요.",
     "create": "API 키 만들기",
     "createHint": "어디에서 사용하는 키인지 알 수 있도록 이름을 지정하세요.",
     "namePlaceholder": "VS Code",
@@ -102,13 +102,13 @@
     "saveFailed": "저장할 수 없어요."
   },
   "share": {
-    "title": "다른 AI 앱에서 Yggdrasil 사용",
+    "title": "다른 AI 앱에서 Toskar 사용",
     "description": "MCP를 지원하는 앱은 로컬 AI에 질문하고, 모델 목록을 보고, 연결된 지식을 검색할 수 있어요. 답변은 내 컴퓨터에 머물며, 로컬 AI는 읽기 도구만 사용해요.",
     "other": "기타 앱",
     "settings": "{{language}} 설정",
     "copied": "복사됨",
     "copy": "복사",
-    "needsKey": "Yggdrasil이 네트워크에 열려 있으므로 앱에 API 키가 필요해요. 아래에서 키를 만들어 설정의 <key/> 위치에 넣으세요. 키의 권한이 적용돼요.",
+    "needsKey": "Toskar가 네트워크에 열려 있으므로 앱에 API 키가 필요해요. 아래에서 키를 만들어 설정의 <key/> 위치에 넣으세요. 키의 권한이 적용돼요.",
     "keyPlaceholder": "<내 API 키>",
     "where": {
       "claudeDesktop": "Claude Desktop에서 설정 → 개발자 → 구성 편집을 열고 이 내용을 추가한 다음 Claude를 다시 시작하세요.",

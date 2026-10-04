@@ -284,7 +284,7 @@ func TestEmailDelivery(t *testing.T) {
 	port, got := fakeSMTP(t, false)
 	hub, eg, _ := deliveryHub(t)
 	ctx := context.Background()
-	cfg := &EmailConfig{Host: "127.0.0.1", Port: port, Username: "me", From: "Yggdrasil <ygg@example.com>", To: []string{"me@example.com"}, TLS: "none"}
+	cfg := &EmailConfig{Host: "127.0.0.1", Port: port, Username: "me", From: "Toskar <toskar@example.com>", To: []string{"me@example.com"}, TLS: "none"}
 	d, _, err := hub.CreateDestination(ctx, DestinationInput{Kind: KindEmail, Name: ptr("Me"), Email: cfg, Password: "hunter2"})
 	if err != nil {
 		t.Fatal(err)
@@ -295,7 +295,7 @@ func TestEmailDelivery(t *testing.T) {
 	if err := hub.TestDestination(ctx, d.ID); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(*got, "Subject: Yggdrasil: Test from Yggdrasil") || !strings.Contains(*got, "To: me@example.com") {
+	if !strings.Contains(*got, "Subject: Toskar: Test from Toskar") || !strings.Contains(*got, "To: me@example.com") {
 		t.Fatalf("message:\n%s", *got)
 	}
 	if len(eg.adds) != 1 || !strings.Contains(eg.adds[0], fmt.Sprintf("127.0.0.1:%d", port)) {

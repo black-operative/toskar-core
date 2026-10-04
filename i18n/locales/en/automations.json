@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Automations",
-    "description": "Automations run in the background, even when this window is closed. Schedule a recurring task, or have Yggdrasil tell you when something changes.",
+    "description": "Automations run in the background, even when this window is closed. Schedule a recurring task, or have Toskar tell you when something changes.",
     "new": "New automation",
     "search": "Search",
     "searchLabel": "Search automations",
@@ -13,7 +13,7 @@
     },
     "loading": "Loading automations…",
     "emptyTitle": "No automations yet",
-    "emptyDescription": "Describe a recurring check, such as a morning price or a Friday release summary, and Yggdrasil will run it on that schedule.",
+    "emptyDescription": "Describe a recurring check, such as a morning price or a Friday release summary, and Toskar will run it on that schedule.",
     "noMatches": "No automations match.",
     "lastNext": "Last {{last}} · Next {{next}}",
     "saveFailed": "Could not save the automation.",
@@ -145,7 +145,7 @@
   "form": {
     "editTitle": "Edit automation",
     "newTitle": "New automation",
-    "intro": "Tell Yggdrasil what you want it to do.",
+    "intro": "Tell Toskar what you want it to do.",
     "describe": "Describe what you want",
     "describePlaceholder": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.",
     "setUp": "Set up automation",
@@ -167,7 +167,7 @@
       "failure": "Only when it fails",
       "none": "Don't notify me"
     },
-    "noticesGo": "Notices go to the bell in Yggdrasil and, if Settings allow, to this computer's notifications.",
+    "noticesGo": "Notices go to the bell in Toskar and, if Settings allow, to this computer's notifications.",
     "condition": "Condition",
     "conditions": {
       "threshold": "Price",
@@ -189,9 +189,9 @@
     "responseApp": "Same as the App language",
     "responseAuto": "The language of the request",
     "installFirst": "Install a model first",
-    "auto": "Auto (Yggdrasil picks for each run)",
+    "auto": "Auto (Toskar picks for each run)",
     "timeZone": "Time zone",
-    "conditionHint": "Yggdrasil checks the result against this condition. The task itself stays in ordinary language.",
+    "conditionHint": "Toskar checks the result against this condition. The task itself stays in ordinary language.",
     "tools": "Tools it may use while you're away",
     "toolsHint": "Approve what this automation needs now; nobody will be around to answer later. If it reaches a tool you didn't approve, it skips it and you get a notification. Leave everything unchecked to use only the read-only tools the profile allows.",
     "changeTools": "These change things on this computer",

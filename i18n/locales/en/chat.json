@@ -1,7 +1,7 @@
 {
   "landing": {
     "title": "What can I help you with?",
-    "subtitle": "Talk to your local AI. Yggdrasil picks the right resources automatically.",
+    "subtitle": "Talk to your local AI. Toskar picks the right resources automatically.",
     "try": "Try:",
     "suggestions": {
       "explain": {
@@ -28,7 +28,7 @@
     "latest": "Latest"
   },
   "composer": {
-    "placeholder": "Ask Yggdrasil anything…",
+    "placeholder": "Ask Toskar anything…",
     "message": "Message",
     "attach": "Attach files",
     "attachHint": "Attach a document, spreadsheet, PDF, or code file",
@@ -39,14 +39,14 @@
     "choose": "Choose…",
     "automatic": "Automatic",
     "thisComputer": "This computer",
-    "runOnAutomatic": "Yggdrasil picks the best available computer for each message.",
+    "runOnAutomatic": "Toskar picks the best available computer for each message.",
     "runOnLocal": "Run only on this computer.",
     "model": "Model",
     "modelHint": "Which installed model answers this chat",
     "noModel": "No model installed",
     "modelsLoading": "Loading models…",
     "modelsFailed": "Couldn't load models",
-    "modelsFailedHint": "Yggdrasil couldn't list your models.",
+    "modelsFailedHint": "Toskar couldn't list your models.",
     "auto": "Auto",
     "models": "Models",
     "specialized": "Specialized AIs",
@@ -67,7 +67,7 @@
   "effort": {
     "auto": {
       "label": "Auto",
-      "hint": "Yggdrasil decides: quick questions stay fast, big or data questions get more care."
+      "hint": "Toskar decides: quick questions stay fast, big or data questions get more care."
     },
     "fast": {
       "label": "Fast",
@@ -85,7 +85,7 @@
   "memory": {
     "on": "Memory on",
     "off": "Memory off",
-    "onHint": "This chat uses what you asked Yggdrasil to remember. Click to keep memory out of this chat.",
+    "onHint": "This chat uses what you asked Toskar to remember. Click to keep memory out of this chat.",
     "offHint": "Memory is off for this chat. Saved memories are not used here and are not deleted.",
     "disabledHint": "Memory is off for all chats. Turn it on from the Memory page."
   },
@@ -97,7 +97,7 @@
     "downloadFailed": "Could not download a model for this chat.",
     "installFirst": "Install a model first, then try again.",
     "startFailed": "Could not start a conversation.",
-    "noReply": "The model stopped before it could reply. Yggdrasil stopped it and cleaned up the failed process.",
+    "noReply": "The model stopped before it could reply. Toskar stopped it and cleaned up the failed process.",
     "couldNotRespond": "The model could not respond.",
     "unreachable": "Could not reach the local AI. Check Diagnostics for details.",
     "generationFailed": "Something went wrong while generating a response.",
@@ -105,7 +105,7 @@
     "deleteFailed": "Could not delete this chat."
   },
   "attachments": {
-    "unsupported": "Yggdrasil can't read this type of file yet",
+    "unsupported": "Toskar can't read this type of file yet",
     "tooLarge": "Files can be up to 25 MB",
     "addFailed": "The file could not be added.",
     "adding": "Adding…",
@@ -285,7 +285,7 @@
     "details": "Details",
     "hideDetails": "Hide details",
     "notResponding": {
-      "title": "Yggdrasil isn't responding",
+      "title": "Toskar isn't responding",
       "body": "The local service stopped answering. If this is the desktop app, quit and reopen it, then try again."
     },
     "engineMissing": {
@@ -306,7 +306,7 @@
     },
     "offline": {
       "title": "A computer you're using is offline",
-      "body": "Turn it on and open Yggdrasil there, or run this chat on this computer."
+      "body": "Turn it on and open Toskar there, or run this chat on this computer."
     },
     "connection": {
       "title": "Couldn't reach the model",
@@ -319,7 +319,7 @@
     "didNotWork": "That didn’t work",
     "generic": {
       "title": "Something went wrong",
-      "body": "Yggdrasil could not finish that reply. Try again in a moment."
+      "body": "Toskar could not finish that reply. Try again in a moment."
     },
     "trainingMemory": {
       "busy": "Training is using this computer, so there was not enough memory for this model.",
@@ -337,8 +337,8 @@
     "computer": "Computer: {{value}}",
     "exitCode": "Exit code: {{value}}",
     "lastProbe": "Last health probe: {{value}}",
-    "outOfMemory": "This model likely ran out of safe memory on this computer. Yggdrasil stopped it to keep the system stable.",
-    "stopped": "The model stopped responding, so Yggdrasil stopped it and cleaned up the failed process."
+    "outOfMemory": "This model likely ran out of safe memory on this computer. Toskar stopped it to keep the system stable.",
+    "stopped": "The model stopped responding, so Toskar stopped it and cleaned up the failed process."
   },
   "capability": {
     "enableInternet": "Enable Internet",
@@ -453,7 +453,7 @@
   },
   "notices": {
     "languageWeak": "{{model}} may write {{language}} less well than English, and no installed model that fits writes it better. Models rated good in {{language}} are on the Models page.",
-    "unconfirmedFigures": "Yggdrasil could not confirm {{figures}} in the sources. Check before relying on it.",
+    "unconfirmedFigures": "Toskar could not confirm {{figures}} in the sources. Check before relying on it.",
     "codeErrors": "Some of the code doesn't parse: {{errors}}. Fix it before running it.",
     "unsourcedLinks": "These links didn't come from a source and may not work: {{links}}. Search the site instead if one doesn't open.",
     "contradictions_one": "The answer may contradict itself or its sources in {{count}} place. Check before relying on it.",
@@ -507,8 +507,8 @@
     "leftMinutes_other": "About {{count}} minutes left.",
     "leftHours_one": "About {{count}} hour left.",
     "leftHours_other": "About {{count}} hours left.",
-    "capabilities": "Checked what Yggdrasil can do right now",
-    "guide": "Read Yggdrasil's guide: {{sections}}",
+    "capabilities": "Checked what Toskar can do right now",
+    "guide": "Read Toskar's guide: {{sections}}",
     "localOnly": "Answered on this computer, because the question used data marked this computer only.",
     "passages_one": "Found {{count}} passage in {{source}}",
     "passages_other": "Found {{count}} passages in {{source}}",
@@ -560,10 +560,10 @@
     "placeDetails": "Looked up a place's details",
     "route": "Found the way from {{from}} to {{to}}",
     "git": "Checked the Git repository ({{action}})",
-    "helpAnswered": "Answered from Yggdrasil's guide"
+    "helpAnswered": "Answered from Toskar's guide"
   },
   "help": {
-    "mcpTools": "There's nothing to install for MCP itself: Yggdrasil already speaks it. To add an MCP server's tools, open **{{tools}} → {{addTools}}** and pick one of four ways:\n\n- **Gallery:** choose a server, such as folders, a browser, Notion, Linear, or GitHub, and answer at most a question or two. Services that need a sign-in open one.\n- **Paste:** paste whatever the server's instructions say: JSON for Claude Desktop, Cursor, or VS Code, a command line, a `claude mcp add` line, or a web address.\n- **From your other apps:** add servers you already set up in Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, or LM Studio.\n- **Custom:** a command to run, or a web address.\n\nYggdrasil connects and lists the server's tools before saving it. Servers that run on this computer need Node.js or uv, and the error says which if one is missing. Tools that change things ask you first.",
-    "mcpServer": "To use Yggdrasil from Claude Desktop, Claude Code, Cursor, VS Code, or another app that speaks MCP, open **{{apiAccess}} → {{useElsewhere}}**. It shows what to paste into each app. That app can then ask your local AI, list its models, and search your connected knowledge."
+    "mcpTools": "There's nothing to install for MCP itself: Toskar already speaks it. To add an MCP server's tools, open **{{tools}} → {{addTools}}** and pick one of four ways:\n\n- **Gallery:** choose a server, such as folders, a browser, Notion, Linear, or GitHub, and answer at most a question or two. Services that need a sign-in open one.\n- **Paste:** paste whatever the server's instructions say: JSON for Claude Desktop, Cursor, or VS Code, a command line, a `claude mcp add` line, or a web address.\n- **From your other apps:** add servers you already set up in Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, or LM Studio.\n- **Custom:** a command to run, or a web address.\n\nToskar connects and lists the server's tools before saving it. Servers that run on this computer need Node.js or uv, and the error says which if one is missing. Tools that change things ask you first.",
+    "mcpServer": "To use Toskar from Claude Desktop, Claude Code, Cursor, VS Code, or another app that speaks MCP, open **{{apiAccess}} → {{useElsewhere}}**. It shows what to paste into each app. That app can then ask your local AI, list its models, and search your connected knowledge."
   }
 }

@@ -318,7 +318,7 @@ function DestinationForm({
             })}
           </div>
           {/* eslint-disable-next-line i18next/no-literal-string -- an example of what to type, not prose */}
-          {field(t('destinations.from'), from, setFrom, { placeholder: 'Yggdrasil <ygg@example.com>' })}
+          {field(t('destinations.from'), from, setFrom, { placeholder: 'Toskar <toskar@example.com>' })}
           {/* eslint-disable-next-line i18next/no-literal-string -- an example of what to type, not prose */}
           {field(t('destinations.to'), to, setTo, { placeholder: 'you@example.com, someone@example.com' })}
         </>

@@ -1,6 +1,6 @@
 {
-  "name": "Yggdrasil",
-  "short_name": "Yggdrasil",
+  "name": "Toskar",
+  "short_name": "Toskar",
   "description": "Local AI control plane",
   "start_url": "/",
   "display": "standalone",

@@ -24,7 +24,7 @@
     "unavailable": "服務無法使用",
     "noModel": "沒有模型",
     "ready": "就緒",
-    "unavailableHint": "本機的 Yggdrasil 服務沒有回應。",
+    "unavailableHint": "本機的 Toskar 服務沒有回應。",
     "noModelHint": "請先在「模型」中安裝模型，才能開始聊天。",
     "readyHint": "本機服務已就緒。"
   },
@@ -40,14 +40,14 @@
     "mimirReady": "就緒"
   },
   "boot": {
-    "starting": "正在啟動 Yggdrasil",
+    "starting": "正在啟動 Toskar",
     "preparing": "正在準備你的本機 AI 服務",
     "unavailable": "服務無法使用",
-    "unavailableBody": "本機的 Yggdrasil 服務還沒有回應。請稍候再試一次。如果一直發生這種情況，請在 App 載入後查看「診斷」。",
+    "unavailableBody": "本機的 Toskar 服務還沒有回應。請稍候再試一次。如果一直發生這種情況，請在 App 載入後查看「診斷」。",
     "retrying": "正在重試…",
     "tryAgain": "再試一次",
     "keyRequired": "需要 API 金鑰",
-    "keyBody": "此 Yggdrasil 接受來自其他裝置的連線，因此需要 API 金鑰。請輸入金鑰以繼續。在一般 HTTP 上，金鑰不會加密你的通訊。",
+    "keyBody": "此 Toskar 接受來自其他裝置的連線，因此需要 API 金鑰。請輸入金鑰以繼續。在一般 HTTP 上，金鑰不會加密你的通訊。",
     "continue": "繼續"
   },
   "units": {
@@ -57,13 +57,13 @@
   },
   "pageError": {
     "title": "此頁面發生問題",
-    "body": "Yggdrasil 的其他部分仍可正常使用。請重試；如果問題反覆發生，請重新載入應用程式。",
+    "body": "Toskar 的其他部分仍可正常使用。請重試；如果問題反覆發生，請重新載入應用程式。",
     "retry": "重試",
     "reload": "重新載入",
     "details": "詳細資訊"
   },
   "loadError": {
-    "title": "Yggdrasil 無法載入此內容",
+    "title": "Toskar 無法載入此內容",
     "body": "它沒有回應，或回傳了錯誤。你的資料仍然在。請重試；如果反覆發生，請查看診斷。",
     "retry": "重試",
     "retrying": "正在重試…",

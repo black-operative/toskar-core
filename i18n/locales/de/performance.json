@@ -113,7 +113,7 @@
     "selected": "{{count}}/6 ausgewählt",
     "prompts_one": "{{count}} Prompt",
     "prompts_other": "{{count}} Prompts",
-    "warning": "Yggdrasil lädt und entlädt während des Benchmarks vorübergehend Modelle. Aktive Chats können während des Tests langsamer sein.",
+    "warning": "Toskar lädt und entlädt während des Benchmarks vorübergehend Modelle. Aktive Chats können während des Tests langsamer sein.",
     "runsPerPrompt": "Gemessene Durchläufe pro Prompt",
     "starting": "Startet …",
     "cancel": "Abbrechen",
@@ -126,7 +126,7 @@
     "minutes_other": "{{count}} Minuten",
     "startFailed": "Benchmark konnte nicht gestartet werden.",
     "recent": "Letzte Benchmarks",
-    "recentHint": "Aufträge bleiben verfügbar, solange Yggdrasil läuft.",
+    "recentHint": "Aufträge bleiben verfügbar, solange Toskar läuft.",
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_one": "{{count}} Sieger",
     "winners_other": "{{count}} Sieger"

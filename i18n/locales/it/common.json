@@ -24,7 +24,7 @@
     "unavailable": "Servizio non disponibile",
     "noModel": "Nessun modello",
     "ready": "Pronto",
-    "unavailableHint": "Il servizio locale di Yggdrasil non risponde.",
+    "unavailableHint": "Il servizio locale di Toskar non risponde.",
     "noModelHint": "Installa un modello in Modelli per iniziare a chattare.",
     "readyHint": "Il servizio locale è pronto."
   },
@@ -42,14 +42,14 @@
     "mimirReady": "Pronto"
   },
   "boot": {
-    "starting": "Avvio di Yggdrasil",
+    "starting": "Avvio di Toskar",
     "preparing": "Preparazione del tuo servizio di IA locale",
     "unavailable": "Servizio non disponibile",
-    "unavailableBody": "Il servizio locale di Yggdrasil non ha ancora risposto. Attendi un momento e riprova; se continua a succedere, controlla Diagnostica dopo il caricamento dell'app.",
+    "unavailableBody": "Il servizio locale di Toskar non ha ancora risposto. Attendi un momento e riprova; se continua a succedere, controlla Diagnostica dopo il caricamento dell'app.",
     "retrying": "Nuovo tentativo…",
     "tryAgain": "Riprova",
     "keyRequired": "Chiave API richiesta",
-    "keyBody": "Questo Yggdrasil accetta connessioni da altri dispositivi, quindi chiede una chiave API. Inseriscine una per continuare. Con HTTP semplice, una chiave non cifra il tuo traffico.",
+    "keyBody": "Questo Toskar accetta connessioni da altri dispositivi, quindi chiede una chiave API. Inseriscine una per continuare. Con HTTP semplice, una chiave non cifra il tuo traffico.",
     "continue": "Continua"
   },
   "units": {
@@ -59,13 +59,13 @@
   },
   "pageError": {
     "title": "Questa pagina ha riscontrato un problema",
-    "body": "Il resto di Yggdrasil funziona ancora. Riprova, oppure ricarica l'app se succede di nuovo.",
+    "body": "Il resto di Toskar funziona ancora. Riprova, oppure ricarica l'app se succede di nuovo.",
     "retry": "Riprova",
     "reload": "Ricarica",
     "details": "Dettagli"
   },
   "loadError": {
-    "title": "Yggdrasil non è riuscito a caricare questo",
+    "title": "Toskar non è riuscito a caricare questo",
     "body": "Non ha risposto, oppure ha risposto con un errore. I tuoi dati sono ancora lì. Riprova, oppure controlla la Diagnostica se succede di nuovo.",
     "retry": "Riprova",
     "retrying": "Nuovo tentativo…",

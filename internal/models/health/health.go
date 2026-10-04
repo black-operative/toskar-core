@@ -123,9 +123,9 @@ func Parse(raw string) (Failure, bool) {
 // UserMessage is the normal-mode sentence for a stopped model.
 func UserMessage(memory bool) string {
 	if memory {
-		return "This model likely ran out of safe memory on this computer. Yggdrasil stopped it to keep the system stable."
+		return "This model likely ran out of safe memory on this computer. Toskar stopped it to keep the system stable."
 	}
-	return "The model stopped responding, so Yggdrasil stopped it and cleaned up the failed process."
+	return "The model stopped responding, so Toskar stopped it and cleaned up the failed process."
 }
 
 // Stopper unloads one model instance. Force is used only after Graceful fails.

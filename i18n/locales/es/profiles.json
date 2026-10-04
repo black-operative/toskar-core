@@ -76,7 +76,7 @@
   "menu": {
     "duplicate": "Duplicar",
     "rename": "Cambiar nombre",
-    "confirmReset": "¿Restablecer “{{name}}” a como viene en Yggdrasil? Se perderán los cambios que le hiciste.",
+    "confirmReset": "¿Restablecer “{{name}}” a como viene en Toskar? Se perderán los cambios que le hiciste.",
     "reset": "Restablecer valores predeterminados",
     "confirmDelete": "¿Eliminar “{{name}}”? Esta acción no se puede deshacer.",
     "delete": "Eliminar"
@@ -84,7 +84,7 @@
   "strategies": {
     "auto": {
       "label": "Automática",
-      "detail": "Yggdrasil decide: las preguntas rápidas usan un solo modelo, y las solicitudes con varias partes se planifican y se revisan."
+      "detail": "Toskar decide: las preguntas rápidas usan un solo modelo, y las solicitudes con varias partes se planifican y se revisan."
     },
     "single": {
       "label": "Un solo modelo",
@@ -205,7 +205,7 @@
       },
       "read": {
         "label": "Leer archivo",
-        "description": "Permite que el asistente abra archivos de tu espacio de trabajo de Yggdrasil para citar o resumir su contenido real."
+        "description": "Permite que el asistente abra archivos de tu espacio de trabajo de Toskar para citar o resumir su contenido real."
       },
       "write": {
         "label": "Escribir archivo",
@@ -275,7 +275,7 @@
     "automatic": "Automático",
     "computer": "Computadora",
     "fallback": "Orden de respaldo",
-    "fallbackHint": "Se prueban en orden cuando falla el modelo que responde. Después de estos, Yggdrasil elige otro modelo instalado.",
+    "fallbackHint": "Se prueban en orden cuando falla el modelo que responde. Después de estos, Toskar elige otro modelo instalado.",
     "none": "Ninguno",
     "tools": "Herramientas",
     "on": "Activado",

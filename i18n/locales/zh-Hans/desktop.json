@@ -1,20 +1,20 @@
 {
   "menu": {
-    "quitApp": "退出 Yggdrasil",
+    "quitApp": "退出 Toskar",
     "file": "文件",
     "quit": "退出"
   },
   "tray": {
-    "tooltip": "Yggdrasil 正在后台运行",
-    "open": "打开 Yggdrasil",
+    "tooltip": "Toskar 正在后台运行",
+    "open": "打开 Toskar",
     "openHint": "显示主窗口",
     "stop": "停止后台服务",
     "stopHint": "停止本地 AI 服务并退出"
   },
   "lifecycle": {
-    "closingTitle": "正在关闭 Yggdrasil",
+    "closingTitle": "正在关闭 Toskar",
     "stopping": "正在停止本地 AI 服务…",
-    "backgroundMenuBar": "Yggdrasil 仍在菜单栏中运行",
-    "backgroundTray": "Yggdrasil 仍在系统托盘中运行"
+    "backgroundMenuBar": "Toskar 仍在菜单栏中运行",
+    "backgroundTray": "Toskar 仍在系统托盘中运行"
   }
 }

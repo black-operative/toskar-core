@@ -1,7 +1,7 @@
 {
   "landing": {
     "title": "何をお手伝いしましょうか？",
-    "subtitle": "ローカルAIと話しましょう。Yggdrasilが適切なリソースを自動で選びます。",
+    "subtitle": "ローカルAIと話しましょう。Toskarが適切なリソースを自動で選びます。",
     "try": "試してみる：",
     "suggestions": {
       "explain": {
@@ -28,7 +28,7 @@
     "latest": "最新"
   },
   "composer": {
-    "placeholder": "Yggdrasilに何でも聞いてください…",
+    "placeholder": "Toskarに何でも聞いてください…",
     "message": "メッセージ",
     "attach": "ファイルを添付",
     "attachHint": "ドキュメント、スプレッドシート、PDF、コードファイルを添付",
@@ -39,14 +39,14 @@
     "choose": "選択…",
     "automatic": "自動",
     "thisComputer": "このコンピュータ",
-    "runOnAutomatic": "Yggdrasil がメッセージごとに利用可能な最適なコンピュータを選びます。",
+    "runOnAutomatic": "Toskar がメッセージごとに利用可能な最適なコンピュータを選びます。",
     "runOnLocal": "このコンピュータでのみ実行します。",
     "model": "モデル",
     "modelHint": "このチャットに回答するインストール済みのモデル",
     "noModel": "モデルがインストールされていません",
     "modelsLoading": "モデルを読み込み中…",
     "modelsFailed": "モデルを読み込めませんでした",
-    "modelsFailedHint": "Yggdrasil はモデルの一覧を取得できませんでした。",
+    "modelsFailedHint": "Toskar はモデルの一覧を取得できませんでした。",
     "auto": "自動",
     "models": "モデル",
     "specialized": "特化型AI",
@@ -67,7 +67,7 @@
   "effort": {
     "auto": {
       "label": "自動",
-      "hint": "Yggdrasilが判断します。簡単な質問は素早く、大きな質問やデータに関する質問はより丁寧に処理します。"
+      "hint": "Toskarが判断します。簡単な質問は素早く、大きな質問やデータに関する質問はより丁寧に処理します。"
     },
     "fast": {
       "label": "高速",
@@ -85,7 +85,7 @@
   "memory": {
     "on": "メモリ オン",
     "off": "メモリ オフ",
-    "onHint": "このチャットでは、Yggdrasilに覚えておくよう頼んだことを使います。クリックすると、このチャットではメモリを使わなくなります。",
+    "onHint": "このチャットでは、Toskarに覚えておくよう頼んだことを使います。クリックすると、このチャットではメモリを使わなくなります。",
     "offHint": "このチャットではメモリがオフです。保存されたメモリはここでは使われず、削除もされません。",
     "disabledHint": "すべてのチャットでメモリがオフです。「メモリ」ページからオンにしてください。"
   },
@@ -96,7 +96,7 @@
     "downloadFailed": "このチャット用のモデルをダウンロードできませんでした。",
     "installFirst": "まずモデルをインストールしてから、もう一度お試しください。",
     "startFailed": "会話を開始できませんでした。",
-    "noReply": "モデルが返信する前に止まりました。Yggdrasilがモデルを停止し、失敗したプロセスを片付けました。",
+    "noReply": "モデルが返信する前に止まりました。Toskarがモデルを停止し、失敗したプロセスを片付けました。",
     "couldNotRespond": "モデルが応答できませんでした。",
     "unreachable": "ローカルAIに接続できませんでした。詳しくは「診断」を確認してください。",
     "generationFailed": "応答の生成中に問題が発生しました。",
@@ -104,7 +104,7 @@
     "deleteFailed": "このチャットを削除できませんでした。"
   },
   "attachments": {
-    "unsupported": "Yggdrasilはこの種類のファイルをまだ読み取れません",
+    "unsupported": "Toskarはこの種類のファイルをまだ読み取れません",
     "tooLarge": "ファイルは25 MBまでです",
     "addFailed": "ファイルを追加できませんでした。",
     "adding": "追加中…",
@@ -280,7 +280,7 @@
     "details": "詳細",
     "hideDetails": "詳細を隠す",
     "notResponding": {
-      "title": "Yggdrasilが応答していません",
+      "title": "Toskarが応答していません",
       "body": "ローカルサービスが応答しなくなりました。デスクトップアプリの場合は、終了して開き直してから、もう一度お試しください。"
     },
     "engineMissing": {
@@ -301,7 +301,7 @@
     },
     "offline": {
       "title": "使用中のコンピュータがオフラインです",
-      "body": "そのコンピュータの電源を入れてYggdrasilを開くか、このチャットをこのコンピュータで実行してください。"
+      "body": "そのコンピュータの電源を入れてToskarを開くか、このチャットをこのコンピュータで実行してください。"
     },
     "connection": {
       "title": "モデルに接続できませんでした",
@@ -314,7 +314,7 @@
     "didNotWork": "うまくいきませんでした",
     "generic": {
       "title": "問題が発生しました",
-      "body": "Yggdrasilはその返信を完了できませんでした。少し待ってからもう一度お試しください。"
+      "body": "Toskarはその返信を完了できませんでした。少し待ってからもう一度お試しください。"
     },
     "trainingMemory": {
       "busy": "トレーニングがこのコンピュータを使用しているため、このモデルに十分なメモリがありませんでした。",
@@ -332,8 +332,8 @@
     "computer": "コンピュータ：{{value}}",
     "exitCode": "終了コード：{{value}}",
     "lastProbe": "最後のヘルスチェック：{{value}}",
-    "outOfMemory": "このモデルは、このコンピュータで安全に使えるメモリが不足した可能性があります。システムを安定させるため、Yggdrasilがモデルを停止しました。",
-    "stopped": "モデルが応答しなくなったため、Yggdrasilがモデルを停止し、失敗したプロセスを片付けました。"
+    "outOfMemory": "このモデルは、このコンピュータで安全に使えるメモリが不足した可能性があります。システムを安定させるため、Toskarがモデルを停止しました。",
+    "stopped": "モデルが応答しなくなったため、Toskarがモデルを停止し、失敗したプロセスを片付けました。"
   },
   "capability": {
     "enableInternet": "インターネットを有効にする",
@@ -440,7 +440,7 @@
   },
   "notices": {
     "languageWeak": "{{model}}は英語に比べて{{language}}の文章が劣る可能性があり、インストール済みで動作するモデルの中にこれより得意なものはありません。{{language}}の評価が高いモデルは「モデル」ページで確認できます。",
-    "unconfirmedFigures": "Yggdrasilはソースで{{figures}}を確認できませんでした。頼る前に確認してください。",
+    "unconfirmedFigures": "Toskarはソースで{{figures}}を確認できませんでした。頼る前に確認してください。",
     "codeErrors": "コードの一部が構文エラーです: {{errors}}。実行する前に修正してください。",
     "unsourcedLinks": "次のリンクは情報源から得たものではなく、開けない可能性があります: {{links}}。開けない場合は、そのサイト内で検索してください。",
     "contradictions_other": "回答またはその情報源との間に{{count}}か所の矛盾があるかもしれません。頼る前に確認してください。",
@@ -491,8 +491,8 @@
     "leftUnderMinute": "残り1分未満です。",
     "leftMinutes_other": "残り約{{count}}分です。",
     "leftHours_other": "残り約{{count}}時間です。",
-    "capabilities": "Yggdrasilが現在できることを確認しました",
-    "guide": "Yggdrasilのガイドを参照しました: {{sections}}",
+    "capabilities": "Toskarが現在できることを確認しました",
+    "guide": "Toskarのガイドを参照しました: {{sections}}",
     "localOnly": "質問に「このコンピュータのみ」と指定されたデータが使われたため、このコンピュータで回答しました。",
     "passages_other": "{{source}}で{{count}}件の抜粋が見つかりました",
     "passagesMore_other": "{{source}}とほか{{more}}件で{{count}}件の抜粋が見つかりました",
@@ -534,10 +534,10 @@
     "placeDetails": "場所の詳細を調べました",
     "route": "{{from}}から{{to}}への経路を調べました",
     "git": "Gitリポジトリを確認しました（{{action}}）",
-    "helpAnswered": "Yggdrasilのガイドをもとに回答しました"
+    "helpAnswered": "Toskarのガイドをもとに回答しました"
   },
   "help": {
-    "mcpTools": "MCPそのものをインストールする必要はありません。YggdrasilはすでにMCPに対応しています。MCPサーバーのツールを追加するには、**{{tools}} → {{addTools}}** を開き、次の4つの方法から選びます。\n\n- **ギャラリー:** フォルダ、ブラウザ、Notion、Linear、GitHub などのサーバーを選び、必要なら1〜2問に答えます。サインインが必要なサービスではサインイン画面が開きます。\n- **貼り付け:** サーバーの説明にある内容をそのまま貼り付けます。Claude Desktop・Cursor・VS Code 用の JSON、コマンドライン、`claude mcp add` の行、Webアドレスのいずれでも構いません。\n- **ほかのアプリから:** Claude Desktop、Claude Code、Cursor、VS Code、Windsurf、Gemini CLI、LM Studio ですでに設定したサーバーを追加します。\n- **カスタム:** 実行するコマンド、またはWebアドレスを指定します。\n\nYggdrasilは保存する前にサーバーに接続し、ツールの一覧を表示します。このコンピュータで動くサーバーには Node.js か uv が必要で、足りない場合はエラーで知らせます。何かを変更するツールは、実行前に確認します。",
-    "mcpServer": "Claude Desktop、Claude Code、Cursor、VS Code など、MCPに対応したアプリからYggdrasilを使うには、**{{apiAccess}} → {{useElsewhere}}** を開いてください。各アプリに貼り付ける内容が表示されます。設定したアプリから、ローカルAIへの質問、モデルの一覧表示、接続したナレッジの検索ができます。"
+    "mcpTools": "MCPそのものをインストールする必要はありません。ToskarはすでにMCPに対応しています。MCPサーバーのツールを追加するには、**{{tools}} → {{addTools}}** を開き、次の4つの方法から選びます。\n\n- **ギャラリー:** フォルダ、ブラウザ、Notion、Linear、GitHub などのサーバーを選び、必要なら1〜2問に答えます。サインインが必要なサービスではサインイン画面が開きます。\n- **貼り付け:** サーバーの説明にある内容をそのまま貼り付けます。Claude Desktop・Cursor・VS Code 用の JSON、コマンドライン、`claude mcp add` の行、Webアドレスのいずれでも構いません。\n- **ほかのアプリから:** Claude Desktop、Claude Code、Cursor、VS Code、Windsurf、Gemini CLI、LM Studio ですでに設定したサーバーを追加します。\n- **カスタム:** 実行するコマンド、またはWebアドレスを指定します。\n\nToskarは保存する前にサーバーに接続し、ツールの一覧を表示します。このコンピュータで動くサーバーには Node.js か uv が必要で、足りない場合はエラーで知らせます。何かを変更するツールは、実行前に確認します。",
+    "mcpServer": "Claude Desktop、Claude Code、Cursor、VS Code など、MCPに対応したアプリからToskarを使うには、**{{apiAccess}} → {{useElsewhere}}** を開いてください。各アプリに貼り付ける内容が表示されます。設定したアプリから、ローカルAIへの質問、モデルの一覧表示、接続したナレッジの検索ができます。"
   }
 }

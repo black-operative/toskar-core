@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "模型",
-    "subtitle": "选择要安装的模型——Yggdrasil 会推荐适合你硬件的模型。",
+    "subtitle": "选择要安装的模型——Toskar 会推荐适合你硬件的模型。",
     "loading": "正在加载模型库…",
     "search": "搜索模型…",
     "emptyTitle": "没有精选模型",
@@ -155,13 +155,13 @@
     "hint": "会占用这台电脑大部分可用内存，可能不太稳定。",
     "title": "这个模型在这台电脑上可能不稳定",
     "body": "{{model}} 会占用这台电脑上大部分可用内存。在较重的工作负载或较大的上下文下，它可能运行缓慢、停止响应或导致系统不稳定。",
-    "advice": "Yggdrasil 建议为操作系统和图形处理保留更多内存。",
+    "advice": "Toskar 建议为操作系统和图形处理保留更多内存。",
     "cancel": "取消",
     "install": "仍然安装"
   },
   "browse": {
     "title": "浏览所有模型",
-    "description": "在 Hugging Face 上搜索 Yggdrasil 可以在本地运行的模型。将安装到上方所选的电脑。",
+    "description": "在 Hugging Face 上搜索 Toskar 可以在本地运行的模型。将安装到上方所选的电脑。",
     "close": "关闭",
     "placeholder": "搜索模型…",
     "search": "搜索",
@@ -219,7 +219,7 @@
     },
     "sources": {
       "model_card": "模型卡",
-      "maintainer": "Yggdrasil 维护者",
+      "maintainer": "Toskar 维护者",
       "benchmark": "基准测试",
       "provider": "提供方",
       "community": "社区评分",

@@ -257,7 +257,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T | null> {
     const detail = err instanceof Error ? err.message : 'network error'
     throw new ApiError(
       0,
-      `Could not reach the local Yggdrasil service (${detail}). If this is the desktop app, quit and reopen it so the daemon restarts.`,
+      `Could not reach the local Toskar service (${detail}). If this is the desktop app, quit and reopen it so the daemon restarts.`,
       'SERVICE_UNREACHABLE',
       { detail },
     )

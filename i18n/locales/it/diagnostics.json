@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Stato di Yggdrasil",
+    "title": "Stato di Toskar",
     "attention": "Qualcosa richiede attenzione.",
     "mostly": "Quasi tutto a posto: c'è una cosa da controllare.",
     "normal": "Tutto funziona normalmente.",
@@ -17,7 +17,7 @@
     "bundleCreated": "Pacchetto di diagnostica creato",
     "bundleAt": "Pacchetto di diagnostica creato in <path>{{path}}</path>",
     "bundleShare": "Pacchetto di diagnostica creato. Puoi condividere questo file quando chiedi aiuto.",
-    "bundleFailed": "Impossibile creare il pacchetto di diagnostica. Verifica che il servizio Yggdrasil sia in esecuzione."
+    "bundleFailed": "Impossibile creare il pacchetto di diagnostica. Verifica che il servizio Toskar sia in esecuzione."
   },
   "checked": {
     "never": "Non ancora controllato",
@@ -50,7 +50,7 @@
     "control": {
       "label": "Servizio di controllo",
       "notResponding": "Non risponde",
-      "message": "Il servizio Yggdrasil locale non è raggiungibile. Chiudi e riapri l'app. Su un server, verifica che il servizio Yggdrasil sia in esecuzione."
+      "message": "Il servizio Toskar locale non è raggiungibile. Chiudi e riapri l'app. Su un server, verifica che il servizio Toskar sia in esecuzione."
     },
     "runtime": {
       "label": "Runtime dei modelli",
@@ -136,7 +136,7 @@
   },
   "caches": {
     "title": "Cache",
-    "description": "Ciò che Yggdrasil conserva per rispondere più in fretta alle richieste ripetute. Le cache personali restano su questo computer e vengono svuotate insieme ai registri delle esecuzioni. Password e chiavi non vengono mai memorizzate nella cache.",
+    "description": "Ciò che Toskar conserva per rispondere più in fretta alle richieste ripetute. Le cache personali restano su questo computer e vengono svuotate insieme ai registri delle esecuzioni. Password e chiavi non vengono mai memorizzate nella cache.",
     "by": "Per {{key}}",
     "keptUntil": "conservata finché non viene invalidata",
     "keptFor": "conservata {{ttl}}",
@@ -148,7 +148,7 @@
     "clear": "Svuota"
   },
   "abilities": {
-    "title": "Cosa sa fare Yggdrasil",
+    "title": "Cosa sa fare Toskar",
     "description": "In base a ciò che è installato, online e collegato in questo momento. La chat risponde a domande come “Puoi generare un'immagine?” usando questo elenco.",
     "available": " (disponibile)",
     "notAvailable": " (non disponibile)",
@@ -194,8 +194,8 @@
     "autoDetect": "rileva la lingua"
   },
   "memory": {
-    "title": "Memoria di Yggdrasil",
-    "description": "Quanta memoria usa Yggdrasil stesso, e le sue attività in background. Entrambe dovrebbero stabilizzarsi dopo un po'; una crescita costante per ore va segnalata.",
+    "title": "Memoria di Toskar",
+    "description": "Quanta memoria usa Toskar stesso, e le sue attività in background. Entrambe dovrebbero stabilizzarsi dopo un po'; una crescita costante per ore va segnalata.",
     "heap": "Memoria in uso",
     "tasks": "Attività in background",
     "since": "In esecuzione da",

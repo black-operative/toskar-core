@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Yggdrasil 상태",
+    "title": "Toskar 상태",
     "attention": "확인이 필요한 항목이 있어요.",
     "mostly": "대체로 정상이에요. 한 가지 항목을 확인해 보세요.",
     "normal": "모두 정상적으로 작동하고 있어요.",
@@ -17,7 +17,7 @@
     "bundleCreated": "진단 번들을 만들었어요",
     "bundleAt": "진단 번들을 <path>{{path}}</path>에 만들었어요",
     "bundleShare": "진단 번들을 만들었어요. 도움을 요청할 때 이 파일을 공유할 수 있어요.",
-    "bundleFailed": "진단 번들을 만들지 못했어요. Yggdrasil 서비스가 실행 중인지 확인하세요."
+    "bundleFailed": "진단 번들을 만들지 못했어요. Toskar 서비스가 실행 중인지 확인하세요."
   },
   "checked": {
     "never": "아직 확인하지 않음",
@@ -44,7 +44,7 @@
     "control": {
       "label": "제어 서비스",
       "notResponding": "응답 없음",
-      "message": "로컬 Yggdrasil 서비스에 연결할 수 없어요. 앱을 종료했다가 다시 여세요. 서버라면 Yggdrasil 서비스가 실행 중인지 확인하세요."
+      "message": "로컬 Toskar 서비스에 연결할 수 없어요. 앱을 종료했다가 다시 여세요. 서버라면 Toskar 서비스가 실행 중인지 확인하세요."
     },
     "runtime": {
       "label": "모델 런타임",
@@ -120,7 +120,7 @@
   },
   "caches": {
     "title": "캐시",
-    "description": "반복되는 요청에 더 빨리 답하기 위해 Yggdrasil이 보관하는 데이터예요. 개인 캐시는 이 컴퓨터에 머물며 실행 기록과 함께 삭제돼요. 비밀번호와 키는 절대 캐시되지 않아요.",
+    "description": "반복되는 요청에 더 빨리 답하기 위해 Toskar가 보관하는 데이터예요. 개인 캐시는 이 컴퓨터에 머물며 실행 기록과 함께 삭제돼요. 비밀번호와 키는 절대 캐시되지 않아요.",
     "by": "기준: {{key}}",
     "keptUntil": "무효화될 때까지 보관",
     "keptFor": "{{ttl}} 보관",
@@ -130,7 +130,7 @@
     "clear": "지우기"
   },
   "abilities": {
-    "title": "Yggdrasil이 할 수 있는 일",
+    "title": "Toskar가 할 수 있는 일",
     "description": "현재 설치되어 있고, 온라인이고, 연결된 항목을 기준으로 해요. 채팅은 “이미지를 만들 수 있어?” 같은 질문에 이 목록을 바탕으로 답해요.",
     "available": " (사용 가능)",
     "notAvailable": " (사용 불가)",
@@ -166,8 +166,8 @@
     "autoDetect": "언어 자동 감지"
   },
   "memory": {
-    "title": "Yggdrasil의 메모리",
-    "description": "Yggdrasil 자체가 사용하는 메모리와 백그라운드 작업이에요. 잠시 후에는 둘 다 안정되어야 해요. 몇 시간 동안 계속 늘어나면 알려 주세요.",
+    "title": "Toskar의 메모리",
+    "description": "Toskar 자체가 사용하는 메모리와 백그라운드 작업이에요. 잠시 후에는 둘 다 안정되어야 해요. 몇 시간 동안 계속 늘어나면 알려 주세요.",
     "heap": "사용 중인 메모리",
     "tasks": "백그라운드 작업",
     "since": "실행 시작",

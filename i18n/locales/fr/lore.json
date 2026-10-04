@@ -1,18 +1,18 @@
 {
   "about": "À propos de {{name}}",
   "close": "Fermer",
-  "inYggdrasil": "Dans Yggdrasil",
+  "inYggdrasil": "Dans Toskar",
   "mascot": {
     "label": "À propos de Ratatoskr",
-    "kind": "La mascotte d'Yggdrasil",
+    "kind": "La mascotte de Toskar",
     "story": "Dans les mythes, Ratatoskr est l'écureuil qui monte et descend le long de l'Arbre-Monde, portant les messages entre l'aigle perché au sommet et le dragon Níðhöggr tapi dans les racines. On dit qu'il aimait semer un peu la zizanie en chemin.",
     "here": "Ici, il fait le même travail : il porte vos demandes entre vos apps et les modèles de vos ordinateurs. Il réfléchit pendant qu'une réponse s'écrit, se réjouit quand quelque chose se termine, et fait la sieste quand aucun modèle n'est chargé."
   },
   "logo": {
-    "label": "À propos de l'emblème d'Yggdrasil",
+    "label": "À propos de l'emblème de Toskar",
     "kind": "L'Arbre-Monde",
     "story": "Yggdrasil est le grand frêne au centre du cosmos nordique. Ses branches s'étendent au-dessus des cieux, ses racines plongent jusqu'à trois puits, et les neuf mondes sont suspendus parmi ses rameaux.",
-    "here": "L'emblème dessine l'arbre en pistes de circuit imprimé, ses racines et ses branches se terminant par des nœuds, comme les ordinateurs qu'Yggdrasil relie en un seul système."
+    "here": "L'emblème dessine l'arbre en pistes de circuit imprimé, ses racines et ses branches se terminant par des nœuds, comme les ordinateurs qu'Toskar relie en un seul système."
   },
   "realms": {
     "chat": {
@@ -41,7 +41,7 @@
       "rune": "Laguz, la rune de l'eau et du puits"
     },
     "memory": {
-      "meaning": "Muninn, le corbeau de la mémoire d'Odin, garde ce que vous demandez à Yggdrasil de retenir.",
+      "meaning": "Muninn, le corbeau de la mémoire d'Odin, garde ce que vous demandez à Toskar de retenir.",
       "story": "Huginn et Muninn, Pensée et Mémoire, sont les corbeaux d'Odin. Chaque matin, ils survolent le monde et reviennent lui raconter ce qu'ils ont vu. Odin disait craindre par-dessus tout que Muninn ne revienne pas.",
       "rune": "Othala, la rune de ce que l'on garde"
     },
@@ -76,7 +76,7 @@
       "rune": "Thurisaz, la rune de la porte"
     },
     "settings": {
-      "meaning": "Forseti règle chaque différend avec équité. Les paramètres sont les règles que suit Yggdrasil.",
+      "meaning": "Forseti règle chaque différend avec équité. Les paramètres sont les règles que suit Toskar.",
       "story": "Forseti, fils de Baldr, siège à Glitnir, une salle aux piliers d'or et au toit d'argent. Tous ceux qui lui soumettent un différend repartent réconciliés.",
       "rune": "Isa, la rune de l'immobilité"
     }

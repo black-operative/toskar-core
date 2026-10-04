@@ -1,20 +1,20 @@
 {
   "menu": {
-    "quitApp": "Quitter Yggdrasil",
+    "quitApp": "Quitter Toskar",
     "file": "Fichier",
     "quit": "Quitter"
   },
   "tray": {
-    "tooltip": "Yggdrasil s'exécute en arrière-plan",
-    "open": "Ouvrir Yggdrasil",
+    "tooltip": "Toskar s'exécute en arrière-plan",
+    "open": "Ouvrir Toskar",
     "openHint": "Afficher la fenêtre principale",
     "stop": "Arrêter le service en arrière-plan",
     "stopHint": "Arrêter le service d'IA local et quitter"
   },
   "lifecycle": {
-    "closingTitle": "Fermeture d'Yggdrasil",
+    "closingTitle": "Fermeture de Toskar",
     "stopping": "Arrêt du service d'IA local…",
-    "backgroundMenuBar": "Yggdrasil s'exécute toujours dans la barre des menus",
-    "backgroundTray": "Yggdrasil s'exécute toujours dans la zone de notification"
+    "backgroundMenuBar": "Toskar s'exécute toujours dans la barre des menus",
+    "backgroundTray": "Toskar s'exécute toujours dans la zone de notification"
   }
 }

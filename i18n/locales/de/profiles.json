@@ -75,7 +75,7 @@
   "menu": {
     "duplicate": "Duplizieren",
     "rename": "Umbenennen",
-    "confirmReset": "„{{name}}“ auf den Auslieferungszustand von Yggdrasil zurücksetzen? Deine Änderungen daran gehen verloren.",
+    "confirmReset": "„{{name}}“ auf den Auslieferungszustand von Toskar zurücksetzen? Deine Änderungen daran gehen verloren.",
     "reset": "Auf Standard zurücksetzen",
     "confirmDelete": "„{{name}}“ löschen? Das kann nicht rückgängig gemacht werden.",
     "delete": "Löschen"
@@ -83,7 +83,7 @@
   "strategies": {
     "auto": {
       "label": "Automatisch",
-      "detail": "Yggdrasil entscheidet: Kurze Fragen bekommen ein Modell, Anfragen mit mehreren Teilen werden geplant und geprüft."
+      "detail": "Toskar entscheidet: Kurze Fragen bekommen ein Modell, Anfragen mit mehreren Teilen werden geplant und geprüft."
     },
     "single": {
       "label": "Ein Modell",
@@ -204,7 +204,7 @@
       },
       "read": {
         "label": "Datei lesen",
-        "description": "Lässt den Assistenten Dateien in deinem Yggdrasil-Arbeitsbereich öffnen, damit er echte Inhalte zitieren oder zusammenfassen kann."
+        "description": "Lässt den Assistenten Dateien in deinem Toskar-Arbeitsbereich öffnen, damit er echte Inhalte zitieren oder zusammenfassen kann."
       },
       "write": {
         "label": "Datei schreiben",
@@ -274,7 +274,7 @@
     "automatic": "Automatisch",
     "computer": "Computer",
     "fallback": "Ausweichreihenfolge",
-    "fallbackHint": "Wird der Reihe nach versucht, wenn das antwortende Modell scheitert. Danach wählt Yggdrasil ein anderes installiertes Modell.",
+    "fallbackHint": "Wird der Reihe nach versucht, wenn das antwortende Modell scheitert. Danach wählt Toskar ein anderes installiertes Modell.",
     "none": "Keine",
     "tools": "Werkzeuge",
     "on": "An",

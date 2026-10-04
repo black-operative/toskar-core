@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "API 存取",
-    "subtitle": "可在哪裡連線到 Yggdrasil 的 API，以及如何保護它。",
+    "subtitle": "可在哪裡連線到 Toskar 的 API，以及如何保護它。",
     "loading": "正在載入 API 設定…"
   },
   "probe": {
@@ -35,19 +35,19 @@
     "lanHint": "使用這台電腦的 LAN IP 加上連接埠 <mono>{{port}}</mono>（例如 <mono>http://192.168.x.x:{{port}}/v1</mono>）。",
     "hideDocs": "隱藏 API 說明文件",
     "docs": "API 說明文件",
-    "docsBody": "Yggdrasil 在 <mono>/v1</mono> 提供與 OpenAI 相容的 API。請將用戶端指向上方的端點；當其他電腦可以連線到 Yggdrasil 時，請傳送 <header/>。`/api/v1` 和 `/v1` 都需要這個標頭。金鑰並不會將一般 HTTP 加密。",
+    "docsBody": "Toskar 在 <mono>/v1</mono> 提供與 OpenAI 相容的 API。請將用戶端指向上方的端點；當其他電腦可以連線到 Toskar 時，請傳送 <header/>。`/api/v1` 和 `/v1` 都需要這個標頭。金鑰並不會將一般 HTTP 加密。",
     "copied": "已拷貝",
     "copyUrl": "拷貝 URL"
   },
   "lan": {
     "title": "區域網路存取",
     "on": "區域網路上的裝置可以使用 API 金鑰連線。",
-    "off": "只有這台電腦上的 App 可以使用 Yggdrasil 的 API。",
+    "off": "只有這台電腦上的 App 可以使用 Toskar 的 API。",
     "noKeys": "網路存取已開啟，但還沒有任何 API 金鑰。請先建立金鑰，再從其他裝置連線。",
-    "restart": "變更網路存取後，請完全結束並重新打開 Yggdrasil，讓伺服器重新綁定位址。當監聽位址不再是本機回送位址時，每個連線都需要 API 金鑰。在一般 HTTP 連線上，金鑰並不會將傳輸內容加密。「測試 API」只會檢查這台電腦，不會檢查其他裝置能否連線。",
+    "restart": "變更網路存取後，請完全結束並重新打開 Toskar，讓伺服器重新綁定位址。當監聽位址不再是本機回送位址時，每個連線都需要 API 金鑰。在一般 HTTP 連線上，金鑰並不會將傳輸內容加密。「測試 API」只會檢查這台電腦，不會檢查其他裝置能否連線。",
     "confirmTitle": "要允許其他電腦存取嗎？",
-    "confirmBody": "區域網路上的裝置將可以連線到 Yggdrasil。所有遠端連線都需要 API 金鑰。",
-    "confirmHttp": "透過一般 HTTP 使用 API 金鑰並不會將傳輸內容加密。啟用後請結束並重新打開 Yggdrasil，讓伺服器在網路上監聽。",
+    "confirmBody": "區域網路上的裝置將可以連線到 Toskar。所有遠端連線都需要 API 金鑰。",
+    "confirmHttp": "透過一般 HTTP 使用 API 金鑰並不會將傳輸內容加密。啟用後請結束並重新打開 Toskar，讓伺服器在網路上監聽。",
     "browserKey": "建立一把 API 金鑰，讓這個瀏覽器在伺服器重新綁定後仍能繼續連線。完整金鑰只會顯示一次。",
     "keyName": "金鑰名稱",
     "defaultKeyName": "這台電腦",
@@ -58,7 +58,7 @@
   },
   "keys": {
     "title": "API 金鑰",
-    "description": "供與 Yggdrasil 溝通的 App 和裝置使用的憑證。",
+    "description": "供與 Toskar 溝通的 App 和裝置使用的憑證。",
     "create": "建立 API 金鑰",
     "createHint": "為這把金鑰取個名稱，方便你知道是誰在使用它。",
     "namePlaceholder": "VS Code",
@@ -102,13 +102,13 @@
     "saveFailed": "無法儲存。"
   },
   "share": {
-    "title": "在其他 AI App 中使用 Yggdrasil",
+    "title": "在其他 AI App 中使用 Toskar",
     "description": "支援 MCP 的 App 可以詢問你的本機 AI、列出它的模型，並搜尋你已連接的知識。回答會留在你的電腦上，而且本機 AI 只會使用讀取類的工具。",
     "other": "其他 App",
     "settings": "{{language}} 設定",
     "copied": "已拷貝",
     "copy": "拷貝",
-    "needsKey": "Yggdrasil 已對你的網路開放，因此 App 需要 API 金鑰。請在下方建立一把，並放在設定中標示 <key/> 的位置。金鑰的權限會套用。",
+    "needsKey": "Toskar 已對你的網路開放，因此 App 需要 API 金鑰。請在下方建立一把，並放在設定中標示 <key/> 的位置。金鑰的權限會套用。",
     "keyPlaceholder": "<你的 API 金鑰>",
     "where": {
       "claudeDesktop": "在 Claude Desktop 中，打開「設定」→「開發者」→「編輯設定」，加入以下內容，然後重新啟動 Claude。",

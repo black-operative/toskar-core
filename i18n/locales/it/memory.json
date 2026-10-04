@@ -1,12 +1,12 @@
 {
   "page": {
     "title": "Memoria",
-    "description": "Le cose che hai chiesto a Yggdrasil di ricordare. Appartengono a Yggdrasil, non a un singolo modello, quindi restano tra una chat e l'altra, dopo i riavvii e i cambi di modello. Vengono usati solo i ricordi pertinenti alla domanda, e restano su questo computer. Scrivi “Ricorda che …” in qualsiasi chat per aggiungerne uno.",
+    "description": "Le cose che hai chiesto a Toskar di ricordare. Appartengono a Toskar, non a un singolo modello, quindi restano tra una chat e l'altra, dopo i riavvii e i cambi di modello. Vengono usati solo i ricordi pertinenti alla domanda, e restano su questo computer. Scrivi “Ricorda che …” in qualsiasi chat per aggiungerne uno.",
     "useInChats": "Usa la memoria nelle chat",
     "off": "La memoria è disattivata. Le chat non usano ciò che è salvato qui, e non viene eliminato nulla.",
     "loading": "Caricamento…",
     "emptyTitle": "Ancora nessun ricordo",
-    "emptyDescription": "Di' a Yggdrasil le cose che vale la pena conservare, come “Ricorda che preferisco le unità metriche” o “Ricorda che questo progetto usa Go.”"
+    "emptyDescription": "Di' a Toskar le cose che vale la pena conservare, come “Ricorda che preferisco le unità metriche” o “Ricorda che questo progetto usa Go.”"
   },
   "categories": {
     "identity": "Su di te",
@@ -30,7 +30,7 @@
     "cancel": "Annulla",
     "fromChat": "L'hai chiesto in una chat",
     "addedHere": "Aggiunto qui",
-    "languageHint": "Scritto in questa lingua. Con un modello di embedding installato, Yggdrasil lo trova in qualunque lingua tu chieda.",
+    "languageHint": "Scritto in questa lingua. Con un modello di embedding installato, Toskar lo trova in qualunque lingua tu chieda.",
     "category": "Categoria",
     "edit": "Modifica",
     "pause": "Sospendi",

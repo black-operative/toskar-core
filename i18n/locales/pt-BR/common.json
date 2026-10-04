@@ -24,7 +24,7 @@
     "unavailable": "Serviço indisponível",
     "noModel": "Nenhum modelo",
     "ready": "Pronto",
-    "unavailableHint": "O serviço local do Yggdrasil não está respondendo.",
+    "unavailableHint": "O serviço local do Toskar não está respondendo.",
     "noModelHint": "Instale um modelo em Modelos para começar a conversar.",
     "readyHint": "O serviço local está pronto."
   },
@@ -42,14 +42,14 @@
     "mimirReady": "Pronto"
   },
   "boot": {
-    "starting": "Iniciando o Yggdrasil",
+    "starting": "Iniciando o Toskar",
     "preparing": "Preparando seu serviço de IA local",
     "unavailable": "Serviço indisponível",
-    "unavailableBody": "O serviço local do Yggdrasil ainda não respondeu. Aguarde um momento e tente novamente. Se isso continuar acontecendo, confira o Diagnóstico depois que o app carregar.",
+    "unavailableBody": "O serviço local do Toskar ainda não respondeu. Aguarde um momento e tente novamente. Se isso continuar acontecendo, confira o Diagnóstico depois que o app carregar.",
     "retrying": "Tentando novamente…",
     "tryAgain": "Tentar novamente",
     "keyRequired": "Chave de API necessária",
-    "keyBody": "Este Yggdrasil aceita conexões de outros dispositivos, então pede uma chave de API. Digite uma para continuar. Em HTTP simples, uma chave não criptografa seu tráfego.",
+    "keyBody": "Este Toskar aceita conexões de outros dispositivos, então pede uma chave de API. Digite uma para continuar. Em HTTP simples, uma chave não criptografa seu tráfego.",
     "continue": "Continuar"
   },
   "units": {
@@ -59,13 +59,13 @@
   },
   "pageError": {
     "title": "Esta página encontrou um problema",
-    "body": "O restante do Yggdrasil continua funcionando. Tente de novo ou recarregue o app se isso continuar acontecendo.",
+    "body": "O restante do Toskar continua funcionando. Tente de novo ou recarregue o app se isso continuar acontecendo.",
     "retry": "Tentar de novo",
     "reload": "Recarregar",
     "details": "Detalhes"
   },
   "loadError": {
-    "title": "O Yggdrasil não conseguiu carregar isto",
+    "title": "O Toskar não conseguiu carregar isto",
     "body": "Ele não respondeu, ou respondeu com um erro. Seus dados continuam lá. Tente de novo, ou veja o Diagnóstico se continuar acontecendo.",
     "retry": "Tentar de novo",
     "retrying": "Tentando de novo…",

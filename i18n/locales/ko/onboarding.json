@@ -12,7 +12,7 @@
     "memory": "메모리",
     "graphics": "그래픽",
     "system": "시스템",
-    "unavailable": "Yggdrasil이 시작되면 하드웨어 정보가 표시돼요. 지금 설정을 계속할 수 있어요."
+    "unavailable": "Toskar가 시작되면 하드웨어 정보가 표시돼요. 지금 설정을 계속할 수 있어요."
   },
   "question": "AI로 무엇을 하고 싶으세요?",
   "purposes": {

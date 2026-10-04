@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Einstellungen",
-    "subtitle": "Wie sich Yggdrasil auf diesem Computer verhalten soll.",
+    "subtitle": "Wie sich Toskar auf diesem Computer verhalten soll.",
     "loading": "Einstellungen werden geladen …"
   },
   "groups": {
@@ -22,7 +22,7 @@
   },
   "language": {
     "title": "Sprache",
-    "description": "Die Sprache von Menüs, Tasten und Meldungen in Yggdrasil auf jedem Computer und Handy, die du damit nutzt. Jedes Gerät kann seiner eigenen Systemsprache folgen.",
+    "description": "Die Sprache von Menüs, Tasten und Meldungen in Toskar auf jedem Computer und Handy, die du damit nutzt. Jedes Gerät kann seiner eigenen Systemsprache folgen.",
     "appLanguage": "App-Sprache",
     "systemDefault": "Systemstandard ({{language}})",
     "pseudo": "Pseudo-Sprache (zum Testen von Übersetzungen)",
@@ -30,7 +30,7 @@
     "status": {
       "machine": "Maschinell übersetzt, daher können manche Formulierungen seltsam klingen, bis ein Mensch sie geprüft hat.",
       "partial": "Teilweise übersetzt. Was noch nicht übersetzt ist, erscheint auf Englisch.",
-      "community": "Übersetzt von der Yggdrasil-Community."
+      "community": "Übersetzt von der Toskar-Community."
     },
     "assistantLanguage": "Assistentensprache",
     "assistantAuto": "Automatisch: die Sprache, in der du schreibst",
@@ -80,7 +80,7 @@
   },
   "launchAtLogin": {
     "title": "Beim Anmelden starten",
-    "description": "Yggdrasil automatisch starten, wenn du dich an diesem Computer anmeldest."
+    "description": "Toskar automatisch starten, wenn du dich an diesem Computer anmeldest."
   },
   "defaultProfile": {
     "title": "Standardprofil",
@@ -115,9 +115,9 @@
   },
   "discovery": {
     "title": "Andere Computer finden",
-    "description": "Diesen Computer im Netzwerk anzeigen und nach anderen Yggdrasil-Installationen suchen.",
-    "needsRestart": "Die Netzwerkeinstellungen wurden geändert. Starte Yggdrasil neu, damit andere Computer diesen vollständig erreichen.",
-    "restartManually": "Beende Yggdrasil vollständig und öffne es erneut, um die Netzwerkeinstellungen zu übernehmen.",
+    "description": "Diesen Computer im Netzwerk anzeigen und nach anderen Toskar-Installationen suchen.",
+    "needsRestart": "Die Netzwerkeinstellungen wurden geändert. Starte Toskar neu, damit andere Computer diesen vollständig erreichen.",
+    "restartManually": "Beende Toskar vollständig und öffne es erneut, um die Netzwerkeinstellungen zu übernehmen.",
     "restartNow": "Jetzt neu starten",
     "status": "Status: <strong>{{state}}</strong>"
   },
@@ -127,7 +127,7 @@
   },
   "api": {
     "title": "API-Zugriff",
-    "description": "Wie Apps und andere Geräte mit Yggdrasil sprechen können.",
+    "description": "Wie Apps und andere Geräte mit Toskar sprechen können.",
     "local": "Lokale API",
     "lan": "LAN-API",
     "manage": "API-Zugriff verwalten"
@@ -151,7 +151,7 @@
   },
   "history": {
     "title": "Verlauf",
-    "description": "Lege fest, was Yggdrasil auf diesem Computer aufbewahrt.",
+    "description": "Lege fest, was Toskar auf diesem Computer aufbewahrt.",
     "saveChats": "Chatverlauf speichern",
     "saveTasks": "Aufgabenverlauf speichern",
     "confirmClear": "Gesamten Chatverlauf auf diesem Computer löschen? Das kann nicht rückgängig gemacht werden.",
@@ -169,15 +169,15 @@
   "yourData": {
     "title": "Deine Daten bleiben privat",
     "points": {
-      "stored": "Deine Chats, Erinnerungen, Wissensquellen, Dateien und spezialisierten KIs werden auf diesem Computer gespeichert, im Datenordner von Yggdrasil. Es gibt kein Yggdrasil-Konto und keine Cloud, und es werden keine Nutzungsdaten an irgendwen gesendet.",
+      "stored": "Deine Chats, Erinnerungen, Wissensquellen, Dateien und spezialisierten KIs werden auf diesem Computer gespeichert, im Datenordner von Toskar. Es gibt kein Toskar-Konto und keine Cloud, und es werden keine Nutzungsdaten an irgendwen gesendet.",
       "leaves": "Etwas verlässt diesen Computer nur, wenn du eine Funktion nutzt, die online geht, etwa eine Websuche, einen verbundenen Dienst oder einen gekoppelten Computer. Jedes Mal steht unten unter „Was diesen Computer verlassen hat“.",
-      "atRest": "Yggdrasil verschlüsselt seine eigenen Dateien nicht und verlangt das auch nicht. Damit sie verschlüsselt sind, während der Computer aus oder gesperrt ist, schalte die Festplattenverschlüsselung ein: FileVault unter macOS, BitLocker unter Windows oder LUKS unter Linux.",
+      "atRest": "Toskar verschlüsselt seine eigenen Dateien nicht und verlangt das auch nicht. Damit sie verschlüsselt sind, während der Computer aus oder gesperrt ist, schalte die Festplattenverschlüsselung ein: FileVault unter macOS, BitLocker unter Windows oder LUKS unter Linux.",
       "inTransit": "Websites und Onlinedienste werden über verschlüsselte HTTPS-Verbindungen erreicht. Der Verkehr zwischen deinen eigenen Computern und von anderen Geräten in deinem Netzwerk zu diesem ist noch nicht verschlüsselt. Nutze diese Funktionen daher nur in einem Netzwerk, dem du vertraust."
     }
   },
   "whatLeft": {
     "title": "Was diesen Computer verlassen hat",
-    "description": "Yggdrasil arbeitet auf diesem Computer. Hier siehst du, wann ein Chat, eine Automation oder eine App etwas nach außen gesendet hat: Websuchen und Webseiten, Kartenabfragen, gekoppelte Computer und verbundene Dienste. Markiere Erinnerungen oder Wissen als „Nur dieser Computer“, damit Chats, die sie nutzen, hier bleiben.",
+    "description": "Toskar arbeitet auf diesem Computer. Hier siehst du, wann ein Chat, eine Automation oder eine App etwas nach außen gesendet hat: Websuchen und Webseiten, Kartenabfragen, gekoppelte Computer und verbundene Dienste. Markiere Erinnerungen oder Wissen als „Nur dieser Computer“, damit Chats, die sie nutzen, hier bleiben.",
     "nothing": "In den letzten 30 Tagen hat nichts diesen Computer verlassen.",
     "summary": "In den letzten 30 Tagen: {{list}}.",
     "summaryItem": "{{kind}} {{count}}",
@@ -229,7 +229,7 @@
     "openFolder": "Ordner öffnen",
     "opened": "Geöffnet",
     "copyPath": "Pfad unten kopieren",
-    "pending": "Erscheint, wenn Yggdrasil läuft",
+    "pending": "Erscheint, wenn Toskar läuft",
     "limit": "Maximaler Modellspeicher",
     "limitDescription": "Weiche Grenze für geladene Modelle auf diesem Computer.",
     "unlimited": "Unbegrenzt"

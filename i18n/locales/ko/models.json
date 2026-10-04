@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "모델",
-    "subtitle": "설치할 모델을 선택하세요. Yggdrasil이 하드웨어에 맞는 모델을 추천해요.",
+    "subtitle": "설치할 모델을 선택하세요. Toskar가 하드웨어에 맞는 모델을 추천해요.",
     "loading": "모델 라이브러리를 불러오는 중…",
     "search": "모델 검색…",
     "emptyTitle": "엄선된 모델 없음",
@@ -155,13 +155,13 @@
     "hint": "이 컴퓨터에서 사용 가능한 메모리를 대부분 사용하므로 덜 안정적일 수 있어요.",
     "title": "이 모델은 이 컴퓨터에서 불안정할 수 있어요",
     "body": "{{model}}은(는) 이 컴퓨터에서 사용 가능한 메모리를 대부분 사용해요. 작업량이 많거나 컨텍스트가 크면 느려지거나, 응답이 멈추거나, 시스템이 불안정해질 수 있어요.",
-    "advice": "Yggdrasil은 운영 체제와 그래픽을 위해 메모리를 더 남겨 두기를 권장해요.",
+    "advice": "Toskar는 운영 체제와 그래픽을 위해 메모리를 더 남겨 두기를 권장해요.",
     "cancel": "취소",
     "install": "그래도 설치"
   },
   "browse": {
     "title": "모든 모델 둘러보기",
-    "description": "Yggdrasil이 로컬에서 실행할 수 있는 모델을 Hugging Face에서 검색해요. 위에서 선택한 컴퓨터에 설치돼요.",
+    "description": "Toskar가 로컬에서 실행할 수 있는 모델을 Hugging Face에서 검색해요. 위에서 선택한 컴퓨터에 설치돼요.",
     "close": "닫기",
     "placeholder": "모델 검색…",
     "search": "검색",
@@ -219,7 +219,7 @@
     },
     "sources": {
       "model_card": "모델 카드",
-      "maintainer": "Yggdrasil 관리자",
+      "maintainer": "Toskar 관리자",
       "benchmark": "벤치마크",
       "provider": "제공자",
       "community": "커뮤니티 평가",

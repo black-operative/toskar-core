@@ -1,18 +1,18 @@
 {
   "about": "关于 {{name}}",
   "close": "关闭",
-  "inYggdrasil": "在 Yggdrasil 中",
+  "inYggdrasil": "在 Toskar 中",
   "mascot": {
     "label": "关于 Ratatoskr",
-    "kind": "Yggdrasil 吉祥物",
+    "kind": "Toskar 吉祥物",
     "story": "在神话中，Ratatoskr 是一只在世界树上上下奔跑的松鼠，在树顶的雄鹰和树根处的巨龙 Níðhöggr 之间传递消息。据说它一路上还爱挑起一点小麻烦。",
     "here": "在这里它做着同样的工作，在你的应用和你电脑上的模型之间传递请求。回复生成时它会思考，任务完成时它会庆祝，没有加载模型时它就打个盹。"
   },
   "logo": {
-    "label": "关于 Yggdrasil 标志",
+    "label": "关于 Toskar 标志",
     "kind": "世界树",
     "story": "Yggdrasil 是北欧宇宙中心的巨大白蜡树。它的枝干伸展到天穹之上，根须延伸到三口泉井，九个世界就悬挂在它的枝叶之间。",
-    "here": "这个标志把世界树画成电路走线，根和枝的末端都是节点，就像 Yggdrasil 连接成一个系统的那些电脑。"
+    "here": "这个标志把世界树画成电路走线，根和枝的末端都是节点，就像 Toskar 连接成一个系统的那些电脑。"
   },
   "realms": {
     "chat": {
@@ -41,7 +41,7 @@
       "rune": "Laguz，水与泉之符文"
     },
     "memory": {
-      "meaning": "Muninn 是 Odin 的记忆之鸦，保存你让 Yggdrasil 记住的事情。",
+      "meaning": "Muninn 是 Odin 的记忆之鸦，保存你让 Toskar 记住的事情。",
       "story": "Huginn 和 Muninn，即“思想”与“记忆”，是 Odin 的两只渡鸦。每天早晨它们飞越世界，再回来告诉他所见的一切。Odin 说，他最担心的是 Muninn 一去不返。",
       "rune": "Othala，守护之物的符文"
     },
@@ -76,7 +76,7 @@
       "rune": "Thurisaz，大门之符文"
     },
     "settings": {
-      "meaning": "Forseti 公正地裁决每一件事。设置就是 Yggdrasil 遵守的规则。",
+      "meaning": "Forseti 公正地裁决每一件事。设置就是 Toskar 遵守的规则。",
       "story": "Forseti 是 Baldr 之子，坐在 Glitnir 殿中，那里有黄金的柱子和白银的屋顶。每个带着纷争来找他的人，离开时都已和解。",
       "rune": "Isa，静止之符文"
     }

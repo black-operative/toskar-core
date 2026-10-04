@@ -41,7 +41,7 @@ export function AppLayout() {
 
   // Each page names itself in the window title, for history, tabs, and screen readers.
   useEffect(() => {
-    document.title = titleKey ? `${t(titleKey)} · Yggdrasil` : 'Yggdrasil'
+    document.title = titleKey ? `${t(titleKey)} · Toskar` : 'Toskar'
   }, [titleKey, t])
 
   // Choosing a page closes the drawer.
@@ -68,7 +68,7 @@ export function AppLayout() {
             </svg>
           </button>
           <YggdrasilMark size={24} />
-          <span className="truncate font-display text-base font-semibold text-ink">{titleKey ? t(titleKey) : 'Yggdrasil'}</span>
+          <span className="truncate font-display text-base font-semibold text-ink">{titleKey ? t(titleKey) : 'Toskar'}</span>
         </div>
         <div className="page-scroll px-page-x py-5 sm:py-6">
           <PageErrorBoundary key={pathname}>

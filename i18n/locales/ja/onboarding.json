@@ -12,7 +12,7 @@
     "memory": "メモリ",
     "graphics": "グラフィックス",
     "system": "システム",
-    "unavailable": "Yggdrasil が起動すると、ハードウェアの詳細が表示されます。このままセットアップを続けられます。"
+    "unavailable": "Toskar が起動すると、ハードウェアの詳細が表示されます。このままセットアップを続けられます。"
   },
   "question": "AIに何をしてほしいですか？",
   "purposes": {

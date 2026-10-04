@@ -43,7 +43,7 @@ describe('MemoryPanel', () => {
       samples: [],
     })
     renderPanel()
-    expect(await screen.findByText("Yggdrasil's memory")).toBeInTheDocument()
+    expect(await screen.findByText("Toskar's memory")).toBeInTheDocument()
     expect(screen.getByText('42')).toBeInTheDocument()
   })
 

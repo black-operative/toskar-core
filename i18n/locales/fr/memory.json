@@ -1,12 +1,12 @@
 {
   "page": {
     "title": "Mémoire",
-    "description": "Ce que vous avez demandé à Yggdrasil de retenir. Ces souvenirs appartiennent à Yggdrasil, pas à un modèle en particulier : ils sont conservés d'une discussion à l'autre, après un redémarrage ou un changement de modèle. Seuls les souvenirs utiles à une question sont utilisés, et ils restent sur cet ordinateur. Dites « Souviens-toi que … » dans n'importe quelle discussion pour en ajouter un.",
+    "description": "Ce que vous avez demandé à Toskar de retenir. Ces souvenirs appartiennent à Toskar, pas à un modèle en particulier : ils sont conservés d'une discussion à l'autre, après un redémarrage ou un changement de modèle. Seuls les souvenirs utiles à une question sont utilisés, et ils restent sur cet ordinateur. Dites « Souviens-toi que … » dans n'importe quelle discussion pour en ajouter un.",
     "useInChats": "Utiliser la mémoire dans les discussions",
     "off": "La mémoire est désactivée. Les discussions n'utilisent pas ce qui est enregistré ici, et rien n'est supprimé.",
     "loading": "Chargement…",
     "emptyTitle": "Aucun souvenir pour l'instant",
-    "emptyDescription": "Dites à Yggdrasil ce qui mérite d'être retenu, par exemple « Souviens-toi que je préfère les unités métriques » ou « Souviens-toi que ce projet utilise Go. »"
+    "emptyDescription": "Dites à Toskar ce qui mérite d'être retenu, par exemple « Souviens-toi que je préfère les unités métriques » ou « Souviens-toi que ce projet utilise Go. »"
   },
   "categories": {
     "identity": "À propos de vous",
@@ -30,7 +30,7 @@
     "cancel": "Annuler",
     "fromChat": "Demandé dans une discussion",
     "addedHere": "Ajouté ici",
-    "languageHint": "Écrit dans cette langue. Avec un modèle d'embedding installé, Yggdrasil le retrouve quelle que soit la langue de votre question.",
+    "languageHint": "Écrit dans cette langue. Avec un modèle d'embedding installé, Toskar le retrouve quelle que soit la langue de votre question.",
     "category": "Catégorie",
     "edit": "Modifier",
     "pause": "Suspendre",

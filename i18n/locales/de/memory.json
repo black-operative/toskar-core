@@ -1,12 +1,12 @@
 {
   "page": {
     "title": "Gedächtnis",
-    "description": "Dinge, die sich Yggdrasil für dich merken soll. Sie gehören Yggdrasil, nicht einem einzelnen Modell, und bleiben daher über Chats, Neustarts und Modellwechsel hinweg erhalten. Es werden nur die Erinnerungen genutzt, die zu einer Frage passen, und sie bleiben auf diesem Computer. Sag in einem beliebigen Chat „Merke dir, dass …“, um eine hinzuzufügen.",
+    "description": "Dinge, die sich Toskar für dich merken soll. Sie gehören Toskar, nicht einem einzelnen Modell, und bleiben daher über Chats, Neustarts und Modellwechsel hinweg erhalten. Es werden nur die Erinnerungen genutzt, die zu einer Frage passen, und sie bleiben auf diesem Computer. Sag in einem beliebigen Chat „Merke dir, dass …“, um eine hinzuzufügen.",
     "useInChats": "Gedächtnis in Chats nutzen",
     "off": "Das Gedächtnis ist aus. Chats nutzen nicht, was hier gespeichert ist, und nichts wird gelöscht.",
     "loading": "Wird geladen …",
     "emptyTitle": "Noch nichts gemerkt",
-    "emptyDescription": "Erzähl Yggdrasil, was es sich merken soll, etwa „Merke dir, dass ich metrische Einheiten bevorzuge“ oder „Merke dir, dass dieses Projekt Go nutzt.“"
+    "emptyDescription": "Erzähl Toskar, was es sich merken soll, etwa „Merke dir, dass ich metrische Einheiten bevorzuge“ oder „Merke dir, dass dieses Projekt Go nutzt.“"
   },
   "categories": {
     "identity": "Über dich",
@@ -30,7 +30,7 @@
     "cancel": "Abbrechen",
     "fromChat": "Von dir im Chat erbeten",
     "addedHere": "Hier hinzugefügt",
-    "languageHint": "In dieser Sprache geschrieben. Mit einem installierten Einbettungsmodell findet Yggdrasil es, egal in welcher Sprache du fragst.",
+    "languageHint": "In dieser Sprache geschrieben. Mit einem installierten Einbettungsmodell findet Toskar es, egal in welcher Sprache du fragst.",
     "category": "Kategorie",
     "edit": "Bearbeiten",
     "pause": "Pausieren",

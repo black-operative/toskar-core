@@ -65,11 +65,11 @@ func TestNoticesAreWrittenInTheAppLanguage(t *testing.T) {
 	// Email, push, and webhooks write their own words in the App language too.
 	german.RepeatCount = 3
 	email := string(emailMessage(EmailConfig{From: "y@example.com", To: []string{"me@example.com"}}, german, hub.now()))
-	if strings.Contains(email, "Sent by Yggdrasil") || !strings.Contains(email, "Yggdrasil") {
+	if strings.Contains(email, "Sent by Toskar") || !strings.Contains(email, "Toskar") {
 		t.Fatalf("email footer is not in German:\n%s", email)
 	}
 	push := ntfyMessageFor(NtfyConfig{Topic: "t"}, german)
-	if push.Message == "You have a new Yggdrasil notification." {
+	if push.Message == "You have a new Toskar notification." {
 		t.Fatalf("private push text is not in German: %q", push.Message)
 	}
 	payload := payloadFor(german)

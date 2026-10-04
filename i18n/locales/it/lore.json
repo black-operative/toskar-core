@@ -1,18 +1,18 @@
 {
   "about": "Informazioni su {{name}}",
   "close": "Chiudi",
-  "inYggdrasil": "In Yggdrasil",
+  "inYggdrasil": "In Toskar",
   "mascot": {
     "label": "Informazioni su Ratatoskr",
-    "kind": "La mascotte di Yggdrasil",
+    "kind": "La mascotte di Toskar",
     "story": "Nei miti, Ratatoskr è lo scoiattolo che corre su e giù per l'Albero del Mondo, portando messaggi tra l'aquila in cima e il drago Níðhöggr tra le radici. Era noto per seminare un po' di zizzania lungo la strada.",
     "here": "Qui fa lo stesso lavoro: porta le tue richieste tra le tue app e i modelli sui tuoi computer. Riflette mentre viene scritta una risposta, festeggia quando qualcosa finisce e sonnecchia quando non è caricato nessun modello."
   },
   "logo": {
-    "label": "Informazioni sul simbolo di Yggdrasil",
+    "label": "Informazioni sul simbolo di Toskar",
     "kind": "L'Albero del Mondo",
     "story": "Yggdrasil è il grande frassino al centro del cosmo norreno. I suoi rami si stendono sopra i cieli, le sue radici raggiungono tre pozzi, e i nove mondi pendono tra le sue fronde.",
-    "here": "Il simbolo disegna l'albero come le piste di un circuito, con radici e rami che terminano in nodi, come i computer che Yggdrasil unisce in un unico sistema."
+    "here": "Il simbolo disegna l'albero come le piste di un circuito, con radici e rami che terminano in nodi, come i computer che Toskar unisce in un unico sistema."
   },
   "realms": {
     "chat": {
@@ -41,7 +41,7 @@
       "rune": "Laguz, la runa dell'acqua e del pozzo"
     },
     "memory": {
-      "meaning": "Muninn, il corvo della memoria di Odino, custodisce ciò che chiedi a Yggdrasil di ricordare.",
+      "meaning": "Muninn, il corvo della memoria di Odino, custodisce ciò che chiedi a Toskar di ricordare.",
       "story": "Huginn e Muninn, Pensiero e Memoria, sono i corvi di Odino. Ogni mattina volano sopra il mondo e tornano a raccontargli ciò che hanno visto. Odino diceva di temere soprattutto che Muninn non tornasse.",
       "rune": "Othala, la runa di ciò che si custodisce"
     },
@@ -76,7 +76,7 @@
       "rune": "Thurisaz, la runa del cancello"
     },
     "settings": {
-      "meaning": "Forseti risolve ogni questione con equità. Le impostazioni sono le regole che Yggdrasil rispetta.",
+      "meaning": "Forseti risolve ogni questione con equità. Le impostazioni sono le regole che Toskar rispetta.",
       "story": "Forseti, figlio di Baldr, siede in Glitnir, una sala con colonne d'oro e un tetto d'argento. Chiunque gli porti una contesa se ne va riconciliato.",
       "rune": "Isa, la runa della quiete"
     }

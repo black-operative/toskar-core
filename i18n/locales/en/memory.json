@@ -1,12 +1,12 @@
 {
   "page": {
     "title": "Memory",
-    "description": "Things you asked Yggdrasil to remember. They belong to Yggdrasil, not to one model, so they carry across chats, restarts, and model changes. Only the memories that fit a question are used, and they stay on this computer. Say “Remember that …” in any chat to add one.",
+    "description": "Things you asked Toskar to remember. They belong to Toskar, not to one model, so they carry across chats, restarts, and model changes. Only the memories that fit a question are used, and they stay on this computer. Say “Remember that …” in any chat to add one.",
     "useInChats": "Use memory in chats",
     "off": "Memory is off. Chats do not use what is saved here, and nothing is deleted.",
     "loading": "Loading…",
     "emptyTitle": "Nothing remembered yet",
-    "emptyDescription": "Tell Yggdrasil things worth keeping, such as “Remember that I prefer metric units” or “Remember that this project uses Go.”"
+    "emptyDescription": "Tell Toskar things worth keeping, such as “Remember that I prefer metric units” or “Remember that this project uses Go.”"
   },
   "categories": {
     "identity": "About you",
@@ -30,7 +30,7 @@
     "cancel": "Cancel",
     "fromChat": "You asked in a chat",
     "addedHere": "Added here",
-    "languageHint": "Written in this language. With an embedding model installed, Yggdrasil finds it whatever language you ask in.",
+    "languageHint": "Written in this language. With an embedding model installed, Toskar finds it whatever language you ask in.",
     "category": "Category",
     "edit": "Edit",
     "pause": "Pause",

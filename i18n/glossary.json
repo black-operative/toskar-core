@@ -5,7 +5,7 @@
     { "term": "Model", "key": "chat:composer.model" },
     { "term": "Models (the page)", "key": "common:nav.models" },
     { "term": "Install (a model)", "key": "models:install.install" },
-    { "term": "Auto (the model choice)", "key": "chat:composer.auto", "note": "Yggdrasil picks the model. Also the subject of sentences such as \"Auto chose …\"." },
+    { "term": "Auto (the model choice)", "key": "chat:composer.auto", "note": "Toskar picks the model. Also the subject of sentences such as \"Auto chose …\"." },
     { "term": "Profile", "key": "chat:composer.profile" },
     { "term": "Planner", "key": "profiles:roles.planner" },
     { "term": "Worker", "key": "profiles:roles.worker" },

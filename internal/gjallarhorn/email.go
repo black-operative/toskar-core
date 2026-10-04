@@ -152,7 +152,7 @@ func emailMessage(cfg EmailConfig, n Notification, now time.Time) []byte {
 	header := func(k, v string) { fmt.Fprintf(&b, "%s: %s\r\n", k, v) }
 	header("From", cfg.From)
 	header("To", strings.Join(cfg.To, ", "))
-	header("Subject", mime.QEncoding.Encode("utf-8", "Yggdrasil: "+subject))
+	header("Subject", mime.QEncoding.Encode("utf-8", "Toskar: "+subject))
 	header("Date", now.Format(time.RFC1123Z))
 	header("Message-ID", "<"+n.ID+"@"+host+">")
 	header("MIME-Version", "1.0")

@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "設定",
-    "subtitle": "Yggdrasil 在這台電腦上的運作方式。",
+    "subtitle": "Toskar 在這台電腦上的運作方式。",
     "loading": "正在載入設定…"
   },
   "groups": {
@@ -22,7 +22,7 @@
   },
   "language": {
     "title": "語言",
-    "description": "Yggdrasil 在你使用的每台電腦和手機上，選單、按鈕和訊息所使用的語言。每台裝置也可以跟隨自己的系統語言。",
+    "description": "Toskar 在你使用的每台電腦和手機上，選單、按鈕和訊息所使用的語言。每台裝置也可以跟隨自己的系統語言。",
     "appLanguage": "App 語言",
     "systemDefault": "系統預設（{{language}}）",
     "pseudo": "虛擬語系（用於測試翻譯）",
@@ -30,7 +30,7 @@
     "status": {
       "machine": "機器翻譯，在經人工審閱前，部分用語可能不太通順。",
       "partial": "部分翻譯。尚未翻譯的內容會以英文顯示。",
-      "community": "由 Yggdrasil 社群翻譯。"
+      "community": "由 Toskar 社群翻譯。"
     },
     "assistantLanguage": "助理語言",
     "assistantAuto": "自動偵測：你書寫所用的語言",
@@ -80,7 +80,7 @@
   },
   "launchAtLogin": {
     "title": "登入時啟動",
-    "description": "登入這台電腦時自動啟動 Yggdrasil。"
+    "description": "登入這台電腦時自動啟動 Toskar。"
   },
   "defaultProfile": {
     "title": "預設設定檔",
@@ -115,9 +115,9 @@
   },
   "discovery": {
     "title": "尋找其他電腦",
-    "description": "在網路上公開這台電腦，並尋找其他安裝了 Yggdrasil 的電腦。",
-    "needsRestart": "網路設定已更新。請重新啟動 Yggdrasil，讓其他電腦能完整連線到這台電腦。",
-    "restartManually": "請完全結束 Yggdrasil，然後重新打開，以完成套用網路設定。",
+    "description": "在網路上公開這台電腦，並尋找其他安裝了 Toskar 的電腦。",
+    "needsRestart": "網路設定已更新。請重新啟動 Toskar，讓其他電腦能完整連線到這台電腦。",
+    "restartManually": "請完全結束 Toskar，然後重新打開，以完成套用網路設定。",
     "restartNow": "立即重新啟動",
     "status": "狀態：<strong>{{state}}</strong>"
   },
@@ -127,7 +127,7 @@
   },
   "api": {
     "title": "API 存取",
-    "description": "App 和其他裝置如何與 Yggdrasil 溝通。",
+    "description": "App 和其他裝置如何與 Toskar 溝通。",
     "local": "本機 API",
     "lan": "LAN API",
     "manage": "管理 API 存取"
@@ -151,7 +151,7 @@
   },
   "history": {
     "title": "歷史紀錄",
-    "description": "控制 Yggdrasil 在這台電腦上保留哪些內容。",
+    "description": "控制 Toskar 在這台電腦上保留哪些內容。",
     "saveChats": "儲存聊天紀錄",
     "saveTasks": "儲存工作紀錄",
     "confirmClear": "要刪除這台電腦上的所有聊天紀錄嗎？這個動作無法復原。",
@@ -169,15 +169,15 @@
   "yourData": {
     "title": "你的資料保持私密",
     "points": {
-      "stored": "你的聊天、記憶、知識、檔案和專用 AI 都儲存在這台電腦上的 Yggdrasil 資料夾中。沒有 Yggdrasil 帳號，也沒有雲端，不會向任何人傳送使用資料。",
+      "stored": "你的聊天、記憶、知識、檔案和專用 AI 都儲存在這台電腦上的 Toskar 資料夾中。沒有 Toskar 帳號，也沒有雲端，不會向任何人傳送使用資料。",
       "leaves": "只有在你使用連網功能時，例如網頁搜尋、已連接的服務或已配對的電腦，資料才會離開這台電腦。每一次都會列在下方的「離開這台電腦的資料」中。",
-      "atRest": "Yggdrasil 不會自行加密它的檔案，也不要求你加密。若要在電腦關機或鎖定時保持檔案加密，請開啟磁碟加密：macOS 上的 FileVault、Windows 上的 BitLocker 或 Linux 上的 LUKS。",
+      "atRest": "Toskar 不會自行加密它的檔案，也不要求你加密。若要在電腦關機或鎖定時保持檔案加密，請開啟磁碟加密：macOS 上的 FileVault、Windows 上的 BitLocker 或 Linux 上的 LUKS。",
       "inTransit": "存取網站和線上服務時使用加密的 HTTPS 連線。你自己的電腦之間的通訊，以及網路中其他裝置到這台電腦的通訊，目前尚未加密，因此請只在可信任的網路中使用這些功能。"
     }
   },
   "whatLeft": {
     "title": "離開這台電腦的資料",
-    "description": "Yggdrasil 在這台電腦上運作。以下是聊天、自動化或 App 將資料傳送到其他地方的紀錄：網路搜尋與網頁、地圖查詢、配對的電腦，以及已連結的服務。將記憶或知識標示為「僅限這台電腦」，就能讓使用它們的聊天留在這裡執行。",
+    "description": "Toskar 在這台電腦上運作。以下是聊天、自動化或 App 將資料傳送到其他地方的紀錄：網路搜尋與網頁、地圖查詢、配對的電腦，以及已連結的服務。將記憶或知識標示為「僅限這台電腦」，就能讓使用它們的聊天留在這裡執行。",
     "nothing": "過去 30 天內沒有任何資料離開這台電腦。",
     "summary": "過去 30 天內：{{list}}。",
     "summaryItem": "{{kind}} {{count}} 次",
@@ -228,7 +228,7 @@
     "openFolder": "打開檔案夾",
     "opened": "已打開",
     "copyPath": "從下方拷貝路徑",
-    "pending": "Yggdrasil 執行時就會顯示",
+    "pending": "Toskar 執行時就會顯示",
     "limit": "模型儲存空間上限",
     "limitDescription": "這台電腦上已下載模型的軟性上限。",
     "unlimited": "無限制"

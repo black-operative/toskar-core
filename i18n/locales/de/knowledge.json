@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Wissen",
-    "description": "Yggdrasil hält Kataloge, Preise, Richtlinien und Dokumente durchsuchbar. Wenn ein Profil oder eine spezialisierte KI eine Quelle nutzt, werden die zu jeder Frage passenden Textstellen hinzugefügt. Bearbeite eine Datei, und die nächste Frage sieht die Änderung. Ohne neues Training.",
+    "description": "Toskar hält Kataloge, Preise, Richtlinien und Dokumente durchsuchbar. Wenn ein Profil oder eine spezialisierte KI eine Quelle nutzt, werden die zu jeder Frage passenden Textstellen hinzugefügt. Bearbeite eine Datei, und die nächste Frage sieht die Änderung. Ohne neues Training.",
     "loading": "Wird geladen …",
     "emptyTitle": "Kein Wissen verbunden",
     "emptyDescription": "Verbinde eine Datei oder einen Ordner auf diesem Computer, füge Inhalte ein oder lies aus einer Datenbank oder Web-API. PDF-, Excel-, CSV-, TSV-, JSON-, JSONL-, Markdown-, Text- und HTML-Dateien funktionieren."
@@ -54,7 +54,7 @@
       "api": "Web-API"
     },
     "path": "Pfad auf diesem Computer",
-    "pathHint": "Yggdrasil liest sie direkt vor Ort und übernimmt Änderungen automatisch.",
+    "pathHint": "Toskar liest sie direkt vor Ort und übernimmt Änderungen automatisch.",
     "chooseFile": "Datei wählen",
     "pastePlaceholder": "Text, Markdown oder CSV einfügen",
     "content": "Inhalt",
@@ -69,7 +69,7 @@
     "connection": "Verbindungs-String",
     "connectionHint": "Verwende ein Konto, das nur lesen darf. Er wird getrennt von der Datenbank gespeichert und nicht wieder angezeigt.",
     "query": "Abfrage",
-    "queryHint": "Ein SELECT. Es läuft schreibgeschützt, Yggdrasil ändert die Datenbank also nie. Jede Zeile wird zu einer Textstelle.",
+    "queryHint": "Ein SELECT. Es läuft schreibgeschützt, Toskar ändert die Datenbank also nie. Jede Zeile wird zu einer Textstelle.",
     "url": "URL",
     "urlHint": "JSON, CSV oder Text. Aus einer Liste von Objekten wird eine Textstelle pro Eintrag.",
     "items": "Liste in der Antwort (optional)",

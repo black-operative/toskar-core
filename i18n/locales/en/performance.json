@@ -113,7 +113,7 @@
     "selected": "{{count}}/6 selected",
     "prompts_one": "{{count}} prompt",
     "prompts_other": "{{count}} prompts",
-    "warning": "Yggdrasil will temporarily load and unload models while benchmarking. Active chats may be slower during the test.",
+    "warning": "Toskar will temporarily load and unload models while benchmarking. Active chats may be slower during the test.",
     "runsPerPrompt": "Measured runs per prompt",
     "starting": "Starting…",
     "cancel": "Cancel",
@@ -126,7 +126,7 @@
     "minutes_other": "{{count}} minutes",
     "startFailed": "Could not start benchmark.",
     "recent": "Recent benchmarks",
-    "recentHint": "Jobs stay available while Yggdrasil is running.",
+    "recentHint": "Jobs stay available while Toskar is running.",
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_one": "{{count}} winner",
     "winners_other": "{{count}} winners"

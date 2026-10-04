@@ -75,7 +75,7 @@
   "menu": {
     "duplicate": "Duplicate",
     "rename": "Rename",
-    "confirmReset": "Reset “{{name}}” to how Yggdrasil ships it? Your changes to it are lost.",
+    "confirmReset": "Reset “{{name}}” to how Toskar ships it? Your changes to it are lost.",
     "reset": "Reset to defaults",
     "confirmDelete": "Delete “{{name}}”? This cannot be undone.",
     "delete": "Delete"
@@ -83,7 +83,7 @@
   "strategies": {
     "auto": {
       "label": "Auto",
-      "detail": "Yggdrasil decides: quick questions get one model, requests with several parts are planned and checked."
+      "detail": "Toskar decides: quick questions get one model, requests with several parts are planned and checked."
     },
     "single": {
       "label": "Single model",
@@ -204,7 +204,7 @@
       },
       "read": {
         "label": "Read file",
-        "description": "Lets the assistant open files inside your Yggdrasil workspace so it can quote or summarize real content."
+        "description": "Lets the assistant open files inside your Toskar workspace so it can quote or summarize real content."
       },
       "write": {
         "label": "Write file",
@@ -274,7 +274,7 @@
     "automatic": "Automatic",
     "computer": "Computer",
     "fallback": "Fallback order",
-    "fallbackHint": "Tried in order when the answering model fails. After these, Yggdrasil picks another installed model.",
+    "fallbackHint": "Tried in order when the answering model fails. After these, Toskar picks another installed model.",
     "none": "None",
     "tools": "Tools",
     "on": "On",

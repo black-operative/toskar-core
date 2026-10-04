@@ -42,7 +42,7 @@ describe('ApiError', () => {
     expect(error).toBeInstanceOf(ApiError)
     const apiError = error as ApiError
     expect(apiError.code).toBe('MEMORY_LOOKS_SECRET')
-    expect(apiError.message).toBe("That looks like a password, key, or token, so Yggdrasil didn't save it.")
+    expect(apiError.message).toBe("That looks like a password, key, or token, so Toskar didn't save it.")
     expect(apiError.serviceMessage).toBe('that looks like a password, key, or token, so Yggdrasil did not save it')
   })
 
@@ -50,7 +50,7 @@ describe('ApiError', () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')))
     const error = (await api.getSettings().catch((e: unknown) => e)) as ApiError
     expect(error.code).toBe('SERVICE_UNREACHABLE')
-    expect(error.message).toBe("Couldn't reach the local Yggdrasil service (Failed to fetch). If this is the desktop app, quit and reopen it so the service restarts.")
+    expect(error.message).toBe("Couldn't reach the local Toskar service (Failed to fetch). If this is the desktop app, quit and reopen it so the service restarts.")
   })
 })
 

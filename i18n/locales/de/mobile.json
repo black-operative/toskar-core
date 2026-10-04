@@ -1,6 +1,6 @@
 {
   "app": {
-    "starting": "Yggdrasil startet",
+    "starting": "Toskar startet",
     "back": "Zurück",
     "close": "Schließen",
     "cancel": "Abbrechen",
@@ -23,11 +23,11 @@
     "gigabytes": "{{value}} GB"
   },
   "connection": {
-    "enterAddress": "Gib die Adresse des Computers ein, auf dem Yggdrasil läuft.",
-    "couldNotReach": "Yggdrasil ist nicht erreichbar.",
-    "unreachable": "Yggdrasil auf diesem Computer ist nicht erreichbar. Nutze dasselbe WLAN und schalte auf diesem Computer den LAN-Zugriff für die API ein.",
+    "enterAddress": "Gib die Adresse des Computers ein, auf dem Toskar läuft.",
+    "couldNotReach": "Toskar ist nicht erreichbar.",
+    "unreachable": "Toskar auf diesem Computer ist nicht erreichbar. Nutze dasselbe WLAN und schalte auf diesem Computer den LAN-Zugriff für die API ein.",
     "keyRejected": "Dieser API-Schlüssel wurde abgelehnt. Erstelle auf dem Computer unter „API-Zugriff“ einen Schlüssel und füge ihn hier ein.",
-    "dropped": "Die Verbindung zu Yggdrasil wurde unterbrochen.",
+    "dropped": "Die Verbindung zu Toskar wurde unterbrochen.",
     "chatFailed": "Chat fehlgeschlagen.",
     "requestFailed": "Anfrage fehlgeschlagen"
   },
@@ -40,22 +40,22 @@
     "apiKeyPlaceholder": "Schlüssel einfügen",
     "connect": "Verbinden",
     "connecting": "Verbindung wird hergestellt",
-    "notReady": "Yggdrasil hat geantwortet, ist aber nicht bereit."
+    "notReady": "Toskar hat geantwortet, ist aber nicht bereit."
   },
   "discovery": {
     "onThisNetwork": "In diesem Netzwerk",
     "useAddress": "Nutzt die Adresse dieses Computers",
-    "version": "Yggdrasil {{version}}",
+    "version": "Toskar {{version}}",
     "looking": "Computer in diesem Netzwerk werden gesucht …",
     "lookingLabel": "Computer in diesem Netzwerk werden gesucht",
-    "none": "Keine Computer gefunden. Starte Yggdrasil auf deinem Computer und nutze dasselbe WLAN, oder gib seine Adresse ein.",
-    "localNetworkDenied": "Yggdrasil darf nicht nach Computern in deinem Netzwerk suchen. Erlaube es unter Einstellungen > Datenschutz & Sicherheit > Lokales Netzwerk.",
+    "none": "Keine Computer gefunden. Starte Toskar auf deinem Computer und nutze dasselbe WLAN, oder gib seine Adresse ein.",
+    "localNetworkDenied": "Toskar darf nicht nach Computern in deinem Netzwerk suchen. Erlaube es unter Einstellungen > Datenschutz & Sicherheit > Lokales Netzwerk.",
     "listFailed": "Computer in diesem Netzwerk konnten nicht aufgelistet werden. Du kannst unten trotzdem eine Adresse eingeben."
   },
   "computers": {
     "title": "Computer",
     "subtitle": "Die Computer, die dein verbundener Computer erreichen kann, und ob sie online sind.",
-    "disconnected": "Verbinde dich mit einem Computer, auf dem Yggdrasil läuft, um mit seinen Modellen zu chatten und seine anderen Computer zu sehen.",
+    "disconnected": "Verbinde dich mit einem Computer, auf dem Toskar läuft, um mit seinen Modellen zu chatten und seine anderen Computer zu sehen.",
     "enterAddress": "Adresse eingeben",
     "loading": "Computer werden geladen",
     "none": "Über diese Verbindung sind keine Computer sichtbar.",
@@ -89,7 +89,7 @@
   },
   "phoneModels": {
     "heading": "Auf diesem iPhone",
-    "copy": "Das sind die kleineren Modelle aus dem Yggdrasil-Katalog. Die Datei wird auf dieses Handy geladen und bleibt hier.",
+    "copy": "Das sind die kleineren Modelle aus dem Toskar-Katalog. Die Datei wird auf dieses Handy geladen und bleibt hier.",
     "meta": "{{parameters}} · {{size}}",
     "chat": "Chat",
     "remove": "Entfernen",
@@ -146,7 +146,7 @@
     "chooseOther": "Anderes Modell wählen",
     "installing": "{{model}} wird installiert",
     "downloaded": "{{percent}} geladen",
-    "keepOpen": "Große Modelle zu laden kann einige Minuten dauern. Lass Yggdrasil geöffnet.",
+    "keepOpen": "Große Modelle zu laden kann einige Minuten dauern. Lass Toskar geöffnet.",
     "ready": "Alles bereit",
     "installed": "{{model}} ist installiert. Chatte jetzt mit deiner lokalen KI.",
     "startChatting": "Chat starten"
@@ -160,14 +160,14 @@
     "computer": "Computer",
     "connectedComputer": "Verbundener Computer",
     "notConnected": "Nicht verbunden",
-    "coreVersion": "Yggdrasil auf diesem Computer",
-    "updateCore": "Aktualisiere Yggdrasil auf diesem Computer auf 1.4 oder neuer, um Antwortquellen, die Schritte des Assistenten, Live-Fortschritt und Aufwand zu sehen.",
+    "coreVersion": "Toskar auf diesem Computer",
+    "updateCore": "Aktualisiere Toskar auf diesem Computer auf 1.4 oder neuer, um Antwortquellen, die Schritte des Assistenten, Live-Fortschritt und Aufwand zu sehen.",
     "jobsKeepRunning": "Wenn du diese App schließt, wird eine Aufgabe, die auf diesem Computer bereits läuft, nicht gestoppt.",
     "forget": "Diesen Computer vergessen",
     "connect": "Computer verbinden",
     "about": "Über",
     "version": "Version {{version}}",
-    "aboutCopy": "Der Weltenbaum, der die Welten verbindet. Yggdrasil verbindet deine Apps mit den Modellen auf deinen Computern und auf diesem iPhone.",
+    "aboutCopy": "Benannt nach Ratatoskr, dem Eichhörnchen, das Botschaften am Weltenbaum entlangträgt. Toskar verbindet deine Apps mit den Modellen auf deinen Computern und auf diesem iPhone.",
     "dangerZone": "Gefahrenbereich",
     "resetTitle": "Dieses iPhone zurücksetzen",
     "resetCopy": "Stellt die Willkommenseinrichtung wieder her. Löscht Chats auf diesem iPhone und vergisst den verbundenen Computer.",
@@ -177,7 +177,7 @@
     "alsoDeleteModels": "Auch geladene Modelle löschen",
     "resetting": "Wird zurückgesetzt …",
     "confirmReset": "Ja, zurücksetzen",
-    "resetFailed": "Yggdrasil konnte nicht zurückgesetzt werden."
+    "resetFailed": "Toskar konnte nicht zurückgesetzt werden."
   },
   "language": {
     "title": "Sprache",
@@ -210,7 +210,7 @@
       "profile": "Profil",
       "runOn": "Ausführen auf",
       "automatic": "Automatisch",
-      "automaticHint": "Yggdrasil wählt für jede Nachricht den besten verfügbaren Computer.",
+      "automaticHint": "Toskar wählt für jede Nachricht den besten verfügbaren Computer.",
       "effort": "Aufwand",
       "memoryOn": "Gedächtnis an",
       "memoryOff": "Gedächtnis aus",
@@ -218,7 +218,7 @@
       "memoryDisabledHint": "Das Gedächtnis ist für alle Chats aus. Schalte es auf der Seite „Gedächtnis“ ein."
     },
     "loading": "Chat wird geladen",
-    "placeholder": "Nachricht an Yggdrasil",
+    "placeholder": "Nachricht an Toskar",
     "send": "Senden",
     "sending": "Wird gesendet",
     "stop": "Stoppen",
@@ -243,7 +243,7 @@
     "empty": {
       "title": "Wobei kann ich helfen?",
       "phone": "Sprich mit der KI auf diesem iPhone. Nichts, was du schreibst, verlässt es.",
-      "computer": "Yggdrasil wählt das passende Modell und den passenden Computer, schlägt bei Bedarf nach und zeigt, was es genutzt hat."
+      "computer": "Toskar wählt das passende Modell und den passenden Computer, schlägt bei Bedarf nach und zeigt, was es genutzt hat."
     },
     "unsent": {
       "notSent": "Nicht gesendet",
@@ -267,7 +267,7 @@
     "hint": "Legt fest, wie viel Sorgfalt die Antwort bekommt",
     "auto": {
       "label": "Automatisch",
-      "hint": "Yggdrasil entscheidet: Kurze Fragen bleiben schnell, große oder datenlastige Fragen bekommen mehr Sorgfalt."
+      "hint": "Toskar entscheidet: Kurze Fragen bleiben schnell, große oder datenlastige Fragen bekommen mehr Sorgfalt."
     },
     "fast": {
       "label": "Schnell",
@@ -365,7 +365,7 @@
       "runeName": "Thurisaz, die Rune des Tores"
     },
     "settings": {
-      "meaning": "Forseti schlichtet jede Sache gerecht. Einstellungen sind die Regeln, an die sich Yggdrasil hält.",
+      "meaning": "Forseti schlichtet jede Sache gerecht. Einstellungen sind die Regeln, an die sich Toskar hält.",
       "story": "Forseti, Sohn Baldrs, sitzt in Glitnir, einer Halle mit goldenen Säulen und silbernem Dach. Wer einen Streit vor ihn bringt, geht versöhnt davon.",
       "runeName": "Isa, die Rune der Stille"
     }

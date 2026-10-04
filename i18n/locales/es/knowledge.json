@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Conocimiento",
-    "description": "Yggdrasil mantiene catálogos, precios, políticas y documentos disponibles para búsqueda. Cuando un perfil o una IA especializada usa una fuente, se le agregan los fragmentos que coinciden con cada pregunta. Edita un archivo y la siguiente pregunta verá el cambio. Sin volver a entrenar.",
+    "description": "Toskar mantiene catálogos, precios, políticas y documentos disponibles para búsqueda. Cuando un perfil o una IA especializada usa una fuente, se le agregan los fragmentos que coinciden con cada pregunta. Edita un archivo y la siguiente pregunta verá el cambio. Sin volver a entrenar.",
     "loading": "Cargando…",
     "emptyTitle": "No hay conocimiento conectado",
     "emptyDescription": "Conecta un archivo o una carpeta de esta computadora, pega contenido, o lee de una base de datos o una API web. Funcionan archivos PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, de texto y HTML."
@@ -58,7 +58,7 @@
       "api": "API web"
     },
     "path": "Ruta en esta computadora",
-    "pathHint": "Yggdrasil lo lee en su ubicación y detecta las ediciones automáticamente.",
+    "pathHint": "Toskar lo lee en su ubicación y detecta las ediciones automáticamente.",
     "chooseFile": "Elegir un archivo",
     "pastePlaceholder": "Pega texto, Markdown o CSV",
     "content": "Contenido",
@@ -73,7 +73,7 @@
     "connection": "Cadena de conexión",
     "connectionHint": "Usa una cuenta que solo pueda leer. Se guarda aparte de la base de datos y no se vuelve a mostrar.",
     "query": "Consulta",
-    "queryHint": "Un solo SELECT. Se ejecuta en modo de solo lectura, así que Yggdrasil nunca cambia la base de datos. Cada fila se convierte en un fragmento.",
+    "queryHint": "Un solo SELECT. Se ejecuta en modo de solo lectura, así que Toskar nunca cambia la base de datos. Cada fila se convierte en un fragmento.",
     "url": "URL",
     "urlHint": "JSON, CSV o texto. Una lista de objetos se convierte en un fragmento por elemento.",
     "items": "Lista en la respuesta (opcional)",

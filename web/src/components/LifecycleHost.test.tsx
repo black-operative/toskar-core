@@ -21,7 +21,7 @@ describe('LifecycleHost', () => {
     await applyLanguage('en-XA')
     render(<LifecycleHost>page</LifecycleHost>)
     act(() => send({ state: 'stopping', message: 'Stopping local AI service…' }))
-    expect(screen.getByText(pseudoLocalize('Closing Yggdrasil'))).toBeInTheDocument()
+    expect(screen.getByText(pseudoLocalize('Closing Toskar'))).toBeInTheDocument()
     expect(screen.getByText(pseudoLocalize('Stopping local AI service…'))).toBeInTheDocument()
   })
 })

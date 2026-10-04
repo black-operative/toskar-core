@@ -1,6 +1,6 @@
 {
   "app": {
-    "starting": "正在启动 Yggdrasil",
+    "starting": "正在启动 Toskar",
     "back": "返回",
     "close": "关闭",
     "cancel": "取消",
@@ -23,11 +23,11 @@
     "gigabytes": "{{value}} GB"
   },
   "connection": {
-    "enterAddress": "请输入运行 Yggdrasil 的电脑的地址。",
-    "couldNotReach": "无法访问 Yggdrasil。",
-    "unreachable": "无法访问那台电脑上的 Yggdrasil。请连接同一个 Wi-Fi 网络，并在那台电脑上开启 API 的局域网访问。",
+    "enterAddress": "请输入运行 Toskar 的电脑的地址。",
+    "couldNotReach": "无法访问 Toskar。",
+    "unreachable": "无法访问那台电脑上的 Toskar。请连接同一个 Wi-Fi 网络，并在那台电脑上开启 API 的局域网访问。",
     "keyRejected": "该 API 密钥被拒绝。请在那台电脑的“API 访问”中创建一个密钥，然后粘贴到这里。",
-    "dropped": "与 Yggdrasil 的连接已断开。",
+    "dropped": "与 Toskar 的连接已断开。",
     "chatFailed": "聊天失败。",
     "requestFailed": "请求失败"
   },
@@ -40,22 +40,22 @@
     "apiKeyPlaceholder": "粘贴密钥",
     "connect": "连接",
     "connecting": "正在连接",
-    "notReady": "Yggdrasil 已响应，但尚未就绪。"
+    "notReady": "Toskar 已响应，但尚未就绪。"
   },
   "discovery": {
     "onThisNetwork": "在此网络中",
     "useAddress": "使用这台电脑的地址",
-    "version": "Yggdrasil {{version}}",
+    "version": "Toskar {{version}}",
     "looking": "正在此网络中查找电脑…",
     "lookingLabel": "正在此网络中查找电脑",
-    "none": "未找到电脑。请在你的电脑上启动 Yggdrasil 并连接同一个 Wi-Fi，或输入它的地址。",
-    "localNetworkDenied": "Yggdrasil 无权在你的网络中查找电脑。请在“设置”>“隐私与安全性”>“本地网络”中允许它。",
+    "none": "未找到电脑。请在你的电脑上启动 Toskar 并连接同一个 Wi-Fi，或输入它的地址。",
+    "localNetworkDenied": "Toskar 无权在你的网络中查找电脑。请在“设置”>“隐私与安全性”>“本地网络”中允许它。",
     "listFailed": "无法列出此网络中的电脑。你仍可以在下方输入地址。"
   },
   "computers": {
     "title": "电脑",
     "subtitle": "你连接的电脑可以访问的电脑，以及它们是否在线。",
-    "disconnected": "连接一台运行 Yggdrasil 的电脑，即可与它的模型聊天并查看它的其他电脑。",
+    "disconnected": "连接一台运行 Toskar 的电脑，即可与它的模型聊天并查看它的其他电脑。",
     "enterAddress": "输入地址",
     "loading": "正在加载电脑",
     "none": "通过此连接看不到任何电脑。",
@@ -89,7 +89,7 @@
   },
   "phoneModels": {
     "heading": "在这部 iPhone 上",
-    "copy": "这些是 Yggdrasil 目录中较小的模型。文件会下载到这部手机上，并保留在这里。",
+    "copy": "这些是 Toskar 目录中较小的模型。文件会下载到这部手机上，并保留在这里。",
     "meta": "{{parameters}} · {{size}}",
     "chat": "聊天",
     "remove": "移除",
@@ -146,7 +146,7 @@
     "chooseOther": "选择其他模型",
     "installing": "正在安装 {{model}}",
     "downloaded": "已下载 {{percent}}",
-    "keepOpen": "大型模型下载可能需要几分钟。请保持 Yggdrasil 打开。",
+    "keepOpen": "大型模型下载可能需要几分钟。请保持 Toskar 打开。",
     "ready": "一切就绪",
     "installed": "{{model}} 已安装。开始与你的本地 AI 聊天吧。",
     "startChatting": "开始聊天"
@@ -160,14 +160,14 @@
     "computer": "电脑",
     "connectedComputer": "已连接的电脑",
     "notConnected": "未连接",
-    "coreVersion": "那台电脑上的 Yggdrasil",
-    "updateCore": "请将那台电脑上的 Yggdrasil 更新到 1.4 或更高版本，以查看回答来源、助手的操作、实时进度和投入程度。",
+    "coreVersion": "那台电脑上的 Toskar",
+    "updateCore": "请将那台电脑上的 Toskar 更新到 1.4 或更高版本，以查看回答来源、助手的操作、实时进度和投入程度。",
     "jobsKeepRunning": "关闭这个应用不会停止已经在那台电脑上运行的任务。",
     "forget": "忘记这台电脑",
     "connect": "连接电脑",
     "about": "关于",
     "version": "版本 {{version}}",
-    "aboutCopy": "连接诸界的世界树。Yggdrasil 将你的应用与你电脑上和这部 iPhone 上的模型连接起来。",
+    "aboutCopy": "名字来自在世界树上传递消息的松鼠 Ratatoskr。Toskar 将你的应用与你电脑上和这部 iPhone 上的模型连接起来。",
     "dangerZone": "危险操作",
     "resetTitle": "重置这部 iPhone",
     "resetCopy": "恢复欢迎设置。会清除这部 iPhone 上的聊天，并忘记已连接的电脑。",
@@ -177,7 +177,7 @@
     "alsoDeleteModels": "同时删除已下载的模型",
     "resetting": "正在重置…",
     "confirmReset": "是，重置",
-    "resetFailed": "无法重置 Yggdrasil。"
+    "resetFailed": "无法重置 Toskar。"
   },
   "language": {
     "title": "语言",
@@ -210,7 +210,7 @@
       "profile": "配置",
       "runOn": "运行位置",
       "automatic": "自动",
-      "automaticHint": "Yggdrasil 会为每条消息选择最合适的可用电脑。",
+      "automaticHint": "Toskar 会为每条消息选择最合适的可用电脑。",
       "effort": "投入程度",
       "memoryOn": "记忆已开启",
       "memoryOff": "记忆已关闭",
@@ -218,7 +218,7 @@
       "memoryDisabledHint": "所有聊天的记忆都已关闭。请在“记忆”页面开启。"
     },
     "loading": "正在加载聊天",
-    "placeholder": "给 Yggdrasil 发消息",
+    "placeholder": "给 Toskar 发消息",
     "send": "发送",
     "sending": "正在发送",
     "stop": "停止",
@@ -243,7 +243,7 @@
     "empty": {
       "title": "有什么可以帮你的？",
       "phone": "与这部 iPhone 上的 AI 对话。你写的任何内容都不会离开它。",
-      "computer": "Yggdrasil 会选择合适的模型和电脑，在需要时查找信息，并显示它用到了什么。"
+      "computer": "Toskar 会选择合适的模型和电脑，在需要时查找信息，并显示它用到了什么。"
     },
     "unsent": {
       "notSent": "未发送",
@@ -267,7 +267,7 @@
     "hint": "选择回复的细致程度",
     "auto": {
       "label": "自动",
-      "hint": "由 Yggdrasil 决定：简单问题保持快速，复杂或涉及数据的问题会更仔细。"
+      "hint": "由 Toskar 决定：简单问题保持快速，复杂或涉及数据的问题会更仔细。"
     },
     "fast": {
       "label": "快速",
@@ -361,7 +361,7 @@
       "runeName": "Thurisaz，大门之符文"
     },
     "settings": {
-      "meaning": "Forseti 公正地裁决每一件事。设置就是 Yggdrasil 遵守的规则。",
+      "meaning": "Forseti 公正地裁决每一件事。设置就是 Toskar 遵守的规则。",
       "story": "Forseti 是 Baldr 之子，坐在 Glitnir 殿中，那里有黄金的柱子和白银的屋顶。每个带着纷争来找他的人，离开时都已和解。",
       "runeName": "Isa，静止之符文"
     }

@@ -13,7 +13,7 @@
     "memory": "Arbeitsspeicher",
     "graphics": "Grafik",
     "system": "System",
-    "unavailable": "Hardwaredetails erscheinen, sobald Yggdrasil gestartet ist. Du kannst die Einrichtung jetzt fortsetzen."
+    "unavailable": "Hardwaredetails erscheinen, sobald Toskar gestartet ist. Du kannst die Einrichtung jetzt fortsetzen."
   },
   "question": "Wobei soll dir deine KI helfen?",
   "purposes": {

@@ -109,7 +109,7 @@
     "installFirst": "進行效能測試前，請先在「模型」頁面安裝至少一個模型。",
     "selected": "已選擇 {{count}}/6",
     "prompts_other": "{{count}} 個提示",
-    "warning": "進行效能測試時，Yggdrasil 會暫時載入和卸載模型。測試期間，進行中的聊天可能會變慢。",
+    "warning": "進行效能測試時，Toskar 會暫時載入和卸載模型。測試期間，進行中的聊天可能會變慢。",
     "runsPerPrompt": "每個提示的測量次數",
     "starting": "正在開始…",
     "cancel": "取消",
@@ -119,7 +119,7 @@
     "minutes_other": "{{count}} 分鐘",
     "startFailed": "無法開始效能測試。",
     "recent": "最近的效能測試",
-    "recentHint": "Yggdrasil 執行期間，這些工作會持續保留。",
+    "recentHint": "Toskar 執行期間，這些工作會持續保留。",
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_other": "{{count}} 個勝出者"
   }

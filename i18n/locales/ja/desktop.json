@@ -1,20 +1,20 @@
 {
   "menu": {
-    "quitApp": "Yggdrasilを終了",
+    "quitApp": "Toskarを終了",
     "file": "ファイル",
     "quit": "終了"
   },
   "tray": {
-    "tooltip": "Yggdrasilはバックグラウンドで実行中です",
-    "open": "Yggdrasilを開く",
+    "tooltip": "Toskarはバックグラウンドで実行中です",
+    "open": "Toskarを開く",
     "openHint": "メインウインドウを表示",
     "stop": "バックグラウンドサービスを停止",
     "stopHint": "ローカルAIサービスを停止して終了"
   },
   "lifecycle": {
-    "closingTitle": "Yggdrasilを終了しています",
+    "closingTitle": "Toskarを終了しています",
     "stopping": "ローカルAIサービスを停止しています…",
-    "backgroundMenuBar": "Yggdrasilはメニューバーで実行を続けています",
-    "backgroundTray": "Yggdrasilはシステムトレイで実行を続けています"
+    "backgroundMenuBar": "Toskarはメニューバーで実行を続けています",
+    "backgroundTray": "Toskarはシステムトレイで実行を続けています"
   }
 }

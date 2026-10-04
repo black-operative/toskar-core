@@ -43,7 +43,7 @@ describe('App', () => {
   it('renders the onboarding welcome screen', async () => {
     render(<App />)
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: 'Yggdrasil' })).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: 'Toskar' })).toBeInTheDocument()
     })
     expect(
       screen.getByText(/run AI privately on your own computers/i),

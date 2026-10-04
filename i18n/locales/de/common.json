@@ -24,7 +24,7 @@
     "unavailable": "Dienst nicht verfügbar",
     "noModel": "Kein Modell",
     "ready": "Bereit",
-    "unavailableHint": "Der lokale Yggdrasil-Dienst antwortet nicht.",
+    "unavailableHint": "Der lokale Toskar-Dienst antwortet nicht.",
     "noModelHint": "Installiere unter „Modelle“ ein Modell, um zu chatten.",
     "readyHint": "Der lokale Dienst ist bereit."
   },
@@ -41,14 +41,14 @@
     "mimirReady": "Bereit"
   },
   "boot": {
-    "starting": "Yggdrasil startet",
+    "starting": "Toskar startet",
     "preparing": "Dein lokaler KI-Dienst wird vorbereitet",
     "unavailable": "Dienst nicht verfügbar",
-    "unavailableBody": "Der lokale Yggdrasil-Dienst hat noch nicht geantwortet. Warte einen Moment und versuche es erneut. Wenn das öfter passiert, sieh nach dem Laden der App unter „Diagnose“ nach.",
+    "unavailableBody": "Der lokale Toskar-Dienst hat noch nicht geantwortet. Warte einen Moment und versuche es erneut. Wenn das öfter passiert, sieh nach dem Laden der App unter „Diagnose“ nach.",
     "retrying": "Neuer Versuch …",
     "tryAgain": "Erneut versuchen",
     "keyRequired": "API-Schlüssel erforderlich",
-    "keyBody": "Dieses Yggdrasil nimmt Verbindungen von anderen Geräten an und verlangt deshalb einen API-Schlüssel. Gib einen ein, um fortzufahren. Über einfaches HTTP verschlüsselt ein Schlüssel deinen Datenverkehr nicht.",
+    "keyBody": "Dieses Toskar nimmt Verbindungen von anderen Geräten an und verlangt deshalb einen API-Schlüssel. Gib einen ein, um fortzufahren. Über einfaches HTTP verschlüsselt ein Schlüssel deinen Datenverkehr nicht.",
     "continue": "Weiter"
   },
   "units": {
@@ -58,13 +58,13 @@
   },
   "pageError": {
     "title": "Auf dieser Seite ist ein Problem aufgetreten",
-    "body": "Der Rest von Yggdrasil funktioniert weiter. Versuche es erneut oder lade die App neu, falls es wieder passiert.",
+    "body": "Der Rest von Toskar funktioniert weiter. Versuche es erneut oder lade die App neu, falls es wieder passiert.",
     "retry": "Erneut versuchen",
     "reload": "Neu laden",
     "details": "Details"
   },
   "loadError": {
-    "title": "Yggdrasil konnte das nicht laden",
+    "title": "Toskar konnte das nicht laden",
     "body": "Es hat nicht geantwortet oder mit einem Fehler geantwortet. Deine Daten sind noch da. Versuche es erneut oder sieh in der Diagnose nach, falls es wieder passiert.",
     "retry": "Erneut versuchen",
     "retrying": "Wird erneut versucht…",

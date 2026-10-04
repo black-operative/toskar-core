@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Conoscenza",
-    "description": "Yggdrasil rende ricercabili cataloghi, prezzi, regolamenti e documenti. Quando un profilo o un'IA specializzata usa una fonte, i passaggi pertinenti a ogni domanda vengono aggiunti al contesto. Modifica un file e la domanda successiva vede la modifica. Nessun riaddestramento.",
+    "description": "Toskar rende ricercabili cataloghi, prezzi, regolamenti e documenti. Quando un profilo o un'IA specializzata usa una fonte, i passaggi pertinenti a ogni domanda vengono aggiunti al contesto. Modifica un file e la domanda successiva vede la modifica. Nessun riaddestramento.",
     "loading": "Caricamento…",
     "emptyTitle": "Nessuna conoscenza collegata",
     "emptyDescription": "Collega un file o una cartella di questo computer, incolla del contenuto, oppure leggi da un database o da un'API web. Funzionano file PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, di testo e HTML."
@@ -58,7 +58,7 @@
       "api": "API web"
     },
     "path": "Percorso su questo computer",
-    "pathHint": "Yggdrasil lo legge dove si trova e recepisce le modifiche automaticamente.",
+    "pathHint": "Toskar lo legge dove si trova e recepisce le modifiche automaticamente.",
     "chooseFile": "Scegli un file",
     "pastePlaceholder": "Incolla testo, Markdown o CSV",
     "content": "Contenuto",
@@ -73,7 +73,7 @@
     "connection": "Stringa di connessione",
     "connectionHint": "Usa un account di sola lettura. Viene conservata separatamente dal database e non viene più mostrata.",
     "query": "Query",
-    "queryHint": "Una sola SELECT. Viene eseguita in sola lettura, quindi Yggdrasil non modifica mai il database. Ogni riga diventa un passaggio.",
+    "queryHint": "Una sola SELECT. Viene eseguita in sola lettura, quindi Toskar non modifica mai il database. Ogni riga diventa un passaggio.",
     "url": "URL",
     "urlHint": "JSON, CSV o testo. Un elenco di oggetti diventa un passaggio per elemento.",
     "items": "Elenco nella risposta (facoltativo)",

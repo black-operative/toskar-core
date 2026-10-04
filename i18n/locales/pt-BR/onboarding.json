@@ -14,7 +14,7 @@
     "memory": "Memória",
     "graphics": "Gráficos",
     "system": "Sistema",
-    "unavailable": "Os detalhes do hardware aparecem quando o Yggdrasil tiver iniciado. Você pode continuar a configuração agora."
+    "unavailable": "Os detalhes do hardware aparecem quando o Toskar tiver iniciado. Você pode continuar a configuração agora."
   },
   "question": "O que você gostaria que sua IA fizesse?",
   "purposes": {

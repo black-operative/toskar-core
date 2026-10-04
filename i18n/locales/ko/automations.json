@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "자동화",
-    "description": "자동화는 이 창을 닫아도 백그라운드에서 실행돼요. 반복 작업을 예약하거나, 무언가 바뀌면 Yggdrasil이 알려 주도록 설정하세요.",
+    "description": "자동화는 이 창을 닫아도 백그라운드에서 실행돼요. 반복 작업을 예약하거나, 무언가 바뀌면 Toskar가 알려 주도록 설정하세요.",
     "new": "새 자동화",
     "search": "검색",
     "searchLabel": "자동화 검색",
@@ -13,7 +13,7 @@
     },
     "loading": "자동화를 불러오는 중…",
     "emptyTitle": "아직 자동화가 없어요",
-    "emptyDescription": "아침 가격 확인이나 금요일 릴리스 요약처럼 반복할 확인 작업을 설명하면 Yggdrasil이 그 일정에 맞춰 실행해요.",
+    "emptyDescription": "아침 가격 확인이나 금요일 릴리스 요약처럼 반복할 확인 작업을 설명하면 Toskar가 그 일정에 맞춰 실행해요.",
     "noMatches": "일치하는 자동화가 없어요.",
     "lastNext": "마지막 {{last}} · 다음 {{next}}",
     "saveFailed": "자동화를 저장할 수 없어요.",
@@ -145,7 +145,7 @@
   "form": {
     "editTitle": "자동화 편집",
     "newTitle": "새 자동화",
-    "intro": "Yggdrasil에게 원하는 작업을 알려 주세요.",
+    "intro": "Toskar에게 원하는 작업을 알려 주세요.",
     "describe": "원하는 작업 설명",
     "describePlaceholder": "매일 아침 8시에, 이 상품을 확인하고 가격이 50만 원 아래로 내려가면 알려 주세요.",
     "setUp": "자동화 설정",
@@ -167,7 +167,7 @@
       "failure": "실패할 때만",
       "none": "알림 받지 않음"
     },
-    "noticesGo": "알림은 Yggdrasil의 종 아이콘으로 전달되며, 설정에서 허용하면 이 컴퓨터의 알림으로도 전달돼요.",
+    "noticesGo": "알림은 Toskar의 종 아이콘으로 전달되며, 설정에서 허용하면 이 컴퓨터의 알림으로도 전달돼요.",
     "condition": "조건",
     "conditions": {
       "threshold": "가격",
@@ -189,9 +189,9 @@
     "responseApp": "앱 언어와 같게",
     "responseAuto": "요청에 쓴 언어",
     "installFirst": "먼저 모델을 설치하세요",
-    "auto": "자동(Yggdrasil이 실행할 때마다 선택)",
+    "auto": "자동(Toskar가 실행할 때마다 선택)",
     "timeZone": "시간대",
-    "conditionHint": "Yggdrasil이 결과를 이 조건과 비교해요. 작업 자체는 일상적인 말로 작성하면 돼요.",
+    "conditionHint": "Toskar가 결과를 이 조건과 비교해요. 작업 자체는 일상적인 말로 작성하면 돼요.",
     "tools": "자리를 비운 동안 사용할 수 있는 도구",
     "toolsHint": "이 자동화에 필요한 도구를 지금 승인하세요. 나중에는 응답할 사람이 없어요. 승인하지 않은 도구가 필요해지면 건너뛰고 알림을 보내요. 아무것도 선택하지 않으면 프로필에서 허용하는 읽기 전용 도구만 사용해요.",
     "changeTools": "이 컴퓨터에서 무언가를 변경하는 도구",

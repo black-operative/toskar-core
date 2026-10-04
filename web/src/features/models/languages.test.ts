@@ -22,7 +22,7 @@ describe('model languages', () => {
     expect(languageSummary(qwen, 'en')?.text).toBe('English: Excellent · 3 more languages')
     expect(languageSummary(qwen, 'de')?.text).toBe('German: Good · 3 more languages')
     const title = languageSummary(qwen, 'en')?.title ?? ''
-    expect(title).toContain('German: Good · medium confidence · model card, Yggdrasil maintainers')
+    expect(title).toContain('German: Good · medium confidence · model card, Toskar maintainers')
   })
 
   it('matches another region, and Chinese only by script', () => {

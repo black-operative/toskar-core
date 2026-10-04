@@ -1,7 +1,7 @@
 {
   "landing": {
     "title": "有什麼我可以幫你的？",
-    "subtitle": "和你的本機 AI 對話。Yggdrasil 會自動挑選合適的資源。",
+    "subtitle": "和你的本機 AI 對話。Toskar 會自動挑選合適的資源。",
     "try": "試試看：",
     "suggestions": {
       "explain": {
@@ -28,7 +28,7 @@
     "latest": "最新"
   },
   "composer": {
-    "placeholder": "問 Yggdrasil 任何問題…",
+    "placeholder": "問 Toskar 任何問題…",
     "message": "訊息",
     "attach": "附加檔案",
     "attachHint": "附加文件、試算表、PDF 或程式碼檔案",
@@ -39,14 +39,14 @@
     "choose": "選擇…",
     "automatic": "自動",
     "thisComputer": "這台電腦",
-    "runOnAutomatic": "Yggdrasil 會為每則訊息選擇最合適的可用電腦。",
+    "runOnAutomatic": "Toskar 會為每則訊息選擇最合適的可用電腦。",
     "runOnLocal": "只在這台電腦上執行。",
     "model": "模型",
     "modelHint": "由哪個已安裝的模型回答這個聊天",
     "noModel": "沒有安裝模型",
     "modelsLoading": "正在載入模型…",
     "modelsFailed": "無法載入模型",
-    "modelsFailedHint": "Yggdrasil 無法列出你的模型。",
+    "modelsFailedHint": "Toskar 無法列出你的模型。",
     "auto": "自動",
     "models": "模型",
     "specialized": "專用 AI",
@@ -67,7 +67,7 @@
   "effort": {
     "auto": {
       "label": "自動",
-      "hint": "由 Yggdrasil 決定：簡單的問題保持快速，大型或涉及資料的問題會更加謹慎處理。"
+      "hint": "由 Toskar 決定：簡單的問題保持快速，大型或涉及資料的問題會更加謹慎處理。"
     },
     "fast": {
       "label": "快速",
@@ -85,7 +85,7 @@
   "memory": {
     "on": "記憶已開啟",
     "off": "記憶已關閉",
-    "onHint": "這個聊天會使用你請 Yggdrasil 記住的內容。按一下即可讓這個聊天不使用記憶。",
+    "onHint": "這個聊天會使用你請 Toskar 記住的內容。按一下即可讓這個聊天不使用記憶。",
     "offHint": "這個聊天的記憶已關閉。已儲存的記憶不會在這裡使用，也不會被刪除。",
     "disabledHint": "所有聊天的記憶都已關閉。請在「記憶」頁面中開啟。"
   },
@@ -96,7 +96,7 @@
     "downloadFailed": "無法為這個聊天下載模型。",
     "installFirst": "請先安裝模型，然後再試一次。",
     "startFailed": "無法開始對話。",
-    "noReply": "模型在回覆前就停止了。Yggdrasil 已將它停止，並清理失敗的程序。",
+    "noReply": "模型在回覆前就停止了。Toskar 已將它停止，並清理失敗的程序。",
     "couldNotRespond": "模型無法回應。",
     "unreachable": "無法連線到本機 AI。請查看「診斷」以取得詳細資訊。",
     "generationFailed": "產生回應時發生錯誤。",
@@ -104,7 +104,7 @@
     "deleteFailed": "無法刪除這個聊天。"
   },
   "attachments": {
-    "unsupported": "Yggdrasil 目前還無法讀取這種類型的檔案",
+    "unsupported": "Toskar 目前還無法讀取這種類型的檔案",
     "tooLarge": "檔案大小上限為 25 MB",
     "addFailed": "無法加入這個檔案。",
     "adding": "正在加入…",
@@ -280,7 +280,7 @@
     "details": "詳細資訊",
     "hideDetails": "隱藏詳細資訊",
     "notResponding": {
-      "title": "Yggdrasil 沒有回應",
+      "title": "Toskar 沒有回應",
       "body": "本機服務已停止回應。如果這是桌面 App，請結束並重新打開，然後再試一次。"
     },
     "engineMissing": {
@@ -301,7 +301,7 @@
     },
     "offline": {
       "title": "你正在使用的一台電腦已離線",
-      "body": "請開啟那台電腦並打開 Yggdrasil，或在這台電腦上執行這個聊天。"
+      "body": "請開啟那台電腦並打開 Toskar，或在這台電腦上執行這個聊天。"
     },
     "connection": {
       "title": "無法連線到模型",
@@ -314,7 +314,7 @@
     "didNotWork": "操作沒有成功",
     "generic": {
       "title": "發生錯誤",
-      "body": "Yggdrasil 無法完成這則回覆。請稍後再試一次。"
+      "body": "Toskar 無法完成這則回覆。請稍後再試一次。"
     },
     "trainingMemory": {
       "busy": "訓練正在使用這台電腦，因此沒有足夠的記憶體執行此模型。",
@@ -332,8 +332,8 @@
     "computer": "電腦：{{value}}",
     "exitCode": "結束代碼：{{value}}",
     "lastProbe": "上次健康檢查：{{value}}",
-    "outOfMemory": "此模型可能已用完這台電腦上的安全記憶體。為了保持系統穩定，Yggdrasil 已將它停止。",
-    "stopped": "模型停止了回應，因此 Yggdrasil 已將它停止，並清理失敗的程序。"
+    "outOfMemory": "此模型可能已用完這台電腦上的安全記憶體。為了保持系統穩定，Toskar 已將它停止。",
+    "stopped": "模型停止了回應，因此 Toskar 已將它停止，並清理失敗的程序。"
   },
   "capability": {
     "enableInternet": "啟用網際網路",
@@ -440,7 +440,7 @@
   },
   "notices": {
     "languageWeak": "{{model}} 寫{{language}}可能不如寫英文好，而已安裝且能執行的模型中沒有更擅長的。{{language}}評級良好的模型可在「模型」頁面找到。",
-    "unconfirmedFigures": "Yggdrasil 無法在來源中確認 {{figures}}。請先檢查再依賴它。",
+    "unconfirmedFigures": "Toskar 無法在來源中確認 {{figures}}。請先檢查再依賴它。",
     "codeErrors": "部分程式碼無法解析：{{errors}}。執行前請先修正。",
     "unsourcedLinks": "這些連結並非來自任何來源，可能無法開啟：{{links}}。如果打不開，請在該網站內搜尋。",
     "contradictions_other": "回答可能在 {{count}} 處與自身或來源矛盾。依賴前請先查證。",
@@ -491,8 +491,8 @@
     "leftUnderMinute": "剩不到 1 分鐘。",
     "leftMinutes_other": "大約還剩 {{count}} 分鐘。",
     "leftHours_other": "大約還剩 {{count}} 小時。",
-    "capabilities": "檢查了 Yggdrasil 目前能做什麼",
-    "guide": "查閱了 Yggdrasil 指南：{{sections}}",
+    "capabilities": "檢查了 Toskar 目前能做什麼",
+    "guide": "查閱了 Toskar 指南：{{sections}}",
     "localOnly": "已在這台電腦上回答，因為問題用到了標記為「僅限這台電腦」的資料。",
     "passages_other": "在 {{source}} 中找到 {{count}} 個段落",
     "passagesMore_other": "在 {{source}} 及另外 {{more}} 個來源中找到 {{count}} 個段落",
@@ -534,10 +534,10 @@
     "placeDetails": "查詢了一個地點的詳細資訊",
     "route": "查詢了從 {{from}} 到 {{to}} 的路線",
     "git": "檢查了 Git 存放庫（{{action}}）",
-    "helpAnswered": "根據 Yggdrasil 指南回答"
+    "helpAnswered": "根據 Toskar 指南回答"
   },
   "help": {
-    "mcpTools": "MCP 本身不需要安裝：Yggdrasil 已經支援它。要新增 MCP 伺服器的工具，請開啟 **{{tools}} → {{addTools}}**，然後從四種方式中擇一：\n\n- **圖庫：** 選擇一個伺服器，例如資料夾、瀏覽器、Notion、Linear 或 GitHub，最多回答一兩個問題。需要登入的服務會開啟登入視窗。\n- **貼上：** 貼上伺服器說明中的內容：適用於 Claude Desktop、Cursor 或 VS Code 的 JSON、一行指令、一行 `claude mcp add` 或一個網址。\n- **從其他應用程式匯入：** 新增你已在 Claude Desktop、Claude Code、Cursor、VS Code、Windsurf、Gemini CLI 或 LM Studio 中設定好的伺服器。\n- **自訂：** 一個要執行的指令或一個網址。\n\nYggdrasil 會先連線到伺服器並列出其工具，然後才儲存。在這台電腦上執行的伺服器需要 Node.js 或 uv；缺少時錯誤訊息會說明缺哪一個。會變更內容的工具會先徵求你的同意。",
-    "mcpServer": "要在 Claude Desktop、Claude Code、Cursor、VS Code 或其他支援 MCP 的應用程式中使用 Yggdrasil，請開啟 **{{apiAccess}} → {{useElsewhere}}**。那裡會顯示要貼到每個應用程式中的內容。之後該應用程式就能向你的本機 AI 提問、列出其模型，並搜尋你連結的知識。"
+    "mcpTools": "MCP 本身不需要安裝：Toskar 已經支援它。要新增 MCP 伺服器的工具，請開啟 **{{tools}} → {{addTools}}**，然後從四種方式中擇一：\n\n- **圖庫：** 選擇一個伺服器，例如資料夾、瀏覽器、Notion、Linear 或 GitHub，最多回答一兩個問題。需要登入的服務會開啟登入視窗。\n- **貼上：** 貼上伺服器說明中的內容：適用於 Claude Desktop、Cursor 或 VS Code 的 JSON、一行指令、一行 `claude mcp add` 或一個網址。\n- **從其他應用程式匯入：** 新增你已在 Claude Desktop、Claude Code、Cursor、VS Code、Windsurf、Gemini CLI 或 LM Studio 中設定好的伺服器。\n- **自訂：** 一個要執行的指令或一個網址。\n\nToskar 會先連線到伺服器並列出其工具，然後才儲存。在這台電腦上執行的伺服器需要 Node.js 或 uv；缺少時錯誤訊息會說明缺哪一個。會變更內容的工具會先徵求你的同意。",
+    "mcpServer": "要在 Claude Desktop、Claude Code、Cursor、VS Code 或其他支援 MCP 的應用程式中使用 Toskar，請開啟 **{{apiAccess}} → {{useElsewhere}}**。那裡會顯示要貼到每個應用程式中的內容。之後該應用程式就能向你的本機 AI 提問、列出其模型，並搜尋你連結的知識。"
   }
 }

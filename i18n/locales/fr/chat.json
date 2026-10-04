@@ -1,7 +1,7 @@
 {
   "landing": {
     "title": "Comment puis-je vous aider ?",
-    "subtitle": "Parlez à votre IA locale. Yggdrasil choisit automatiquement les bonnes ressources.",
+    "subtitle": "Parlez à votre IA locale. Toskar choisit automatiquement les bonnes ressources.",
     "try": "Essayez :",
     "suggestions": {
       "explain": {
@@ -28,7 +28,7 @@
     "latest": "Plus récent"
   },
   "composer": {
-    "placeholder": "Demandez ce que vous voulez à Yggdrasil…",
+    "placeholder": "Demandez ce que vous voulez à Toskar…",
     "message": "Message",
     "attach": "Joindre des fichiers",
     "attachHint": "Joindre un document, un tableur, un PDF ou un fichier de code",
@@ -39,14 +39,14 @@
     "choose": "Choisir…",
     "automatic": "Automatique",
     "thisComputer": "Cet ordinateur",
-    "runOnAutomatic": "Yggdrasil choisit le meilleur ordinateur disponible pour chaque message.",
+    "runOnAutomatic": "Toskar choisit le meilleur ordinateur disponible pour chaque message.",
     "runOnLocal": "Exécuter uniquement sur cet ordinateur.",
     "model": "Modèle",
     "modelHint": "Modèle installé qui répond dans cette discussion",
     "noModel": "Aucun modèle installé",
     "modelsLoading": "Chargement des modèles…",
     "modelsFailed": "Impossible de charger les modèles",
-    "modelsFailedHint": "Yggdrasil n'a pas pu lister vos modèles.",
+    "modelsFailedHint": "Toskar n'a pas pu lister vos modèles.",
     "auto": "Auto",
     "models": "Modèles",
     "specialized": "IA spécialisées",
@@ -67,7 +67,7 @@
   "effort": {
     "auto": {
       "label": "Auto",
-      "hint": "Yggdrasil décide : les questions rapides restent rapides, les grandes questions ou celles sur des données reçoivent plus de soin."
+      "hint": "Toskar décide : les questions rapides restent rapides, les grandes questions ou celles sur des données reçoivent plus de soin."
     },
     "fast": {
       "label": "Rapide",
@@ -85,7 +85,7 @@
   "memory": {
     "on": "Mémoire activée",
     "off": "Mémoire désactivée",
-    "onHint": "Cette discussion utilise ce que vous avez demandé à Yggdrasil de retenir. Cliquez pour exclure la mémoire de cette discussion.",
+    "onHint": "Cette discussion utilise ce que vous avez demandé à Toskar de retenir. Cliquez pour exclure la mémoire de cette discussion.",
     "offHint": "La mémoire est désactivée pour cette discussion. Les souvenirs enregistrés ne sont pas utilisés ici et ne sont pas supprimés.",
     "disabledHint": "La mémoire est désactivée pour toutes les discussions. Activez-la depuis la page Mémoire."
   },
@@ -98,7 +98,7 @@
     "downloadFailed": "Impossible de télécharger un modèle pour cette discussion.",
     "installFirst": "Installez d'abord un modèle, puis réessayez.",
     "startFailed": "Impossible de démarrer une conversation.",
-    "noReply": "Le modèle s'est arrêté avant de pouvoir répondre. Yggdrasil l'a arrêté et a nettoyé le processus en échec.",
+    "noReply": "Le modèle s'est arrêté avant de pouvoir répondre. Toskar l'a arrêté et a nettoyé le processus en échec.",
     "couldNotRespond": "Le modèle n'a pas pu répondre.",
     "unreachable": "Impossible de joindre l'IA locale. Consultez Diagnostics pour plus de détails.",
     "generationFailed": "Un problème est survenu lors de la génération d'une réponse.",
@@ -106,7 +106,7 @@
     "deleteFailed": "Impossible de supprimer cette discussion."
   },
   "attachments": {
-    "unsupported": "Yggdrasil ne peut pas encore lire ce type de fichier",
+    "unsupported": "Toskar ne peut pas encore lire ce type de fichier",
     "tooLarge": "Les fichiers peuvent faire jusqu'à 25 Mo",
     "addFailed": "Impossible d'ajouter le fichier.",
     "adding": "Ajout…",
@@ -290,7 +290,7 @@
     "details": "Détails",
     "hideDetails": "Masquer les détails",
     "notResponding": {
-      "title": "Yggdrasil ne répond pas",
+      "title": "Toskar ne répond pas",
       "body": "Le service local a cessé de répondre. S'il s'agit de l'app de bureau, quittez-la puis rouvrez-la, et réessayez."
     },
     "engineMissing": {
@@ -311,7 +311,7 @@
     },
     "offline": {
       "title": "Un ordinateur que vous utilisez est hors ligne",
-      "body": "Allumez-le et ouvrez-y Yggdrasil, ou exécutez cette discussion sur cet ordinateur."
+      "body": "Allumez-le et ouvrez-y Toskar, ou exécutez cette discussion sur cet ordinateur."
     },
     "connection": {
       "title": "Impossible de joindre le modèle",
@@ -324,7 +324,7 @@
     "didNotWork": "Cela n'a pas fonctionné",
     "generic": {
       "title": "Un problème est survenu",
-      "body": "Yggdrasil n'a pas pu terminer cette réponse. Réessayez dans un instant."
+      "body": "Toskar n'a pas pu terminer cette réponse. Réessayez dans un instant."
     },
     "trainingMemory": {
       "busy": "Un entraînement utilise cet ordinateur, il n'y avait donc pas assez de mémoire pour ce modèle.",
@@ -342,8 +342,8 @@
     "computer": "Ordinateur : {{value}}",
     "exitCode": "Code de sortie : {{value}}",
     "lastProbe": "Dernier contrôle d'état : {{value}}",
-    "outOfMemory": "Ce modèle a probablement manqué de mémoire sûre sur cet ordinateur. Yggdrasil l'a arrêté pour garder le système stable.",
-    "stopped": "Le modèle a cessé de répondre. Yggdrasil l'a donc arrêté et a nettoyé le processus en échec."
+    "outOfMemory": "Ce modèle a probablement manqué de mémoire sûre sur cet ordinateur. Toskar l'a arrêté pour garder le système stable.",
+    "stopped": "Le modèle a cessé de répondre. Toskar l'a donc arrêté et a nettoyé le processus en échec."
   },
   "capability": {
     "enableInternet": "Activer Internet",
@@ -466,7 +466,7 @@
   },
   "notices": {
     "languageWeak": "{{model}} écrit peut-être moins bien en {{language}} qu'en anglais, et aucun modèle installé qui convient ne le fait mieux. La page Modèles indique les modèles bien notés en {{language}}.",
-    "unconfirmedFigures": "Yggdrasil n'a pas pu confirmer {{figures}} dans les sources. Vérifiez avant de vous y fier.",
+    "unconfirmedFigures": "Toskar n'a pas pu confirmer {{figures}} dans les sources. Vérifiez avant de vous y fier.",
     "codeErrors": "Une partie du code ne s'analyse pas : {{errors}}. Corrigez-la avant de l'exécuter.",
     "unsourcedLinks": "Ces liens ne viennent d'aucune source et peuvent ne pas fonctionner : {{links}}. Si l'un ne s'ouvre pas, cherchez plutôt sur le site.",
     "contradictions_one": "La réponse contredit peut-être elle-même ou ses sources à {{count}} endroit. Vérifiez avant de vous y fier.",
@@ -523,8 +523,8 @@
     "leftHours_one": "Environ {{count}} heure restante.",
     "leftHours_many": "Environ {{count}} heures restantes.",
     "leftHours_other": "Environ {{count}} heures restantes.",
-    "capabilities": "J'ai vérifié ce que Yggdrasil peut faire en ce moment",
-    "guide": "Guide de Yggdrasil consulté : {{sections}}",
+    "capabilities": "J'ai vérifié ce que Toskar peut faire en ce moment",
+    "guide": "Guide de Toskar consulté : {{sections}}",
     "localOnly": "J'ai répondu sur cet ordinateur, car la question utilisait des données marquées « cet ordinateur uniquement ».",
     "passages_one": "J'ai trouvé {{count}} passage dans {{source}}",
     "passages_many": "J'ai trouvé {{count}} passages dans {{source}}",
@@ -586,10 +586,10 @@
     "placeDetails": "J'ai consulté les détails d'un lieu",
     "route": "J'ai trouvé l'itinéraire de {{from}} à {{to}}",
     "git": "J'ai vérifié le dépôt Git ({{action}})",
-    "helpAnswered": "Réponse tirée du guide de Yggdrasil"
+    "helpAnswered": "Réponse tirée du guide de Toskar"
   },
   "help": {
-    "mcpTools": "Il n'y a rien à installer pour MCP : Yggdrasil le parle déjà. Pour ajouter les outils d'un serveur MCP, ouvrez **{{tools}} → {{addTools}}** et choisissez l'une des quatre façons :\n\n- **Galerie :** choisissez un serveur, comme des dossiers, un navigateur, Notion, Linear ou GitHub, et répondez à une ou deux questions au plus. Les services qui demandent une connexion ouvrent une fenêtre pour cela.\n- **Coller :** collez ce que disent les instructions du serveur : du JSON pour Claude Desktop, Cursor ou VS Code, une ligne de commande, une ligne `claude mcp add` ou une adresse web.\n- **Depuis vos autres apps :** ajoutez des serveurs déjà configurés dans Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI ou LM Studio.\n- **Personnalisé :** une commande à lancer ou une adresse web.\n\nYggdrasil se connecte et liste les outils du serveur avant de l'enregistrer. Les serveurs qui tournent sur cet ordinateur ont besoin de Node.js ou de uv ; l'erreur indique lequel manque. Les outils qui modifient quelque chose vous demandent d'abord.",
-    "mcpServer": "Pour utiliser Yggdrasil depuis Claude Desktop, Claude Code, Cursor, VS Code ou une autre app qui parle MCP, ouvrez **{{apiAccess}} → {{useElsewhere}}**. Vous y verrez quoi coller dans chaque app. Elle pourra alors interroger votre IA locale, lister ses modèles et chercher dans vos connaissances connectées."
+    "mcpTools": "Il n'y a rien à installer pour MCP : Toskar le parle déjà. Pour ajouter les outils d'un serveur MCP, ouvrez **{{tools}} → {{addTools}}** et choisissez l'une des quatre façons :\n\n- **Galerie :** choisissez un serveur, comme des dossiers, un navigateur, Notion, Linear ou GitHub, et répondez à une ou deux questions au plus. Les services qui demandent une connexion ouvrent une fenêtre pour cela.\n- **Coller :** collez ce que disent les instructions du serveur : du JSON pour Claude Desktop, Cursor ou VS Code, une ligne de commande, une ligne `claude mcp add` ou une adresse web.\n- **Depuis vos autres apps :** ajoutez des serveurs déjà configurés dans Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI ou LM Studio.\n- **Personnalisé :** une commande à lancer ou une adresse web.\n\nToskar se connecte et liste les outils du serveur avant de l'enregistrer. Les serveurs qui tournent sur cet ordinateur ont besoin de Node.js ou de uv ; l'erreur indique lequel manque. Les outils qui modifient quelque chose vous demandent d'abord.",
+    "mcpServer": "Pour utiliser Toskar depuis Claude Desktop, Claude Code, Cursor, VS Code ou une autre app qui parle MCP, ouvrez **{{apiAccess}} → {{useElsewhere}}**. Vous y verrez quoi coller dans chaque app. Elle pourra alors interroger votre IA locale, lister ses modèles et chercher dans vos connaissances connectées."
   }
 }

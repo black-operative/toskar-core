@@ -12,7 +12,7 @@
     "memory": "記憶體",
     "graphics": "顯示卡",
     "system": "系統",
-    "unavailable": "Yggdrasil 啟動後會顯示硬體詳細資訊。你現在可以繼續設定。"
+    "unavailable": "Toskar 啟動後會顯示硬體詳細資訊。你現在可以繼續設定。"
   },
   "question": "你希望你的 AI 做些什麼？",
   "purposes": {

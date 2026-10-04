@@ -1,20 +1,20 @@
 {
   "menu": {
-    "quitApp": "Encerrar o Yggdrasil",
+    "quitApp": "Encerrar o Toskar",
     "file": "Arquivo",
     "quit": "Encerrar"
   },
   "tray": {
-    "tooltip": "O Yggdrasil está sendo executado em segundo plano",
-    "open": "Abrir o Yggdrasil",
+    "tooltip": "O Toskar está sendo executado em segundo plano",
+    "open": "Abrir o Toskar",
     "openHint": "Mostrar a janela principal",
     "stop": "Parar o serviço em segundo plano",
     "stopHint": "Parar o serviço de IA local e encerrar"
   },
   "lifecycle": {
-    "closingTitle": "Fechando o Yggdrasil",
+    "closingTitle": "Fechando o Toskar",
     "stopping": "Parando o serviço de IA local…",
-    "backgroundMenuBar": "O Yggdrasil continua em execução na barra de menus",
-    "backgroundTray": "O Yggdrasil continua em execução na bandeja do sistema"
+    "backgroundMenuBar": "O Toskar continua em execução na barra de menus",
+    "backgroundTray": "O Toskar continua em execução na bandeja do sistema"
   }
 }

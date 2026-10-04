@@ -109,7 +109,7 @@
     "installFirst": "进行基准测试前，请先在“模型”页面安装至少一个模型。",
     "selected": "已选择 {{count}}/6",
     "prompts_other": "{{count}} 个提示词",
-    "warning": "基准测试期间，Yggdrasil 会临时加载和卸载模型。测试期间进行中的聊天可能会变慢。",
+    "warning": "基准测试期间，Toskar 会临时加载和卸载模型。测试期间进行中的聊天可能会变慢。",
     "runsPerPrompt": "每个提示词的测量次数",
     "starting": "正在启动…",
     "cancel": "取消",
@@ -119,7 +119,7 @@
     "minutes_other": "{{count}} 分钟",
     "startFailed": "无法启动基准测试。",
     "recent": "最近的基准测试",
-    "recentHint": "Yggdrasil 运行期间，这些任务会一直保留。",
+    "recentHint": "Toskar 运行期间，这些任务会一直保留。",
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_other": "{{count}} 个胜出者"
   }

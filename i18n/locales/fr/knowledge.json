@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Connaissances",
-    "description": "Yggdrasil permet de rechercher dans vos catalogues, prix, politiques et documents. Lorsqu'un profil ou une IA spécialisée utilise une source, les passages correspondant à chaque question lui sont ajoutés. Modifiez un fichier, et la question suivante voit le changement. Aucun réentraînement.",
+    "description": "Toskar permet de rechercher dans vos catalogues, prix, politiques et documents. Lorsqu'un profil ou une IA spécialisée utilise une source, les passages correspondant à chaque question lui sont ajoutés. Modifiez un fichier, et la question suivante voit le changement. Aucun réentraînement.",
     "loading": "Chargement…",
     "emptyTitle": "Aucune connaissance connectée",
     "emptyDescription": "Connectez un fichier ou un dossier de cet ordinateur, collez du contenu, ou lisez depuis une base de données ou une API web. Les fichiers PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, texte et HTML sont pris en charge."
@@ -58,7 +58,7 @@
       "api": "API web"
     },
     "path": "Chemin sur cet ordinateur",
-    "pathHint": "Yggdrasil le lit sur place et prend en compte les modifications automatiquement.",
+    "pathHint": "Toskar le lit sur place et prend en compte les modifications automatiquement.",
     "chooseFile": "Choisir un fichier",
     "pastePlaceholder": "Collez du texte, du Markdown ou du CSV",
     "content": "Contenu",
@@ -73,7 +73,7 @@
     "connection": "Chaîne de connexion",
     "connectionHint": "Utilisez un compte en lecture seule. Elle est stockée à part de la base de données et ne sera plus affichée.",
     "query": "Requête",
-    "queryHint": "Un seul SELECT. Il s'exécute en lecture seule : Yggdrasil ne modifie jamais la base de données. Chaque ligne devient un passage.",
+    "queryHint": "Un seul SELECT. Il s'exécute en lecture seule : Toskar ne modifie jamais la base de données. Chaque ligne devient un passage.",
     "url": "URL",
     "urlHint": "JSON, CSV ou texte. Une liste d'objets donne un passage par élément.",
     "items": "Liste dans la réponse (facultatif)",

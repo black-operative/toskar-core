@@ -1,13 +1,13 @@
 {
   "page": {
-    "title": "Your Yggdrasil team",
+    "title": "Your Toskar team",
     "titleAdvanced": "Your AI cluster",
     "subtitle": "These computers work together as one AI system. Add a machine, then deploy models where they fit.",
     "find": "Find computers",
     "scanning": "Scanning…",
     "looking": "Looking for computers…",
     "emptyTitle": "Build your AI team",
-    "emptyDescription": "Install Yggdrasil on another computer on your network and it will appear here automatically."
+    "emptyDescription": "Install Toskar on another computer on your network and it will appear here automatically."
   },
   "status": {
     "team": "Team status",
@@ -21,7 +21,7 @@
   },
   "errors": {
     "action": "Could not complete that action",
-    "network": "Allow Local Network / Firewall for Yggdrasil on both computers, and keep Find other computers On in Settings.",
+    "network": "Allow Local Network / Firewall for Toskar on both computers, and keep Find other computers On in Settings.",
     "generic": "Something went wrong",
     "claimFailed": "Could not load pairing offer for that code"
   },
@@ -36,10 +36,10 @@
   },
   "nearby": {
     "title": "Available to add",
-    "description": "Yggdrasil found these computers on your network."
+    "description": "Toskar found these computers on your network."
   },
   "fleet": {
-    "title": "Your Yggdrasil team",
+    "title": "Your Toskar team",
     "titleAdvanced": "Your cluster",
     "moves": "Work moves across this team automatically.",
     "movesAdvanced": "Work moves across this cluster automatically.",
@@ -105,7 +105,7 @@
   },
   "deploy": {
     "title": "Deploy a model",
-    "description": "Install a model on one computer or several at once. Yggdrasil checks free disk before starting.",
+    "description": "Install a model on one computer or several at once. Toskar checks free disk before starting.",
     "model": "Model",
     "chooseModel": "Choose a model…",
     "modelSize": "{{model}} ({{size}})",
@@ -135,14 +135,14 @@
     "makeHint": "The command works once, for 15 minutes.",
     "kindLabel": "Where to run it",
     "kinds": {
-      "installed": "Yggdrasil installed",
+      "installed": "Toskar installed",
       "install": "Install and join",
       "windows": "Windows"
     },
     "kindHints": {
-      "installed": "On a computer that already runs Yggdrasil.",
-      "install": "Installs Yggdrasil on Linux or macOS, starts it as a service, and joins.",
-      "windows": "Installs Yggdrasil on Windows and joins. Run it in PowerShell."
+      "installed": "On a computer that already runs Toskar.",
+      "install": "Installs Toskar on Linux or macOS, starts it as a service, and joins.",
+      "windows": "Installs Toskar on Windows and joins. Run it in PowerShell."
     },
     "commandLabel": "Join command",
     "copy": "Copy",

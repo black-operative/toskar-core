@@ -24,7 +24,7 @@
     "unavailable": "서비스를 사용할 수 없음",
     "noModel": "모델 없음",
     "ready": "준비됨",
-    "unavailableHint": "로컬 Yggdrasil 서비스가 응답하지 않아요.",
+    "unavailableHint": "로컬 Toskar 서비스가 응답하지 않아요.",
     "noModelHint": "채팅을 시작하려면 모델에서 모델을 설치하세요.",
     "readyHint": "로컬 서비스가 준비되었어요."
   },
@@ -40,14 +40,14 @@
     "mimirReady": "준비됨"
   },
   "boot": {
-    "starting": "Yggdrasil 시작하는 중",
+    "starting": "Toskar 시작하는 중",
     "preparing": "로컬 AI 서비스를 준비하는 중",
     "unavailable": "서비스를 사용할 수 없음",
-    "unavailableBody": "로컬 Yggdrasil 서비스가 아직 응답하지 않았어요. 잠시 기다린 후 다시 시도하세요. 이 문제가 계속되면 앱이 로드된 후 진단을 확인하세요.",
+    "unavailableBody": "로컬 Toskar 서비스가 아직 응답하지 않았어요. 잠시 기다린 후 다시 시도하세요. 이 문제가 계속되면 앱이 로드된 후 진단을 확인하세요.",
     "retrying": "다시 시도하는 중…",
     "tryAgain": "다시 시도",
     "keyRequired": "API 키 필요",
-    "keyBody": "이 Yggdrasil은 다른 기기의 연결을 받기 때문에 API 키가 필요해요. 계속하려면 키를 입력하세요. 일반 HTTP에서는 키가 트래픽을 암호화하지 않아요.",
+    "keyBody": "이 Toskar는 다른 기기의 연결을 받기 때문에 API 키가 필요해요. 계속하려면 키를 입력하세요. 일반 HTTP에서는 키가 트래픽을 암호화하지 않아요.",
     "continue": "계속"
   },
   "units": {
@@ -57,13 +57,13 @@
   },
   "pageError": {
     "title": "이 페이지에 문제가 생겼어요",
-    "body": "Yggdrasil의 다른 부분은 계속 사용할 수 있어요. 다시 시도하거나, 계속 발생하면 앱을 새로고침하세요.",
+    "body": "Toskar의 다른 부분은 계속 사용할 수 있어요. 다시 시도하거나, 계속 발생하면 앱을 새로고침하세요.",
     "retry": "다시 시도",
     "reload": "새로고침",
     "details": "자세히"
   },
   "loadError": {
-    "title": "Yggdrasil이 이 내용을 불러오지 못했어요",
+    "title": "Toskar가 이 내용을 불러오지 못했어요",
     "body": "응답이 없었거나 오류로 응답했어요. 데이터는 그대로 있어요. 다시 시도하거나, 계속 발생하면 진단을 확인하세요.",
     "retry": "다시 시도",
     "retrying": "다시 시도하는 중…",

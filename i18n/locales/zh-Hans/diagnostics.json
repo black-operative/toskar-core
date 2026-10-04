@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Yggdrasil 健康状况",
+    "title": "Toskar 健康状况",
     "attention": "有问题需要处理。",
     "mostly": "基本正常——有一项需要查看。",
     "normal": "一切运行正常。",
@@ -17,7 +17,7 @@
     "bundleCreated": "诊断包已创建",
     "bundleAt": "诊断包已创建于 <path>{{path}}</path>",
     "bundleShare": "诊断包已创建。寻求帮助时可以分享这个文件。",
-    "bundleFailed": "无法创建诊断包。请检查 Yggdrasil 服务是否正在运行。"
+    "bundleFailed": "无法创建诊断包。请检查 Toskar 服务是否正在运行。"
   },
   "checked": {
     "never": "尚未检查",
@@ -44,7 +44,7 @@
     "control": {
       "label": "控制服务",
       "notResponding": "没有响应",
-      "message": "无法连接到本地 Yggdrasil 服务。请退出并重新打开应用。如果是服务器，请检查 Yggdrasil 服务是否正在运行。"
+      "message": "无法连接到本地 Toskar 服务。请退出并重新打开应用。如果是服务器，请检查 Toskar 服务是否正在运行。"
     },
     "runtime": {
       "label": "模型运行时",
@@ -120,7 +120,7 @@
   },
   "caches": {
     "title": "缓存",
-    "description": "Yggdrasil 为更快回答重复问题而保留的内容。个人缓存保存在这台电脑上，并会随运行记录一起清除。密码和密钥永远不会被缓存。",
+    "description": "Toskar 为更快回答重复问题而保留的内容。个人缓存保存在这台电脑上，并会随运行记录一起清除。密码和密钥永远不会被缓存。",
     "by": "按 {{key}}",
     "keptUntil": "保留至失效",
     "keptFor": "保留 {{ttl}}",
@@ -130,7 +130,7 @@
     "clear": "清除"
   },
   "abilities": {
-    "title": "Yggdrasil 能做什么",
+    "title": "Toskar 能做什么",
     "description": "基于当前已安装、在线和已连接的内容。聊天会根据这份列表回答诸如“你能生成图片吗？”之类的问题。",
     "available": "（可用）",
     "notAvailable": "（不可用）",
@@ -166,8 +166,8 @@
     "autoDetect": "自动识别语言"
   },
   "memory": {
-    "title": "Yggdrasil 的内存",
-    "description": "Yggdrasil 自身使用的内存及其后台任务。两者过一段时间后应趋于平稳；若数小时持续增长，值得报告。",
+    "title": "Toskar 的内存",
+    "description": "Toskar 自身使用的内存及其后台任务。两者过一段时间后应趋于平稳；若数小时持续增长，值得报告。",
     "heap": "使用中的内存",
     "tasks": "后台任务",
     "since": "运行始于",

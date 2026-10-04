@@ -1,6 +1,6 @@
 {
   "app": {
-    "starting": "Yggdrasil 시작하는 중",
+    "starting": "Toskar 시작하는 중",
     "back": "뒤로",
     "close": "닫기",
     "cancel": "취소",
@@ -23,11 +23,11 @@
     "gigabytes": "{{value}}GB"
   },
   "connection": {
-    "enterAddress": "Yggdrasil을 실행 중인 컴퓨터의 주소를 입력하세요.",
-    "couldNotReach": "Yggdrasil에 연결할 수 없어요.",
-    "unreachable": "해당 컴퓨터의 Yggdrasil에 연결할 수 없어요. 같은 Wi-Fi 네트워크를 사용하고, 해당 컴퓨터에서 API의 LAN 액세스를 켜세요.",
+    "enterAddress": "Toskar를 실행 중인 컴퓨터의 주소를 입력하세요.",
+    "couldNotReach": "Toskar에 연결할 수 없어요.",
+    "unreachable": "해당 컴퓨터의 Toskar에 연결할 수 없어요. 같은 Wi-Fi 네트워크를 사용하고, 해당 컴퓨터에서 API의 LAN 액세스를 켜세요.",
     "keyRejected": "API 키가 거부되었어요. 컴퓨터의 API 액세스에서 키를 만든 다음 여기에 붙여 넣으세요.",
-    "dropped": "Yggdrasil과의 연결이 끊어졌어요.",
+    "dropped": "Toskar와의 연결이 끊어졌어요.",
     "chatFailed": "채팅에 실패했어요.",
     "requestFailed": "요청 실패"
   },
@@ -40,22 +40,22 @@
     "apiKeyPlaceholder": "키를 붙여 넣으세요",
     "connect": "연결",
     "connecting": "연결하는 중",
-    "notReady": "Yggdrasil이 응답했지만 준비되지 않았어요."
+    "notReady": "Toskar가 응답했지만 준비되지 않았어요."
   },
   "discovery": {
     "onThisNetwork": "이 네트워크에 있음",
     "useAddress": "이 컴퓨터의 주소 사용",
-    "version": "Yggdrasil {{version}}",
+    "version": "Toskar {{version}}",
     "looking": "이 네트워크에서 컴퓨터를 찾는 중…",
     "lookingLabel": "이 네트워크에서 컴퓨터를 찾는 중",
-    "none": "컴퓨터를 찾지 못했어요. 컴퓨터에서 Yggdrasil을 시작하고 같은 Wi-Fi를 사용하거나 주소를 입력하세요.",
-    "localNetworkDenied": "Yggdrasil이 네트워크에서 컴퓨터를 찾을 수 없어요. 설정 > 개인정보 보호 및 보안 > 로컬 네트워크에서 허용하세요.",
+    "none": "컴퓨터를 찾지 못했어요. 컴퓨터에서 Toskar를 시작하고 같은 Wi-Fi를 사용하거나 주소를 입력하세요.",
+    "localNetworkDenied": "Toskar가 네트워크에서 컴퓨터를 찾을 수 없어요. 설정 > 개인정보 보호 및 보안 > 로컬 네트워크에서 허용하세요.",
     "listFailed": "이 네트워크의 컴퓨터 목록을 가져올 수 없어요. 아래에 주소를 직접 입력할 수 있어요."
   },
   "computers": {
     "title": "컴퓨터",
     "subtitle": "연결된 컴퓨터가 접속할 수 있는 컴퓨터와 온라인 여부예요.",
-    "disconnected": "Yggdrasil을 실행하는 컴퓨터에 연결하면 그 컴퓨터의 모델과 채팅하고 다른 컴퓨터도 볼 수 있어요.",
+    "disconnected": "Toskar를 실행하는 컴퓨터에 연결하면 그 컴퓨터의 모델과 채팅하고 다른 컴퓨터도 볼 수 있어요.",
     "enterAddress": "주소 입력",
     "loading": "컴퓨터를 불러오는 중",
     "none": "이 연결에서 보이는 컴퓨터가 없어요.",
@@ -89,7 +89,7 @@
   },
   "phoneModels": {
     "heading": "이 iPhone에 있음",
-    "copy": "Yggdrasil 카탈로그의 작은 모델들이에요. 파일은 이 휴대폰에 다운로드되어 여기에 보관돼요.",
+    "copy": "Toskar 카탈로그의 작은 모델들이에요. 파일은 이 휴대폰에 다운로드되어 여기에 보관돼요.",
     "meta": "{{parameters}} · {{size}}",
     "chat": "채팅",
     "remove": "제거",
@@ -146,7 +146,7 @@
     "chooseOther": "다른 모델 선택",
     "installing": "{{model}} 설치하는 중",
     "downloaded": "{{percent}} 다운로드됨",
-    "keepOpen": "큰 모델은 다운로드하는 데 몇 분이 걸릴 수 있어요. Yggdrasil을 열어 두세요.",
+    "keepOpen": "큰 모델은 다운로드하는 데 몇 분이 걸릴 수 있어요. Toskar를 열어 두세요.",
     "ready": "준비가 끝났어요",
     "installed": "{{model}}이(가) 설치되었어요. 로컬 AI와 채팅을 시작하세요.",
     "startChatting": "채팅 시작"
@@ -160,14 +160,14 @@
     "computer": "컴퓨터",
     "connectedComputer": "연결된 컴퓨터",
     "notConnected": "연결되지 않음",
-    "coreVersion": "해당 컴퓨터의 Yggdrasil",
-    "updateCore": "답변 소스, 어시스턴트가 수행한 작업, 실시간 진행 상황, 노력 수준을 보려면 해당 컴퓨터의 Yggdrasil을 1.4 이상으로 업데이트하세요.",
+    "coreVersion": "해당 컴퓨터의 Toskar",
+    "updateCore": "답변 소스, 어시스턴트가 수행한 작업, 실시간 진행 상황, 노력 수준을 보려면 해당 컴퓨터의 Toskar를 1.4 이상으로 업데이트하세요.",
     "jobsKeepRunning": "이 앱을 닫아도 해당 컴퓨터에서 이미 실행 중인 작업은 중지되지 않아요.",
     "forget": "이 컴퓨터 지우기",
     "connect": "컴퓨터 연결",
     "about": "정보",
     "version": "버전 {{version}}",
-    "aboutCopy": "여러 세계를 잇는 세계수. Yggdrasil은 앱을 내 컴퓨터와 이 iPhone의 모델에 연결해요.",
+    "aboutCopy": "이름은 세계수를 오르내리며 소식을 전하는 다람쥐 Ratatoskr에서 왔어요. Toskar는 앱을 내 컴퓨터와 이 iPhone의 모델에 연결해요.",
     "dangerZone": "위험 구역",
     "resetTitle": "이 iPhone 재설정",
     "resetCopy": "처음 설정 상태로 되돌려요. 이 iPhone의 채팅을 지우고 연결된 컴퓨터 정보를 삭제해요.",
@@ -177,7 +177,7 @@
     "alsoDeleteModels": "다운로드한 모델도 삭제",
     "resetting": "재설정하는 중…",
     "confirmReset": "예, 재설정",
-    "resetFailed": "Yggdrasil을 재설정할 수 없어요."
+    "resetFailed": "Toskar를 재설정할 수 없어요."
   },
   "language": {
     "title": "언어",
@@ -210,7 +210,7 @@
       "profile": "프로필",
       "runOn": "실행 위치",
       "automatic": "자동",
-      "automaticHint": "Yggdrasil이 메시지마다 사용 가능한 가장 좋은 컴퓨터를 골라요.",
+      "automaticHint": "Toskar가 메시지마다 사용 가능한 가장 좋은 컴퓨터를 골라요.",
       "effort": "노력 수준",
       "memoryOn": "메모리 켬",
       "memoryOff": "메모리 끔",
@@ -218,7 +218,7 @@
       "memoryDisabledHint": "모든 채팅에서 메모리가 꺼져 있어요. 메모리 페이지에서 켜세요."
     },
     "loading": "채팅을 불러오는 중",
-    "placeholder": "Yggdrasil에게 메시지 보내기",
+    "placeholder": "Toskar에게 메시지 보내기",
     "send": "보내기",
     "sending": "보내는 중",
     "stop": "중지",
@@ -243,7 +243,7 @@
     "empty": {
       "title": "무엇을 도와드릴까요?",
       "phone": "이 iPhone의 AI와 대화하세요. 작성한 내용은 이 기기 밖으로 나가지 않아요.",
-      "computer": "Yggdrasil이 알맞은 모델과 컴퓨터를 선택하고, 필요하면 정보를 찾아보고, 사용한 내용을 보여 줘요."
+      "computer": "Toskar가 알맞은 모델과 컴퓨터를 선택하고, 필요하면 정보를 찾아보고, 사용한 내용을 보여 줘요."
     },
     "unsent": {
       "notSent": "보내지 않음",
@@ -267,7 +267,7 @@
     "hint": "답변에 얼마나 공을 들일지 선택해요",
     "auto": {
       "label": "자동",
-      "hint": "Yggdrasil이 결정해요. 간단한 질문은 빠르게, 큰 질문이나 데이터 관련 질문은 더 신중하게 처리해요."
+      "hint": "Toskar가 결정해요. 간단한 질문은 빠르게, 큰 질문이나 데이터 관련 질문은 더 신중하게 처리해요."
     },
     "fast": {
       "label": "빠르게",
@@ -361,7 +361,7 @@
       "runeName": "문의 룬, Thurisaz"
     },
     "settings": {
-      "meaning": "Forseti는 모든 일을 공정하게 해결해요. 설정은 Yggdrasil이 지키는 규칙이에요.",
+      "meaning": "Forseti는 모든 일을 공정하게 해결해요. 설정은 Toskar가 지키는 규칙이에요.",
       "story": "Baldr의 아들 Forseti는 금기둥과 은지붕으로 된 전당 Glitnir에 앉아 있어요. 그에게 다툼을 가져온 사람은 모두 화해하고 돌아가요.",
       "runeName": "고요의 룬, Isa"
     }

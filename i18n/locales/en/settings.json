@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Settings",
-    "subtitle": "How Yggdrasil should behave on this computer.",
+    "subtitle": "How Toskar should behave on this computer.",
     "loading": "Loading settings…"
   },
   "groups": {
@@ -22,7 +22,7 @@
   },
   "language": {
     "title": "Language",
-    "description": "The language of menus, buttons, and messages in Yggdrasil on every computer and phone you use with it. Each device can follow its own system language.",
+    "description": "The language of menus, buttons, and messages in Toskar on every computer and phone you use with it. Each device can follow its own system language.",
     "appLanguage": "App language",
     "systemDefault": "System default ({{language}})",
     "pseudo": "Pseudo-locale (for testing translations)",
@@ -30,7 +30,7 @@
     "status": {
       "machine": "Machine translated, so some wording may read oddly until a person reviews it.",
       "partial": "Partly translated. What isn’t translated yet shows in English.",
-      "community": "Translated by the Yggdrasil community."
+      "community": "Translated by the Toskar community."
     },
     "assistantLanguage": "Assistant language",
     "assistantAuto": "Auto-detect: the language you write in",
@@ -80,7 +80,7 @@
   },
   "launchAtLogin": {
     "title": "Launch at login",
-    "description": "Start Yggdrasil automatically when you sign in to this computer."
+    "description": "Start Toskar automatically when you sign in to this computer."
   },
   "defaultProfile": {
     "title": "Default profile",
@@ -115,9 +115,9 @@
   },
   "discovery": {
     "title": "Find other computers",
-    "description": "Advertise this computer and look for other Yggdrasil installs on your network.",
-    "needsRestart": "Networking was updated. Restart Yggdrasil so other computers can fully reach this one.",
-    "restartManually": "Quit Yggdrasil completely, then open it again to finish applying network settings.",
+    "description": "Advertise this computer and look for other Toskar installs on your network.",
+    "needsRestart": "Networking was updated. Restart Toskar so other computers can fully reach this one.",
+    "restartManually": "Quit Toskar completely, then open it again to finish applying network settings.",
     "restartNow": "Restart now",
     "status": "Status: <strong>{{state}}</strong>"
   },
@@ -127,7 +127,7 @@
   },
   "api": {
     "title": "API access",
-    "description": "How apps and other devices can talk to Yggdrasil.",
+    "description": "How apps and other devices can talk to Toskar.",
     "local": "Local API",
     "lan": "LAN API",
     "manage": "Manage API access"
@@ -151,7 +151,7 @@
   },
   "history": {
     "title": "History",
-    "description": "Control what Yggdrasil keeps on this computer.",
+    "description": "Control what Toskar keeps on this computer.",
     "saveChats": "Save chat history",
     "saveTasks": "Save task history",
     "confirmClear": "Delete all chat history on this computer? This cannot be undone.",
@@ -169,15 +169,15 @@
   "yourData": {
     "title": "Your data stays private",
     "points": {
-      "stored": "Your chats, memories, knowledge, files, and specialized AIs are stored on this computer, in Yggdrasil's data folder. There's no Yggdrasil account or cloud, and no usage data is sent to anyone.",
+      "stored": "Your chats, memories, knowledge, files, and specialized AIs are stored on this computer, in Toskar's data folder. There's no Toskar account or cloud, and no usage data is sent to anyone.",
       "leaves": "Something leaves this computer only when you use a feature that goes online, such as a web search, a connected service, or a paired computer. Each time is listed below, under What left this computer.",
-      "atRest": "Yggdrasil doesn't encrypt its own files, and doesn't require you to. To keep them encrypted while the computer is off or locked, turn on its disk encryption: FileVault on macOS, BitLocker on Windows, or LUKS on Linux.",
+      "atRest": "Toskar doesn't encrypt its own files, and doesn't require you to. To keep them encrypted while the computer is off or locked, turn on its disk encryption: FileVault on macOS, BitLocker on Windows, or LUKS on Linux.",
       "inTransit": "Websites and online services are reached over encrypted HTTPS connections. Traffic between your own computers, and from other devices on your network to this one, isn't encrypted yet, so use those features only on a network you trust."
     }
   },
   "whatLeft": {
     "title": "What left this computer",
-    "description": "Yggdrasil works on this computer. These are the times a chat, automation, or app sent something elsewhere: web searches and pages, map lookups, paired computers, and connected services. Mark memories or knowledge “This computer only” to keep chats that use them here.",
+    "description": "Toskar works on this computer. These are the times a chat, automation, or app sent something elsewhere: web searches and pages, map lookups, paired computers, and connected services. Mark memories or knowledge “This computer only” to keep chats that use them here.",
     "nothing": "Nothing left this computer in the last 30 days.",
     "summary": "In the last 30 days: {{list}}.",
     "summaryItem": "{{kind}} {{count}}",
@@ -229,7 +229,7 @@
     "openFolder": "Open folder",
     "opened": "Opened",
     "copyPath": "Copy path from below",
-    "pending": "Will appear when Yggdrasil is running",
+    "pending": "Will appear when Toskar is running",
     "limit": "Maximum model storage",
     "limitDescription": "Soft limit for downloaded models on this computer.",
     "unlimited": "Unlimited"

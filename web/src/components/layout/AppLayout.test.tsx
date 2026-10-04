@@ -33,7 +33,7 @@ function renderAt(path: string) {
 describe('AppLayout', () => {
   it('names the page in the window title', async () => {
     renderAt('/models')
-    await waitFor(() => expect(document.title).toBe('Models · Yggdrasil'))
+    await waitFor(() => expect(document.title).toBe('Models · Toskar'))
   })
 
   it('opens the sidebar as a drawer from the menu button, and closes it after a page is chosen or on Escape', async () => {

@@ -1,13 +1,13 @@
 {
   "page": {
-    "title": "나의 Yggdrasil 팀",
+    "title": "나의 Toskar 팀",
     "titleAdvanced": "나의 AI 클러스터",
     "subtitle": "이 컴퓨터들이 하나의 AI 시스템으로 함께 작동해요. 컴퓨터를 추가한 다음 알맞은 곳에 모델을 배포하세요.",
     "find": "컴퓨터 찾기",
     "scanning": "검색하는 중…",
     "looking": "컴퓨터를 찾는 중…",
     "emptyTitle": "AI 팀 만들기",
-    "emptyDescription": "네트워크의 다른 컴퓨터에 Yggdrasil을 설치하면 여기에 자동으로 표시돼요."
+    "emptyDescription": "네트워크의 다른 컴퓨터에 Toskar를 설치하면 여기에 자동으로 표시돼요."
   },
   "status": {
     "team": "팀 상태",
@@ -19,7 +19,7 @@
   },
   "errors": {
     "action": "작업을 완료할 수 없어요",
-    "network": "두 컴퓨터 모두에서 Yggdrasil의 로컬 네트워크/방화벽 접근을 허용하고, 설정에서 다른 컴퓨터 찾기를 켜 두세요.",
+    "network": "두 컴퓨터 모두에서 Toskar의 로컬 네트워크/방화벽 접근을 허용하고, 설정에서 다른 컴퓨터 찾기를 켜 두세요.",
     "generic": "문제가 발생했어요",
     "claimFailed": "해당 코드의 페어링 요청을 불러올 수 없어요"
   },
@@ -34,10 +34,10 @@
   },
   "nearby": {
     "title": "추가 가능",
-    "description": "Yggdrasil이 네트워크에서 이 컴퓨터들을 찾았어요."
+    "description": "Toskar가 네트워크에서 이 컴퓨터들을 찾았어요."
   },
   "fleet": {
-    "title": "나의 Yggdrasil 팀",
+    "title": "나의 Toskar 팀",
     "titleAdvanced": "나의 클러스터",
     "moves": "작업이 이 팀 안에서 자동으로 분배돼요.",
     "movesAdvanced": "작업이 이 클러스터 안에서 자동으로 분배돼요.",
@@ -102,7 +102,7 @@
   },
   "deploy": {
     "title": "모델 배포",
-    "description": "모델을 한 컴퓨터 또는 여러 컴퓨터에 한 번에 설치해요. Yggdrasil이 시작하기 전에 디스크 여유 공간을 확인해요.",
+    "description": "모델을 한 컴퓨터 또는 여러 컴퓨터에 한 번에 설치해요. Toskar가 시작하기 전에 디스크 여유 공간을 확인해요.",
     "model": "모델",
     "chooseModel": "모델 선택…",
     "modelSize": "{{model}}({{size}})",
@@ -131,14 +131,14 @@
     "makeHint": "명령은 15분 동안 한 번만 사용할 수 있습니다.",
     "kindLabel": "실행할 곳",
     "kinds": {
-      "installed": "Yggdrasil 설치됨",
+      "installed": "Toskar 설치됨",
       "install": "설치 후 참여",
       "windows": "Windows"
     },
     "kindHints": {
-      "installed": "이미 Yggdrasil이 실행 중인 컴퓨터에서 실행합니다.",
-      "install": "Linux 또는 macOS에 Yggdrasil을 설치하고 서비스로 시작한 뒤 참여합니다.",
-      "windows": "Windows에 Yggdrasil을 설치하고 참여합니다. PowerShell에서 실행하세요."
+      "installed": "이미 Toskar가 실행 중인 컴퓨터에서 실행합니다.",
+      "install": "Linux 또는 macOS에 Toskar를 설치하고 서비스로 시작한 뒤 참여합니다.",
+      "windows": "Windows에 Toskar를 설치하고 참여합니다. PowerShell에서 실행하세요."
     },
     "commandLabel": "참여 명령",
     "copy": "복사",

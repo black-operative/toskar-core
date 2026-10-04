@@ -24,7 +24,7 @@
     "unavailable": "Service unavailable",
     "noModel": "No model",
     "ready": "Ready",
-    "unavailableHint": "The local Yggdrasil service is not responding.",
+    "unavailableHint": "The local Toskar service is not responding.",
     "noModelHint": "Install a model in Models to start chatting.",
     "readyHint": "Local service is ready."
   },
@@ -41,14 +41,14 @@
     "mimirReady": "Ready"
   },
   "boot": {
-    "starting": "Starting Yggdrasil",
+    "starting": "Starting Toskar",
     "preparing": "Preparing your local AI service",
     "unavailable": "Service unavailable",
-    "unavailableBody": "The local Yggdrasil service has not responded yet. Wait a moment and try again — if this keeps happening, check Diagnostics after the app loads.",
+    "unavailableBody": "The local Toskar service has not responded yet. Wait a moment and try again — if this keeps happening, check Diagnostics after the app loads.",
     "retrying": "Retrying…",
     "tryAgain": "Try again",
     "keyRequired": "API key required",
-    "keyBody": "This Yggdrasil accepts connections from other devices, so it asks for an API key. Enter one to continue. Over plain HTTP, a key doesn't encrypt your traffic.",
+    "keyBody": "This Toskar accepts connections from other devices, so it asks for an API key. Enter one to continue. Over plain HTTP, a key doesn't encrypt your traffic.",
     "continue": "Continue"
   },
   "units": {
@@ -58,13 +58,13 @@
   },
   "pageError": {
     "title": "This page ran into a problem",
-    "body": "The rest of Yggdrasil still works. Try again, or reload the app if it keeps happening.",
+    "body": "The rest of Toskar still works. Try again, or reload the app if it keeps happening.",
     "retry": "Try again",
     "reload": "Reload",
     "details": "Details"
   },
   "loadError": {
-    "title": "Yggdrasil couldn't load this",
+    "title": "Toskar couldn't load this",
     "body": "It didn't answer, or answered with an error. Your data is still there. Try again, or see Diagnostics if it keeps happening.",
     "retry": "Try again",
     "retrying": "Trying again…",

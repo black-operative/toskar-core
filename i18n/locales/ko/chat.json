@@ -1,7 +1,7 @@
 {
   "landing": {
     "title": "무엇을 도와드릴까요?",
-    "subtitle": "로컬 AI와 대화하세요. Yggdrasil이 알맞은 리소스를 자동으로 선택해요.",
+    "subtitle": "로컬 AI와 대화하세요. Toskar가 알맞은 리소스를 자동으로 선택해요.",
     "try": "예시:",
     "suggestions": {
       "explain": {
@@ -28,7 +28,7 @@
     "latest": "최신"
   },
   "composer": {
-    "placeholder": "Yggdrasil에게 무엇이든 물어보세요…",
+    "placeholder": "Toskar에게 무엇이든 물어보세요…",
     "message": "메시지",
     "attach": "파일 첨부",
     "attachHint": "문서, 스프레드시트, PDF 또는 코드 파일 첨부",
@@ -39,14 +39,14 @@
     "choose": "선택…",
     "automatic": "자동",
     "thisComputer": "이 컴퓨터",
-    "runOnAutomatic": "Yggdrasil이 메시지마다 사용 가능한 가장 좋은 컴퓨터를 골라요.",
+    "runOnAutomatic": "Toskar가 메시지마다 사용 가능한 가장 좋은 컴퓨터를 골라요.",
     "runOnLocal": "이 컴퓨터에서만 실행해요.",
     "model": "모델",
     "modelHint": "이 채팅에 답할 설치된 모델",
     "noModel": "설치된 모델 없음",
     "modelsLoading": "모델을 불러오는 중…",
     "modelsFailed": "모델을 불러오지 못했어요",
-    "modelsFailedHint": "Yggdrasil이 모델 목록을 가져오지 못했어요.",
+    "modelsFailedHint": "Toskar가 모델 목록을 가져오지 못했어요.",
     "auto": "자동",
     "models": "모델",
     "specialized": "전문 AI",
@@ -67,7 +67,7 @@
   "effort": {
     "auto": {
       "label": "자동",
-      "hint": "Yggdrasil이 결정해요. 간단한 질문은 빠르게, 큰 질문이나 데이터 관련 질문은 더 신중하게 처리해요."
+      "hint": "Toskar가 결정해요. 간단한 질문은 빠르게, 큰 질문이나 데이터 관련 질문은 더 신중하게 처리해요."
     },
     "fast": {
       "label": "빠르게",
@@ -85,7 +85,7 @@
   "memory": {
     "on": "메모리 켬",
     "off": "메모리 끔",
-    "onHint": "이 채팅은 Yggdrasil에게 기억해 달라고 한 내용을 사용해요. 이 채팅에서 메모리를 제외하려면 클릭하세요.",
+    "onHint": "이 채팅은 Toskar에게 기억해 달라고 한 내용을 사용해요. 이 채팅에서 메모리를 제외하려면 클릭하세요.",
     "offHint": "이 채팅에서 메모리가 꺼져 있어요. 저장된 메모리는 여기서 사용되지 않으며 삭제되지 않아요.",
     "disabledHint": "모든 채팅에서 메모리가 꺼져 있어요. 메모리 페이지에서 켜세요."
   },
@@ -96,7 +96,7 @@
     "downloadFailed": "이 채팅에 사용할 모델을 다운로드할 수 없어요.",
     "installFirst": "먼저 모델을 설치한 다음 다시 시도하세요.",
     "startFailed": "대화를 시작할 수 없어요.",
-    "noReply": "모델이 답하기 전에 멈췄어요. Yggdrasil이 모델을 중지하고 실패한 프로세스를 정리했어요.",
+    "noReply": "모델이 답하기 전에 멈췄어요. Toskar가 모델을 중지하고 실패한 프로세스를 정리했어요.",
     "couldNotRespond": "모델이 응답할 수 없어요.",
     "unreachable": "로컬 AI에 연결할 수 없어요. 자세한 내용은 진단을 확인하세요.",
     "generationFailed": "응답을 생성하는 중에 문제가 발생했어요.",
@@ -104,7 +104,7 @@
     "deleteFailed": "이 채팅을 삭제할 수 없어요."
   },
   "attachments": {
-    "unsupported": "Yggdrasil이 아직 이 형식의 파일을 읽을 수 없어요",
+    "unsupported": "Toskar가 아직 이 형식의 파일을 읽을 수 없어요",
     "tooLarge": "파일은 최대 25MB까지 첨부할 수 있어요",
     "addFailed": "파일을 추가할 수 없어요.",
     "adding": "추가하는 중…",
@@ -280,7 +280,7 @@
     "details": "세부 정보",
     "hideDetails": "세부 정보 숨기기",
     "notResponding": {
-      "title": "Yggdrasil이 응답하지 않아요",
+      "title": "Toskar가 응답하지 않아요",
       "body": "로컬 서비스가 응답을 멈췄어요. 데스크톱 앱이라면 종료했다가 다시 연 다음 다시 시도하세요."
     },
     "engineMissing": {
@@ -301,7 +301,7 @@
     },
     "offline": {
       "title": "사용 중인 컴퓨터가 오프라인이에요",
-      "body": "해당 컴퓨터를 켜고 Yggdrasil을 열거나, 이 채팅을 이 컴퓨터에서 실행하세요."
+      "body": "해당 컴퓨터를 켜고 Toskar를 열거나, 이 채팅을 이 컴퓨터에서 실행하세요."
     },
     "connection": {
       "title": "모델에 연결할 수 없어요",
@@ -314,7 +314,7 @@
     "didNotWork": "작동하지 않았어요",
     "generic": {
       "title": "문제가 발생했어요",
-      "body": "Yggdrasil이 답변을 마치지 못했어요. 잠시 후 다시 시도하세요."
+      "body": "Toskar가 답변을 마치지 못했어요. 잠시 후 다시 시도하세요."
     },
     "trainingMemory": {
       "busy": "학습이 이 컴퓨터를 사용하고 있어서 이 모델에 쓸 메모리가 부족했어요.",
@@ -332,8 +332,8 @@
     "computer": "컴퓨터: {{value}}",
     "exitCode": "종료 코드: {{value}}",
     "lastProbe": "마지막 상태 확인: {{value}}",
-    "outOfMemory": "이 모델이 이 컴퓨터에서 안전하게 쓸 수 있는 메모리를 다 쓴 것 같아요. 시스템을 안정적으로 유지하려고 Yggdrasil이 모델을 중지했어요.",
-    "stopped": "모델이 응답을 멈춰서 Yggdrasil이 모델을 중지하고 실패한 프로세스를 정리했어요."
+    "outOfMemory": "이 모델이 이 컴퓨터에서 안전하게 쓸 수 있는 메모리를 다 쓴 것 같아요. 시스템을 안정적으로 유지하려고 Toskar가 모델을 중지했어요.",
+    "stopped": "모델이 응답을 멈춰서 Toskar가 모델을 중지하고 실패한 프로세스를 정리했어요."
   },
   "capability": {
     "enableInternet": "인터넷 사용",
@@ -440,7 +440,7 @@
   },
   "notices": {
     "languageWeak": "{{model}}은(는) 영어보다 {{language}}를 덜 잘 쓸 수 있고, 설치된 모델 중 이 컴퓨터에 맞으면서 더 잘 쓰는 모델이 없어요. {{language}} 평가가 좋은 모델은 모델 페이지에서 볼 수 있어요.",
-    "unconfirmedFigures": "Yggdrasil이 소스에서 {{figures}}을(를) 확인하지 못했어요. 믿기 전에 확인하세요.",
+    "unconfirmedFigures": "Toskar가 소스에서 {{figures}}을(를) 확인하지 못했어요. 믿기 전에 확인하세요.",
     "codeErrors": "코드 일부에 구문 오류가 있습니다: {{errors}}. 실행하기 전에 고치세요.",
     "unsourcedLinks": "다음 링크는 출처에서 나온 것이 아니어서 열리지 않을 수 있어요: {{links}}. 열리지 않으면 해당 사이트에서 검색하세요.",
     "contradictions_other": "답변이 스스로 또는 출처와 {{count}}곳에서 모순될 수 있습니다. 믿기 전에 확인하세요.",
@@ -491,8 +491,8 @@
     "leftUnderMinute": "1분도 안 남았어요.",
     "leftMinutes_other": "약 {{count}}분 남았어요.",
     "leftHours_other": "약 {{count}}시간 남았어요.",
-    "capabilities": "지금 Yggdrasil이 할 수 있는 작업을 확인했어요",
-    "guide": "Yggdrasil 안내서를 참고했습니다: {{sections}}",
+    "capabilities": "지금 Toskar가 할 수 있는 작업을 확인했어요",
+    "guide": "Toskar 안내서를 참고했습니다: {{sections}}",
     "localOnly": "질문에 이 컴퓨터 전용으로 표시된 데이터가 사용되어 이 컴퓨터에서 답했어요.",
     "passages_other": "{{source}}에서 구절 {{count}}개를 찾았어요",
     "passagesMore_other": "{{source}} 외 {{more}}곳에서 구절 {{count}}개를 찾았어요",
@@ -534,10 +534,10 @@
     "placeDetails": "장소의 세부 정보를 찾아봤어요",
     "route": "{{from}}에서 {{to}}까지 가는 길을 찾았어요",
     "git": "Git 저장소를 확인했어요({{action}})",
-    "helpAnswered": "Yggdrasil 안내서를 바탕으로 답했습니다"
+    "helpAnswered": "Toskar 안내서를 바탕으로 답했습니다"
   },
   "help": {
-    "mcpTools": "MCP 자체는 설치할 필요가 없습니다. Yggdrasil이 이미 지원합니다. MCP 서버의 도구를 추가하려면 **{{tools}} → {{addTools}}**를 열고 네 가지 방법 중 하나를 고르세요.\n\n- **갤러리:** 폴더, 브라우저, Notion, Linear, GitHub 같은 서버를 고르고 질문이 있으면 한두 개에 답합니다. 로그인이 필요한 서비스는 로그인 창이 열립니다.\n- **붙여넣기:** 서버 안내에 나온 내용을 그대로 붙여넣습니다. Claude Desktop·Cursor·VS Code용 JSON, 명령줄, `claude mcp add` 줄, 웹 주소 모두 됩니다.\n- **다른 앱에서:** Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, LM Studio에 이미 설정한 서버를 추가합니다.\n- **사용자 지정:** 실행할 명령이나 웹 주소를 지정합니다.\n\nYggdrasil은 저장하기 전에 서버에 연결해 도구 목록을 보여 줍니다. 이 컴퓨터에서 실행되는 서버에는 Node.js나 uv가 필요하며, 없으면 오류 메시지가 알려 줍니다. 무언가를 바꾸는 도구는 실행 전에 물어봅니다.",
-    "mcpServer": "Claude Desktop, Claude Code, Cursor, VS Code 같은 MCP 지원 앱에서 Yggdrasil을 사용하려면 **{{apiAccess}} → {{useElsewhere}}**을 여세요. 각 앱에 붙여넣을 내용이 나옵니다. 그러면 그 앱에서 로컬 AI에 질문하고, 모델 목록을 보고, 연결된 지식을 검색할 수 있습니다."
+    "mcpTools": "MCP 자체는 설치할 필요가 없습니다. Toskar가 이미 지원합니다. MCP 서버의 도구를 추가하려면 **{{tools}} → {{addTools}}**를 열고 네 가지 방법 중 하나를 고르세요.\n\n- **갤러리:** 폴더, 브라우저, Notion, Linear, GitHub 같은 서버를 고르고 질문이 있으면 한두 개에 답합니다. 로그인이 필요한 서비스는 로그인 창이 열립니다.\n- **붙여넣기:** 서버 안내에 나온 내용을 그대로 붙여넣습니다. Claude Desktop·Cursor·VS Code용 JSON, 명령줄, `claude mcp add` 줄, 웹 주소 모두 됩니다.\n- **다른 앱에서:** Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Gemini CLI, LM Studio에 이미 설정한 서버를 추가합니다.\n- **사용자 지정:** 실행할 명령이나 웹 주소를 지정합니다.\n\nToskar는 저장하기 전에 서버에 연결해 도구 목록을 보여 줍니다. 이 컴퓨터에서 실행되는 서버에는 Node.js나 uv가 필요하며, 없으면 오류 메시지가 알려 줍니다. 무언가를 바꾸는 도구는 실행 전에 물어봅니다.",
+    "mcpServer": "Claude Desktop, Claude Code, Cursor, VS Code 같은 MCP 지원 앱에서 Toskar를 사용하려면 **{{apiAccess}} → {{useElsewhere}}**을 여세요. 각 앱에 붙여넣을 내용이 나옵니다. 그러면 그 앱에서 로컬 AI에 질문하고, 모델 목록을 보고, 연결된 지식을 검색할 수 있습니다."
   }
 }

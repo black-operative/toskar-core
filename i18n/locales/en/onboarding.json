@@ -13,7 +13,7 @@
     "memory": "Memory",
     "graphics": "Graphics",
     "system": "System",
-    "unavailable": "Hardware details appear once Yggdrasil has started. You can continue setup now."
+    "unavailable": "Hardware details appear once Toskar has started. You can continue setup now."
   },
   "question": "What would you like your AI to do?",
   "purposes": {

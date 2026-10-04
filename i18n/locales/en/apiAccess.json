@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "API Access",
-    "subtitle": "Where Yggdrasil's API is reachable, and how it is secured.",
+    "subtitle": "Where Toskar's API is reachable, and how it is secured.",
     "loading": "Loading API settings…"
   },
   "probe": {
@@ -35,19 +35,19 @@
     "lanHint": "Use this computer's LAN IP with port <mono>{{port}}</mono> (for example <mono>http://192.168.x.x:{{port}}/v1</mono>).",
     "hideDocs": "Hide API documentation",
     "docs": "API documentation",
-    "docsBody": "Yggdrasil exposes an OpenAI-compatible API at <mono>/v1</mono>. Point clients at the endpoint above and send <header/> when Yggdrasil is reachable from other computers. `/api/v1` and `/v1` both require that header. A key does not encrypt plain HTTP.",
+    "docsBody": "Toskar exposes an OpenAI-compatible API at <mono>/v1</mono>. Point clients at the endpoint above and send <header/> when Toskar is reachable from other computers. `/api/v1` and `/v1` both require that header. A key does not encrypt plain HTTP.",
     "copied": "Copied",
     "copyUrl": "Copy URL"
   },
   "lan": {
     "title": "Local network access",
     "on": "Devices on your local network can connect using an API key.",
-    "off": "Only apps on this computer can use Yggdrasil’s API.",
+    "off": "Only apps on this computer can use Toskar’s API.",
     "noKeys": "Network access is on, but there are no API keys yet. Create a key before connecting from another device.",
-    "restart": "After changing network access, fully quit and reopen Yggdrasil so the server rebinds. An API key is required for every connection once the listener is no longer loopback. A key does not encrypt traffic on plain HTTP. Test API only checks this computer — not reachability from other devices.",
+    "restart": "After changing network access, fully quit and reopen Toskar so the server rebinds. An API key is required for every connection once the listener is no longer loopback. A key does not encrypt traffic on plain HTTP. Test API only checks this computer — not reachability from other devices.",
     "confirmTitle": "Allow access from other computers?",
-    "confirmBody": "Devices on your local network will be able to connect to Yggdrasil. An API key is required for all remote connections.",
-    "confirmHttp": "An API key over plain HTTP does not encrypt traffic. Quit and reopen Yggdrasil after enabling this so the server listens on the network.",
+    "confirmBody": "Devices on your local network will be able to connect to Toskar. An API key is required for all remote connections.",
+    "confirmHttp": "An API key over plain HTTP does not encrypt traffic. Quit and reopen Toskar after enabling this so the server listens on the network.",
     "browserKey": "Create an API key so this browser can keep connecting after the server rebinds. The full key is shown only once.",
     "keyName": "Key name",
     "defaultKeyName": "This computer",
@@ -58,7 +58,7 @@
   },
   "keys": {
     "title": "API keys",
-    "description": "Credentials for apps and devices that talk to Yggdrasil.",
+    "description": "Credentials for apps and devices that talk to Toskar.",
     "create": "Create API key",
     "createHint": "Give this key a name so you know what uses it.",
     "namePlaceholder": "VS Code",
@@ -102,13 +102,13 @@
     "saveFailed": "Could not save."
   },
   "share": {
-    "title": "Use Yggdrasil in other AI apps",
+    "title": "Use Toskar in other AI apps",
     "description": "Apps that support MCP can ask your local AI, list its models, and search your connected knowledge. Answers stay on your computers, and the local AI only uses tools that read.",
     "other": "Other apps",
     "settings": "{{language}} settings",
     "copied": "Copied",
     "copy": "Copy",
-    "needsKey": "Yggdrasil is open to your network, so apps need an API key. Create one below and put it where the settings say <key/>. The key's permissions apply.",
+    "needsKey": "Toskar is open to your network, so apps need an API key. Create one below and put it where the settings say <key/>. The key's permissions apply.",
     "keyPlaceholder": "<your API key>",
     "where": {
       "claudeDesktop": "In Claude Desktop, open Settings → Developer → Edit Config, add this, and restart Claude.",

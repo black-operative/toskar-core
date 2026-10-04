@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "知识库",
-    "description": "Yggdrasil 让目录、价格、政策和文档都可以被搜索。当某个配置或专用 AI 使用某个来源时，与每个问题匹配的段落会被提供给它。编辑文件后，下一个问题就能看到变化，无需重新训练。",
+    "description": "Toskar 让目录、价格、政策和文档都可以被搜索。当某个配置或专用 AI 使用某个来源时，与每个问题匹配的段落会被提供给它。编辑文件后，下一个问题就能看到变化，无需重新训练。",
     "loading": "正在加载…",
     "emptyTitle": "尚未连接知识库",
     "emptyDescription": "连接这台电脑上的文件或文件夹、粘贴内容，或从数据库或 Web API 读取。支持 PDF、Excel、CSV、TSV、JSON、JSONL、Markdown、文本和 HTML 文件。"
@@ -50,7 +50,7 @@
       "api": "Web API"
     },
     "path": "这台电脑上的路径",
-    "pathHint": "Yggdrasil 会直接在原位置读取，并自动获取修改。",
+    "pathHint": "Toskar 会直接在原位置读取，并自动获取修改。",
     "chooseFile": "选择文件",
     "pastePlaceholder": "粘贴文本、Markdown 或 CSV",
     "content": "内容",
@@ -65,7 +65,7 @@
     "connection": "连接字符串",
     "connectionHint": "请使用只有读取权限的账户。它与数据库分开保存，不会再次显示。",
     "query": "查询",
-    "queryHint": "一条 SELECT 语句。它以只读方式运行，因此 Yggdrasil 绝不会更改数据库。每一行都会成为一个段落。",
+    "queryHint": "一条 SELECT 语句。它以只读方式运行，因此 Toskar 绝不会更改数据库。每一行都会成为一个段落。",
     "url": "URL",
     "urlHint": "JSON、CSV 或文本。对象列表中的每一项都会成为一个段落。",
     "items": "响应中的列表（可选）",

@@ -1,6 +1,6 @@
 {
   "app": {
-    "starting": "Yggdrasilを起動しています",
+    "starting": "Toskarを起動しています",
     "back": "戻る",
     "close": "閉じる",
     "cancel": "キャンセル",
@@ -23,11 +23,11 @@
     "gigabytes": "{{value}} GB"
   },
   "connection": {
-    "enterAddress": "Yggdrasilを実行しているコンピュータのアドレスを入力してください。",
-    "couldNotReach": "Yggdrasilに接続できませんでした。",
-    "unreachable": "そのコンピュータのYggdrasilに接続できません。同じWi-Fiネットワークを使い、そのコンピュータでAPIのLANアクセスをオンにしてください。",
+    "enterAddress": "Toskarを実行しているコンピュータのアドレスを入力してください。",
+    "couldNotReach": "Toskarに接続できませんでした。",
+    "unreachable": "そのコンピュータのToskarに接続できません。同じWi-Fiネットワークを使い、そのコンピュータでAPIのLANアクセスをオンにしてください。",
     "keyRejected": "そのAPIキーは拒否されました。コンピュータの「APIアクセス」でキーを作成し、ここに貼り付けてください。",
-    "dropped": "Yggdrasilとの接続が切れました。",
+    "dropped": "Toskarとの接続が切れました。",
     "chatFailed": "チャットに失敗しました。",
     "requestFailed": "リクエストに失敗しました"
   },
@@ -40,22 +40,22 @@
     "apiKeyPlaceholder": "キーを貼り付け",
     "connect": "接続",
     "connecting": "接続中",
-    "notReady": "Yggdrasilは応答しましたが、準備ができていません。"
+    "notReady": "Toskarは応答しましたが、準備ができていません。"
   },
   "discovery": {
     "onThisNetwork": "このネットワーク上",
     "useAddress": "このコンピュータのアドレスを使います",
-    "version": "Yggdrasil {{version}}",
+    "version": "Toskar {{version}}",
     "looking": "このネットワーク上のコンピュータを探しています…",
     "lookingLabel": "このネットワーク上のコンピュータを探しています",
-    "none": "コンピュータが見つかりません。コンピュータでYggdrasilを起動して同じWi-Fiを使うか、アドレスを入力してください。",
-    "localNetworkDenied": "Yggdrasilにネットワーク上のコンピュータを探す許可がありません。「設定 > プライバシーとセキュリティ > ローカルネットワーク」で許可してください。",
+    "none": "コンピュータが見つかりません。コンピュータでToskarを起動して同じWi-Fiを使うか、アドレスを入力してください。",
+    "localNetworkDenied": "Toskarにネットワーク上のコンピュータを探す許可がありません。「設定 > プライバシーとセキュリティ > ローカルネットワーク」で許可してください。",
     "listFailed": "このネットワーク上のコンピュータを一覧表示できませんでした。下でアドレスを入力することはできます。"
   },
   "computers": {
     "title": "コンピュータ",
     "subtitle": "接続したコンピュータからアクセスできるコンピュータと、そのオンライン状態です。",
-    "disconnected": "Yggdrasilを実行しているコンピュータに接続すると、そのモデルとチャットしたり、ほかのコンピュータを確認したりできます。",
+    "disconnected": "Toskarを実行しているコンピュータに接続すると、そのモデルとチャットしたり、ほかのコンピュータを確認したりできます。",
     "enterAddress": "アドレスを入力",
     "loading": "コンピュータを読み込み中",
     "none": "この接続から見えるコンピュータはありません。",
@@ -89,7 +89,7 @@
   },
   "phoneModels": {
     "heading": "このiPhone上",
-    "copy": "Yggdrasilカタログの小さめのモデルです。ファイルはこのスマートフォンにダウンロードされ、ここに保存されます。",
+    "copy": "Toskarカタログの小さめのモデルです。ファイルはこのスマートフォンにダウンロードされ、ここに保存されます。",
     "meta": "{{parameters}} · {{size}}",
     "chat": "チャット",
     "remove": "削除",
@@ -146,7 +146,7 @@
     "chooseOther": "別のモデルを選ぶ",
     "installing": "{{model}}をインストールしています",
     "downloaded": "{{percent}}ダウンロード済み",
-    "keepOpen": "大きなモデルのダウンロードには数分かかることがあります。Yggdrasilは開いたままにしてください。",
+    "keepOpen": "大きなモデルのダウンロードには数分かかることがあります。Toskarは開いたままにしてください。",
     "ready": "準備ができました",
     "installed": "{{model}}がインストールされました。ローカルAIとチャットを始めましょう。",
     "startChatting": "チャットを始める"
@@ -160,14 +160,14 @@
     "computer": "コンピュータ",
     "connectedComputer": "接続中のコンピュータ",
     "notConnected": "未接続",
-    "coreVersion": "そのコンピュータのYggdrasil",
-    "updateCore": "回答のソース、アシスタントが実行した内容、リアルタイムの進行状況、処理の深さを表示するには、そのコンピュータのYggdrasilを1.4以降にアップデートしてください。",
+    "coreVersion": "そのコンピュータのToskar",
+    "updateCore": "回答のソース、アシスタントが実行した内容、リアルタイムの進行状況、処理の深さを表示するには、そのコンピュータのToskarを1.4以降にアップデートしてください。",
     "jobsKeepRunning": "このアプリを閉じても、そのコンピュータですでに実行中のジョブは停止しません。",
     "forget": "このコンピュータの登録を解除",
     "connect": "コンピュータに接続",
     "about": "情報",
     "version": "バージョン {{version}}",
-    "aboutCopy": "世界と世界をつなぐ世界樹。Yggdrasilは、あなたのアプリを、コンピュータやこのiPhone上のモデルにつなぎます。",
+    "aboutCopy": "名前は、世界樹を駆け回って伝言を運ぶリスのRatatoskrから。Toskarは、あなたのアプリを、コンピュータやこのiPhone上のモデルにつなぎます。",
     "dangerZone": "危険な操作",
     "resetTitle": "このiPhoneをリセット",
     "resetCopy": "初期設定の状態に戻します。このiPhoneのチャットを消去し、接続したコンピュータの登録を解除します。",
@@ -177,7 +177,7 @@
     "alsoDeleteModels": "ダウンロード済みのモデルも削除",
     "resetting": "リセット中…",
     "confirmReset": "リセットする",
-    "resetFailed": "Yggdrasilをリセットできませんでした。"
+    "resetFailed": "Toskarをリセットできませんでした。"
   },
   "language": {
     "title": "言語",
@@ -210,7 +210,7 @@
       "profile": "プロファイル",
       "runOn": "実行場所",
       "automatic": "自動",
-      "automaticHint": "Yggdrasil がメッセージごとに利用可能な最適なコンピュータを選びます。",
+      "automaticHint": "Toskar がメッセージごとに利用可能な最適なコンピュータを選びます。",
       "effort": "処理の深さ",
       "memoryOn": "メモリ オン",
       "memoryOff": "メモリ オフ",
@@ -218,7 +218,7 @@
       "memoryDisabledHint": "すべてのチャットでメモリがオフです。「メモリ」ページからオンにしてください。"
     },
     "loading": "チャットを読み込み中",
-    "placeholder": "Yggdrasilにメッセージを送信",
+    "placeholder": "Toskarにメッセージを送信",
     "send": "送信",
     "sending": "送信中",
     "stop": "停止",
@@ -243,7 +243,7 @@
     "empty": {
       "title": "何をお手伝いしましょうか？",
       "phone": "このiPhone上のAIと話しましょう。書いた内容がこのiPhoneの外に出ることはありません。",
-      "computer": "Yggdrasilが適切なモデルとコンピュータを選び、必要に応じて調べものをし、何を使ったかを表示します。"
+      "computer": "Toskarが適切なモデルとコンピュータを選び、必要に応じて調べものをし、何を使ったかを表示します。"
     },
     "unsent": {
       "notSent": "未送信",
@@ -267,7 +267,7 @@
     "hint": "返信にどれだけ手間をかけるかを選びます",
     "auto": {
       "label": "自動",
-      "hint": "Yggdrasilが判断します。簡単な質問は素早く、大きな質問やデータに関する質問はより丁寧に処理します。"
+      "hint": "Toskarが判断します。簡単な質問は素早く、大きな質問やデータに関する質問はより丁寧に処理します。"
     },
     "fast": {
       "label": "高速",
@@ -361,7 +361,7 @@
       "runeName": "Thurisaz、門のルーン"
     },
     "settings": {
-      "meaning": "Forsetiはあらゆる争いを公正に裁きます。設定は、Yggdrasilが守るルールです。",
+      "meaning": "Forsetiはあらゆる争いを公正に裁きます。設定は、Toskarが守るルールです。",
       "story": "Baldrの息子Forsetiは、金の柱と銀の屋根を持つ館Glitnirに座しています。争いを持ち込んだ者は皆、和解して帰っていきます。",
       "runeName": "Isa、静けさのルーン"
     }

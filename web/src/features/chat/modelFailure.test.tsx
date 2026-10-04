@@ -9,7 +9,7 @@ describe('parseModelFailure', () => {
       JSON.stringify({
         kind: 'model_health',
         reason: 'oom',
-        message: 'This model likely ran out of safe memory on this computer. Yggdrasil stopped it to keep the system stable.',
+        message: 'This model likely ran out of safe memory on this computer. Toskar stopped it to keep the system stable.',
         interrupted: true,
       }),
     )
@@ -26,7 +26,7 @@ describe('ModelFailureNotice', () => {
         failure={{
           kind: 'model_health',
           reason: 'generation_stalled',
-          message: 'The model stopped responding, so Yggdrasil stopped it and cleaned up the failed process.',
+          message: 'The model stopped responding, so Toskar stopped it and cleaned up the failed process.',
         }}
         advanced={false}
         onRetry={onRetry}

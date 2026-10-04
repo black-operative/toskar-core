@@ -43,7 +43,7 @@ describe('explainError with a code', () => {
   it('shows a code’s catalog text when chat has no card for it', () => {
     const e = explainError('that looks like a password, key, or token, so Yggdrasil did not save it', 'MEMORY_LOOKS_SECRET')
     expect(e.title).toBe('That didn’t work')
-    expect(e.body).toBe("That looks like a password, key, or token, so Yggdrasil didn't save it.")
+    expect(e.body).toBe("That looks like a password, key, or token, so Toskar didn't save it.")
     expect(e.detail).toBe('that looks like a password, key, or token, so Yggdrasil did not save it')
   })
 

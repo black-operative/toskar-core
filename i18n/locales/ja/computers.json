@@ -1,13 +1,13 @@
 {
   "page": {
-    "title": "Yggdrasilチーム",
+    "title": "Toskarチーム",
     "titleAdvanced": "AIクラスタ",
     "subtitle": "これらのコンピュータは1つのAIシステムとして連携します。マシンを追加し、適したところにモデルをデプロイしましょう。",
     "find": "コンピュータを探す",
     "scanning": "スキャン中…",
     "looking": "コンピュータを探しています…",
     "emptyTitle": "AIチームを作りましょう",
-    "emptyDescription": "ネットワーク上の別のコンピュータにYggdrasilをインストールすると、ここに自動で表示されます。"
+    "emptyDescription": "ネットワーク上の別のコンピュータにToskarをインストールすると、ここに自動で表示されます。"
   },
   "status": {
     "team": "チームの状態",
@@ -19,7 +19,7 @@
   },
   "errors": {
     "action": "その操作を完了できませんでした",
-    "network": "両方のコンピュータでYggdrasilのローカルネットワーク／ファイアウォールのアクセスを許可し、設定の「他のコンピュータを探す」をオンのままにしてください。",
+    "network": "両方のコンピュータでToskarのローカルネットワーク／ファイアウォールのアクセスを許可し、設定の「他のコンピュータを探す」をオンのままにしてください。",
     "generic": "問題が発生しました",
     "claimFailed": "そのコードのペアリング情報を読み込めませんでした"
   },
@@ -34,10 +34,10 @@
   },
   "nearby": {
     "title": "追加できるコンピュータ",
-    "description": "Yggdrasilがネットワーク上でこれらのコンピュータを見つけました。"
+    "description": "Toskarがネットワーク上でこれらのコンピュータを見つけました。"
   },
   "fleet": {
-    "title": "Yggdrasilチーム",
+    "title": "Toskarチーム",
     "titleAdvanced": "クラスタ",
     "moves": "作業はこのチーム内で自動的に振り分けられます。",
     "movesAdvanced": "作業はこのクラスタ内で自動的に振り分けられます。",
@@ -102,7 +102,7 @@
   },
   "deploy": {
     "title": "モデルをデプロイ",
-    "description": "1台または複数のコンピュータに一度にモデルをインストールします。開始前にYggdrasilがディスクの空き容量を確認します。",
+    "description": "1台または複数のコンピュータに一度にモデルをインストールします。開始前にToskarがディスクの空き容量を確認します。",
     "model": "モデル",
     "chooseModel": "モデルを選択…",
     "modelSize": "{{model}}（{{size}}）",
@@ -131,14 +131,14 @@
     "makeHint": "コマンドは15分間、1回だけ使えます。",
     "kindLabel": "実行する場所",
     "kinds": {
-      "installed": "Yggdrasilがインストール済み",
+      "installed": "Toskarがインストール済み",
       "install": "インストールして参加",
       "windows": "Windows"
     },
     "kindHints": {
-      "installed": "すでにYggdrasilが動いているコンピュータで実行します。",
-      "install": "LinuxまたはmacOSにYggdrasilをインストールし、サービスとして起動して参加します。",
-      "windows": "WindowsにYggdrasilをインストールして参加します。PowerShellで実行してください。"
+      "installed": "すでにToskarが動いているコンピュータで実行します。",
+      "install": "LinuxまたはmacOSにToskarをインストールし、サービスとして起動して参加します。",
+      "windows": "WindowsにToskarをインストールして参加します。PowerShellで実行してください。"
     },
     "commandLabel": "参加コマンド",
     "copy": "コピー",

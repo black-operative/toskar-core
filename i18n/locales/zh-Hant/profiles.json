@@ -74,7 +74,7 @@
   "menu": {
     "duplicate": "複製",
     "rename": "重新命名",
-    "confirmReset": "要將「{{name}}」重置為 Yggdrasil 的原始設定嗎？你對它所做的變更將會遺失。",
+    "confirmReset": "要將「{{name}}」重置為 Toskar 的原始設定嗎？你對它所做的變更將會遺失。",
     "reset": "重置為預設值",
     "confirmDelete": "要刪除「{{name}}」嗎？這個動作無法復原。",
     "delete": "刪除"
@@ -82,7 +82,7 @@
   "strategies": {
     "auto": {
       "label": "自動",
-      "detail": "由 Yggdrasil 決定：簡單的問題交給一個模型，包含多個部分的請求則會先規劃再檢查。"
+      "detail": "由 Toskar 決定：簡單的問題交給一個模型，包含多個部分的請求則會先規劃再檢查。"
     },
     "single": {
       "label": "單一模型",
@@ -203,7 +203,7 @@
       },
       "read": {
         "label": "讀取檔案",
-        "description": "讓助理打開你 Yggdrasil 工作區中的檔案，以便引用或摘要實際內容。"
+        "description": "讓助理打開你 Toskar 工作區中的檔案，以便引用或摘要實際內容。"
       },
       "write": {
         "label": "寫入檔案",
@@ -273,7 +273,7 @@
     "automatic": "自動",
     "computer": "電腦",
     "fallback": "備援順序",
-    "fallbackHint": "當回答的模型失敗時，會依序嘗試這些模型。之後，Yggdrasil 會挑選另一個已安裝的模型。",
+    "fallbackHint": "當回答的模型失敗時，會依序嘗試這些模型。之後，Toskar 會挑選另一個已安裝的模型。",
     "none": "無",
     "tools": "工具",
     "on": "開啟",

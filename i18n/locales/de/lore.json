@@ -1,18 +1,18 @@
 {
   "about": "Über {{name}}",
   "close": "Schließen",
-  "inYggdrasil": "In Yggdrasil",
+  "inYggdrasil": "In Toskar",
   "mascot": {
     "label": "Über Ratatoskr",
-    "kind": "Das Maskottchen von Yggdrasil",
+    "kind": "Das Maskottchen von Toskar",
     "story": "In den Mythen ist Ratatoskr das Eichhörnchen, das am Weltenbaum auf und ab läuft und Botschaften zwischen dem Adler im Wipfel und dem Drachen Níðhöggr an den Wurzeln überbringt. Unterwegs stiftete er gern ein wenig Unruhe.",
     "here": "Hier tut er dieselbe Arbeit und trägt deine Anfragen zwischen deinen Apps und den Modellen auf deinen Computern hin und her. Er denkt nach, während eine Antwort entsteht, freut sich, wenn etwas fertig ist, und hält ein Nickerchen, wenn kein Modell geladen ist."
   },
   "logo": {
-    "label": "Über das Yggdrasil-Zeichen",
+    "label": "Über das Toskar-Zeichen",
     "kind": "Der Weltenbaum",
     "story": "Yggdrasil ist die große Esche im Mittelpunkt der nordischen Welt. Ihre Äste reichen über den Himmel, ihre Wurzeln zu drei Quellen, und die neun Welten hängen in ihren Zweigen.",
-    "here": "Das Zeichen zeigt den Baum als Leiterbahnen, deren Wurzeln und Äste in Knoten enden – wie die Computer, die Yggdrasil zu einem System verbindet."
+    "here": "Das Zeichen zeigt den Baum als Leiterbahnen, deren Wurzeln und Äste in Knoten enden – wie die Computer, die Toskar zu einem System verbindet."
   },
   "realms": {
     "chat": {
@@ -41,7 +41,7 @@
       "rune": "Laguz, die Rune des Wassers und des Brunnens"
     },
     "memory": {
-      "meaning": "Muninn, Odins Rabe der Erinnerung, bewahrt, was sich Yggdrasil für dich merken soll.",
+      "meaning": "Muninn, Odins Rabe der Erinnerung, bewahrt, was sich Toskar für dich merken soll.",
       "story": "Huginn und Muninn, Gedanke und Erinnerung, sind Odins Raben. Jeden Morgen fliegen sie über die Welt und kehren zurück, um ihm zu erzählen, was sie gesehen haben. Odin sagte, am meisten fürchte er, dass Muninn nicht zurückkehrt.",
       "rune": "Othala, die Rune dessen, was bewahrt wird"
     },
@@ -76,7 +76,7 @@
       "rune": "Thurisaz, die Rune des Tores"
     },
     "settings": {
-      "meaning": "Forseti schlichtet jede Sache gerecht. Einstellungen sind die Regeln, an die sich Yggdrasil hält.",
+      "meaning": "Forseti schlichtet jede Sache gerecht. Einstellungen sind die Regeln, an die sich Toskar hält.",
       "story": "Forseti, Sohn Baldrs, sitzt in Glitnir, einer Halle mit goldenen Säulen und silbernem Dach. Wer einen Streit vor ihn bringt, geht versöhnt davon.",
       "rune": "Isa, die Rune der Stille"
     }

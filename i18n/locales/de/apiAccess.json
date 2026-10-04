@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "API-Zugriff",
-    "subtitle": "Wo die API von Yggdrasil erreichbar ist und wie sie geschützt ist.",
+    "subtitle": "Wo die API von Toskar erreichbar ist und wie sie geschützt ist.",
     "loading": "API-Einstellungen werden geladen …"
   },
   "probe": {
@@ -35,19 +35,19 @@
     "lanHint": "Verwende die LAN-IP dieses Computers mit Port <mono>{{port}}</mono> (zum Beispiel <mono>http://192.168.x.x:{{port}}/v1</mono>).",
     "hideDocs": "API-Dokumentation ausblenden",
     "docs": "API-Dokumentation",
-    "docsBody": "Yggdrasil stellt unter <mono>/v1</mono> eine OpenAI-kompatible API bereit. Richte Clients auf den Endpunkt oben aus und sende <header/>, wenn Yggdrasil von anderen Computern aus erreichbar ist. `/api/v1` und `/v1` verlangen beide diesen Header. Ein Schlüssel verschlüsselt einfaches HTTP nicht.",
+    "docsBody": "Toskar stellt unter <mono>/v1</mono> eine OpenAI-kompatible API bereit. Richte Clients auf den Endpunkt oben aus und sende <header/>, wenn Toskar von anderen Computern aus erreichbar ist. `/api/v1` und `/v1` verlangen beide diesen Header. Ein Schlüssel verschlüsselt einfaches HTTP nicht.",
     "copied": "Kopiert",
     "copyUrl": "URL kopieren"
   },
   "lan": {
     "title": "Zugriff im lokalen Netzwerk",
     "on": "Geräte in deinem lokalen Netzwerk können sich mit einem API-Schlüssel verbinden.",
-    "off": "Nur Apps auf diesem Computer können die API von Yggdrasil nutzen.",
+    "off": "Nur Apps auf diesem Computer können die API von Toskar nutzen.",
     "noKeys": "Der Netzwerkzugriff ist an, aber es gibt noch keine API-Schlüssel. Erstelle einen Schlüssel, bevor du dich von einem anderen Gerät verbindest.",
-    "restart": "Beende Yggdrasil nach einer Änderung des Netzwerkzugriffs vollständig und öffne es erneut, damit sich der Server neu bindet. Sobald der Listener nicht mehr nur auf Loopback lauscht, ist für jede Verbindung ein API-Schlüssel nötig. Ein Schlüssel verschlüsselt den Datenverkehr über einfaches HTTP nicht. „API testen“ prüft nur diesen Computer, nicht die Erreichbarkeit von anderen Geräten.",
+    "restart": "Beende Toskar nach einer Änderung des Netzwerkzugriffs vollständig und öffne es erneut, damit sich der Server neu bindet. Sobald der Listener nicht mehr nur auf Loopback lauscht, ist für jede Verbindung ein API-Schlüssel nötig. Ein Schlüssel verschlüsselt den Datenverkehr über einfaches HTTP nicht. „API testen“ prüft nur diesen Computer, nicht die Erreichbarkeit von anderen Geräten.",
     "confirmTitle": "Zugriff von anderen Computern erlauben?",
-    "confirmBody": "Geräte in deinem lokalen Netzwerk können sich dann mit Yggdrasil verbinden. Für alle entfernten Verbindungen ist ein API-Schlüssel nötig.",
-    "confirmHttp": "Ein API-Schlüssel über einfaches HTTP verschlüsselt den Datenverkehr nicht. Beende Yggdrasil nach dem Aktivieren und öffne es erneut, damit der Server im Netzwerk lauscht.",
+    "confirmBody": "Geräte in deinem lokalen Netzwerk können sich dann mit Toskar verbinden. Für alle entfernten Verbindungen ist ein API-Schlüssel nötig.",
+    "confirmHttp": "Ein API-Schlüssel über einfaches HTTP verschlüsselt den Datenverkehr nicht. Beende Toskar nach dem Aktivieren und öffne es erneut, damit der Server im Netzwerk lauscht.",
     "browserKey": "Erstelle einen API-Schlüssel, damit sich dieser Browser auch nach dem Neubinden des Servers verbinden kann. Der vollständige Schlüssel wird nur einmal angezeigt.",
     "keyName": "Name des Schlüssels",
     "defaultKeyName": "Dieser Computer",
@@ -58,7 +58,7 @@
   },
   "keys": {
     "title": "API-Schlüssel",
-    "description": "Zugangsdaten für Apps und Geräte, die mit Yggdrasil sprechen.",
+    "description": "Zugangsdaten für Apps und Geräte, die mit Toskar sprechen.",
     "create": "API-Schlüssel erstellen",
     "createHint": "Gib diesem Schlüssel einen Namen, damit du weißt, was ihn nutzt.",
     "namePlaceholder": "VS Code",
@@ -102,13 +102,13 @@
     "saveFailed": "Konnte nicht gespeichert werden."
   },
   "share": {
-    "title": "Yggdrasil in anderen KI-Apps nutzen",
+    "title": "Toskar in anderen KI-Apps nutzen",
     "description": "Apps mit MCP-Unterstützung können deine lokale KI fragen, ihre Modelle auflisten und dein verbundenes Wissen durchsuchen. Antworten bleiben auf deinen Computern, und die lokale KI nutzt nur Werkzeuge, die lesen.",
     "other": "Andere Apps",
     "settings": "{{language}}-Einstellungen",
     "copied": "Kopiert",
     "copy": "Kopieren",
-    "needsKey": "Yggdrasil ist für dein Netzwerk geöffnet, daher brauchen Apps einen API-Schlüssel. Erstelle unten einen und setze ihn dort ein, wo in den Einstellungen <key/> steht. Die Berechtigungen des Schlüssels gelten.",
+    "needsKey": "Toskar ist für dein Netzwerk geöffnet, daher brauchen Apps einen API-Schlüssel. Erstelle unten einen und setze ihn dort ein, wo in den Einstellungen <key/> steht. Die Berechtigungen des Schlüssels gelten.",
     "keyPlaceholder": "<dein API-Schlüssel>",
     "where": {
       "claudeDesktop": "Öffne in Claude Desktop Einstellungen → Entwickler → Konfiguration bearbeiten, füge dies hinzu und starte Claude neu.",

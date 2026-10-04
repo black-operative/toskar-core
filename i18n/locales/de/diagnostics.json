@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Zustand von Yggdrasil",
+    "title": "Zustand von Toskar",
     "attention": "Etwas braucht deine Aufmerksamkeit.",
     "mostly": "Weitgehend in Ordnung – eine Sache solltest du dir ansehen.",
     "normal": "Alles funktioniert normal.",
@@ -17,7 +17,7 @@
     "bundleCreated": "Diagnosepaket erstellt",
     "bundleAt": "Diagnosepaket erstellt unter <path>{{path}}</path>",
     "bundleShare": "Diagnosepaket erstellt. Du kannst diese Datei teilen, wenn du um Hilfe bittest.",
-    "bundleFailed": "Diagnosepaket konnte nicht erstellt werden. Prüfe, ob der Yggdrasil-Dienst läuft."
+    "bundleFailed": "Diagnosepaket konnte nicht erstellt werden. Prüfe, ob der Toskar-Dienst läuft."
   },
   "checked": {
     "never": "Noch nicht geprüft",
@@ -47,7 +47,7 @@
     "control": {
       "label": "Steuerdienst",
       "notResponding": "Antwortet nicht",
-      "message": "Der lokale Yggdrasil-Dienst ist nicht erreichbar. Beende die App und öffne sie erneut. Auf einem Server prüfe, ob der Yggdrasil-Dienst läuft."
+      "message": "Der lokale Toskar-Dienst ist nicht erreichbar. Beende die App und öffne sie erneut. Auf einem Server prüfe, ob der Toskar-Dienst läuft."
     },
     "runtime": {
       "label": "Modell-Laufzeit",
@@ -128,7 +128,7 @@
   },
   "caches": {
     "title": "Caches",
-    "description": "Was Yggdrasil aufbewahrt, um Wiederholungen schneller zu beantworten. Persönliche Caches bleiben auf diesem Computer und werden mit den Durchlaufprotokollen gelöscht. Passwörter und Schlüssel werden nie zwischengespeichert.",
+    "description": "Was Toskar aufbewahrt, um Wiederholungen schneller zu beantworten. Persönliche Caches bleiben auf diesem Computer und werden mit den Durchlaufprotokollen gelöscht. Passwörter und Schlüssel werden nie zwischengespeichert.",
     "by": "Nach {{key}}",
     "keptUntil": "aufbewahrt bis zur Ungültigkeit",
     "keptFor": "aufbewahrt {{ttl}}",
@@ -139,7 +139,7 @@
     "clear": "Leeren"
   },
   "abilities": {
-    "title": "Was Yggdrasil kann",
+    "title": "Was Toskar kann",
     "description": "Ausgehend davon, was gerade installiert, online und verbunden ist. Der Chat beantwortet Fragen wie „Kannst du ein Bild erzeugen?“ anhand dieser Liste.",
     "available": " (verfügbar)",
     "notAvailable": " (nicht verfügbar)",
@@ -180,8 +180,8 @@
     "autoDetect": "erkennt die Sprache"
   },
   "memory": {
-    "title": "Speicher von Yggdrasil",
-    "description": "Wie viel Arbeitsspeicher Yggdrasil selbst braucht, und seine Hintergrundaufgaben. Beides sollte sich nach einer Weile einpendeln; stetiges Wachstum über Stunden solltest du melden.",
+    "title": "Speicher von Toskar",
+    "description": "Wie viel Arbeitsspeicher Toskar selbst braucht, und seine Hintergrundaufgaben. Beides sollte sich nach einer Weile einpendeln; stetiges Wachstum über Stunden solltest du melden.",
     "heap": "Belegter Speicher",
     "tasks": "Hintergrundaufgaben",
     "since": "Läuft seit",

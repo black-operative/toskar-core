@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Modelle",
-    "subtitle": "Wähle, was du installierst – Yggdrasil empfiehlt Modelle, die zu deiner Hardware passen.",
+    "subtitle": "Wähle, was du installierst – Toskar empfiehlt Modelle, die zu deiner Hardware passen.",
     "loading": "Modellbibliothek wird geladen …",
     "search": "Modelle suchen …",
     "emptyTitle": "Keine kuratierten Modelle",
@@ -156,13 +156,13 @@
     "hint": "Belegt den Großteil des verfügbaren Speichers dieses Computers und läuft evtl. weniger stabil.",
     "title": "Dieses Modell läuft auf diesem Computer evtl. instabil",
     "body": "{{model}} belegt den Großteil des auf diesem Computer verfügbaren Speichers. Es kann bei höherer Last oder größerem Kontext langsam laufen, nicht mehr reagieren oder das System instabil machen.",
-    "advice": "Yggdrasil empfiehlt, mehr Speicher für Betriebssystem und Grafik frei zu lassen.",
+    "advice": "Toskar empfiehlt, mehr Speicher für Betriebssystem und Grafik frei zu lassen.",
     "cancel": "Abbrechen",
     "install": "Trotzdem installieren"
   },
   "browse": {
     "title": "Alle Modelle durchsuchen",
-    "description": "Durchsuche Hugging Face nach Modellen, die Yggdrasil lokal ausführen kann. Installiert wird auf dem oben gewählten Computer.",
+    "description": "Durchsuche Hugging Face nach Modellen, die Toskar lokal ausführen kann. Installiert wird auf dem oben gewählten Computer.",
     "close": "Schließen",
     "placeholder": "Modelle suchen …",
     "search": "Suchen",
@@ -221,7 +221,7 @@
     },
     "sources": {
       "model_card": "Modellkarte",
-      "maintainer": "Yggdrasil-Team",
+      "maintainer": "Toskar-Team",
       "benchmark": "Benchmarks",
       "provider": "Anbieter",
       "community": "Community-Bewertungen",

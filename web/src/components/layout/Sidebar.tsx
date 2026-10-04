@@ -130,7 +130,7 @@ export function Sidebar({ open = false, ref }: { open?: boolean; ref?: Ref<HTMLD
           <a href="/" className="brand flex min-w-0 flex-1 items-center gap-2.5 no-underline">
             <div className="min-w-0 flex-1 leading-none">
               <p className="truncate font-display text-xl font-semibold tracking-tight text-ink">
-                Yggdrasil
+                Toskar
               </p>
               {/* Status sits under the title so it never runs into the bell; a long
                   label truncates (the hint is in title) and the version wraps below. */}

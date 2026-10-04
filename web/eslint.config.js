@@ -18,7 +18,7 @@ const NOT_PROSE = [
   /^[a-z][a-z0-9_.:-]*$/,
   /^\S*[/@:]\S*$/,
   /^(\S*[-\d]\S*\s*)+$/,
-  /^(Yggdrasil|Ratatoskr|Huginn|Muninn|Mimir|Heimdall|Bifrost|Gjallarhorn|Norn|Ymir|Brokkr|Odin|Gungnir|Valgrind|Forseti|PostgreSQL|MySQL|SQLite)$/,
+  /^(Toskar|Yggdrasil|Ratatoskr|Huginn|Muninn|Mimir|Heimdall|Bifrost|Gjallarhorn|Norn|Ymir|Brokkr|Odin|Gungnir|Valgrind|Forseti|PostgreSQL|MySQL|SQLite)$/,
 ]
 
 export default defineConfig(

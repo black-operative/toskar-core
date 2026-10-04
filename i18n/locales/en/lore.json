@@ -1,18 +1,18 @@
 {
   "about": "About {{name}}",
   "close": "Close",
-  "inYggdrasil": "In Yggdrasil",
+  "inYggdrasil": "In Toskar",
   "mascot": {
     "label": "About Ratatoskr",
-    "kind": "The Yggdrasil mascot",
+    "kind": "The Toskar mascot",
     "story": "In the myths, Ratatoskr is the squirrel who runs up and down the World Tree, carrying messages between the eagle at the top and the dragon Níðhöggr at the roots. He was known to stir up a little trouble along the way.",
     "here": "He does the same job here, carrying your requests between your apps and the models on your computers. He thinks while a reply is written, celebrates when something finishes, and naps when no model is loaded."
   },
   "logo": {
-    "label": "About the Yggdrasil mark",
+    "label": "About the Toskar mark",
     "kind": "The World Tree",
     "story": "Yggdrasil is the great ash at the center of the Norse cosmos. Its branches reach over the heavens, its roots reach three wells, and the nine worlds hang among its boughs.",
-    "here": "The mark draws the tree as circuit traces, with roots and branches ending in nodes, like the computers Yggdrasil connects into one system."
+    "here": "The mark draws the tree as circuit traces, with roots and branches ending in nodes, like the computers Toskar connects into one system."
   },
   "realms": {
     "chat": {
@@ -41,7 +41,7 @@
       "rune": "Laguz, the rune of water and the well"
     },
     "memory": {
-      "meaning": "Muninn, Odin's raven of memory, keeps what you ask Yggdrasil to remember.",
+      "meaning": "Muninn, Odin's raven of memory, keeps what you ask Toskar to remember.",
       "story": "Huginn and Muninn, Thought and Memory, are Odin's ravens. Each morning they fly over the world and return to tell him what they saw. Odin said he feared most that Muninn would not come back.",
       "rune": "Othala, the rune of what is kept"
     },
@@ -76,7 +76,7 @@
       "rune": "Thurisaz, the rune of the gate"
     },
     "settings": {
-      "meaning": "Forseti settles every matter fairly. Settings are the rules Yggdrasil keeps.",
+      "meaning": "Forseti settles every matter fairly. Settings are the rules Toskar keeps.",
       "story": "Forseti, son of Baldr, sits in Glitnir, a hall with pillars of gold and a roof of silver. Everyone who brings a dispute to him leaves reconciled.",
       "rune": "Isa, the rune of stillness"
     }

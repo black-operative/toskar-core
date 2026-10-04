@@ -83,7 +83,7 @@ func TestModelFailureInAppLanguage(t *testing.T) {
 		t.Fatalf("English = %q", got)
 	}
 	f, _ := modelhealth.Parse(a.explainFailure("de", stopped))
-	if f.Message != "Das Modell hat nicht mehr geantwortet. Yggdrasil hat es deshalb gestoppt und den fehlgeschlagenen Prozess bereinigt." || f.ModelID != "big" {
+	if f.Message != "Das Modell hat nicht mehr geantwortet. Toskar hat es deshalb gestoppt und den fehlgeschlagenen Prozess bereinigt." || f.ModelID != "big" {
 		t.Fatalf("German = %+v", f)
 	}
 	oom := modelhealth.Encode(modelhealth.Failure{Reason: modelhealth.ReasonOOM, LikelyMemoryPressure: true})

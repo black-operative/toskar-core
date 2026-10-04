@@ -1,13 +1,13 @@
 {
   "page": {
-    "title": "你的 Yggdrasil 團隊",
+    "title": "你的 Toskar 團隊",
     "titleAdvanced": "你的 AI 叢集",
     "subtitle": "這些電腦會協同運作，成為一個 AI 系統。加入一台機器，再把模型部署到適合的地方。",
     "find": "尋找電腦",
     "scanning": "正在掃描…",
     "looking": "正在尋找電腦…",
     "emptyTitle": "打造你的 AI 團隊",
-    "emptyDescription": "在網路上的另一台電腦安裝 Yggdrasil，它就會自動出現在這裡。"
+    "emptyDescription": "在網路上的另一台電腦安裝 Toskar，它就會自動出現在這裡。"
   },
   "status": {
     "team": "團隊狀態",
@@ -19,7 +19,7 @@
   },
   "errors": {
     "action": "無法完成該動作",
-    "network": "請在兩台電腦上都允許 Yggdrasil 使用區域網路及通過防火牆，並在「設定」中保持「尋找其他電腦」為開啟。",
+    "network": "請在兩台電腦上都允許 Toskar 使用區域網路及通過防火牆，並在「設定」中保持「尋找其他電腦」為開啟。",
     "generic": "發生錯誤",
     "claimFailed": "無法載入該代碼的配對邀請"
   },
@@ -34,10 +34,10 @@
   },
   "nearby": {
     "title": "可加入的電腦",
-    "description": "Yggdrasil 在你的網路上找到這些電腦。"
+    "description": "Toskar 在你的網路上找到這些電腦。"
   },
   "fleet": {
-    "title": "你的 Yggdrasil 團隊",
+    "title": "你的 Toskar 團隊",
     "titleAdvanced": "你的叢集",
     "moves": "工作會自動在這個團隊中分配。",
     "movesAdvanced": "工作會自動在這個叢集中分配。",
@@ -102,7 +102,7 @@
   },
   "deploy": {
     "title": "部署模型",
-    "description": "在一台或同時在多台電腦上安裝模型。Yggdrasil 會在開始前檢查可用的磁碟空間。",
+    "description": "在一台或同時在多台電腦上安裝模型。Toskar 會在開始前檢查可用的磁碟空間。",
     "model": "模型",
     "chooseModel": "選擇模型…",
     "modelSize": "{{model}}（{{size}}）",
@@ -131,14 +131,14 @@
     "makeHint": "此指令只能使用一次，有效期 15 分鐘。",
     "kindLabel": "在哪裡執行",
     "kinds": {
-      "installed": "已安裝 Yggdrasil",
+      "installed": "已安裝 Toskar",
       "install": "安裝並加入",
       "windows": "Windows"
     },
     "kindHints": {
-      "installed": "在已經執行 Yggdrasil 的電腦上執行。",
-      "install": "在 Linux 或 macOS 上安裝 Yggdrasil，以服務啟動並加入。",
-      "windows": "在 Windows 上安裝 Yggdrasil 並加入。請在 PowerShell 中執行。"
+      "installed": "在已經執行 Toskar 的電腦上執行。",
+      "install": "在 Linux 或 macOS 上安裝 Toskar，以服務啟動並加入。",
+      "windows": "在 Windows 上安裝 Toskar 並加入。請在 PowerShell 中執行。"
     },
     "commandLabel": "加入指令",
     "copy": "複製",

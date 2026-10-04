@@ -137,7 +137,7 @@ func TestTraceRecordsPlansAndChecks(t *testing.T) {
 	meta := tr.meta()
 	if meta.Steps[0].Text != "Split the request into 3 parts and looked them up side by side" ||
 		meta.Steps[1].Text != "Checked the figures; some could not be confirmed" ||
-		meta.Notice != "Yggdrasil could not confirm 20 in the sources. Check before relying on it." {
+		meta.Notice != "Toskar could not confirm 20 in the sources. Check before relying on it." {
 		t.Fatalf("meta = %+v", meta)
 	}
 	tr = &turnTrace{}
@@ -165,7 +165,7 @@ func TestFallbackPrefersProfileOrder(t *testing.T) {
 func TestNoticesInAppLanguage(t *testing.T) {
 	tr := &turnTrace{lang: "de"}
 	tr.verified(3, 0, []string{"20", "30", "$9"})
-	if n := tr.meta().Notice; n != "Yggdrasil konnte 20, 30 und $9 in den Quellen nicht bestätigen. Prüfe das, bevor du dich darauf verlässt." {
+	if n := tr.meta().Notice; n != "Toskar konnte 20, 30 und $9 in den Quellen nicht bestätigen. Prüfe das, bevor du dich darauf verlässt." {
 		t.Fatalf("notice = %q", n)
 	}
 	tr = &turnTrace{lang: "de"}

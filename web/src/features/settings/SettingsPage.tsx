@@ -666,7 +666,7 @@ export function SettingsPage() {
             <YggdrasilMark size={72} lore />
             <div className="min-w-0">
               <p className="font-display text-xl font-semibold tracking-tight text-ink">
-                Yggdrasil
+                Toskar
               </p>
               <p className="mt-0.5 text-sm text-ink-muted">{t('about.tagline')}</p>
               <p className="mt-2 text-sm font-medium text-ink">

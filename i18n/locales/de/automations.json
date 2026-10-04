@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Automationen",
-    "description": "Automationen laufen im Hintergrund, auch wenn dieses Fenster geschlossen ist. Plane eine wiederkehrende Aufgabe oder lass dich von Yggdrasil benachrichtigen, wenn sich etwas ändert.",
+    "description": "Automationen laufen im Hintergrund, auch wenn dieses Fenster geschlossen ist. Plane eine wiederkehrende Aufgabe oder lass dich von Toskar benachrichtigen, wenn sich etwas ändert.",
     "new": "Neue Automation",
     "search": "Suchen",
     "searchLabel": "Automationen durchsuchen",
@@ -13,7 +13,7 @@
     },
     "loading": "Automationen werden geladen …",
     "emptyTitle": "Noch keine Automationen",
-    "emptyDescription": "Beschreibe eine wiederkehrende Prüfung, etwa einen Preis am Morgen oder eine Release-Zusammenfassung am Freitag, und Yggdrasil führt sie nach diesem Zeitplan aus.",
+    "emptyDescription": "Beschreibe eine wiederkehrende Prüfung, etwa einen Preis am Morgen oder eine Release-Zusammenfassung am Freitag, und Toskar führt sie nach diesem Zeitplan aus.",
     "noMatches": "Keine passenden Automationen.",
     "lastNext": "Zuletzt {{last}} · Nächste {{next}}",
     "saveFailed": "Die Automation konnte nicht gespeichert werden.",
@@ -145,7 +145,7 @@
   "form": {
     "editTitle": "Automation bearbeiten",
     "newTitle": "Neue Automation",
-    "intro": "Sag Yggdrasil, was es tun soll.",
+    "intro": "Sag Toskar, was es tun soll.",
     "describe": "Beschreibe, was du möchtest",
     "describePlaceholder": "Jeden Morgen um 8:00 Uhr: Prüfe dieses Produkt und sag mir, ob der Preis unter 500 € liegt.",
     "setUp": "Automation einrichten",
@@ -167,7 +167,7 @@
       "failure": "Nur bei Fehlern",
       "none": "Nicht benachrichtigen"
     },
-    "noticesGo": "Hinweise erscheinen in der Glocke in Yggdrasil und, wenn die Einstellungen es erlauben, in den Mitteilungen dieses Computers.",
+    "noticesGo": "Hinweise erscheinen in der Glocke in Toskar und, wenn die Einstellungen es erlauben, in den Mitteilungen dieses Computers.",
     "condition": "Bedingung",
     "conditions": {
       "threshold": "Preis",
@@ -189,9 +189,9 @@
     "responseApp": "Wie die App-Sprache",
     "responseAuto": "Die Sprache der Anfrage",
     "installFirst": "Zuerst ein Modell installieren",
-    "auto": "Automatisch (Yggdrasil wählt pro Durchlauf)",
+    "auto": "Automatisch (Toskar wählt pro Durchlauf)",
     "timeZone": "Zeitzone",
-    "conditionHint": "Yggdrasil prüft das Ergebnis anhand dieser Bedingung. Die Aufgabe selbst bleibt in normaler Sprache.",
+    "conditionHint": "Toskar prüft das Ergebnis anhand dieser Bedingung. Die Aufgabe selbst bleibt in normaler Sprache.",
     "tools": "Werkzeuge, die es nutzen darf, während du weg bist",
     "toolsHint": "Gib jetzt frei, was diese Automation braucht; später ist niemand da, um zu antworten. Stößt sie auf ein Werkzeug, das du nicht freigegeben hast, überspringt sie es und du erhältst eine Mitteilung. Lass alles leer, um nur die lesenden Werkzeuge zu nutzen, die das Profil erlaubt.",
     "changeTools": "Diese ändern Dinge auf diesem Computer",

@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Automatizaciones",
-    "description": "Las automatizaciones se ejecutan en segundo plano, incluso con esta ventana cerrada. Programa una tarea recurrente o haz que Yggdrasil te avise cuando algo cambie.",
+    "description": "Las automatizaciones se ejecutan en segundo plano, incluso con esta ventana cerrada. Programa una tarea recurrente o haz que Toskar te avise cuando algo cambie.",
     "new": "Nueva automatización",
     "search": "Buscar",
     "searchLabel": "Buscar automatizaciones",
@@ -13,7 +13,7 @@
     },
     "loading": "Cargando automatizaciones…",
     "emptyTitle": "Todavía no hay automatizaciones",
-    "emptyDescription": "Describe una comprobación recurrente, como un precio cada mañana o un resumen de versiones los viernes, y Yggdrasil la ejecutará con esa frecuencia.",
+    "emptyDescription": "Describe una comprobación recurrente, como un precio cada mañana o un resumen de versiones los viernes, y Toskar la ejecutará con esa frecuencia.",
     "noMatches": "Ninguna automatización coincide.",
     "lastNext": "Última: {{last}} · Próxima: {{next}}",
     "saveFailed": "No se pudo guardar la automatización.",
@@ -145,7 +145,7 @@
   "form": {
     "editTitle": "Editar automatización",
     "newTitle": "Nueva automatización",
-    "intro": "Dile a Yggdrasil qué quieres que haga.",
+    "intro": "Dile a Toskar qué quieres que haga.",
     "describe": "Describe lo que quieres",
     "describePlaceholder": "Cada mañana a las 8:00, revisa este producto y avísame si el precio baja de 500 €.",
     "setUp": "Configurar la automatización",
@@ -167,7 +167,7 @@
       "failure": "Solo cuando falle",
       "none": "No avisarme"
     },
-    "noticesGo": "Los avisos van a la campana de Yggdrasil y, si la configuración lo permite, a las notificaciones de esta computadora.",
+    "noticesGo": "Los avisos van a la campana de Toskar y, si la configuración lo permite, a las notificaciones de esta computadora.",
     "condition": "Condición",
     "conditions": {
       "threshold": "Precio",
@@ -189,9 +189,9 @@
     "responseApp": "Igual que el idioma de la app",
     "responseAuto": "El idioma de la solicitud",
     "installFirst": "Primero instala un modelo",
-    "auto": "Automático (Yggdrasil elige en cada ejecución)",
+    "auto": "Automático (Toskar elige en cada ejecución)",
     "timeZone": "Zona horaria",
-    "conditionHint": "Yggdrasil compara el resultado con esta condición. La tarea en sí se escribe en lenguaje común.",
+    "conditionHint": "Toskar compara el resultado con esta condición. La tarea en sí se escribe en lenguaje común.",
     "tools": "Herramientas que puede usar mientras no estás",
     "toolsHint": "Aprueba ahora lo que necesita esta automatización; después no habrá nadie para responder. Si llega a una herramienta que no aprobaste, la omite y recibes una notificación. Deja todo sin marcar para usar solo las herramientas de solo lectura que permita el perfil.",
     "changeTools": "Estas hacen cambios en esta computadora",

@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Configuración",
-    "subtitle": "Cómo debe comportarse Yggdrasil en esta computadora.",
+    "subtitle": "Cómo debe comportarse Toskar en esta computadora.",
     "loading": "Cargando la configuración…"
   },
   "groups": {
@@ -22,7 +22,7 @@
   },
   "language": {
     "title": "Idioma",
-    "description": "El idioma de los menús, los botones y los mensajes de Yggdrasil en todas las computadoras y teléfonos con los que lo uses. Cada dispositivo puede seguir el idioma de su propio sistema.",
+    "description": "El idioma de los menús, los botones y los mensajes de Toskar en todas las computadoras y teléfonos con los que lo uses. Cada dispositivo puede seguir el idioma de su propio sistema.",
     "appLanguage": "Idioma de la app",
     "systemDefault": "Predeterminado del sistema ({{language}})",
     "pseudo": "Pseudolocalización (para probar traducciones)",
@@ -30,7 +30,7 @@
     "status": {
       "machine": "Traducción automática, así que algunas frases pueden sonar raras hasta que una persona las revise.",
       "partial": "Traducción parcial. Lo que aún no está traducido se muestra en inglés.",
-      "community": "Traducido por la comunidad de Yggdrasil."
+      "community": "Traducido por la comunidad de Toskar."
     },
     "assistantLanguage": "Idioma del asistente",
     "assistantAuto": "Detección automática: el idioma en que escribes",
@@ -80,7 +80,7 @@
   },
   "launchAtLogin": {
     "title": "Abrir al iniciar sesión",
-    "description": "Inicia Yggdrasil automáticamente cuando inicies sesión en esta computadora."
+    "description": "Inicia Toskar automáticamente cuando inicies sesión en esta computadora."
   },
   "defaultProfile": {
     "title": "Perfil predeterminado",
@@ -115,9 +115,9 @@
   },
   "discovery": {
     "title": "Buscar otras computadoras",
-    "description": "Anuncia esta computadora y busca otras instalaciones de Yggdrasil en tu red.",
-    "needsRestart": "Se actualizó la configuración de red. Reinicia Yggdrasil para que otras computadoras puedan acceder por completo a esta.",
-    "restartManually": "Sal de Yggdrasil por completo y vuelve a abrirlo para terminar de aplicar la configuración de red.",
+    "description": "Anuncia esta computadora y busca otras instalaciones de Toskar en tu red.",
+    "needsRestart": "Se actualizó la configuración de red. Reinicia Toskar para que otras computadoras puedan acceder por completo a esta.",
+    "restartManually": "Sal de Toskar por completo y vuelve a abrirlo para terminar de aplicar la configuración de red.",
     "restartNow": "Reiniciar ahora",
     "status": "Estado: <strong>{{state}}</strong>"
   },
@@ -127,7 +127,7 @@
   },
   "api": {
     "title": "Acceso a la API",
-    "description": "Cómo pueden comunicarse con Yggdrasil las apps y otros dispositivos.",
+    "description": "Cómo pueden comunicarse con Toskar las apps y otros dispositivos.",
     "local": "API local",
     "lan": "API en la LAN",
     "manage": "Administrar el acceso a la API"
@@ -151,7 +151,7 @@
   },
   "history": {
     "title": "Historial",
-    "description": "Controla lo que Yggdrasil guarda en esta computadora.",
+    "description": "Controla lo que Toskar guarda en esta computadora.",
     "saveChats": "Guardar el historial de chats",
     "saveTasks": "Guardar el historial de tareas",
     "confirmClear": "¿Eliminar todo el historial de chats de esta computadora? Esta acción no se puede deshacer.",
@@ -169,15 +169,15 @@
   "yourData": {
     "title": "Tus datos siguen siendo privados",
     "points": {
-      "stored": "Tus chats, recuerdos, conocimiento, archivos e IA especializadas se guardan en esta computadora, en la carpeta de datos de Yggdrasil. No hay cuenta de Yggdrasil ni nube, y no se envían datos de uso a nadie.",
+      "stored": "Tus chats, recuerdos, conocimiento, archivos e IA especializadas se guardan en esta computadora, en la carpeta de datos de Toskar. No hay cuenta de Toskar ni nube, y no se envían datos de uso a nadie.",
       "leaves": "Algo sale de esta computadora solo cuando usas una función que se conecta a internet, como una búsqueda web, un servicio conectado o una computadora vinculada. Cada vez aparece abajo, en Lo que salió de esta computadora.",
-      "atRest": "Yggdrasil no cifra sus propios archivos ni te obliga a hacerlo. Para que estén cifrados mientras la computadora está apagada o bloqueado, activa el cifrado de disco: FileVault en macOS, BitLocker en Windows o LUKS en Linux.",
+      "atRest": "Toskar no cifra sus propios archivos ni te obliga a hacerlo. Para que estén cifrados mientras la computadora está apagada o bloqueado, activa el cifrado de disco: FileVault en macOS, BitLocker en Windows o LUKS en Linux.",
       "inTransit": "Los sitios web y servicios en línea se usan mediante conexiones HTTPS cifradas. El tráfico entre tus propias computadoras, y desde otros dispositivos de tu red hacia esta, aún no está cifrado, así que usa esas funciones solo en una red de confianza."
     }
   },
   "whatLeft": {
     "title": "Lo que salió de esta computadora",
-    "description": "Yggdrasil trabaja en esta computadora. Estas son las veces en que un chat, una automatización o una app envió algo a otro lugar: búsquedas y páginas web, consultas de mapas, computadoras vinculadas y servicios conectados. Marca recuerdos o conocimiento como “Solo esta computadora” para que los chats que los usan se queden aquí.",
+    "description": "Toskar trabaja en esta computadora. Estas son las veces en que un chat, una automatización o una app envió algo a otro lugar: búsquedas y páginas web, consultas de mapas, computadoras vinculadas y servicios conectados. Marca recuerdos o conocimiento como “Solo esta computadora” para que los chats que los usan se queden aquí.",
     "nothing": "Nada salió de esta computadora en los últimos 30 días.",
     "summary": "En los últimos 30 días: {{list}}.",
     "summaryItem": "{{kind}} ({{count}})",
@@ -230,7 +230,7 @@
     "openFolder": "Abrir carpeta",
     "opened": "Abierta",
     "copyPath": "Copia la ruta de abajo",
-    "pending": "Aparecerá cuando Yggdrasil esté en ejecución",
+    "pending": "Aparecerá cuando Toskar esté en ejecución",
     "limit": "Almacenamiento máximo para modelos",
     "limitDescription": "Límite flexible para los modelos descargados en esta computadora.",
     "unlimited": "Ilimitado"

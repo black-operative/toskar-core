@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Automazioni",
-    "description": "Le automazioni vengono eseguite in background, anche quando questa finestra è chiusa. Pianifica un'attività ricorrente, oppure fatti avvisare da Yggdrasil quando qualcosa cambia.",
+    "description": "Le automazioni vengono eseguite in background, anche quando questa finestra è chiusa. Pianifica un'attività ricorrente, oppure fatti avvisare da Toskar quando qualcosa cambia.",
     "new": "Nuova automazione",
     "search": "Cerca",
     "searchLabel": "Cerca automazioni",
@@ -13,7 +13,7 @@
     },
     "loading": "Caricamento delle automazioni…",
     "emptyTitle": "Ancora nessuna automazione",
-    "emptyDescription": "Descrivi un controllo ricorrente, come un prezzo ogni mattina o un riepilogo delle release il venerdì, e Yggdrasil lo eseguirà secondo quella pianificazione.",
+    "emptyDescription": "Descrivi un controllo ricorrente, come un prezzo ogni mattina o un riepilogo delle release il venerdì, e Toskar lo eseguirà secondo quella pianificazione.",
     "noMatches": "Nessuna automazione corrisponde.",
     "lastNext": "Ultima {{last}} · Prossima {{next}}",
     "saveFailed": "Impossibile salvare l'automazione.",
@@ -145,7 +145,7 @@
   "form": {
     "editTitle": "Modifica automazione",
     "newTitle": "Nuova automazione",
-    "intro": "Di' a Yggdrasil cosa vuoi che faccia.",
+    "intro": "Di' a Toskar cosa vuoi che faccia.",
     "describe": "Descrivi cosa vuoi",
     "describePlaceholder": "Ogni mattina alle 8:00, controlla questo prodotto e dimmi se il prezzo scende sotto i 500 €.",
     "setUp": "Configura automazione",
@@ -167,7 +167,7 @@
       "failure": "Solo quando non riesce",
       "none": "Non avvisarmi"
     },
-    "noticesGo": "Gli avvisi arrivano nella campanella di Yggdrasil e, se le Impostazioni lo consentono, nelle notifiche di questo computer.",
+    "noticesGo": "Gli avvisi arrivano nella campanella di Toskar e, se le Impostazioni lo consentono, nelle notifiche di questo computer.",
     "condition": "Condizione",
     "conditions": {
       "threshold": "Prezzo",
@@ -189,9 +189,9 @@
     "responseApp": "Come la lingua dell'app",
     "responseAuto": "La lingua della richiesta",
     "installFirst": "Installa prima un modello",
-    "auto": "Automatico (Yggdrasil sceglie a ogni esecuzione)",
+    "auto": "Automatico (Toskar sceglie a ogni esecuzione)",
     "timeZone": "Fuso orario",
-    "conditionHint": "Yggdrasil confronta il risultato con questa condizione. L'attività in sé resta in linguaggio normale.",
+    "conditionHint": "Toskar confronta il risultato con questa condizione. L'attività in sé resta in linguaggio normale.",
     "tools": "Strumenti che può usare mentre sei via",
     "toolsHint": "Approva adesso ciò che serve a questa automazione: dopo non ci sarà nessuno a rispondere. Se arriva a uno strumento che non hai approvato, lo salta e ricevi una notifica. Lascia tutto deselezionato per usare solo gli strumenti di sola lettura consentiti dal profilo.",
     "changeTools": "Questi modificano cose su questo computer",

@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Impostazioni",
-    "subtitle": "Come deve comportarsi Yggdrasil su questo computer.",
+    "subtitle": "Come deve comportarsi Toskar su questo computer.",
     "loading": "Caricamento delle impostazioni…"
   },
   "groups": {
@@ -22,7 +22,7 @@
   },
   "language": {
     "title": "Lingua",
-    "description": "La lingua di menu, pulsanti e messaggi di Yggdrasil su ogni computer e telefono con cui lo usi. Ogni dispositivo può seguire la propria lingua di sistema.",
+    "description": "La lingua di menu, pulsanti e messaggi di Toskar su ogni computer e telefono con cui lo usi. Ogni dispositivo può seguire la propria lingua di sistema.",
     "appLanguage": "Lingua dell'app",
     "systemDefault": "Predefinita di sistema ({{language}})",
     "pseudo": "Pseudo-lingua (per testare le traduzioni)",
@@ -30,7 +30,7 @@
     "status": {
       "machine": "Tradotta automaticamente, quindi alcune frasi potrebbero suonare strane finché una persona non le rivede.",
       "partial": "Tradotta in parte. Ciò che non è ancora tradotto viene mostrato in inglese.",
-      "community": "Tradotta dalla community di Yggdrasil."
+      "community": "Tradotta dalla community di Toskar."
     },
     "assistantLanguage": "Lingua dell'assistente",
     "assistantAuto": "Rilevamento automatico: la lingua in cui scrivi",
@@ -80,7 +80,7 @@
   },
   "launchAtLogin": {
     "title": "Apri all'accesso",
-    "description": "Avvia Yggdrasil automaticamente quando accedi a questo computer."
+    "description": "Avvia Toskar automaticamente quando accedi a questo computer."
   },
   "defaultProfile": {
     "title": "Profilo predefinito",
@@ -115,9 +115,9 @@
   },
   "discovery": {
     "title": "Trova altri computer",
-    "description": "Rendi visibile questo computer e cerca altre installazioni di Yggdrasil sulla tua rete.",
-    "needsRestart": "La rete è stata aggiornata. Riavvia Yggdrasil affinché gli altri computer possano raggiungere completamente questo.",
-    "restartManually": "Esci completamente da Yggdrasil, poi riaprilo per finire di applicare le impostazioni di rete.",
+    "description": "Rendi visibile questo computer e cerca altre installazioni di Toskar sulla tua rete.",
+    "needsRestart": "La rete è stata aggiornata. Riavvia Toskar affinché gli altri computer possano raggiungere completamente questo.",
+    "restartManually": "Esci completamente da Toskar, poi riaprilo per finire di applicare le impostazioni di rete.",
     "restartNow": "Riavvia ora",
     "status": "Stato: <strong>{{state}}</strong>"
   },
@@ -127,7 +127,7 @@
   },
   "api": {
     "title": "Accesso API",
-    "description": "Come le app e gli altri dispositivi possono comunicare con Yggdrasil.",
+    "description": "Come le app e gli altri dispositivi possono comunicare con Toskar.",
     "local": "API locale",
     "lan": "API LAN",
     "manage": "Gestisci accesso API"
@@ -151,7 +151,7 @@
   },
   "history": {
     "title": "Cronologia",
-    "description": "Controlla cosa conserva Yggdrasil su questo computer.",
+    "description": "Controlla cosa conserva Toskar su questo computer.",
     "saveChats": "Salva la cronologia delle chat",
     "saveTasks": "Salva la cronologia delle attività",
     "confirmClear": "Eliminare tutta la cronologia delle chat su questo computer? L'operazione non può essere annullata.",
@@ -169,15 +169,15 @@
   "yourData": {
     "title": "I tuoi dati restano privati",
     "points": {
-      "stored": "Le tue chat, i ricordi, le conoscenze, i file e le IA specializzate sono salvati su questo computer, nella cartella dati di Yggdrasil. Non c'è un account Yggdrasil né un cloud, e nessun dato di utilizzo viene inviato a nessuno.",
+      "stored": "Le tue chat, i ricordi, le conoscenze, i file e le IA specializzate sono salvati su questo computer, nella cartella dati di Toskar. Non c'è un account Toskar né un cloud, e nessun dato di utilizzo viene inviato a nessuno.",
       "leaves": "Qualcosa lascia questo computer solo quando usi una funzione che va online, come una ricerca web, un servizio collegato o un computer associato. Ogni volta è elencata qui sotto, in Cosa è uscito da questo computer.",
-      "atRest": "Yggdrasil non cifra i propri file e non ti chiede di farlo. Per tenerli cifrati quando il computer è spento o bloccato, attiva la cifratura del disco: FileVault su macOS, BitLocker su Windows o LUKS su Linux.",
+      "atRest": "Toskar non cifra i propri file e non ti chiede di farlo. Per tenerli cifrati quando il computer è spento o bloccato, attiva la cifratura del disco: FileVault su macOS, BitLocker su Windows o LUKS su Linux.",
       "inTransit": "Siti web e servizi online vengono raggiunti tramite connessioni HTTPS cifrate. Il traffico tra i tuoi computer, e dagli altri dispositivi della tua rete verso questo, non è ancora cifrato: usa queste funzioni solo su una rete di cui ti fidi."
     }
   },
   "whatLeft": {
     "title": "Cosa è uscito da questo computer",
-    "description": "Yggdrasil lavora su questo computer. Queste sono le volte in cui una chat, un'automazione o un'app ha inviato qualcosa altrove: ricerche e pagine web, ricerche su mappe, computer associati e servizi collegati. Segna ricordi o conoscenza come “Solo questo computer” per tenere qui le chat che li usano.",
+    "description": "Toskar lavora su questo computer. Queste sono le volte in cui una chat, un'automazione o un'app ha inviato qualcosa altrove: ricerche e pagine web, ricerche su mappe, computer associati e servizi collegati. Segna ricordi o conoscenza come “Solo questo computer” per tenere qui le chat che li usano.",
     "nothing": "Negli ultimi 30 giorni non è uscito nulla da questo computer.",
     "summary": "Negli ultimi 30 giorni: {{list}}.",
     "summaryItem": "{{kind}} {{count}}",
@@ -230,7 +230,7 @@
     "openFolder": "Apri cartella",
     "opened": "Aperta",
     "copyPath": "Copia il percorso qui sotto",
-    "pending": "Comparirà quando Yggdrasil sarà in esecuzione",
+    "pending": "Comparirà quando Toskar sarà in esecuzione",
     "limit": "Spazio massimo per i modelli",
     "limitDescription": "Limite indicativo per i modelli scaricati su questo computer.",
     "unlimited": "Illimitato"

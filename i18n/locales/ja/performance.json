@@ -109,7 +109,7 @@
     "installFirst": "ベンチマークの前に、「モデル」ページで少なくとも1つのモデルをインストールしてください。",
     "selected": "{{count}}/6 選択済み",
     "prompts_other": "プロンプト{{count}}件",
-    "warning": "ベンチマーク中、Yggdrasilはモデルを一時的に読み込んだり解放したりします。テスト中は実行中のチャットが遅くなる場合があります。",
+    "warning": "ベンチマーク中、Toskarはモデルを一時的に読み込んだり解放したりします。テスト中は実行中のチャットが遅くなる場合があります。",
     "runsPerPrompt": "プロンプトごとの計測回数",
     "starting": "開始中…",
     "cancel": "キャンセル",
@@ -119,7 +119,7 @@
     "minutes_other": "{{count}}分",
     "startFailed": "ベンチマークを開始できませんでした。",
     "recent": "最近のベンチマーク",
-    "recentHint": "ジョブはYggdrasilの実行中は保持されます。",
+    "recentHint": "ジョブはToskarの実行中は保持されます。",
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_other": "勝者{{count}}件"
   }

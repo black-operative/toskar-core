@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Automatisations",
-    "description": "Les automatisations s'exécutent en arrière-plan, même quand cette fenêtre est fermée. Planifiez une tâche récurrente, ou laissez Yggdrasil vous prévenir quand quelque chose change.",
+    "description": "Les automatisations s'exécutent en arrière-plan, même quand cette fenêtre est fermée. Planifiez une tâche récurrente, ou laissez Toskar vous prévenir quand quelque chose change.",
     "new": "Nouvelle automatisation",
     "search": "Rechercher",
     "searchLabel": "Rechercher des automatisations",
@@ -13,7 +13,7 @@
     },
     "loading": "Chargement des automatisations…",
     "emptyTitle": "Aucune automatisation pour l'instant",
-    "emptyDescription": "Décrivez une vérification récurrente, comme un prix chaque matin ou un résumé des nouvelles versions le vendredi, et Yggdrasil l'exécutera selon ce calendrier.",
+    "emptyDescription": "Décrivez une vérification récurrente, comme un prix chaque matin ou un résumé des nouvelles versions le vendredi, et Toskar l'exécutera selon ce calendrier.",
     "noMatches": "Aucune automatisation ne correspond.",
     "lastNext": "Dernière {{last}} · Prochaine {{next}}",
     "saveFailed": "Impossible d'enregistrer l'automatisation.",
@@ -145,7 +145,7 @@
   "form": {
     "editTitle": "Modifier l'automatisation",
     "newTitle": "Nouvelle automatisation",
-    "intro": "Dites à Yggdrasil ce que vous voulez qu'il fasse.",
+    "intro": "Dites à Toskar ce que vous voulez qu'il fasse.",
     "describe": "Décrivez ce que vous voulez",
     "describePlaceholder": "Chaque matin à 8 h, vérifie ce produit et dis-moi si le prix est inférieur à 500 €.",
     "setUp": "Configurer l'automatisation",
@@ -167,7 +167,7 @@
       "failure": "Uniquement en cas d'échec",
       "none": "Ne pas me notifier"
     },
-    "noticesGo": "Les avis arrivent dans la cloche d'Yggdrasil et, si les Paramètres le permettent, dans les notifications de cet ordinateur.",
+    "noticesGo": "Les avis arrivent dans la cloche de Toskar et, si les Paramètres le permettent, dans les notifications de cet ordinateur.",
     "condition": "Condition",
     "conditions": {
       "threshold": "Prix",
@@ -189,9 +189,9 @@
     "responseApp": "Comme la langue de l'app",
     "responseAuto": "La langue de la demande",
     "installFirst": "Installez d'abord un modèle",
-    "auto": "Auto (Yggdrasil choisit à chaque exécution)",
+    "auto": "Auto (Toskar choisit à chaque exécution)",
     "timeZone": "Fuseau horaire",
-    "conditionHint": "Yggdrasil compare le résultat à cette condition. La tâche elle-même reste formulée en langage courant.",
+    "conditionHint": "Toskar compare le résultat à cette condition. La tâche elle-même reste formulée en langage courant.",
     "tools": "Outils autorisés en votre absence",
     "toolsHint": "Approuvez dès maintenant ce dont cette automatisation a besoin : personne ne sera là pour répondre plus tard. Si elle a besoin d'un outil que vous n'avez pas approuvé, elle l'ignore et vous recevez une notification. Ne cochez rien pour n'utiliser que les outils en lecture seule autorisés par le profil.",
     "changeTools": "Ces outils modifient des éléments sur cet ordinateur",

@@ -1,6 +1,6 @@
 {
   "page": {
-    "title": "Yggdrasil health",
+    "title": "Toskar health",
     "attention": "Something needs attention.",
     "mostly": "Mostly healthy — one thing needs a look.",
     "normal": "Everything is working normally.",
@@ -17,7 +17,7 @@
     "bundleCreated": "Diagnostics bundle created",
     "bundleAt": "Diagnostics bundle created at <path>{{path}}</path>",
     "bundleShare": "Diagnostics bundle created. You can share this file when asking for help.",
-    "bundleFailed": "Couldn't create the diagnostics bundle. Check that the Yggdrasil service is running."
+    "bundleFailed": "Couldn't create the diagnostics bundle. Check that the Toskar service is running."
   },
   "checked": {
     "never": "Not checked yet",
@@ -47,7 +47,7 @@
     "control": {
       "label": "Control service",
       "notResponding": "Not responding",
-      "message": "The local Yggdrasil service isn't reachable. Quit and reopen the app. On a server, check that the Yggdrasil service is running."
+      "message": "The local Toskar service isn't reachable. Quit and reopen the app. On a server, check that the Toskar service is running."
     },
     "runtime": {
       "label": "Model runtime",
@@ -128,7 +128,7 @@
   },
   "caches": {
     "title": "Caches",
-    "description": "What Yggdrasil keeps to answer repeats faster. Personal caches stay on this computer and are cleared with run records. Passwords and keys are never cached.",
+    "description": "What Toskar keeps to answer repeats faster. Personal caches stay on this computer and are cleared with run records. Passwords and keys are never cached.",
     "by": "By {{key}}",
     "keptUntil": "kept until invalidated",
     "keptFor": "kept {{ttl}}",
@@ -139,7 +139,7 @@
     "clear": "Clear"
   },
   "abilities": {
-    "title": "What Yggdrasil can do",
+    "title": "What Toskar can do",
     "description": "From what is installed, online, and connected right now. Chat answers questions such as “Can you generate an image?” from this list.",
     "available": " (available)",
     "notAvailable": " (not available)",
@@ -180,8 +180,8 @@
     "autoDetect": "detects the language"
   },
   "memory": {
-    "title": "Yggdrasil's memory",
-    "description": "How much memory Yggdrasil itself uses, and its background tasks. Both should level off after a while; steady growth over hours is worth reporting.",
+    "title": "Toskar's memory",
+    "description": "How much memory Toskar itself uses, and its background tasks. Both should level off after a while; steady growth over hours is worth reporting.",
     "heap": "Memory in use",
     "tasks": "Background tasks",
     "since": "Running since",

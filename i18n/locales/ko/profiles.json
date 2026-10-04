@@ -74,7 +74,7 @@
   "menu": {
     "duplicate": "복제",
     "rename": "이름 변경",
-    "confirmReset": "“{{name}}”을(를) Yggdrasil 기본 상태로 재설정할까요? 변경한 내용은 사라져요.",
+    "confirmReset": "“{{name}}”을(를) Toskar 기본 상태로 재설정할까요? 변경한 내용은 사라져요.",
     "reset": "기본값으로 재설정",
     "confirmDelete": "“{{name}}”을(를) 삭제할까요? 이 작업은 되돌릴 수 없어요.",
     "delete": "삭제"
@@ -82,7 +82,7 @@
   "strategies": {
     "auto": {
       "label": "자동",
-      "detail": "Yggdrasil이 결정해요. 간단한 질문은 모델 하나가 답하고, 여러 부분으로 된 요청은 계획을 세우고 검토해요."
+      "detail": "Toskar가 결정해요. 간단한 질문은 모델 하나가 답하고, 여러 부분으로 된 요청은 계획을 세우고 검토해요."
     },
     "single": {
       "label": "단일 모델",
@@ -203,7 +203,7 @@
       },
       "read": {
         "label": "파일 읽기",
-        "description": "어시스턴트가 Yggdrasil 작업 공간의 파일을 열어 실제 내용을 인용하거나 요약할 수 있게 해요."
+        "description": "어시스턴트가 Toskar 작업 공간의 파일을 열어 실제 내용을 인용하거나 요약할 수 있게 해요."
       },
       "write": {
         "label": "파일 쓰기",
@@ -273,7 +273,7 @@
     "automatic": "자동",
     "computer": "컴퓨터",
     "fallback": "대체 순서",
-    "fallbackHint": "답변하는 모델이 실패하면 순서대로 시도해요. 그 후에는 Yggdrasil이 설치된 다른 모델을 선택해요.",
+    "fallbackHint": "답변하는 모델이 실패하면 순서대로 시도해요. 그 후에는 Toskar가 설치된 다른 모델을 선택해요.",
     "none": "없음",
     "tools": "도구",
     "on": "켬",

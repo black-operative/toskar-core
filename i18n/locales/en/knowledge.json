@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Knowledge",
-    "description": "Yggdrasil keeps catalogs, prices, policies, and documents searchable. When a profile or a specialized AI uses a source, the passages that match each question are added to it. Edit a file and the next question sees the change. No retraining.",
+    "description": "Toskar keeps catalogs, prices, policies, and documents searchable. When a profile or a specialized AI uses a source, the passages that match each question are added to it. Edit a file and the next question sees the change. No retraining.",
     "loading": "Loading…",
     "emptyTitle": "No knowledge connected",
     "emptyDescription": "Connect a file or folder on this computer, paste content, or read from a database or web API. PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, text, and HTML files work."
@@ -54,7 +54,7 @@
       "api": "Web API"
     },
     "path": "Path on this computer",
-    "pathHint": "Yggdrasil reads it in place and picks up edits automatically.",
+    "pathHint": "Toskar reads it in place and picks up edits automatically.",
     "chooseFile": "Choose a file",
     "pastePlaceholder": "Paste text, Markdown, or CSV",
     "content": "Content",
@@ -69,7 +69,7 @@
     "connection": "Connection string",
     "connectionHint": "Use an account that can only read. It is stored apart from the database and not shown again.",
     "query": "Query",
-    "queryHint": "One SELECT. It runs read-only, so Yggdrasil never changes the database. Each row becomes a passage.",
+    "queryHint": "One SELECT. It runs read-only, so Toskar never changes the database. Each row becomes a passage.",
     "url": "URL",
     "urlHint": "JSON, CSV, or text. A list of objects becomes one passage per item.",
     "items": "List in the response (optional)",

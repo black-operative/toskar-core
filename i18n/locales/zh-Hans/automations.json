@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "自动化",
-    "description": "自动化会在后台运行，即使关闭此窗口也会继续。你可以安排一个定期任务，或者让 Yggdrasil 在情况变化时通知你。",
+    "description": "自动化会在后台运行，即使关闭此窗口也会继续。你可以安排一个定期任务，或者让 Toskar 在情况变化时通知你。",
     "new": "新建自动化",
     "search": "搜索",
     "searchLabel": "搜索自动化",
@@ -13,7 +13,7 @@
     },
     "loading": "正在加载自动化…",
     "emptyTitle": "还没有自动化",
-    "emptyDescription": "描述一项定期检查，比如每天早上查一次价格，或每周五汇总一次发布情况，Yggdrasil 会按这个时间表运行它。",
+    "emptyDescription": "描述一项定期检查，比如每天早上查一次价格，或每周五汇总一次发布情况，Toskar 会按这个时间表运行它。",
     "noMatches": "没有匹配的自动化。",
     "lastNext": "上次 {{last}} · 下次 {{next}}",
     "saveFailed": "无法保存该自动化。",
@@ -145,7 +145,7 @@
   "form": {
     "editTitle": "编辑自动化",
     "newTitle": "新建自动化",
-    "intro": "告诉 Yggdrasil 你想让它做什么。",
+    "intro": "告诉 Toskar 你想让它做什么。",
     "describe": "描述你想要的内容",
     "describePlaceholder": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。",
     "setUp": "设置自动化",
@@ -167,7 +167,7 @@
       "failure": "仅在失败时",
       "none": "不通知我"
     },
-    "noticesGo": "通知会发送到 Yggdrasil 中的铃铛；如果“设置”允许，还会发送到这台电脑的系统通知。",
+    "noticesGo": "通知会发送到 Toskar 中的铃铛；如果“设置”允许，还会发送到这台电脑的系统通知。",
     "condition": "条件",
     "conditions": {
       "threshold": "价格",
@@ -189,9 +189,9 @@
     "responseApp": "与应用语言相同",
     "responseAuto": "请求所用的语言",
     "installFirst": "请先安装模型",
-    "auto": "自动（Yggdrasil 每次运行时选择）",
+    "auto": "自动（Toskar 每次运行时选择）",
     "timeZone": "时区",
-    "conditionHint": "Yggdrasil 会根据这个条件检查结果。任务本身仍用日常语言描述。",
+    "conditionHint": "Toskar 会根据这个条件检查结果。任务本身仍用日常语言描述。",
     "tools": "你不在时它可以使用的工具",
     "toolsHint": "现在就批准这个自动化需要的工具；之后不会有人在场回答。如果它用到了你没有批准的工具，就会跳过该工具并通知你。全部不勾选则只使用配置允许的只读工具。",
     "changeTools": "这些工具会更改这台电脑上的内容",

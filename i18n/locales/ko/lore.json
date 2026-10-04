@@ -1,18 +1,18 @@
 {
   "about": "{{name}} 소개",
   "close": "닫기",
-  "inYggdrasil": "Yggdrasil에서는",
+  "inYggdrasil": "Toskar에서는",
   "mascot": {
     "label": "Ratatoskr 소개",
-    "kind": "Yggdrasil 마스코트",
+    "kind": "Toskar 마스코트",
     "story": "신화 속 Ratatoskr는 세계수를 오르내리며 꼭대기의 독수리와 뿌리에 사는 용 Níðhöggr 사이에 말을 전하는 다람쥐예요. 오가는 길에 작은 말썽을 일으키기로도 유명했지요.",
     "here": "여기서도 같은 일을 해요. 앱과 내 컴퓨터의 모델 사이에서 요청을 실어 나르지요. 답변을 쓰는 동안에는 생각에 잠기고, 무언가 끝나면 기뻐하고, 불러온 모델이 없으면 낮잠을 자요."
   },
   "logo": {
-    "label": "Yggdrasil 로고 소개",
+    "label": "Toskar 로고 소개",
     "kind": "세계수",
     "story": "Yggdrasil은 북유럽 우주의 중심에 선 거대한 물푸레나무예요. 가지는 하늘 너머까지 뻗고, 뿌리는 세 개의 샘에 닿으며, 아홉 세계가 그 가지 사이에 걸려 있어요.",
-    "here": "로고는 이 나무를 회로 패턴으로 그렸어요. 뿌리와 가지 끝에는 노드가 달려 있는데, Yggdrasil이 하나의 시스템으로 연결하는 컴퓨터들과 같아요."
+    "here": "로고는 이 나무를 회로 패턴으로 그렸어요. 뿌리와 가지 끝에는 노드가 달려 있는데, Toskar가 하나의 시스템으로 연결하는 컴퓨터들과 같아요."
   },
   "realms": {
     "chat": {
@@ -41,7 +41,7 @@
       "rune": "물과 샘의 룬, Laguz"
     },
     "memory": {
-      "meaning": "Odin의 기억의 까마귀 Muninn이 Yggdrasil에게 기억해 달라고 한 내용을 간직해요.",
+      "meaning": "Odin의 기억의 까마귀 Muninn이 Toskar에게 기억해 달라고 한 내용을 간직해요.",
       "story": "생각과 기억을 뜻하는 Huginn과 Muninn은 Odin의 까마귀예요. 매일 아침 세상 위를 날아다니다 돌아와 본 것을 Odin에게 전해요. Odin은 Muninn이 돌아오지 않을까 봐 가장 두렵다고 했어요.",
       "rune": "간직된 것의 룬, Othala"
     },
@@ -76,7 +76,7 @@
       "rune": "문의 룬, Thurisaz"
     },
     "settings": {
-      "meaning": "Forseti는 모든 일을 공정하게 해결해요. 설정은 Yggdrasil이 지키는 규칙이에요.",
+      "meaning": "Forseti는 모든 일을 공정하게 해결해요. 설정은 Toskar가 지키는 규칙이에요.",
       "story": "Baldr의 아들 Forseti는 금기둥과 은지붕으로 된 전당 Glitnir에 앉아 있어요. 그에게 다툼을 가져온 사람은 모두 화해하고 돌아가요.",
       "rune": "고요의 룬, Isa"
     }

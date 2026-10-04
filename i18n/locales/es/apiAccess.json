@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "Acceso a la API",
-    "subtitle": "Dónde se puede acceder a la API de Yggdrasil y cómo está protegida.",
+    "subtitle": "Dónde se puede acceder a la API de Toskar y cómo está protegida.",
     "loading": "Cargando la configuración de la API…"
   },
   "probe": {
@@ -35,19 +35,19 @@
     "lanHint": "Usa la IP de LAN de esta computadora con el puerto <mono>{{port}}</mono> (por ejemplo, <mono>http://192.168.x.x:{{port}}/v1</mono>).",
     "hideDocs": "Ocultar la documentación de la API",
     "docs": "Documentación de la API",
-    "docsBody": "Yggdrasil ofrece una API compatible con OpenAI en <mono>/v1</mono>. Configura los clientes con el endpoint de arriba y envía <header/> cuando Yggdrasil sea accesible desde otras computadoras. Tanto `/api/v1` como `/v1` requieren ese encabezado. Una clave no cifra el HTTP sin cifrar.",
+    "docsBody": "Toskar ofrece una API compatible con OpenAI en <mono>/v1</mono>. Configura los clientes con el endpoint de arriba y envía <header/> cuando Toskar sea accesible desde otras computadoras. Tanto `/api/v1` como `/v1` requieren ese encabezado. Una clave no cifra el HTTP sin cifrar.",
     "copied": "Copiado",
     "copyUrl": "Copiar URL"
   },
   "lan": {
     "title": "Acceso desde la red local",
     "on": "Los dispositivos de tu red local pueden conectarse con una clave de API.",
-    "off": "Solo las apps de esta computadora pueden usar la API de Yggdrasil.",
+    "off": "Solo las apps de esta computadora pueden usar la API de Toskar.",
     "noKeys": "El acceso desde la red está activado, pero todavía no hay claves de API. Crea una clave antes de conectarte desde otro dispositivo.",
-    "restart": "Después de cambiar el acceso desde la red, sal por completo de Yggdrasil y vuelve a abrirlo para que el servidor se vuelva a enlazar. Se requiere una clave de API en cada conexión cuando el servidor ya no escucha solo en loopback. Una clave no cifra el tráfico por HTTP sin cifrar. Probar la API solo comprueba esta computadora, no si otros dispositivos pueden acceder.",
+    "restart": "Después de cambiar el acceso desde la red, sal por completo de Toskar y vuelve a abrirlo para que el servidor se vuelva a enlazar. Se requiere una clave de API en cada conexión cuando el servidor ya no escucha solo en loopback. Una clave no cifra el tráfico por HTTP sin cifrar. Probar la API solo comprueba esta computadora, no si otros dispositivos pueden acceder.",
     "confirmTitle": "¿Permitir el acceso desde otras computadoras?",
-    "confirmBody": "Los dispositivos de tu red local podrán conectarse a Yggdrasil. Se requiere una clave de API en todas las conexiones remotas.",
-    "confirmHttp": "Una clave de API por HTTP sin cifrar no cifra el tráfico. Sal de Yggdrasil y vuelve a abrirlo después de activar esta opción para que el servidor escuche en la red.",
+    "confirmBody": "Los dispositivos de tu red local podrán conectarse a Toskar. Se requiere una clave de API en todas las conexiones remotas.",
+    "confirmHttp": "Una clave de API por HTTP sin cifrar no cifra el tráfico. Sal de Toskar y vuelve a abrirlo después de activar esta opción para que el servidor escuche en la red.",
     "browserKey": "Crea una clave de API para que este navegador pueda seguir conectándose después de que el servidor se vuelva a enlazar. La clave completa se muestra solo una vez.",
     "keyName": "Nombre de la clave",
     "defaultKeyName": "Esta computadora",
@@ -58,7 +58,7 @@
   },
   "keys": {
     "title": "Claves de API",
-    "description": "Credenciales para las apps y los dispositivos que se comunican con Yggdrasil.",
+    "description": "Credenciales para las apps y los dispositivos que se comunican con Toskar.",
     "create": "Crear clave de API",
     "createHint": "Ponle un nombre a esta clave para saber qué la usa.",
     "namePlaceholder": "VS Code",
@@ -102,13 +102,13 @@
     "saveFailed": "No se pudo guardar."
   },
   "share": {
-    "title": "Usar Yggdrasil en otras apps de IA",
+    "title": "Usar Toskar en otras apps de IA",
     "description": "Las apps compatibles con MCP pueden hacerle preguntas a tu IA local, ver sus modelos y buscar en tu conocimiento conectado. Las respuestas se quedan en tus computadoras, y la IA local solo usa herramientas de lectura.",
     "other": "Otras apps",
     "settings": "Configuración de {{language}}",
     "copied": "Copiado",
     "copy": "Copiar",
-    "needsKey": "Yggdrasil está abierto a tu red, así que las apps necesitan una clave de API. Crea una abajo y colócala donde la configuración dice <key/>. Se aplican los permisos de la clave.",
+    "needsKey": "Toskar está abierto a tu red, así que las apps necesitan una clave de API. Crea una abajo y colócala donde la configuración dice <key/>. Se aplican los permisos de la clave.",
     "keyPlaceholder": "<tu clave de API>",
     "where": {
       "claudeDesktop": "En Claude Desktop, abre Settings → Developer → Edit Config, agrega esto y reinicia Claude.",

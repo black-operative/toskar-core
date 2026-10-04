@@ -1,13 +1,13 @@
 {
   "page": {
-    "title": "Tu equipo de Yggdrasil",
+    "title": "Tu equipo de Toskar",
     "titleAdvanced": "Tu clúster de IA",
     "subtitle": "Estas computadoras trabajan juntas como un solo sistema de IA. Agrega una máquina y luego implementa modelos donde quepan.",
     "find": "Buscar computadoras",
     "scanning": "Buscando…",
     "looking": "Buscando computadoras…",
     "emptyTitle": "Arma tu equipo de IA",
-    "emptyDescription": "Instala Yggdrasil en otra computadora de tu red y aparecerá aquí automáticamente."
+    "emptyDescription": "Instala Toskar en otra computadora de tu red y aparecerá aquí automáticamente."
   },
   "status": {
     "team": "Estado del equipo",
@@ -23,7 +23,7 @@
   },
   "errors": {
     "action": "No se pudo completar esa acción",
-    "network": "Permite Red local / Firewall para Yggdrasil en ambas computadoras y mantén activada la opción Buscar otras computadoras en Configuración.",
+    "network": "Permite Red local / Firewall para Toskar en ambas computadoras y mantén activada la opción Buscar otras computadoras en Configuración.",
     "generic": "Algo salió mal",
     "claimFailed": "No se pudo cargar la oferta de vinculación para ese código"
   },
@@ -38,10 +38,10 @@
   },
   "nearby": {
     "title": "Disponibles para agregar",
-    "description": "Yggdrasil encontró estas computadoras en tu red."
+    "description": "Toskar encontró estas computadoras en tu red."
   },
   "fleet": {
-    "title": "Tu equipo de Yggdrasil",
+    "title": "Tu equipo de Toskar",
     "titleAdvanced": "Tu clúster",
     "moves": "El trabajo se reparte automáticamente en este equipo.",
     "movesAdvanced": "El trabajo se reparte automáticamente en este clúster.",
@@ -108,7 +108,7 @@
   },
   "deploy": {
     "title": "Implementar un modelo",
-    "description": "Instala un modelo en una computadora o en varias a la vez. Yggdrasil comprueba el espacio libre en disco antes de empezar.",
+    "description": "Instala un modelo en una computadora o en varias a la vez. Toskar comprueba el espacio libre en disco antes de empezar.",
     "model": "Modelo",
     "chooseModel": "Elige un modelo…",
     "modelSize": "{{model}} ({{size}})",
@@ -139,14 +139,14 @@
     "makeHint": "El comando funciona una vez, durante 15 minutos.",
     "kindLabel": "Dónde ejecutarlo",
     "kinds": {
-      "installed": "Yggdrasil instalado",
+      "installed": "Toskar instalado",
       "install": "Instalar y unirse",
       "windows": "Windows"
     },
     "kindHints": {
-      "installed": "En un equipo que ya ejecuta Yggdrasil.",
-      "install": "Instala Yggdrasil en Linux o macOS, lo inicia como servicio y se une.",
-      "windows": "Instala Yggdrasil en Windows y se une. Ejecútalo en PowerShell."
+      "installed": "En un equipo que ya ejecuta Toskar.",
+      "install": "Instala Toskar en Linux o macOS, lo inicia como servicio y se une.",
+      "windows": "Instala Toskar en Windows y se une. Ejecútalo en PowerShell."
     },
     "commandLabel": "Comando de unión",
     "copy": "Copiar",

@@ -1,12 +1,12 @@
 {
   "page": {
     "title": "记忆",
-    "description": "你让 Yggdrasil 记住的事情。它们属于 Yggdrasil，而不是某一个模型，因此在不同聊天、重启和更换模型后依然有效。只有与问题相关的记忆才会被使用，而且它们都保存在这台电脑上。在任何聊天中说“记住……”即可添加一条。",
+    "description": "你让 Toskar 记住的事情。它们属于 Toskar，而不是某一个模型，因此在不同聊天、重启和更换模型后依然有效。只有与问题相关的记忆才会被使用，而且它们都保存在这台电脑上。在任何聊天中说“记住……”即可添加一条。",
     "useInChats": "在聊天中使用记忆",
     "off": "记忆已关闭。聊天不会使用这里保存的内容，也不会删除任何内容。",
     "loading": "正在加载…",
     "emptyTitle": "还没有记住任何内容",
-    "emptyDescription": "告诉 Yggdrasil 值得记住的事情，例如“记住我习惯用公制单位”或“记住这个项目使用 Go”。"
+    "emptyDescription": "告诉 Toskar 值得记住的事情，例如“记住我习惯用公制单位”或“记住这个项目使用 Go”。"
   },
   "categories": {
     "identity": "关于你",
@@ -30,7 +30,7 @@
     "cancel": "取消",
     "fromChat": "你在聊天中要求的",
     "addedHere": "在此处添加",
-    "languageHint": "用这种语言写成。安装了嵌入模型后，无论你用哪种语言提问，Yggdrasil 都能找到它。",
+    "languageHint": "用这种语言写成。安装了嵌入模型后，无论你用哪种语言提问，Toskar 都能找到它。",
     "category": "类别",
     "edit": "编辑",
     "pause": "暂停",

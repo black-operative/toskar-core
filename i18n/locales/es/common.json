@@ -24,7 +24,7 @@
     "unavailable": "Servicio no disponible",
     "noModel": "Sin modelo",
     "ready": "Listo",
-    "unavailableHint": "El servicio local de Yggdrasil no responde.",
+    "unavailableHint": "El servicio local de Toskar no responde.",
     "noModelHint": "Instala un modelo en Modelos para empezar a chatear.",
     "readyHint": "El servicio local está listo."
   },
@@ -42,14 +42,14 @@
     "mimirReady": "Listo"
   },
   "boot": {
-    "starting": "Iniciando Yggdrasil",
+    "starting": "Iniciando Toskar",
     "preparing": "Preparando tu servicio de IA local",
     "unavailable": "Servicio no disponible",
-    "unavailableBody": "El servicio local de Yggdrasil todavía no responde. Espera un momento y vuelve a intentarlo. Si sigue pasando, revisa Diagnóstico cuando cargue la app.",
+    "unavailableBody": "El servicio local de Toskar todavía no responde. Espera un momento y vuelve a intentarlo. Si sigue pasando, revisa Diagnóstico cuando cargue la app.",
     "retrying": "Reintentando…",
     "tryAgain": "Reintentar",
     "keyRequired": "Se requiere una clave de API",
-    "keyBody": "Este Yggdrasil acepta conexiones de otros dispositivos, así que pide una clave de API. Introduce una para continuar. Con HTTP simple, una clave no cifra tu tráfico.",
+    "keyBody": "Este Toskar acepta conexiones de otros dispositivos, así que pide una clave de API. Introduce una para continuar. Con HTTP simple, una clave no cifra tu tráfico.",
     "continue": "Continuar"
   },
   "units": {
@@ -59,13 +59,13 @@
   },
   "pageError": {
     "title": "Esta página tuvo un problema",
-    "body": "El resto de Yggdrasil sigue funcionando. Vuelve a intentarlo o recarga la app si se repite.",
+    "body": "El resto de Toskar sigue funcionando. Vuelve a intentarlo o recarga la app si se repite.",
     "retry": "Reintentar",
     "reload": "Recargar",
     "details": "Detalles"
   },
   "loadError": {
-    "title": "Yggdrasil no pudo cargar esto",
+    "title": "Toskar no pudo cargar esto",
     "body": "No respondió, o respondió con un error. Tus datos siguen ahí. Vuelve a intentarlo, o revisa Diagnóstico si se repite.",
     "retry": "Reintentar",
     "retrying": "Reintentando…",

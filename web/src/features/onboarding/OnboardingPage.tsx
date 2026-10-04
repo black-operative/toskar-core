@@ -202,7 +202,7 @@ export function OnboardingPage() {
           {t('header.welcome')}
         </p>
         <h1 className="font-display text-5xl font-semibold tracking-tight text-ink md:text-6xl">
-          Yggdrasil
+          Toskar
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-ink-muted">
           {t('header.lede')}

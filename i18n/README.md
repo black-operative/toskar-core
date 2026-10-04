@@ -1,6 +1,6 @@
 # Translations
 
-Yggdrasil's text in every language: the web UI that the desktop app shows,
+Toskar's text in every language: the web UI that the desktop app shows,
 the desktop shell's menus, and the iPhone app. The iPhone app copies this
 folder when it builds, so all of them share one catalog.
 
@@ -28,7 +28,7 @@ i18n/
     knowledge.json          Knowledge sources, connections, and search
     train.json              training specialized AIs
     profiles.json           AI profiles, their strategies, tools, and orchestrators
-    diagnostics.json        the health page, logs, caches, and what Yggdrasil can do
+    diagnostics.json        the health page, logs, caches, and what Toskar can do
     lore.json               the Norse names' stories, the mascot, and the logo
     errors.json             what each error code from the service means
 ```
@@ -83,7 +83,7 @@ the same pull request. The steps for contributors are in
 [CONTRIBUTING.md](../CONTRIBUTING.md#translations).
 
 Keep the glossary consistent: the same English term gets the same
-translation everywhere. `glossary.json` lists Yggdrasil's main terms by the
+translation everywhere. `glossary.json` lists Toskar's main terms by the
 catalog key that holds each one, so a language's glossary is its own text:
 
 ```bash
@@ -102,6 +102,10 @@ text still matches English.
 
 ## Keys
 
+- The product is Toskar, written the same in every language, as are the Norse
+  names. Yggdrasil is only the world tree, in the lore's stories; it was the
+  product's name before the rename, and some keys, such as `lore:inYggdrasil`,
+  still carry it.
 - Keys are stable names, never the English text: `nav.models`, not
   `"Models"`. Changing the English wording keeps the key.
 - Placeholders use `{{name}}`, and must match English in every language.

@@ -24,7 +24,7 @@ describe('lore', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'true')
     const bubble = screen.getByRole('dialog', { name: 'About Mimir' })
     expect(bubble).toHaveTextContent('well of wisdom')
-    expect(bubble).toHaveTextContent('In Yggdrasil')
+    expect(bubble).toHaveTextContent('In Toskar')
     expect(bubble).toHaveTextContent(i18n.t('lore:realms.knowledge.meaning'))
   })
 
@@ -69,7 +69,7 @@ describe('lore', () => {
     )
     fireEvent.click(screen.getByRole('button', { name: 'About Ratatoskr' }))
     expect(screen.getByRole('dialog', { name: 'About Ratatoskr' })).toHaveTextContent('carrying your requests')
-    fireEvent.click(screen.getByRole('button', { name: 'About the Yggdrasil mark' }))
+    fireEvent.click(screen.getByRole('button', { name: 'About the Toskar mark' }))
     expect(screen.getByRole('dialog', { name: 'About Yggdrasil' })).toHaveTextContent('World Tree')
     // Only the mark asked for lore is a button.
     expect(screen.getAllByRole('button', { name: /^About/ })).toHaveLength(2)

@@ -24,7 +24,7 @@
     "unavailable": "Service indisponible",
     "noModel": "Aucun modèle",
     "ready": "Prêt",
-    "unavailableHint": "Le service Yggdrasil local ne répond pas.",
+    "unavailableHint": "Le service Toskar local ne répond pas.",
     "noModelHint": "Installez un modèle dans Modèles pour commencer à discuter.",
     "readyHint": "Le service local est prêt."
   },
@@ -42,14 +42,14 @@
     "mimirReady": "Prêt"
   },
   "boot": {
-    "starting": "Démarrage d'Yggdrasil",
+    "starting": "Démarrage de Toskar",
     "preparing": "Préparation de votre service d'IA local",
     "unavailable": "Service indisponible",
-    "unavailableBody": "Le service Yggdrasil local n'a pas encore répondu. Patientez un instant puis réessayez. Si le problème persiste, consultez Diagnostics une fois l'app chargée.",
+    "unavailableBody": "Le service Toskar local n'a pas encore répondu. Patientez un instant puis réessayez. Si le problème persiste, consultez Diagnostics une fois l'app chargée.",
     "retrying": "Nouvelle tentative…",
     "tryAgain": "Réessayer",
     "keyRequired": "Clé API requise",
-    "keyBody": "Cet Yggdrasil accepte les connexions d'autres appareils et demande donc une clé d'API. Saisissez-en une pour continuer. En HTTP simple, une clé ne chiffre pas votre trafic.",
+    "keyBody": "Cet Toskar accepte les connexions d'autres appareils et demande donc une clé d'API. Saisissez-en une pour continuer. En HTTP simple, une clé ne chiffre pas votre trafic.",
     "continue": "Continuer"
   },
   "units": {
@@ -59,13 +59,13 @@
   },
   "pageError": {
     "title": "Cette page a rencontré un problème",
-    "body": "Le reste d'Yggdrasil fonctionne toujours. Réessayez, ou rechargez l'application si cela se reproduit.",
+    "body": "Le reste de Toskar fonctionne toujours. Réessayez, ou rechargez l'application si cela se reproduit.",
     "retry": "Réessayer",
     "reload": "Recharger",
     "details": "Détails"
   },
   "loadError": {
-    "title": "Yggdrasil n'a pas pu charger ceci",
+    "title": "Toskar n'a pas pu charger ceci",
     "body": "Il n'a pas répondu, ou a répondu par une erreur. Vos données sont toujours là. Réessayez, ou consultez les Diagnostics si cela se reproduit.",
     "retry": "Réessayer",
     "retrying": "Nouvel essai…",

@@ -1,7 +1,7 @@
 {
   "page": {
     "title": "知識",
-    "description": "Yggdrasil 讓目錄、價格、政策和文件都能被搜尋。當設定檔或專用 AI 使用某個來源時，與每個問題相符的段落會加入其中。編輯檔案後，下一個問題就會看到變更，不需要重新訓練。",
+    "description": "Toskar 讓目錄、價格、政策和文件都能被搜尋。當設定檔或專用 AI 使用某個來源時，與每個問題相符的段落會加入其中。編輯檔案後，下一個問題就會看到變更，不需要重新訓練。",
     "loading": "正在載入…",
     "emptyTitle": "尚未連接任何知識",
     "emptyDescription": "連接這台電腦上的檔案或檔案夾、貼上內容，或從資料庫或 Web API 讀取。支援 PDF、Excel、CSV、TSV、JSON、JSONL、Markdown、純文字和 HTML 檔案。"
@@ -50,7 +50,7 @@
       "api": "Web API"
     },
     "path": "這台電腦上的路徑",
-    "pathHint": "Yggdrasil 會直接讀取原位置的內容，並自動取得編輯後的變更。",
+    "pathHint": "Toskar 會直接讀取原位置的內容，並自動取得編輯後的變更。",
     "chooseFile": "選擇檔案",
     "pastePlaceholder": "貼上純文字、Markdown 或 CSV",
     "content": "內容",
@@ -65,7 +65,7 @@
     "connection": "連線字串",
     "connectionHint": "請使用只能讀取的帳號。它會與資料庫分開儲存，之後也不會再顯示。",
     "query": "查詢",
-    "queryHint": "一條 SELECT 敘述。它以唯讀方式執行，因此 Yggdrasil 永遠不會更改資料庫。每一列會成為一個段落。",
+    "queryHint": "一條 SELECT 敘述。它以唯讀方式執行，因此 Toskar 永遠不會更改資料庫。每一列會成為一個段落。",
     "url": "URL",
     "urlHint": "JSON、CSV 或純文字。物件清單中的每一項會成為一個段落。",
     "items": "回應中的清單（選填）",
