@@ -56,6 +56,7 @@ Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under
 | GET, PATCH | `/settings` | Read or change settings (see [Configuration](configuration.md#settings)). `PUT` is accepted as `PATCH`. |
 | POST | `/settings/reset` | Clear application state; `delete_models=true` also removes model files |
 | GET, POST | `/diagnostics` | Build the diagnostic bundle, which omits secrets. `?include_conversations=true` adds chats. |
+| GET | `/diagnostics/runtime` | The daemon's memory (`heap_bytes`, `sys_bytes`) and goroutines `now` and in `samples` taken every `interval_seconds` (five minutes) for the last day, oldest first, since `started_at`. The Diagnostics page charts it. |
 | GET | `/logs` | Log files. `GET /logs/{name}` returns one; `?tail_bytes=` limits it to the end. |
 | GET | `/events` | Server-sent event stream (see [Events](#events)) |
 | GET | `/capabilities` | The capability inventory. `?ask=` returns the abilities a question is about. `GET /capabilities/models/{id}` says which computers can run a model. |

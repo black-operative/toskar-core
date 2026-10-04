@@ -1077,6 +1077,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /api/v1/diagnostics/runtime:
+    get:
+      summary: The daemon's memory and goroutines now and over the last day
+      description: Sampled every five minutes and kept for a day, so a slow leak shows on the Diagnostics page. Resets when the daemon restarts.
+      operationId: getRuntimeHistory
+      responses:
+        "200":
+          description: Current and sampled counts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  started_at:
+                    type: string
+                    format: date-time
+                  interval_seconds:
+                    type: integer
+                  now:
+                    $ref: "#/components/schemas/RuntimeSample"
+                  samples:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/RuntimeSample"
   /v1/models:
     get:
       summary: OpenAI-compatible model list
@@ -1490,7 +1514,7 @@ paths:
                   - type: object
                     properties:
                       token: {type: string, description: "ygj_…, shown only now"}
-                      server: {type: string, description: This computer's Bifrost address, host:port}
+                      server: {type: string, description: "This computer's Bifrost address, host:port"}
                       fingerprint: {type: string, description: "sha256: of this computer's public key"}
                       command: {type: string, description: "yggctl join … for a computer with Yggdrasil installed"}
                       install_command: {type: string, description: "Installs Yggdrasil on Linux or macOS, then joins"}
@@ -4679,6 +4703,21 @@ components:
       scheme: bearer
       description: An API key from the API Access page, or YGGDRASIL_API_KEY
   schemas:
+    RuntimeSample:
+      type: object
+      properties:
+        at:
+          type: string
+          format: date-time
+        goroutines:
+          type: integer
+          description: The daemon's background tasks
+        heap_bytes:
+          type: integer
+          description: Memory in use by Go objects
+        sys_bytes:
+          type: integer
+          description: All memory the Go runtime holds from the system
     PersonalStyle:
       type: object
       properties:

@@ -178,5 +178,16 @@
     "languages_one": "{{count}} language",
     "languages_other": "{{count}} languages",
     "autoDetect": "detects the language"
+  },
+  "memory": {
+    "title": "Yggdrasil's memory",
+    "description": "How much memory Yggdrasil itself uses, and its background tasks. Both should level off after a while; steady growth over hours is worth reporting.",
+    "heap": "Memory in use",
+    "tasks": "Background tasks",
+    "since": "Running since",
+    "chartLabel_one": "Memory over the last hour",
+    "chartLabel_other": "Memory over the last {{count}} hours",
+    "growing_one": "Memory has grown steadily for {{count}} hour. Export diagnostics and attach the bundle to an issue.",
+    "growing_other": "Memory has grown steadily for {{count}} hours. Export diagnostics and attach the bundle to an issue."
   }
 }

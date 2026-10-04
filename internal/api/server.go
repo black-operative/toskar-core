@@ -21,6 +21,7 @@ import (
 	"github.com/yeixio/yggdrasil-core/internal/automations"
 	"github.com/yeixio/yggdrasil-core/internal/config"
 	"github.com/yeixio/yggdrasil-core/internal/connectors"
+	"github.com/yeixio/yggdrasil-core/internal/diagnostics"
 	"github.com/yeixio/yggdrasil-core/internal/events"
 	"github.com/yeixio/yggdrasil-core/internal/gjallarhorn"
 	"github.com/yeixio/yggdrasil-core/internal/imagegen"
@@ -116,10 +117,12 @@ type Dependencies struct {
 	CancelBenchmark        func(ctx context.Context, id string) error
 	// ExportDiagnostics writes a zip bundle and returns its absolute path.
 	ExportDiagnostics func(ctx context.Context, includeConversations bool) (string, error)
-	ListLogs          func(ctx context.Context) ([]logs.Entry, error)
-	GetLog            func(ctx context.Context, name string, tailBytes int64) (logs.Content, error)
-	Version           func() contracts.VersionResponse
-	WebRoot           fs.FS
+	// RuntimeHistory is the daemon's memory and goroutines over the last day.
+	RuntimeHistory func() diagnostics.RuntimeHistory
+	ListLogs       func(ctx context.Context) ([]logs.Entry, error)
+	GetLog         func(ctx context.Context, name string, tailBytes int64) (logs.Content, error)
+	Version        func() contracts.VersionResponse
+	WebRoot        fs.FS
 }
 
 // Server is the control-plane HTTP server.
@@ -241,6 +244,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/benchmarks/{id}", s.handleGetBenchmark).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/benchmarks/{id}/cancel", s.handleCancelBenchmark).Methods(http.MethodPost)
 	api.HandleFunc("/diagnostics", s.handleDiagnostics).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
+	api.HandleFunc("/diagnostics/runtime", s.handleRuntimeHistory).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/logs", s.handleListLogs).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/logs/{name}", s.handleGetLog).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/conversations", s.handleListConversations).Methods(http.MethodGet, http.MethodOptions)

@@ -164,5 +164,14 @@
     },
     "languages_other": "{{count}}言語",
     "autoDetect": "言語を自動判別"
+  },
+  "memory": {
+    "title": "Yggdrasil のメモリ",
+    "description": "Yggdrasil 自身が使っているメモリとバックグラウンドタスクです。しばらくすると落ち着くはずです。何時間も増え続ける場合は報告してください。",
+    "heap": "使用中のメモリ",
+    "tasks": "バックグラウンドタスク",
+    "since": "起動日時",
+    "chartLabel_other": "過去 {{count}} 時間のメモリ",
+    "growing_other": "メモリが {{count}} 時間増え続けています。診断をエクスポートし、バンドルを Issue に添付してください。"
   }
 }

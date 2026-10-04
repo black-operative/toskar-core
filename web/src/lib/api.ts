@@ -1,4 +1,5 @@
 import type {
+  RuntimeHistory,
   AIProfile,
   APIKeyPermissions,
   APIKeyRecord,
@@ -1094,6 +1095,8 @@ export const api = {
 
   exportFileUrl: (id: string, revision: number) =>
     `${getApiBase()}/api/v1/training/ais/${id}/revisions/${revision}/export/file`,
+
+  getRuntimeHistory: () => request<RuntimeHistory>('/api/v1/diagnostics/runtime'),
 
   exportDiagnostics: (includeConversations = false) =>
     request<DiagnosticsExportResult>('/api/v1/diagnostics', {

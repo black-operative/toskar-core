@@ -140,6 +140,8 @@ type App struct {
 	shapes  sync.Map
 	// window reads a running model's window; tests replace it.
 	window func(ctx context.Context, endpoint string) (int, error)
+	// sampler keeps a day of the daemon's memory and goroutines (#231).
+	sampler *diagnostics.Sampler
 	// StubReply, when set with stub inference, scripts what the stub model
 	// says, for the quality test set (§64). It sees every prompt.
 	StubReply func(modelID string, messages []pluginapi.ChatMessage) string
@@ -490,6 +492,12 @@ func New(opts Options) (*App, error) {
 		},
 		ExportDiagnostics: func(ctx context.Context, includeConversations bool) (string, error) {
 			return a.exportDiagnostics(ctx, includeConversations)
+		},
+		RuntimeHistory: func() diagnostics.RuntimeHistory {
+			if a.sampler == nil {
+				return diagnostics.RuntimeHistory{Now: diagnostics.Sample()}
+			}
+			return a.sampler.History()
 		},
 		ListLogs: func(ctx context.Context) ([]logs.Entry, error) {
 			return (&logs.Store{Dir: a.Config.Get().LogsDir}).List()
@@ -849,6 +857,12 @@ func (a *App) requireKeyForRemoteBind(ctx context.Context) error {
 
 // Start runs the API server until context cancellation.
 func (a *App) Start(ctx context.Context) error {
+	a.sampler = diagnostics.NewSampler()
+	a.wg.Add(1)
+	go func() {
+		defer a.wg.Done()
+		a.sampler.Run(ctx)
+	}()
 	// Live profiles for diagnosing a running daemon, only when asked for
 	// and only on this computer (#231).
 	if addr := os.Getenv("YGGDRASIL_PPROF"); addr != "" {

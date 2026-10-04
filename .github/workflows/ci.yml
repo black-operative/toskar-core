@@ -200,3 +200,7 @@ jobs:
         run: pnpm install && pnpm exec playwright install --with-deps chromium
       - name: Check every page
         run: node scripts/screenshots/a11y.mjs
+      # Moves between every page many times and fails if the heap, DOM
+      # nodes, or listeners keep growing, or a page throws (#231).
+      - name: Check for memory leaks
+        run: node scripts/screenshots/leaks.mjs

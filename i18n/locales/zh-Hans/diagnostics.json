@@ -164,5 +164,14 @@
     },
     "languages_other": "{{count}} 种语言",
     "autoDetect": "自动识别语言"
+  },
+  "memory": {
+    "title": "Yggdrasil 的内存",
+    "description": "Yggdrasil 自身使用的内存及其后台任务。两者过一段时间后应趋于平稳；若数小时持续增长，值得报告。",
+    "heap": "使用中的内存",
+    "tasks": "后台任务",
+    "since": "运行始于",
+    "chartLabel_other": "过去 {{count}} 小时的内存",
+    "growing_other": "内存已持续增长 {{count}} 小时。请导出诊断并将诊断包附加到 Issue。"
   }
 }

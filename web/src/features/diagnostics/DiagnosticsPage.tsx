@@ -15,6 +15,7 @@ import { ToolProvidersPanel } from './ToolProvidersPanel'
 import { CachePanel } from './CachePanel'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { formatRelativeTime } from '@/i18n/format'
+import { MemoryPanel } from './MemoryPanel'
 
 function kindLabel(kind: string, advanced: boolean): string {
   const known = kind === 'daemon' || kind === 'runtime'
@@ -516,6 +517,7 @@ export function DiagnosticsPage() {
 
       <CapabilityPanel />
       <ToolProvidersPanel />
+      <MemoryPanel />
 
       {advancedMode && <ToolActivityPanel />}
 

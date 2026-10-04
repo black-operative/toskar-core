@@ -178,5 +178,16 @@
     "languages_one": "{{count}} Sprache",
     "languages_other": "{{count}} Sprachen",
     "autoDetect": "erkennt die Sprache"
+  },
+  "memory": {
+    "title": "Speicher von Yggdrasil",
+    "description": "Wie viel Arbeitsspeicher Yggdrasil selbst braucht, und seine Hintergrundaufgaben. Beides sollte sich nach einer Weile einpendeln; stetiges Wachstum über Stunden solltest du melden.",
+    "heap": "Belegter Speicher",
+    "tasks": "Hintergrundaufgaben",
+    "since": "Läuft seit",
+    "chartLabel_one": "Speicher in der letzten Stunde",
+    "chartLabel_other": "Speicher in den letzten {{count}} Stunden",
+    "growing_one": "Der Speicher wächst seit {{count}} Stunde stetig. Exportiere die Diagnose und hänge das Paket an ein Issue an.",
+    "growing_other": "Der Speicher wächst seit {{count}} Stunden stetig. Exportiere die Diagnose und hänge das Paket an ein Issue an."
   }
 }

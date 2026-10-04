@@ -164,5 +164,14 @@
     },
     "languages_other": "{{count}}개 언어",
     "autoDetect": "언어 자동 감지"
+  },
+  "memory": {
+    "title": "Yggdrasil의 메모리",
+    "description": "Yggdrasil 자체가 사용하는 메모리와 백그라운드 작업이에요. 잠시 후에는 둘 다 안정되어야 해요. 몇 시간 동안 계속 늘어나면 알려 주세요.",
+    "heap": "사용 중인 메모리",
+    "tasks": "백그라운드 작업",
+    "since": "실행 시작",
+    "chartLabel_other": "지난 {{count}}시간 동안의 메모리",
+    "growing_other": "메모리가 {{count}}시간 동안 계속 늘었어요. 진단을 내보내고 번들을 이슈에 첨부하세요."
   }
 }

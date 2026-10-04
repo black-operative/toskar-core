@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func serveScreenshotAPI(w http.ResponseWriter, r *http.Request) {
@@ -100,6 +101,9 @@ func screenshotGET(path string) (string, bool) {
 		return `{"url":"http://127.0.0.1:7331/mcp","command":"yggctl","args":["mcp"],"needs_key":false}`, true
 	case path == "/api/v1/capabilities":
 		return screenshotCapabilities, true
+	// The daemon's memory over a quiet day, for the Diagnostics page.
+	case path == "/api/v1/diagnostics/runtime":
+		return screenshotRuntimeHistory(), true
 	// Setup status is an object, never a list: the Tools page reads its models.
 	case path == "/api/v1/images/setup" || path == "/api/v1/video/setup":
 		return `{"supported":true,"ready":false,"program":false,"release":"","models":[]}`, true
@@ -472,3 +476,20 @@ const screenshotCapabilities = `{
     {"id": "image", "label": "Generate images", "available": false, "note": "Install an image model to add this."}
   ]
 }`
+
+// screenshotRuntimeHistory is a day of steady memory, sampled every five
+// minutes, as a healthy daemon looks.
+func screenshotRuntimeHistory() string {
+	start := time.Date(2026, 9, 24, 8, 0, 0, 0, time.UTC)
+	var b strings.Builder
+	b.WriteString(`{"started_at":"` + start.Format(time.RFC3339) + `","interval_seconds":300,"now":{"at":"` + start.Add(24*time.Hour).Format(time.RFC3339) + `","goroutines":42,"heap_bytes":31457280,"sys_bytes":62914560},"samples":[`)
+	for i := range 288 {
+		if i > 0 {
+			b.WriteString(",")
+		}
+		heap := 30<<20 + (i%12)*256<<10
+		fmt.Fprintf(&b, `{"at":"%s","goroutines":%d,"heap_bytes":%d,"sys_bytes":%d}`, start.Add(time.Duration(i)*5*time.Minute).Format(time.RFC3339), 40+i%3, heap, 60<<20)
+	}
+	b.WriteString("]}")
+	return b.String()
+}

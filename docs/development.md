@@ -74,6 +74,16 @@ A11Y_PAGES=/chat,/settings node scripts/screenshots/a11y.mjs
 
 Any WCAG 2.2 A or AA violation, best-practice violation, or page error fails it, with the element and the reason. The rules new UI follows (tokens, states, keyboard patterns, writing) are in [Design](design.md).
 
+Leak checks (#231):
+
+```bash
+node scripts/screenshots/leaks.mjs                               # web UI, after building web/dist; also in CI
+YGGDRASIL_SOAK=1 go test ./tests/soak -run TestSoak -v           # daemon, about 5 minutes
+YGGDRASIL_SOAK=1 YGGDRASIL_SOAK_ROUNDS=1000 go test ./tests/soak -v -timeout 60m
+```
+
+The web check moves between every page many times in one browser and fails if the heap, DOM nodes, or event listeners keep growing after warm-up, or if a page throws. The soak test runs a throwaway daemon (its own data directory, free ports, the stub model) through chats, cancelled streams, stopped turns, and event subscribers, and fails if goroutines, heap, or open files keep growing.
+
 Cluster check (Docker, stub inference, not a GPU test):
 
 ```bash
@@ -102,7 +112,7 @@ The web check in CI is `pnpm lint`, `pnpm exec tsc -b --pretty false`, `pnpm tes
 
 - **go:** user-guide publish checks; changelog fragment checks; `gofmt`, `go vet`, golangci-lint, `go test ./...`; then cross-compiles of `yggdrasil-daemon` and `yggctl` for linux/amd64, linux/arm64, darwin/amd64, darwin/arm64, and windows/amd64 (`CGO_ENABLED=0`). These share one runner, so the module and build caches are reused.
 - **frontend:** web lint, typecheck, test, and build.
-- **accessibility:** builds the web UI and runs `scripts/screenshots/a11y.mjs` (axe-core in Chromium) over every page, in both themes at 1440 and 390 px wide. New UI has to meet WCAG 2.2 AA: 4.5:1 text contrast, labeled controls, and headings in order.
+- **accessibility:** builds the web UI and runs `scripts/screenshots/a11y.mjs` (axe-core in Chromium) over every page, in both themes at 1440 and 390 px wide, then `scripts/screenshots/leaks.mjs` (the web leak check). New UI has to meet WCAG 2.2 AA: 4.5:1 text contrast, labeled controls, and headings in order.
 
 To keep runs short:
 

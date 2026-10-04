@@ -164,5 +164,14 @@
     },
     "languages_other": "{{count}} 種語言",
     "autoDetect": "自動辨識語言"
+  },
+  "memory": {
+    "title": "Yggdrasil 的記憶體",
+    "description": "Yggdrasil 本身使用的記憶體及其背景工作。兩者過一段時間後應趨於平穩；若數小時持續增加，值得回報。",
+    "heap": "使用中的記憶體",
+    "tasks": "背景工作",
+    "since": "執行起始",
+    "chartLabel_other": "過去 {{count}} 小時的記憶體",
+    "growing_other": "記憶體已持續增加 {{count}} 小時。請匯出診斷並將診斷套件附加到 Issue。"
   }
 }

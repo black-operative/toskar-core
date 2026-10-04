@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/yeixio/yggdrasil-core/internal/artifacts"
 	"github.com/yeixio/yggdrasil-core/internal/auth"
+	"github.com/yeixio/yggdrasil-core/internal/diagnostics"
 	"github.com/yeixio/yggdrasil-core/internal/huginn"
 	"github.com/yeixio/yggdrasil-core/internal/locale"
 	"github.com/yeixio/yggdrasil-core/pkg/contracts"
@@ -643,4 +644,14 @@ func (s *Server) handleDiagnostics(w http.ResponseWriter, r *http.Request) {
 		"path":    path,
 		"message": "Diagnostics bundle created. Secrets and private keys were excluded.",
 	})
+}
+
+// handleRuntimeHistory reports the daemon's memory and goroutines now and
+// over the last day, for the Diagnostics page (#231).
+func (s *Server) handleRuntimeHistory(w http.ResponseWriter, r *http.Request) {
+	if s.deps.RuntimeHistory == nil {
+		writeJSON(w, http.StatusOK, diagnostics.RuntimeHistory{Now: diagnostics.Sample()})
+		return
+	}
+	writeJSON(w, http.StatusOK, s.deps.RuntimeHistory())
 }

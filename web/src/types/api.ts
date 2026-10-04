@@ -1809,3 +1809,18 @@ export interface CacheInfo {
   evictions: number
   last_cleared?: string
 }
+
+/** The daemon's own memory and background tasks at a moment (#231). */
+export interface RuntimeSample {
+  at: string
+  goroutines: number
+  heap_bytes: number
+  sys_bytes: number
+}
+
+export interface RuntimeHistory {
+  started_at: string
+  interval_seconds: number
+  now: RuntimeSample
+  samples: RuntimeSample[]
+}

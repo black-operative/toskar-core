@@ -192,5 +192,18 @@
     "languages_many": "{{count}} idiomas",
     "languages_other": "{{count}} idiomas",
     "autoDetect": "detecta el idioma"
+  },
+  "memory": {
+    "title": "Memoria de Yggdrasil",
+    "description": "Cuánta memoria usa el propio Yggdrasil, y sus tareas en segundo plano. Ambas deberían estabilizarse al rato; un aumento constante durante horas merece un aviso.",
+    "heap": "Memoria en uso",
+    "tasks": "Tareas en segundo plano",
+    "since": "En marcha desde",
+    "chartLabel_one": "Memoria en la última hora",
+    "chartLabel_many": "Memoria en las últimas {{count}} horas",
+    "chartLabel_other": "Memoria en las últimas {{count}} horas",
+    "growing_one": "La memoria lleva {{count}} hora creciendo sin parar. Exporta el diagnóstico y adjunta el paquete a un issue.",
+    "growing_many": "La memoria lleva {{count}} horas creciendo sin parar. Exporta el diagnóstico y adjunta el paquete a un issue.",
+    "growing_other": "La memoria lleva {{count}} horas creciendo sin parar. Exporta el diagnóstico y adjunta el paquete a un issue."
   }
 }
