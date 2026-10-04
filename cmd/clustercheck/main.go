@@ -109,10 +109,16 @@ func waitStubModel(base string) {
 
 func runTeamDemo(baseA string) {
 	profile := mustGETMap(baseA + "/api/v1/profiles/programming")
-	profile["orchestrator_id"] = "team"
+	profile["orchestrator_id"] = "simple"
+	orch, _ := profile["orchestration"].(map[string]any)
+	if orch == nil {
+		orch = map[string]any{}
+	}
+	orch["strategy"] = "team"
+	profile["orchestration"] = orch
 	profile["node_policy"] = map[string]any{"mode": "automatic"}
 	profile["roles"] = []map[string]any{
-		{"role": "coordinator", "model_id": stubModelID, "node_id": nodeAID, "required": false},
+		{"role": "planner", "model_id": stubModelID, "node_id": nodeAID, "required": false},
 		{"role": "worker", "model_id": stubModelID, "node_id": nodeBID, "required": false},
 		{"role": "reviewer", "model_id": stubModelID, "node_id": nodeAID, "required": false},
 	}
@@ -120,7 +126,7 @@ func runTeamDemo(baseA string) {
 	if code >= 400 {
 		fatalf("patch programming profile: %d %s", code, body)
 	}
-	fmt.Println("programming profile pinned: worker → B")
+	fmt.Println("programming profile on Team: worker → B")
 
 	conv := mustPOST(baseA+"/api/v1/conversations", map[string]any{
 		"title":      "team-e2e",
@@ -140,11 +146,15 @@ func runTeamDemo(baseA string) {
 	// Give SSE a moment to subscribe before chat starts.
 	time.Sleep(500 * time.Millisecond)
 
+	// Team answers a quick question directly, so ask for a plan: it is
+	// classified as research and has no obvious parts, so the planner,
+	// one worker slot ("worker:1"), and the reviewer all run.
 	code, body = post(baseA+"/api/v1/chat", map[string]any{
 		"conversation_id": convID,
 		"profile_id":      "programming",
 		"model_id":        stubModelID,
-		"message":         "Say hello in one short sentence.",
+		"message":         "Make a plan for a quiet weekend at home.",
+		"effort":          "thorough",
 		"stream":          false,
 	})
 	if code >= 400 {
@@ -166,11 +176,11 @@ func runTeamDemo(baseA string) {
 	deadline := time.Now().Add(20 * time.Second)
 	for {
 		mu.Lock()
-		workerNode := roleNodes["worker"]
-		coordNode := roleNodes["coordinator"]
+		plannerNode := roleNodes["planner"]
+		workerNode := roleNodes["worker:1"]
 		reviewNode := roleNodes["reviewer"]
 		mu.Unlock()
-		if workerNode != "" && coordNode != "" && reviewNode != "" {
+		if plannerNode != "" && workerNode != "" && reviewNode != "" {
 			break
 		}
 		if time.Now().After(deadline) {
@@ -184,17 +194,17 @@ func runTeamDemo(baseA string) {
 
 	mu.Lock()
 	defer mu.Unlock()
-	if roleNodes["worker"] != nodeBID {
-		fatalf("expected worker on B (%s), got %s (roles=%#v)", nodeBID, roleNodes["worker"], roleNodes)
+	if roleNodes["worker:1"] != nodeBID {
+		fatalf("expected worker on B (%s), got %s (roles=%#v)", nodeBID, roleNodes["worker:1"], roleNodes)
 	}
-	if roleNodes["coordinator"] != nodeAID {
-		fatalf("expected coordinator on A (%s), got %s", nodeAID, roleNodes["coordinator"])
+	if roleNodes["planner"] != nodeAID {
+		fatalf("expected planner on A (%s), got %s", nodeAID, roleNodes["planner"])
 	}
 	if roleNodes["reviewer"] != nodeAID {
 		fatalf("expected reviewer on A (%s), got %s", nodeAID, roleNodes["reviewer"])
 	}
-	fmt.Printf("placement ok: coordinator=%s worker=%s reviewer=%s\n",
-		roleNodes["coordinator"], roleNodes["worker"], roleNodes["reviewer"])
+	fmt.Printf("placement ok: planner=%s worker=%s reviewer=%s\n",
+		roleNodes["planner"], roleNodes["worker:1"], roleNodes["reviewer"])
 }
 
 func collectRoleEvents(base string, roleNodes map[string]string, mu *sync.Mutex, done <-chan struct{}) {
@@ -202,11 +212,16 @@ func collectRoleEvents(base string, roleNodes map[string]string, mu *sync.Mutex,
 	if err != nil {
 		return
 	}
+	applyControlAuth(req)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return
+		fatalf("subscribe to events: %v", err)
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		b, _ := io.ReadAll(resp.Body)
+		fatalf("subscribe to events: %d %s", resp.StatusCode, b)
+	}
 
 	scanner := bufio.NewScanner(resp.Body)
 	scanner.Buffer(make([]byte, 0, 64*1024), 1024*1024)
