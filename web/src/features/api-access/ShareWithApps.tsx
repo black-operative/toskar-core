@@ -33,7 +33,7 @@ function setupFor(app: AppID, share: MCPShare): { where: string; text: string; l
         language: 'json',
         text: json({
           mcpServers: {
-            yggdrasil: {
+            toskar: {
               command: share.command,
               args: share.args,
               ...(Object.keys(env).length > 0 ? { env } : {}),
@@ -46,19 +46,19 @@ function setupFor(app: AppID, share: MCPShare): { where: string; text: string; l
       return {
         where: i18n.t('apiAccess:share.where.claudeCode'),
         language: 'bash',
-        text: `claude mcp add --transport http yggdrasil ${share.url}${share.needs_key ? ` --header "Authorization: Bearer ${KEY}"` : ''}`,
+        text: `claude mcp add --transport http toskar ${share.url}${share.needs_key ? ` --header "Authorization: Bearer ${KEY}"` : ''}`,
       }
     case 'cursor':
       return {
         where: i18n.t('apiAccess:share.where.cursor'),
         language: 'json',
-        text: json({ mcpServers: { yggdrasil: { url: share.url, ...(auth ? { headers: auth } : {}) } } }),
+        text: json({ mcpServers: { toskar: { url: share.url, ...(auth ? { headers: auth } : {}) } } }),
       }
     case 'vscode':
       return {
         where: i18n.t('apiAccess:share.where.vscode'),
         language: 'json',
-        text: json({ servers: { yggdrasil: { type: 'http', url: share.url, ...(auth ? { headers: auth } : {}) } } }),
+        text: json({ servers: { toskar: { type: 'http', url: share.url, ...(auth ? { headers: auth } : {}) } } }),
       }
     default:
       return {

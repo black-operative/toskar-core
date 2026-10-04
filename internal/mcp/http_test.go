@@ -302,7 +302,7 @@ func TestYggdrasilServerOverOwnClient(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer c.Close()
-	if c.Server.Name != "yggdrasil" || c.Server.Version != "9.9.9" || !c.HasTools {
+	if c.Server.Name != "toskar" || c.Server.Version != "9.9.9" || !c.HasTools {
 		t.Fatalf("server = %+v", c.Server)
 	}
 	list, err := c.ListTools(ctx)

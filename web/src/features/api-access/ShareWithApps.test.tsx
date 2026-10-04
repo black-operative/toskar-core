@@ -26,7 +26,7 @@ describe('ShareWithApps', () => {
     expect(settings.textContent).toContain('"YGGDRASIL_API_KEY": "<your API key>"')
     fireEvent.click(screen.getByRole('tab', { name: 'Claude Code' }))
     expect(screen.getByLabelText('bash settings').textContent).toBe(
-      'claude mcp add --transport http yggdrasil http://127.0.0.1:7444/mcp --header "Authorization: Bearer <your API key>"',
+      'claude mcp add --transport http toskar http://127.0.0.1:7444/mcp --header "Authorization: Bearer <your API key>"',
     )
     fireEvent.click(screen.getByRole('tab', { name: 'VS Code' }))
     expect(screen.getByLabelText('json settings').textContent).toContain('"type": "http"')

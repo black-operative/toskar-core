@@ -992,7 +992,7 @@ var slugRe = regexp.MustCompile(`[^a-z0-9]+`)
 // use; a source cannot take them.
 var reservedIDs = map[string]bool{
 	"internet": true, "filesystem": true, "files": true, "file": true, "terminal": true, "shell": true,
-	"git": true, "web": true, "github": true, "homeassistant": true, "mcp": true, "auto": true, "yggdrasil": true,
+	"git": true, "web": true, "github": true, "homeassistant": true, "mcp": true, "auto": true, "yggdrasil": true, "toskar": true,
 }
 
 func (m *Manager) uniqueIDLocked(spec Spec) string {

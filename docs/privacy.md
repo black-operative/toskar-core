@@ -110,4 +110,4 @@ Logs are JSON on stdout and in `logs/daemon.log`. They include startup fields su
 
 ## Secrets
 
-API keys use the prefix `ygg_`. The database stores a bcrypt hash and a prefix. The secret is returned once when the key is created or rotated and is not written to disk. Node certificates and pairing material live under `secrets/`. Do not commit a data directory, and do not attach `secrets/` to a bug report.
+API keys use the prefix `ygg_`, and join tokens `ygj_`. Both stay after the rename to Toskar: existing keys and paired computers rely on them, and secret scanners already recognize them. The database stores a bcrypt hash and a prefix. The secret is returned once when the key is created or rotated and is not written to disk. Node certificates and pairing material live under `secrets/`. Do not commit a data directory, and do not attach `secrets/` to a bug report.

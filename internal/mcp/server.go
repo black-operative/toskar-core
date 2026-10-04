@@ -62,7 +62,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if s.b.Authorize != nil {
 		var err error
 		if ctx, err = s.b.Authorize(r); err != nil {
-			w.Header().Set("WWW-Authenticate", `Bearer realm="yggdrasil"`)
+			w.Header().Set("WWW-Authenticate", `Bearer realm="toskar"`)
 			http.Error(w, "authorization required: create an API key on the API Access page", http.StatusUnauthorized)
 			return
 		}
@@ -182,10 +182,10 @@ func (s *Server) dispatch(ctx context.Context, m message) (any, *rpcError) {
 		return map[string]any{
 			"protocolVersion": version,
 			"capabilities":    map[string]any{"tools": map[string]any{"listChanged": false}},
-			"serverInfo":      implementation{Name: "yggdrasil", Title: "Yggdrasil", Version: s.b.Version},
-			"instructions": "Yggdrasil runs AI models on the user's own computers. Use ask_local_ai to get an answer " +
+			"serverInfo":      implementation{Name: "toskar", Title: "Toskar", Version: s.b.Version},
+			"instructions": "Toskar runs AI models on the user's own computers. Use ask_local_ai to get an answer " +
 				"from a local model, for private data or when the user asks for a local AI. Use search_my_knowledge " +
-				"to find passages in documents the user connected to Yggdrasil.",
+				"to find passages in documents the user connected to Toskar.",
 		}, nil
 	case "ping":
 		return struct{}{}, nil
@@ -225,14 +225,14 @@ func (s *Server) tools() []map[string]any {
 		{
 			"name":  "ask_local_ai",
 			"title": "Ask the local AI",
-			"description": "Ask an AI model running on the user's own computer, through Yggdrasil. " +
+			"description": "Ask an AI model running on the user's own computer, through Toskar. " +
 				"The question and answer stay on the user's computers. It may read the web or the user's connected " +
 				"knowledge to answer, but it does not change anything.",
 			"inputSchema": map[string]any{
 				"type": "object",
 				"properties": map[string]any{
 					"prompt": map[string]any{"type": "string", "description": "The question or task, with any context it needs."},
-					"model":  map[string]any{"type": "string", "description": "Optional. An id from list_local_models; leave out to let Yggdrasil choose."},
+					"model":  map[string]any{"type": "string", "description": "Optional. An id from list_local_models; leave out to let Toskar choose."},
 				},
 				"required": []string{"prompt"},
 			},
@@ -241,7 +241,7 @@ func (s *Server) tools() []map[string]any {
 		{
 			"name":        "list_local_models",
 			"title":       "List local AI models",
-			"description": "List the AI models Yggdrasil can answer with, including specialized AIs the user trained.",
+			"description": "List the AI models Toskar can answer with, including specialized AIs the user trained.",
 			"inputSchema": map[string]any{"type": "object", "properties": map[string]any{}},
 			"annotations": readOnly,
 		},
@@ -250,7 +250,7 @@ func (s *Server) tools() []map[string]any {
 		out = append(out, map[string]any{
 			"name":        "search_my_knowledge",
 			"title":       "Search my knowledge",
-			"description": "Search documents, notes, and pages the user connected to Yggdrasil, and return the passages that match.",
+			"description": "Search documents, notes, and pages the user connected to Toskar, and return the passages that match.",
 			"inputSchema": map[string]any{
 				"type": "object",
 				"properties": map[string]any{
@@ -289,7 +289,7 @@ func (s *Server) call(ctx context.Context, name string, args map[string]any) (st
 			return "", err
 		}
 		if len(list) == 0 {
-			return "No models are installed yet. Install one on Yggdrasil's Models page.", nil
+			return "No models are installed yet. Install one on Toskar's Models page.", nil
 		}
 		var b strings.Builder
 		for _, m := range list {

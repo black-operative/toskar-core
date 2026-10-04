@@ -80,7 +80,7 @@ func Connect(ctx context.Context, t Transport, hooks Hooks, clientVersion string
 	err := c.call(ctx, "initialize", initializeParams{
 		ProtocolVersion: ProtocolVersion,
 		Capabilities:    caps,
-		ClientInfo:      implementation{Name: "yggdrasil", Title: "Yggdrasil", Version: clientVersion},
+		ClientInfo:      implementation{Name: "toskar", Title: "Toskar", Version: clientVersion},
 	}, &res)
 	if err != nil {
 		t.Close()

@@ -142,7 +142,7 @@ func register(ctx context.Context, c *http.Client, o *OAuth, registrationURL, cl
 		return errors.New("this service does not let apps register themselves. Add a client ID under Advanced")
 	}
 	body := map[string]any{
-		"client_name":                "Yggdrasil",
+		"client_name":                "Toskar",
 		"client_uri":                 "https://github.com/yeixio/yggdrasil-core",
 		"redirect_uris":              []string{o.RedirectURI},
 		"grant_types":                []string{"authorization_code", "refresh_token"},
