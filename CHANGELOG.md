@@ -8,6 +8,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Thi
 
 Changes waiting for the next release are in [changes/unreleased/](changes/unreleased/), one file per pull request. `scripts/changelog.py preview` shows them together, and `scripts/changelog.py release <version>` writes them here when the release is cut.
 
+## [1.6.1] - 2026-10-04
+
+This release carries the iPhone app's text for its on-device chat, so the iPhone release built from it can show it. The engine, API, configuration, and data are unchanged from 1.6.0: the client contract stays 1.6, and pairing works with computers on 1.5.0 and 1.6.0. Binaries and the apt repository are not signed.
+
+### Added
+
+- The iPhone app's text for on-device chat: looking up current information on the web with its sources, Auto choosing a model on the phone and falling back to a smaller one, the context ring and its breakdown, memories kept on the phone ("Remember that …"), and their switches in Settings. It is in English; other languages show English until they are translated.
+
 ## [1.6.0] - 2026-10-03
 
 Yggdrasil is now Toskar: the engine, programs, packages, repository, and Go module (`github.com/yeixio/toskar-core`) take the new name, and Yggdrasil stays in the story as the world tree. Chat reopens the conversation you left, with its context gauge, and the iPhone and desktop apps get the text for Auto, chat options, and a clearer message when another copy is running. Existing installs keep working without changes: their data folder and database stay where they are, and the old program names, `YGGDRASIL_*` variables, API keys, headers, MCP names, and Linux service name still work. The API, configuration, and data are compatible with 1.5: the client contract is 1.6, which adds an optional field, and pairing works with computers on 1.5.0. Go code that imports core must use the new module path. Binaries and the apt repository are not signed.
