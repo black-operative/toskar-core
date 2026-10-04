@@ -75,12 +75,17 @@ func TestServeProfilesOnLoopbackOnly(t *testing.T) {
 	cancel()
 	deadline := time.Now().Add(3 * time.Second)
 	for {
-		if _, err := http.Get("http://" + got.String() + "/debug/pprof/"); err != nil {
+		resp, err := http.Get("http://" + got.String() + "/debug/pprof/")
+		if err != nil {
 			break
 		}
+		// A request answered while the server shuts down leaves its
+		// connection open until the body is closed (#231).
+		resp.Body.Close()
 		if time.Now().After(deadline) {
 			t.Fatal("still serving after the context ended")
 		}
 		time.Sleep(50 * time.Millisecond)
 	}
+	http.DefaultClient.CloseIdleConnections()
 }
