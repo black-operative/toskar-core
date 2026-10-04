@@ -60,56 +60,64 @@ const base = await new Promise((resolve, reject) => {
 
 const failures = []
 const browser = await chromium.launch(process.env.SCREENSHOT_CHROME ? { executablePath: process.env.SCREENSHOT_CHROME } : {})
-try {
-  for (const theme of themes) {
-    for (const { name, viewport } of widths) {
-      for (const onboarded of checkOnboarding ? [true, false] : [true]) {
-        const routes = onboarded ? pages : ['/onboarding']
-        if (routes.length === 0) continue
-        const context = await browser.newContext({ viewport, reducedMotion: 'reduce' })
-        // Advanced mode on so every page is in the sidebar, onboarding done
-        // (or not, for its own check), and the theme under test.
-        await context.addInitScript(
-          ({ theme, onboarded }) => {
-            localStorage.setItem(
-              'toskar-ui',
-              JSON.stringify({ state: { onboardingComplete: onboarded, advancedMode: true, theme }, version: 0 }),
-            )
-          },
-          { theme, onboarded },
-        )
-        const page = await context.newPage()
-        const errors = []
-        page.on('pageerror', (error) => errors.push(error.message))
-        for (const route of routes) {
-          errors.length = 0
-          await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' })
-          await page.waitForSelector('main h1', { timeout: 30_000 }).catch(() => {})
-          // Let queries settle (the event stream stays open, so the network is
-          // never idle), and measure colors at rest, not mid-transition.
-          await page.waitForTimeout(1500)
-          await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important}' })
-          await page.addScriptTag({ path: axePath })
-          const violations = await page.evaluate(
-            async (tags) =>
-              (await window.axe.run(document, { runOnly: { type: 'tag', values: tags } })).violations.map((v) => ({
-                id: v.id,
-                impact: v.impact,
-                help: v.help,
-                nodes: v.nodes.slice(0, 3).map((n) => `${n.target.join(' ')} — ${(n.failureSummary || '').split('\n')[1]?.trim() || ''}`),
-                count: v.nodes.length,
-              })),
-            tags,
-          )
-          const where = `${theme} ${name} ${route}`
-          if (errors.length) failures.push({ where, id: 'page-error', impact: 'critical', help: errors[0], nodes: [], count: errors.length })
-          for (const v of violations) failures.push({ where, ...v })
-          console.log(`${violations.length || errors.length ? '✗' : '✓'} ${where}`)
-        }
-        await context.close()
-      }
+// Each theme and width runs in its own browser context, all at once: most of
+// the time is each page settling, not the check itself.
+const runs = []
+for (const theme of themes) {
+  for (const { name, viewport } of widths) {
+    for (const onboarded of checkOnboarding ? [true, false] : [true]) {
+      const routes = onboarded ? pages : ['/onboarding']
+      if (routes.length > 0) runs.push({ theme, name, viewport, onboarded, routes })
     }
   }
+}
+
+async function check({ theme, name, viewport, onboarded, routes }) {
+  const context = await browser.newContext({ viewport, reducedMotion: 'reduce' })
+  // Advanced mode on so every page is in the sidebar, onboarding done
+  // (or not, for its own check), and the theme under test.
+  await context.addInitScript(
+    ({ theme, onboarded }) => {
+      localStorage.setItem(
+        'toskar-ui',
+        JSON.stringify({ state: { onboardingComplete: onboarded, advancedMode: true, theme }, version: 0 }),
+      )
+    },
+    { theme, onboarded },
+  )
+  const page = await context.newPage()
+  const errors = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  for (const route of routes) {
+    errors.length = 0
+    await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' })
+    await page.waitForSelector('main h1', { timeout: 30_000 }).catch(() => {})
+    // Let queries settle (the event stream stays open, so the network is
+    // never idle), and measure colors at rest, not mid-transition.
+    await page.waitForTimeout(1500)
+    await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important}' })
+    await page.addScriptTag({ path: axePath })
+    const violations = await page.evaluate(
+      async (tags) =>
+        (await window.axe.run(document, { runOnly: { type: 'tag', values: tags } })).violations.map((v) => ({
+          id: v.id,
+          impact: v.impact,
+          help: v.help,
+          nodes: v.nodes.slice(0, 3).map((n) => `${n.target.join(' ')} — ${(n.failureSummary || '').split('\n')[1]?.trim() || ''}`),
+          count: v.nodes.length,
+        })),
+      tags,
+    )
+    const where = `${theme} ${name} ${route}`
+    if (errors.length) failures.push({ where, id: 'page-error', impact: 'critical', help: errors[0], nodes: [], count: errors.length })
+    for (const v of violations) failures.push({ where, ...v })
+    console.log(`${violations.length || errors.length ? '✗' : '✓'} ${where}`)
+  }
+  await context.close()
+}
+
+try {
+  await Promise.all(runs.map(check))
 } finally {
   await browser.close()
   try {
@@ -120,6 +128,7 @@ try {
 }
 
 if (failures.length) {
+  failures.sort((a, b) => a.where.localeCompare(b.where))
   console.error(`\n${failures.length} accessibility problem(s):`)
   for (const f of failures) {
     console.error(`\n[${f.impact}] ${f.id} (${f.count}) on ${f.where}: ${f.help}`)
