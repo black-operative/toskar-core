@@ -475,11 +475,26 @@ func (a *App) RunChat(ctx context.Context, profileID, conversationID, message st
 			a.keepStopped(ctx, env, conversationID, full)
 			return
 		}
+		if contextUsage != nil {
+			contextUsage["limit"] = env.ContextLimit()
+			// What the window reserves in memory, when the model ran here.
+			if _, memory, ok := a.localContext(ctx, env.modelID()); ok && memory > 0 {
+				contextUsage["memory_bytes"] = memory
+			}
+			env.mu.Lock()
+			if env.summarized > 0 {
+				contextUsage["summarized_messages"] = env.summarized
+			}
+			env.mu.Unlock()
+		}
+		// The answer keeps its context reading, so the gauge shows it when the
+		// chat is opened again.
+		answerMeta := withContextUsage(env.trace.meta(), contextUsage)
 		if conversationID != "" && full != "" {
 			saveChat, _ := a.Settings.GetBool(ctx, "save_chat_history", true)
 			msgID := ""
 			if saveChat {
-				msg, _ := a.Conversations.AddMessageWithMeta(ctx, conversationID, "assistant", full, env.trace.meta())
+				msg, _ := a.Conversations.AddMessageWithMeta(ctx, conversationID, "assistant", full, answerMeta)
 				msgID = msg.ID
 			}
 			a.recordGeneration(ctx, profile, conversationID, convTitle, msgID, env.modelID(), metrics, roleSteps)
@@ -496,10 +511,10 @@ func (a *App) RunChat(ctx context.Context, profileID, conversationID, message st
 			payload["pipeline_ms"] = ms
 			a.Logger.Debug("chat pipeline overhead", "conversation_id", conversationID, "ms", ms)
 		}
-		if meta := env.trace.meta(); meta != nil {
-			payload["meta"] = meta
+		if answerMeta != nil {
+			payload["meta"] = answerMeta
 			if opts != nil && opts.Meta != nil {
-				opts.Meta(meta)
+				opts.Meta(answerMeta)
 			}
 		}
 		if metrics != nil {
@@ -507,16 +522,6 @@ func (a *App) RunChat(ctx context.Context, profileID, conversationID, message st
 			payload["model_id"] = env.modelID()
 		}
 		if contextUsage != nil {
-			contextUsage["limit"] = env.ContextLimit()
-			// What the window reserves in memory, when the model ran here.
-			if _, memory, ok := a.localContext(ctx, env.modelID()); ok && memory > 0 {
-				contextUsage["memory_bytes"] = memory
-			}
-			env.mu.Lock()
-			if env.summarized > 0 {
-				contextUsage["summarized_messages"] = env.summarized
-			}
-			env.mu.Unlock()
 			payload["context"] = contextUsage
 		}
 		// Summarize with the model that answered, only when it ran here, so a
@@ -561,6 +566,27 @@ func roleStepFromEvent(a *App, profile profiles.Profile, evt pluginapi.Orchestra
 		step.EvalTokPerSec = evt.Metrics.EvalTokPerSec
 	}
 	return step
+}
+
+// withContextUsage adds a turn's context reading to the answer's metadata,
+// making metadata for an answer that has nothing else to keep.
+func withContextUsage(meta *contracts.MessageMeta, usage map[string]any) *contracts.MessageMeta {
+	if usage == nil {
+		return meta
+	}
+	b, err := json.Marshal(usage)
+	if err != nil {
+		return meta
+	}
+	var cu contracts.ContextUsage
+	if json.Unmarshal(b, &cu) != nil || (cu.PromptTokens <= 0 && cu.Instructions+cu.Tools+cu.Conversation+cu.ToolResults <= 0) {
+		return meta
+	}
+	if meta == nil {
+		meta = &contracts.MessageMeta{Contract: contracts.ContractVersion}
+	}
+	meta.Context = &cu
+	return meta
 }
 
 func copyContextUsage(payload map[string]any) map[string]any {

@@ -1,5 +1,5 @@
 {
-  "version": "1.5",
+  "version": "1.6",
   "types": {
     "ActivityStep": [
       "kind",
@@ -22,6 +22,17 @@
       "source",
       "title",
       "url"
+    ],
+    "ContextUsage": [
+      "conversation",
+      "estimated",
+      "instructions",
+      "limit",
+      "memory_bytes",
+      "prompt_tokens",
+      "summarized_messages",
+      "tool_results",
+      "tools"
     ],
     "ContractInfo": [
       "major",
@@ -77,6 +88,7 @@
       "role"
     ],
     "MessageMeta": [
+      "context",
       "contract",
       "files",
       "notice",

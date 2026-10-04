@@ -348,6 +348,8 @@ export interface MessageMeta {
   contract?: string
   /** An offer to install what the request needed (contract 1.2). */
   setup?: SetupOffer
+  /** How full the model's window was for this answer, for the context gauge (contract 1.6). */
+  context?: Record<string, unknown>
 }
 
 /** An offer to install a missing ability, then finish the request (Gungnir §29). */

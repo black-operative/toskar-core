@@ -11,6 +11,13 @@ const defaultUIState = {
   activeProfileId: null as string | null,
   chatHistoryPinned: false,
   pinnedConversationIds: [] as string[],
+  lastChat: null as LastChat | null,
+}
+
+/** The chat that was open on the Chat page, and when it was last there. */
+export interface LastChat {
+  id: string
+  at: number
 }
 
 interface UIState {
@@ -20,6 +27,9 @@ interface UIState {
   activeProfileId: string | null
   chatHistoryPinned: boolean
   pinnedConversationIds: string[]
+  /** Reopened when Chat is opened again soon after (see chat/resume.ts). */
+  lastChat: LastChat | null
+  setLastChat: (chat: LastChat | null) => void
   setAdvancedMode: (enabled: boolean) => void
   setTheme: (theme: ThemePreference) => void
   setOnboardingComplete: (complete: boolean) => void
@@ -63,6 +73,7 @@ export const useUIStore = create<UIState>()(
       setOnboardingComplete: (complete) => set({ onboardingComplete: complete }),
       setActiveProfileId: (id) => set({ activeProfileId: id }),
       setChatHistoryPinned: (pinned) => set({ chatHistoryPinned: pinned }),
+      setLastChat: (chat) => set({ lastChat: chat }),
       togglePinnedConversation: (id) =>
         set((state) => {
           const has = state.pinnedConversationIds.includes(id)

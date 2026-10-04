@@ -40,6 +40,7 @@ import { parseModelFailure, type ModelFailure } from './modelFailure'
 import { ModelFailureNotice } from './ModelFailureNotice'
 import { toolDisplayName } from './toolNames'
 import { useChatFollow } from './useChatFollow'
+import { chatToResume, lastContextUsage } from './resume'
 import { RatingDialogHost, RatingPrompt } from '@/features/models/ratings'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { moveStored } from '@/lib/storage'
@@ -156,6 +157,10 @@ function toolProgress(toolId?: string, summary?: string): string {
   return toolId ? t('status.usingTool', { tool: toolDisplayName(toolId) }) : t('status.working')
 }
 
+// Each chat's last context reading, kept while the app is open so leaving
+// Chat and coming back shows it rather than an empty gauge (#230).
+const usageByChat = new Map<string, ContextUsage>()
+
 export function ChatPage() {
   const { t } = useTranslation('chat')
   const queryClient = useQueryClient()
@@ -169,7 +174,27 @@ export function ChatPage() {
   const togglePinnedConversation = useUIStore((s) => s.togglePinnedConversation)
   const canPinHistory = useCanPinChatHistory()
 
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const setLastChat = useUIStore((s) => s.setLastChat)
+  // Coming back to Chat soon after leaving reopens the chat that was open,
+  // unless the address asks for a chat or a new one.
+  const [selectedId, setSelectedId] = useState<string | null>(() =>
+    searchParams.get('c') || searchParams.get('new') === '1' ? null : chatToResume(useUIStore.getState().lastChat, Date.now()),
+  )
+  // A reopened chat that was deleted elsewhere since is let go once the list loads.
+  const resumedRef = useRef(selectedId)
+  const selectedRef = useRef(selectedId)
+  selectedRef.current = selectedId
+  useEffect(() => {
+    setLastChat(selectedId ? { id: selectedId, at: Date.now() } : null)
+  }, [selectedId, setLastChat])
+  // Leaving Chat starts the clock on reopening the chat.
+  useEffect(
+    () => () => {
+      const id = selectedRef.current
+      if (id) setLastChat({ id, at: Date.now() })
+    },
+    [setLastChat],
+  )
   const location = useLocation()
   // Another page can start a chat with text ready to send, such as a tool
   // source's ready-made prompt.
@@ -241,9 +266,8 @@ export function ChatPage() {
 
   // Each chat keeps its last reading, so switching back shows it rather
   // than an empty gauge until the next answer (#230).
-  const usageByChat = useRef(new Map<string, ContextUsage>())
   useEffect(() => {
-    setContextUsage((selectedId && usageByChat.current.get(selectedId)) || null)
+    setContextUsage((selectedId && usageByChat.get(selectedId)) || null)
   }, [selectedId])
   const abortRef = useRef<AbortController | null>(null)
   const lastUserMessageRef = useRef('')
@@ -314,6 +338,24 @@ export function ChatPage() {
     enabled: Boolean(selectedId),
     retry: false,
   })
+
+  // A chat with no reading this session shows the one saved with its latest
+  // answer (contract 1.6), so the gauge survives a restart too.
+  useEffect(() => {
+    if (!selectedId || usageByChat.has(selectedId)) return
+    const saved = lastContextUsage(messagesQuery.data)
+    if (!saved) return
+    usageByChat.set(selectedId, saved)
+    setContextUsage(saved)
+  }, [selectedId, messagesQuery.data])
+
+  useEffect(() => {
+    const resumed = resumedRef.current
+    const list = conversationsQuery.data
+    if (!resumed || !list) return
+    resumedRef.current = null
+    if (selectedId === resumed && !list.some((c) => c.id === resumed)) setSelectedId(null)
+  }, [conversationsQuery.data, selectedId])
 
   useEffect(() => {
     const fromQuery = searchParams.get('c')
@@ -751,7 +793,7 @@ export function ChatPage() {
         if (event.type === 'chat.complete') {
           const conversationId = event.payload?.conversation_id as string | undefined
           const nextUsage = parseContextUsage(event.payload?.context)
-          if (nextUsage && conversationId) usageByChat.current.set(conversationId, nextUsage)
+          if (nextUsage && conversationId) usageByChat.set(conversationId, nextUsage)
           if (
             nextUsage &&
             conversationId &&

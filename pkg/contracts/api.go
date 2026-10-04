@@ -466,6 +466,26 @@ type MessageMeta struct {
 	Contract string `json:"contract,omitempty"`
 	// Setup offers to install what the request needed (Gungnir §29).
 	Setup *SetupOffer `json:"setup,omitempty"`
+	// Context is how full the model's window was for this answer, so a
+	// client can show the context gauge when it opens the chat again
+	// (contract 1.6). Answers saved before then have none.
+	Context *ContextUsage `json:"context,omitempty"`
+}
+
+// ContextUsage is how a turn used the model's context window, in tokens.
+type ContextUsage struct {
+	PromptTokens int  `json:"prompt_tokens"`
+	Limit        int  `json:"limit"`
+	Instructions int  `json:"instructions"`
+	Tools        int  `json:"tools"`
+	Conversation int  `json:"conversation"`
+	ToolResults  int  `json:"tool_results"`
+	Estimated    bool `json:"estimated,omitempty"`
+	// SummarizedMessages are older messages the model saw as a summary.
+	SummarizedMessages int `json:"summarized_messages,omitempty"`
+	// MemoryBytes is about how much memory the window reserves, when the
+	// model ran on this computer.
+	MemoryBytes int64 `json:"memory_bytes,omitempty"`
 }
 
 // SetupOffer offers to install a missing ability, such as image generation,
