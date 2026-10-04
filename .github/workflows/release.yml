@@ -45,11 +45,21 @@ jobs:
           PRERELEASE: ${{ contains(github.ref_name, '-') }}
         run: |
           set -euo pipefail
+          # This version's section of CHANGELOG.md: what changed, and what to
+          # know before updating, such as compatibility notes.
+          VERSION="${GITHUB_REF_NAME#v}"
+          SECTION="$(awk -v v="$VERSION" 'index($0, "## [" v "]") == 1 {f=1; next} f && /^## \[/ {exit} f' CHANGELOG.md)"
+          if [ -z "$SECTION" ]; then
+            echo "::warning::CHANGELOG.md has no section for $VERSION; the release body has install steps only."
+          fi
           {
             if [ "$PRERELEASE" = "true" ]; then
               # Homebrew and apt are not updated for a pre-release (see below),
               # so their commands install the latest stable release.
               printf '%s\n\n' "**Pre-release.** Homebrew and apt install the latest stable release, not this one. To try ${GITHUB_REF_NAME}, use the archives or packages attached below."
+            fi
+            if [ -n "$SECTION" ]; then
+              printf '## What changed in %s\n%s\n\n' "$VERSION" "$SECTION"
             fi
             cat packaging/release-install.md
           } > /tmp/release-body.md

@@ -1,3 +1,0 @@
-### Changed
-
-- Settings says plainly that your data stays private, and what is encrypted. A new **Your data stays private** card at the top of Privacy explains that chats, memories, knowledge, and files stay on this computer with no account, cloud, or telemetry. It also says Yggdrasil doesn't encrypt its own files, so turn on FileVault, BitLocker, or LUKS to keep them encrypted. Online services use HTTPS, but traffic between your own computers isn't encrypted yet. The user guide and docs/privacy.md answer "Is my data encrypted?" and "Are my chats private?", and so does the assistant when you ask it.

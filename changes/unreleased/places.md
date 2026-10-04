@@ -1,3 +1,0 @@
-### Added
-
-- Places and directions with OpenStreetMap: `places.search` finds a kind of place near somewhere (cafes, pharmacies, fuel, parks, and more) or a place by name, with addresses, opening hours, and distances in km and miles; `places.details` looks one up; `maps.route` gives driving, walking, or cycling directions; and `maps.distance` says how far and how long. They are part of the Internet capability. Each request is recorded in What left this computer as Maps and places, a repeat within the hour is answered from memory, and the services can be your own (`places_geocoder_url`, `places_overpass_url`, `places_router_url`).

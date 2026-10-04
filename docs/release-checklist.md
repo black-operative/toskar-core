@@ -16,7 +16,7 @@ After a successful release, the workflow sends a `core-release` event to `yeixio
 - [ ] GitHub Release contains the `.deb`, `.rpm`, and `.tar.gz` artifacts.
 - [ ] `SHA256SUMS.txt` is attached and matches the artifacts.
 - [ ] The `screenshots` job attached `screenshot-*.png` and `screenshot-demo.mp4` to the release. yggdrasil.yeix.io shows them. If the job failed, fix it and run the Screenshots workflow by hand with the tag.
-- [ ] Release notes written. The workflow uses [packaging/release-install.md](../packaging/release-install.md) as the body.
+- [ ] Release notes written. The workflow's release body is the version's section of [CHANGELOG.md](../CHANGELOG.md) ("What changed in …", including its opening sentence, so put compatibility notes there), followed by [packaging/release-install.md](../packaging/release-install.md). Without a section for the version, the body has install steps only and the run shows a warning.
 - [ ] Install tested from a clean environment for each platform you claim in the notes.
 - [ ] No secrets, data directories, or private keys in the artifacts or the notes.
 - [ ] Known issues listed, including hardware combinations that are still untested.
