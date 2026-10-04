@@ -9,8 +9,8 @@ SUMS="${ROOT}/dist/SHA256SUMS.txt"
 TMPL="${ROOT}/packaging/homebrew/toskar.rb.tmpl"
 OUT="${ROOT}/Formula/toskar.rb"
 
-arm_file="yggdrasil-${VERSION}-darwin-arm64-headless.tar.gz"
-amd_file="yggdrasil-${VERSION}-darwin-amd64-headless.tar.gz"
+arm_file="toskar-${VERSION}-darwin-arm64-headless.tar.gz"
+amd_file="toskar-${VERSION}-darwin-amd64-headless.tar.gz"
 arm_sha="$(awk -v f="$arm_file" '{ name=$2; sub(/^\.\//, "", name); if (name == f) print $1 }' "$SUMS")"
 amd_sha="$(awk -v f="$amd_file" '{ name=$2; sub(/^\.\//, "", name); if (name == f) print $1 }' "$SUMS")"
 if [[ -z "$arm_sha" || -z "$amd_sha" ]]; then

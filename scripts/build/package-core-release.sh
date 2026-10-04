@@ -162,7 +162,7 @@ EOF
 
 package_darwin() {
   local goarch="$1"
-  local name="yggdrasil-${VERSION}-darwin-${goarch}-headless"
+  local name="toskar-${VERSION}-darwin-${goarch}-headless"
   local stage="dist/${name}"
   build_binaries darwin "$goarch" "$stage"
   tar -C dist -czf "dist/${name}.tar.gz" "$name"
@@ -171,7 +171,7 @@ package_darwin() {
 
 package_windows() {
   local goarch="$1"
-  local name="yggdrasil-${VERSION}-windows-${goarch}-headless"
+  local name="toskar-${VERSION}-windows-${goarch}-headless"
   local stage="dist/${name}"
   mkdir -p "$stage/web"
   echo "Building windows/${goarch}"

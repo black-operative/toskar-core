@@ -106,7 +106,7 @@ The package installs `toskar`, `toskarctl`, the web UI, and `toskar.service`, wh
 
 ### Windows
 
-The GitHub Release includes an unsigned `yggdrasil-<version>-windows-amd64-headless.tar.gz`. A source build is below.
+The GitHub Release includes an unsigned `toskar-<version>-windows-amd64-headless.tar.gz`. A source build is below.
 
 ### Build from source
 

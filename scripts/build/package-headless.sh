@@ -16,7 +16,7 @@ if [[ "${GOOS}" == "windows" ]]; then
 fi
 LDFLAGS="-X github.com/yeixio/yggdrasil-core/internal/version.Version=${VERSION} -X github.com/yeixio/yggdrasil-core/internal/version.Commit=${COMMIT} -X github.com/yeixio/yggdrasil-core/internal/version.BuildDate=${DATE}"
 
-NAME="yggdrasil-${VERSION}-${GOOS}-${GOARCH}-headless"
+NAME="toskar-${VERSION}-${GOOS}-${GOARCH}-headless"
 OUT_DIR="dist/${NAME}"
 rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}/web" bin dist

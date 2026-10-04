@@ -7,7 +7,7 @@
 #
 # Linux: the release's .deb (apt) or .rpm (dnf, yum), which run Yggdrasil as
 # a systemd service. macOS: the release's headless archive in
-# /usr/local/lib/yggdrasil (or ~/.local/lib/yggdrasil without sudo), run by
+# /usr/local/lib/toskar (or ~/.local/lib/toskar without sudo), run by
 # launchd. Each download is checked against the release's SHA256SUMS.txt.
 # An installed Yggdrasil that is running is left as it is.
 #
@@ -196,19 +196,23 @@ install_linux() {
 }
 
 install_macos() {
+	old_prefix=""
 	if [ -n "$TOSKAR_PREFIX" ]; then
 		prefix="$TOSKAR_PREFIX"
 		bindir="${TOSKAR_BIN_DIR:-$prefix/bin}"
 	elif [ "$(id -u)" -eq 0 ]; then
-		prefix="/usr/local/lib/yggdrasil"
+		prefix="/usr/local/lib/toskar"
+		old_prefix="/usr/local/lib/yggdrasil"
 		bindir="/usr/local/bin"
 	else
-		prefix="$HOME/.local/lib/yggdrasil"
+		prefix="$HOME/.local/lib/toskar"
+		old_prefix="$HOME/.local/lib/yggdrasil"
 		bindir="$HOME/.local/bin"
 	fi
-	archive="$(download_release "yggdrasil-[0-9][^ ]*-darwin-${arch}-headless\.tar\.gz")"
+	# Archives from before the rename (TOSKAR_VERSION) are named yggdrasil.
+	archive="$(download_release "toskar-[0-9][^ ]*-darwin-${arch}-headless\.tar\.gz" "yggdrasil-[0-9][^ ]*-darwin-${arch}-headless\.tar\.gz")"
 	tar -xzf "$archive" -C "$tmp"
-	src="$(find "$tmp" -maxdepth 1 -type d -name 'yggdrasil-*-headless' | head -n 1)"
+	src="$(find "$tmp" -maxdepth 1 -type d \( -name 'toskar-*-headless' -o -name 'yggdrasil-*-headless' \) | head -n 1)"
 	[ -n "$src" ] || die "the archive didn't have the expected folder"
 	mkdir -p "$prefix" "$bindir"
 	rm -rf "$prefix.new"
@@ -218,10 +222,19 @@ install_macos() {
 	# Downloaded with curl, so not quarantined; clear it anyway for archives
 	# fetched by a browser.
 	xattr -dr com.apple.quarantine "$prefix" 2>/dev/null || true
+	# The install folder from before the rename becomes a link to this one, so
+	# MCP settings and scripts that run programs inside it keep working
+	# (#237). Only a folder that holds an install of ours is replaced.
+	if [ -n "$old_prefix" ] && [ ! -L "$old_prefix" ]; then
+		if [ ! -e "$old_prefix" ] || [ -e "$old_prefix/yggdrasil-daemon" ]; then
+			rm -rf "$old_prefix"
+			ln -s "$prefix" "$old_prefix"
+		fi
+	fi
 	# toskar and toskarctl, and the names from before the rename, which an
 	# older release (TOSKAR_VERSION) has alone (#237).
 	for name in toskar toskarctl yggdrasil-daemon yggctl; do
-		[ -e "$prefix/$name" ] && ln -sf "$prefix/$name" "$bindir/$name"
+		if [ -e "$prefix/$name" ]; then ln -sf "$prefix/$name" "$bindir/$name"; fi
 	done
 	daemon="$prefix/toskar"
 	[ -x "$daemon" ] || daemon="$prefix/yggdrasil-daemon"
@@ -229,7 +242,8 @@ install_macos() {
 	[ -x "$YGGCTL" ] || YGGCTL="$prefix/yggctl"
 	[ "$TOSKAR_NO_SERVICE" = "1" ] && return 0
 
-	label="io.yeix.yggdrasil"
+	label="ai.toskar.toskar"
+	old_label="io.yeix.yggdrasil"
 	if [ "$(id -u)" -eq 0 ]; then
 		# A server with nobody logged in: a system daemon that runs as the
 		# person who ran sudo, so its data stays in their home folder.
@@ -263,6 +277,11 @@ install_macos() {
 </plist>
 EOF
 	launchctl bootout "$domain/$label" >/dev/null 2>&1 || true
+	# The service from before the rename, so the two don't both run (#237).
+	for d in "$domain" "user/$(id -u)"; do
+		launchctl bootout "$d/$old_label" >/dev/null 2>&1 || true
+	done
+	rm -f "${plist%/*}/${old_label}.plist"
 	if ! launchctl bootstrap "$domain" "$plist" 2>/dev/null; then
 		# Over SSH there is no login window to start an agent in.
 		[ "$domain" = "system" ] && die "launchd couldn't start Yggdrasil"

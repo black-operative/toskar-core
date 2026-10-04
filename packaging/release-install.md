@@ -19,8 +19,8 @@ toskar
 Or use the headless archive attached to this release:
 
 ```bash
-tar -xzf yggdrasil-*-darwin-*-headless.tar.gz
-cd yggdrasil-*-darwin-*-headless
+tar -xzf toskar-*-darwin-*-headless.tar.gz
+cd toskar-*-darwin-*-headless
 ./toskar
 ```
 
@@ -39,8 +39,8 @@ RPM packages for x86_64 and aarch64 are attached to this release. Install one wi
 Windows amd64. The headless archive attached to this release is not code-signed.
 
 ```bash
-tar -xzf yggdrasil-*-windows-amd64-headless.tar.gz
-cd yggdrasil-*-windows-amd64-headless
+tar -xzf toskar-*-windows-amd64-headless.tar.gz
+cd toskar-*-windows-amd64-headless
 ./toskar.exe
 ```
 

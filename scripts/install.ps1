@@ -4,7 +4,7 @@
 #   & ([scriptblock]::Create((irm https://github.com/yeixio/yggdrasil-core/releases/latest/download/install.ps1))) `
 #     join -Server 192.168.1.10:7332 -Token ygj_… -Fingerprint sha256:…
 #
-# Installs the release's headless archive in %LOCALAPPDATA%\Programs\Yggdrasil,
+# Installs the release's headless archive in %LOCALAPPDATA%\Programs\Toskar,
 # checked against SHA256SUMS.txt, adds it to your PATH, and starts it now and
 # at each sign-in with a scheduled task. An installed Yggdrasil that is
 # running is left as it is.
@@ -39,7 +39,11 @@ if ($ReleaseUrl) {
 } else {
     $Base = "https://github.com/$Repo/releases/latest/download"
 }
-$Prefix = Join-Path $env:LOCALAPPDATA 'Programs\Yggdrasil'
+$Prefix = Join-Path $env:LOCALAPPDATA 'Programs\Toskar'
+# The folder and scheduled task from before the rename (#237).
+$OldPrefix = Join-Path $env:LOCALAPPDATA 'Programs\Yggdrasil'
+$Task = 'Toskar'
+$OldTask = 'Yggdrasil'
 
 function Fail([string]$Message) {
     Write-Host "Install failed: $Message" -ForegroundColor Red
@@ -77,7 +81,10 @@ if ($installed -and (Test-Healthy)) {
         } catch {
             Fail "couldn't download the release list from $Base"
         }
-        $line = Get-Content "$tmp\SHA256SUMS.txt" | Where-Object { $_ -match '  (yggdrasil-[0-9]\S*-windows-amd64-headless\.tar\.gz)$' } | Select-Object -First 1
+        # Archives from before the rename (TOSKAR_VERSION) are named yggdrasil.
+        $sums = Get-Content "$tmp\SHA256SUMS.txt"
+        $line = $sums | Where-Object { $_ -match '  (toskar-[0-9]\S*-windows-amd64-headless\.tar\.gz)$' } | Select-Object -First 1
+        if (-not $line) { $line = $sums | Where-Object { $_ -match '  (yggdrasil-[0-9]\S*-windows-amd64-headless\.tar\.gz)$' } | Select-Object -First 1 }
         if (-not $line) { Fail 'the release has no file for Windows amd64' }
         $want, $name = $line -split '\s+', 2
         Write-Host "Downloading $name..."
@@ -93,11 +100,12 @@ if ($installed -and (Test-Healthy)) {
         # tar ships with Windows 10 1803 and later.
         tar -xzf "$tmp\$name" -C $tmp
         if ($LASTEXITCODE -ne 0) { Fail "couldn't unpack $name" }
-        $src = Get-ChildItem -Path $tmp -Directory -Filter 'yggdrasil-*-headless' | Select-Object -First 1
+        $src = Get-ChildItem -Path $tmp -Directory | Where-Object { $_.Name -like 'toskar-*-headless' -or $_.Name -like 'yggdrasil-*-headless' } | Select-Object -First 1
         if (-not $src) { Fail "the archive didn't have the expected folder" }
 
         # Stop a copy that is running before replacing its files.
-        Stop-ScheduledTask -TaskName 'Yggdrasil' -ErrorAction SilentlyContinue
+        Stop-ScheduledTask -TaskName $Task -ErrorAction SilentlyContinue
+        Stop-ScheduledTask -TaskName $OldTask -ErrorAction SilentlyContinue
         Get-Process toskar, yggdrasil-daemon -ErrorAction SilentlyContinue | Stop-Process -Force
         if (Test-Path $Prefix) { Remove-Item -Recurse -Force $Prefix }
         New-Item -ItemType Directory -Path (Split-Path $Prefix) -Force | Out-Null
@@ -112,13 +120,24 @@ if ($installed -and (Test-Healthy)) {
                 New-Item -ItemType HardLink -Path $old -Target $new | Out-Null
             }
         }
+        # The folder from before the rename becomes a junction to this one, so
+        # MCP settings and scripts that run programs inside it keep working.
+        # Junctions need no admin rights. Only a folder of ours is replaced.
+        $oldDir = Get-Item $OldPrefix -ErrorAction SilentlyContinue
+        if (-not $oldDir -or (-not ($oldDir.Attributes -band [IO.FileAttributes]::ReparsePoint) -and (Test-Path (Join-Path $OldPrefix 'yggdrasil-daemon.exe')))) {
+            if ($oldDir) { Remove-Item -Recurse -Force $OldPrefix }
+            New-Item -ItemType Junction -Path $OldPrefix -Target $Prefix | Out-Null
+        }
     } finally {
         Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
     }
 
+    # On PATH under the new folder, in place of the old one.
     $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-    if (-not ($userPath -split ';' | Where-Object { $_ -eq $Prefix })) {
-        [Environment]::SetEnvironmentVariable('Path', ((@($userPath, $Prefix) | Where-Object { $_ }) -join ';'), 'User')
+    $parts = @($userPath -split ';' | Where-Object { $_ -and $_ -ne $OldPrefix })
+    if (-not ($parts | Where-Object { $_ -eq $Prefix })) { $parts += $Prefix }
+    if (($parts -join ';') -ne $userPath) {
+        [Environment]::SetEnvironmentVariable('Path', ($parts -join ';'), 'User')
     }
     $env:Path = "$env:Path;$Prefix"
 
@@ -129,9 +148,11 @@ if ($installed -and (Test-Healthy)) {
     $trigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
         -ExecutionTimeLimit ([TimeSpan]::Zero) -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
-    Register-ScheduledTask -TaskName 'Yggdrasil' -Action $action -Trigger $trigger -Settings $settings `
-        -Description 'Yggdrasil Core' -Force | Out-Null
-    Start-ScheduledTask -TaskName 'Yggdrasil'
+    # The task from before the rename, so the two don't both start (#237).
+    Unregister-ScheduledTask -TaskName $OldTask -Confirm:$false -ErrorAction SilentlyContinue
+    Register-ScheduledTask -TaskName $Task -Action $action -Trigger $trigger -Settings $settings `
+        -Description 'Toskar Core' -Force | Out-Null
+    Start-ScheduledTask -TaskName $Task
     Write-Host '✓ Yggdrasil Core installed'
 
     Write-Host 'Waiting for Yggdrasil to start...'
