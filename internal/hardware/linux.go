@@ -120,16 +120,33 @@ func platformAccelerators(ctx context.Context) ([]contracts.Accelerator, error) 
 		}
 	}
 
-	// AMD via lspci heuristic.
+	// AMD and Intel from the kernel's card list, which also gives AMD's
+	// memory and needs no tools, so it works in a container; lspci, when
+	// installed, names them.
+	names := map[string]string{}
+	var lspciLines []string
 	if out, err := exec.CommandContext(ctx, "lspci").Output(); err == nil {
-		for i, line := range strings.Split(string(out), "\n") {
+		for _, line := range strings.Split(string(out), "\n") {
 			lower := strings.ToLower(line)
 			if !strings.Contains(lower, "vga") && !strings.Contains(lower, "3d") && !strings.Contains(lower, "display") {
 				continue
 			}
+			lspciLines = append(lspciLines, line)
+			if slot, _, ok := strings.Cut(line, " "); ok {
+				names[slot] = strings.TrimSpace(line)
+			}
+		}
+	}
+	_, rocmErr := exec.LookPath("rocminfo")
+	if cards := drmGPUs("/sys", "/dev/dri"); len(cards) > 0 {
+		accels = append(accels, drmAccelerators(cards, names, rocmErr == nil, len(accels))...)
+	} else {
+		// No card list: the lspci heuristic, without memory.
+		for i, line := range lspciLines {
+			lower := strings.ToLower(line)
 			if strings.Contains(lower, "amd") || strings.Contains(lower, "ati") || strings.Contains(lower, "radeon") {
 				backends := []string{"vulkan", "cpu"}
-				if _, err := exec.LookPath("rocminfo"); err == nil {
+				if rocmErr == nil {
 					backends = append([]string{"rocm"}, backends...)
 				}
 				accels = append(accels, contracts.Accelerator{

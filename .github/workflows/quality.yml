@@ -67,7 +67,8 @@ jobs:
   #
   # The runner is someone's computer, so the daemon is held to part of it:
   # QUALITY_MEMORY (default 32g, with no swap) and QUALITY_CPUS (default
-  # three quarters of the cores). It picks its models to fit that memory,
+  # three quarters of the cores). QUALITY_GPU=vulkan gives it the AMD or
+  # Intel card (/dev/dri) and Vulkan drivers. It picks its models to fit,
   # and if it still runs out, the kernel stops the container, not the
   # machine.
   real-models:
@@ -78,6 +79,7 @@ jobs:
       NAME: toskar-quality-${{ github.run_id }}-${{ github.run_attempt }}
       MEMORY: ${{ vars.QUALITY_MEMORY || '32g' }}
       CPUS: ${{ vars.QUALITY_CPUS }}
+      GPU: ${{ vars.QUALITY_GPU }}
     steps:
       - name: Remove what an interrupted run left
         run: |
@@ -91,7 +93,14 @@ jobs:
           ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
       - name: Build the daemon
-        run: docker build --pull --build-arg COMMIT="$(git rev-parse --short HEAD)" -t "$NAME" .
+        run: |
+          docker build --pull --build-arg COMMIT="$(git rev-parse --short HEAD)" -t "$NAME" .
+          # QUALITY_GPU=vulkan adds Vulkan and Mesa's drivers for an AMD or
+          # Intel card. No --pull: its base is the image just built.
+          if [ "$GPU" = vulkan ]; then
+            docker pull -q debian:trixie-slim
+            docker build --build-arg BASE="$NAME" -t "$NAME" -f tests/quality/gpu.Dockerfile tests/quality
+          fi
       - name: Start the daemon
         run: |
           # A key made for this run: the tests reach the daemon over the
@@ -102,10 +111,12 @@ jobs:
           docker network create "$NAME"
           cpus="${CPUS:-$(( $(nproc) * 3 / 4 ))}"
           echo "Daemon limited to $MEMORY of memory and $cpus CPUs"
+          gpu=()
+          if [ "$GPU" = vulkan ]; then gpu=(--device /dev/dri); fi
           docker run -d --name "$NAME" --network "$NAME" \
             --cap-drop ALL --security-opt no-new-privileges \
             --memory "$MEMORY" --memory-swap "$MEMORY" --cpus "$cpus" \
-            --oom-score-adj 1000 --pids-limit 4096 \
+            --oom-score-adj 1000 --pids-limit 4096 "${gpu[@]}" \
             -v toskar-quality-models:/data/models \
             -v toskar-quality-runtimes:/data/runtimes \
             -v "$PWD/tests/quality/web.json:/fixtures/web.json:ro" \
@@ -115,6 +126,10 @@ jobs:
             -e TOSKAR_INTERNAL_HOST=127.0.0.1 \
             ${{ vars.QUALITY_DOCKER_FLAGS }} \
             "$NAME"
+          if [ "$GPU" = vulkan ]; then
+            echo "GPUs the daemon can use:"
+            docker exec "$NAME" vulkaninfo --summary 2>/dev/null | grep -E "deviceName|deviceType" || echo "::warning::No Vulkan device in the container; the run will use the CPU."
+          fi
       - name: Quality set
         run: |
           mkdir -p .quality

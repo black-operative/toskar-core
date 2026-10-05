@@ -164,7 +164,7 @@ func TestQualitySet(t *testing.T) {
 		if config.Env("QUALITY_INSTALL") == "recommended" {
 			real.installRecommended(t)
 		}
-		build = real.version(t)
+		build = real.version(t) + " on " + real.hardware(t)
 		d = real
 	}
 	file := loadCases(t)

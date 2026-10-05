@@ -86,6 +86,27 @@ func (d realDriver) installRuntimes(t *testing.T, models []contracts.Model) {
 	}
 }
 
+// hardware says what the daemon runs models on, for the report: its
+// largest graphics card and its memory, or the CPU.
+func (d realDriver) hardware(t *testing.T) string {
+	t.Helper()
+	var hw contracts.HardwareInventory
+	d.do(t, http.MethodGet, "/api/v1/hardware", nil, &hw)
+	var best *contracts.Accelerator
+	for i, a := range hw.Accelerators {
+		if a.Kind == "gpu" && (best == nil || a.DedicatedVRAM > best.DedicatedVRAM) {
+			best = &hw.Accelerators[i]
+		}
+	}
+	if best == nil {
+		return fmt.Sprintf("the CPU (%d threads, %.0f GB)", hw.CPU.Threads, float64(hw.Memory.TotalBytes)/(1<<30))
+	}
+	if best.DedicatedVRAM == 0 {
+		return best.Model
+	}
+	return fmt.Sprintf("%s (%.0f GB)", best.Model, float64(best.DedicatedVRAM)/(1<<30))
+}
+
 // version says which build of the daemon the run tested, for the report.
 func (d realDriver) version(t *testing.T) string {
 	t.Helper()

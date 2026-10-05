@@ -71,6 +71,9 @@ expectations and pages, so the phone is held to what core does.
   `QUALITY_DOCKER_FLAGS`. The daemon is held to `QUALITY_MEMORY` (default
   `32g`, no swap) and `QUALITY_CPUS` (default three quarters of the cores),
   and picks its models to fit; each run first removes containers an
-  interrupted run left behind.
+  interrupted run left behind. `QUALITY_GPU=vulkan` builds the image with
+  Vulkan and Mesa's drivers (`gpu.Dockerfile`) and passes in the AMD or Intel
+  card (`--device /dev/dri`); the runner's user must be able to open
+  `/dev/dri/renderD*`. The report names the card or CPU the run used.
 
 Add a case when a change fixes a behavior, so it stays fixed.
