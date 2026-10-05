@@ -33,7 +33,7 @@ search gets the results of the first site whose `match` matches it, and a page
 is found by its URL. Its facts are fixtures, so an answer that matches them
 came from the page, not from the model's memory.
 
-The iPhone app (yeixio/toskar-desktop, `mobile/quality`) keeps a copy of both
+The iPhone app (yeixio/toskar-apps, `mobile/quality`) keeps a copy of both
 files and runs the `phone` cases through its on-device chat with the same
 expectations and pages, so the phone is held to what core does.
 

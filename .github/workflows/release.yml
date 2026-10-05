@@ -220,17 +220,17 @@ jobs:
     steps:
       - name: Start the matching desktop release
         env:
-          # TOSKAR_DESKTOP_TOKEN, or the secret's name from before the rename (#237).
-          DESKTOP_TOKEN: ${{ secrets.TOSKAR_DESKTOP_TOKEN || secrets.YGGDRASIL_DESKTOP_TOKEN }}
+          # TOSKAR_APPS_TOKEN, or an earlier name for the same token (#271).
+          APPS_TOKEN: ${{ secrets.TOSKAR_APPS_TOKEN || secrets.TOSKAR_DESKTOP_TOKEN || secrets.YGGDRASIL_DESKTOP_TOKEN }}
           VERSION: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-          if [ -z "${DESKTOP_TOKEN}" ]; then
+          if [ -z "${APPS_TOKEN}" ]; then
             # The release itself succeeded, so this is a warning, not a failure.
-            echo "::warning title=Desktop not notified::TOSKAR_DESKTOP_TOKEN is not set, so toskar-desktop was not told about ${VERSION}. Its daily backup check will find the release, or start its Release workflow by hand. See docs/release-checklist.md."
+            echo "::warning title=Apps not notified::TOSKAR_APPS_TOKEN is not set, so toskar-apps was not told about ${VERSION}. Its daily backup check will find the release, or start its Release workflow by hand. See docs/release-checklist.md."
             exit 0
           fi
-          GH_TOKEN="$DESKTOP_TOKEN" gh api repos/yeixio/toskar-desktop/dispatches \
+          GH_TOKEN="$APPS_TOKEN" gh api repos/yeixio/toskar-apps/dispatches \
             -f event_type=core-release \
             -f "client_payload[version]=${VERSION#v}"
-          echo "Told toskar-desktop about ${VERSION}."
+          echo "Told toskar-apps about ${VERSION}."

@@ -15,7 +15,7 @@ func MessageNeedsLiveWeb(message string) bool {
 // recommendation, where to buy, what it costs, reviews, a result or a
 // release, or "check" and "find" for me. Small models answer these from
 // memory or tell the person to search, so Toskar looks them up first, as
-// the iPhone app does (yeixio/toskar-desktop mobile/src/intent.ts).
+// the iPhone app does (yeixio/toskar-apps mobile/src/intent.ts).
 var askFindRe = regexp.MustCompile(`(?i)\b(recommend\w*|suggest (a|an|some)\b.{0,30}\b(to buy|for sale|product|brand|model|bike|bicycle|machine|phone|laptop|car|tool|app)s?|best \w+(?: \w+){0,5} (for|under|to buy)|which \w+(?: \w+){0,5} should i (buy|get|choose)|where (can|could|do|should) i (buy|find|get|order|rent)|for sale|how much (is|are|does|do|did)|reviews?|check (for me|it|that|this|them|again)|can you (check|find|look)|find (me|out)|winner|won the|new release|released?|links? to)\b`)
 
 // MessageAsksToFind reports requests to find something on the web.

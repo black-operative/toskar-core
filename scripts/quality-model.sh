@@ -8,7 +8,7 @@
 # in), and the model from QUALITY_MODEL_GGUF_URL, both kept in
 # QUALITY_CACHE. The default model is Llama 3.2 1B, the smallest the
 # iPhone app offers, so a release is held to what the weakest model can do.
-# The iPhone app's quality run (yeixio/toskar-desktop) uses `serve`.
+# The iPhone app's quality run (yeixio/toskar-apps) uses `serve`.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

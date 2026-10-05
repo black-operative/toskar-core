@@ -38,7 +38,7 @@ The desktop app's shell copies this folder when it builds and reads
 match the page.
 
 The iPhone app keeps a copy of `languages.json` and every `mobile.json` in
-`mobile/src/i18n/catalog.json` (yeixio/toskar-desktop), which its build
+`mobile/src/i18n/catalog.json` (yeixio/toskar-apps), which its build
 refreshes from the matching core. Its App language follows the computer it
 is connected to unless it is set on the phone.
 
@@ -166,7 +166,7 @@ list of choices, goes through `i18n.t('namespace:key')` too.
    have only `_other`.
 3. Hermes on iOS has no `Intl.PluralRules`, so the iPhone app loads plural
    rules for each language: add the language's line to
-   `mobile/src/i18n/plurals.ts` in yeixio/toskar-desktop.
+   `mobile/src/i18n/plurals.ts` in yeixio/toskar-apps.
 4. Run `pnpm test` in `web/`. It checks every file against English: valid
    JSON, no duplicate keys, no keys English lacks, the same placeholders,
    and every plural form the language uses.

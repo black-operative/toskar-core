@@ -9,7 +9,7 @@
 // with the same pages each time. With TOSKAR_QUALITY_URL set to a running
 // daemon, the cases run against its real models and the live web.
 //
-// The iPhone app (yeixio/toskar-desktop) runs the cases marked "phone"
+// The iPhone app (yeixio/toskar-apps) runs the cases marked "phone"
 // through its on-device chat, so its answers are held to the same
 // expectations.
 package quality
