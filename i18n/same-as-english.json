@@ -53,7 +53,6 @@
     "chat:tools.names.terminal",
     "chat:transcript.plan",
     "common:nav.chat",
-    "common:nav.system",
     "common:subsystems.title",
     "common:units.ms",
     "common:units.seconds",

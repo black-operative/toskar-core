@@ -3,8 +3,10 @@
   "nav": {
     "label": "Main",
     "open": "Open menu",
-    "main": "Main",
-    "system": "System",
+    "use": "Use",
+    "customize": "Customize",
+    "administer": "Administer",
+    "administerHint": "Show or hide Train, Computers, API Access, Performance, and Diagnostics",
     "chat": "Chat",
     "automations": "Automations",
     "models": "Models",

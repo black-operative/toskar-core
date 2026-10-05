@@ -1,7 +1,7 @@
 import type { Ref } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { Rune } from '@/components/ui/Realm'
 import { api } from '@/lib/api'
 import { realms } from '@/lib/realms'
@@ -10,23 +10,29 @@ import { useUIStore } from '@/stores/uiStore'
 import { YggdrasilMark } from '@/components/ui/YggdrasilMark'
 import { NotificationBell } from './NotificationBell'
 
-// Labels are keys in the common namespace (i18n/locales/<language>/common.json).
-const mainNav = [
+// The sidebar's groups (#203): what everyone uses, what everyone can set up,
+// and what whoever runs the computers looks after. Every page is listed;
+// advanced mode only shows expert controls inside a page. Labels are keys in
+// the common namespace (i18n/locales/<language>/common.json).
+const useNav = [
   { to: '/chat', label: 'nav.chat' },
   { to: '/automations', label: 'nav.automations' },
-  { to: '/models', label: 'nav.models' },
-  { to: '/train', label: 'nav.train' },
   { to: '/knowledge', label: 'nav.knowledge' },
   { to: '/memory', label: 'nav.memory' },
-  { to: '/nodes', label: 'nav.computers' },
 ] as const
 
-const systemNav = [
+const customizeNav = [
+  { to: '/models', label: 'nav.models' },
+  { to: '/tools', label: 'nav.tools' },
+  { to: '/profiles', label: 'nav.profiles' },
+] as const
+
+const administerNav = [
+  { to: '/train', label: 'nav.train' },
+  { to: '/nodes', label: 'nav.computers' },
+  { to: '/api-access', label: 'nav.apiAccess' },
   { to: '/performance', label: 'nav.performance' },
   { to: '/diagnostics', label: 'nav.diagnostics' },
-  { to: '/profiles', label: 'nav.profiles', advanced: true },
-  { to: '/tools', label: 'nav.tools', advanced: true },
-  { to: '/api-access', label: 'nav.apiAccess', advanced: true },
 ] as const
 
 /** A nav entry: the rune, then the label in the UI language. */
@@ -46,10 +52,30 @@ function NavItem({ to, label }: { to: string; label: string }) {
   )
 }
 
+/** A group of links under a heading. */
+function NavGroup({ heading, items }: { heading: string; items: readonly { to: string; label: string }[] }) {
+  const { t } = useTranslation()
+  return (
+    <div>
+      <p className="label-caps mb-1 px-2.5">{heading}</p>
+      <div className="flex flex-col gap-0.5">
+        {items.map(({ to, label }) => (
+          <NavItem key={to} to={to} label={t(label)} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /** open shows the sidebar as a drawer below the md breakpoint; wider, it is always shown. */
 export function Sidebar({ open = false, ref }: { open?: boolean; ref?: Ref<HTMLDivElement> }) {
   const { t } = useTranslation()
-  const advancedMode = useUIStore((s) => s.advancedMode)
+  const { pathname } = useLocation()
+  const administerChosen = useUIStore((s) => s.administerOpen)
+  const setAdministerOpen = useUIStore((s) => s.setAdministerOpen)
+  // A page in Administer that is open shows its group, so the current page is always in view.
+  const onAdministerPage = administerNav.some(({ to }) => pathname === to || pathname.startsWith(`${to}/`))
+  const administerOpen = administerChosen || onAdministerPage
   const healthQuery = useQuery({
     queryKey: ['health'],
     queryFn: async () => {
@@ -116,10 +142,6 @@ export function Sidebar({ open = false, ref }: { open?: boolean; ref?: Ref<HTMLD
       ? 'bg-warning'
       : 'bg-success'
 
-  const systemItems = systemNav.filter(
-    (item) => !('advanced' in item && item.advanced) || advancedMode,
-  )
-
   return (
     // App chrome, not complementary content: the brand and status are the
     // page header, the links are the Main nav, and subsystem status is the footer.
@@ -161,24 +183,48 @@ export function Sidebar({ open = false, ref }: { open?: boolean; ref?: Ref<HTMLD
         </div>
       </header>
 
-      <nav className="flex flex-1 flex-col gap-4 overflow-y-auto px-2.5 pb-3" aria-label={t('nav.label')}>
-        <div>
-          <p className="label-caps mb-1 px-2.5">{t('nav.main')}</p>
-          <div className="flex flex-col gap-0.5">
-            {mainNav.map(({ to, label }) => (
-              <NavItem key={to} to={to} label={t(label)} />
-            ))}
+      <nav className="flex min-h-0 flex-1 flex-col px-2.5 pb-3" aria-label={t('nav.label')}>
+        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">
+          <NavGroup heading={t('nav.use')} items={useNav} />
+          <NavGroup heading={t('nav.customize')} items={customizeNav} />
+
+          <div>
+            <button
+              type="button"
+              className="label-caps mb-1 flex w-full items-center justify-between rounded-md px-2.5 py-1 hover:text-ink"
+              aria-expanded={administerOpen}
+              aria-controls="nav-administer"
+              disabled={onAdministerPage}
+              title={onAdministerPage ? undefined : t('nav.administerHint')}
+              onClick={() => setAdministerOpen(!administerChosen)}
+            >
+              <span>{t('nav.administer')}</span>
+              <svg
+                viewBox="0 0 16 16"
+                className={['h-3 w-3 transition-transform', administerOpen ? 'rotate-90' : 'rtl:rotate-180'].join(' ')}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.75}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="m6 3.5 4.5 4.5L6 12.5" />
+              </svg>
+            </button>
+            {administerOpen ? (
+              <div id="nav-administer" className="flex flex-col gap-0.5">
+                {administerNav.map(({ to, label }) => (
+                  <NavItem key={to} to={to} label={t(label)} />
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
 
-        <div>
-          <p className="label-caps mb-1 px-2.5">{t('nav.system')}</p>
-          <div className="flex flex-col gap-0.5">
-            {systemItems.map(({ to, label }) => (
-              <NavItem key={to} to={to} label={t(label)} />
-            ))}
-            <NavItem to="/settings" label={t('nav.settings')} />
-          </div>
+        {/* Settings stays in view below the groups, however far they scroll. */}
+        <div className="flex flex-col gap-0.5 border-t border-line/50 pt-2">
+          <NavItem to="/settings" label={t('nav.settings')} />
         </div>
       </nav>
 

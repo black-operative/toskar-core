@@ -3,8 +3,10 @@
   "nav": {
     "label": "메인",
     "open": "메뉴 열기",
-    "main": "메인",
-    "system": "시스템",
+    "use": "사용",
+    "customize": "맞춤 설정",
+    "administer": "관리",
+    "administerHint": "학습, 컴퓨터, API 액세스, 성능, 진단 표시 또는 숨기기",
     "chat": "채팅",
     "automations": "자동화",
     "models": "모델",

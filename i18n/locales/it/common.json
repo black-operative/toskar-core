@@ -3,8 +3,10 @@
   "nav": {
     "label": "Principale",
     "open": "Apri il menu",
-    "main": "Principale",
-    "system": "Sistema",
+    "use": "Usa",
+    "customize": "Personalizza",
+    "administer": "Amministra",
+    "administerHint": "Mostra o nascondi Addestra, Computer, Accesso API, Prestazioni e Diagnostica",
     "chat": "Chat",
     "automations": "Automazioni",
     "models": "Modelli",

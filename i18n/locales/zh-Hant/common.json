@@ -3,8 +3,10 @@
   "nav": {
     "label": "主要",
     "open": "開啟選單",
-    "main": "主要",
-    "system": "系統",
+    "use": "使用",
+    "customize": "自訂",
+    "administer": "管理",
+    "administerHint": "顯示或隱藏訓練、電腦、API 存取、效能和診斷",
     "chat": "聊天",
     "automations": "自動化",
     "models": "模型",

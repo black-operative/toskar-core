@@ -3,8 +3,10 @@
   "nav": {
     "label": "Principal",
     "open": "Abrir el menú",
-    "main": "Principal",
-    "system": "Sistema",
+    "use": "Usar",
+    "customize": "Personalizar",
+    "administer": "Administrar",
+    "administerHint": "Mostrar u ocultar Entrenar, Computadoras, Acceso a la API, Rendimiento y Diagnóstico",
     "chat": "Chat",
     "automations": "Automatizaciones",
     "models": "Modelos",

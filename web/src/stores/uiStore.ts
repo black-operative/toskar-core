@@ -11,6 +11,7 @@ const defaultUIState = {
   activeProfileId: null as string | null,
   chatHistoryPinned: false,
   pinnedConversationIds: [] as string[],
+  administerOpen: false,
   lastChat: null as LastChat | null,
 }
 
@@ -27,6 +28,9 @@ interface UIState {
   activeProfileId: string | null
   chatHistoryPinned: boolean
   pinnedConversationIds: string[]
+  /** The sidebar's Administer group is open (#203); collapsed by default. */
+  administerOpen: boolean
+  setAdministerOpen: (open: boolean) => void
   /** Reopened when Chat is opened again soon after (see chat/resume.ts). */
   lastChat: LastChat | null
   setLastChat: (chat: LastChat | null) => void
@@ -73,6 +77,7 @@ export const useUIStore = create<UIState>()(
       setOnboardingComplete: (complete) => set({ onboardingComplete: complete }),
       setActiveProfileId: (id) => set({ activeProfileId: id }),
       setChatHistoryPinned: (pinned) => set({ chatHistoryPinned: pinned }),
+      setAdministerOpen: (open) => set({ administerOpen: open }),
       setLastChat: (chat) => set({ lastChat: chat }),
       togglePinnedConversation: (id) =>
         set((state) => {

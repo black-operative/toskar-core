@@ -3,8 +3,10 @@
   "nav": {
     "label": "主菜单",
     "open": "打开菜单",
-    "main": "主要",
-    "system": "系统",
+    "use": "使用",
+    "customize": "自定义",
+    "administer": "管理",
+    "administerHint": "显示或隐藏训练、电脑、API 访问、性能和诊断",
     "chat": "聊天",
     "automations": "自动化",
     "models": "模型",

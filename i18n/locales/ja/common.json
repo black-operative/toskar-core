@@ -3,8 +3,10 @@
   "nav": {
     "label": "メイン",
     "open": "メニューを開く",
-    "main": "メイン",
-    "system": "システム",
+    "use": "使う",
+    "customize": "カスタマイズ",
+    "administer": "管理",
+    "administerHint": "トレーニング、コンピュータ、APIアクセス、パフォーマンス、診断を表示または非表示",
     "chat": "チャット",
     "automations": "自動化",
     "models": "モデル",
