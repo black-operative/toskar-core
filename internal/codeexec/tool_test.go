@@ -92,7 +92,10 @@ func TestSandboxBlocks(t *testing.T) {
 	if err != nil {
 		t.Skip("no home folder")
 	}
-	outside := filepath.Join(os.TempDir(), "yggdrasil-sandbox-escape")
+	// The write goes to the home folder, outside the sandbox everywhere. Not
+	// /tmp: bubblewrap gives the code its own empty /tmp, so a write there
+	// succeeds and is gone with the sandbox.
+	outside := filepath.Join(home, ".toskar-sandbox-escape")
 	defer os.Remove(outside)
 	res, err := tool.Execute(ctx, map[string]any{"code": `
 import socket
