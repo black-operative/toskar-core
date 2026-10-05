@@ -122,6 +122,16 @@ jobs:
           if [ "$GOOS" = "windows" ]; then ext=".exe"; fi
           go build -o "bin/${GOOS}-${GOARCH}/toskar${ext}" ./cmd/daemon
           go build -o "bin/${GOOS}-${GOARCH}/toskarctl${ext}" ./cmd/devctl
+      # Tests run only on Linux and macOS runners; vet type-checks them for
+      # each target too, so a Unix-only call in a shared test file fails here.
+      - name: Type-check tests
+        env:
+          CGO_ENABLED: "0"
+          TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          export GOOS="${TARGET%/*}" GOARCH="${TARGET#*/}"
+          go vet ./...
 
   installer:
     # install.sh on a real Ubuntu with systemd: the .deb from a local

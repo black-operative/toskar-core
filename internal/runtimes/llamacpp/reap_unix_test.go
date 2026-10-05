@@ -6,9 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -18,31 +16,6 @@ import (
 
 	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
-
-// runFakeLlama serves /health on --port and starts a child process, as a
-// llama-server with helper processes would, then waits to be stopped.
-func runFakeLlama() {
-	if os.Getenv("YGG_FAKE_CHILD") == "1" {
-		time.Sleep(time.Hour)
-		os.Exit(0)
-	}
-	port := ""
-	for i, a := range os.Args {
-		if a == "--port" && i+1 < len(os.Args) {
-			port = os.Args[i+1]
-		}
-	}
-	child := exec.Command(os.Args[0])
-	child.Env = append(os.Environ(), "YGG_FAKE_CHILD=1")
-	if err := child.Start(); err != nil {
-		os.Exit(2)
-	}
-	_ = os.WriteFile(os.Getenv(fakeLlamaEnv), []byte(strconv.Itoa(child.Process.Pid)), 0o600)
-	mux := http.NewServeMux()
-	mux.HandleFunc("/health", func(w http.ResponseWriter, _ *http.Request) { _, _ = w.Write([]byte(`{"status":"ok"}`)) })
-	_ = http.ListenAndServe("127.0.0.1:"+port, mux)
-	os.Exit(1)
-}
 
 func alive(pid int) bool {
 	err := syscall.Kill(pid, 0)
