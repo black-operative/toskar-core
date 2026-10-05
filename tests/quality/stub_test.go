@@ -8,8 +8,6 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
-	"os"
-	"regexp"
 	"strings"
 	"sync"
 	"testing"
@@ -18,6 +16,7 @@ import (
 	"github.com/yeixio/toskar-core/internal/app"
 	"github.com/yeixio/toskar-core/internal/events"
 	"github.com/yeixio/toskar-core/internal/mimir"
+	"github.com/yeixio/toskar-core/internal/webfixtures"
 	"github.com/yeixio/toskar-core/pkg/contracts"
 	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
@@ -37,101 +36,6 @@ func (d stubDriver) Name() string {
 		return "served"
 	}
 	return "stub"
-}
-
-// webSite is a topic in web.json: the searches it answers and its pages.
-type webSite struct {
-	Match   string `json:"match"`
-	Results []struct {
-		Title   string `json:"title"`
-		URL     string `json:"url"`
-		Snippet string `json:"snippet"`
-	} `json:"results"`
-	Pages map[string]string `json:"pages"`
-}
-
-// webFixtures is web.json, which the iPhone app's quality run serves too.
-type webFixtures struct {
-	Sites []webSite `json:"sites"`
-}
-
-func loadWeb(t *testing.T) webFixtures {
-	t.Helper()
-	raw, err := os.ReadFile("web.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var w webFixtures
-	if err := json.Unmarshal(raw, &w); err != nil {
-		t.Fatal(err)
-	}
-	return w
-}
-
-// fakeTool stands in for a web tool.
-type fakeTool struct {
-	id  string
-	run func(args map[string]any) map[string]any
-}
-
-func (f fakeTool) ID() string          { return f.id }
-func (f fakeTool) DisplayName() string { return f.id }
-func (f fakeTool) Description() string { return f.id }
-func (f fakeTool) Execute(_ context.Context, args map[string]any) (map[string]any, error) {
-	return f.run(args), nil
-}
-
-// fakeWeb answers searches and page reads from web.json: a search gets the
-// results of the first site whose pattern matches it, and a page is found
-// by the longest URL prefix of any site.
-func fakeWeb(t *testing.T, a *app.App) {
-	w := loadWeb(t)
-	a.Tools.Register(fakeTool{id: "internet.search", run: func(args map[string]any) map[string]any {
-		q, _ := args["query"].(string)
-		for _, site := range w.Sites {
-			if regexp.MustCompile(site.Match).MatchString(q) {
-				var results []any
-				for _, r := range site.Results {
-					results = append(results, map[string]any{"title": r.Title, "url": r.URL, "snippet": r.Snippet})
-				}
-				return map[string]any{"results": results}
-			}
-		}
-		slug := strings.ReplaceAll(strings.ToLower(q), " ", "-")
-		return map[string]any{"results": []any{
-			map[string]any{"title": q + " - Example", "url": "https://example.com/" + slug, "snippet": "Facts about " + q + "."},
-		}}
-	}})
-	// Places come from the same sites, so a run never reaches OpenStreetMap.
-	a.Tools.Register(fakeTool{id: "places.search", run: func(args map[string]any) map[string]any {
-		q, _ := args["query"].(string)
-		near, _ := args["near"].(string)
-		var places []any
-		for _, site := range w.Sites {
-			if regexp.MustCompile(site.Match).MatchString(q + " " + near) {
-				for _, r := range site.Results {
-					places = append(places, map[string]any{"name": r.Title, "address": r.Snippet, "website": r.URL})
-				}
-				break
-			}
-		}
-		return map[string]any{"places": places}
-	}})
-	a.Tools.Register(fakeTool{id: "internet.open", run: func(args map[string]any) map[string]any {
-		u, _ := args["url"].(string)
-		best, content := "", ""
-		for _, site := range w.Sites {
-			for prefix, page := range site.Pages {
-				if strings.HasPrefix(u, prefix) && len(prefix) > len(best) {
-					best, content = prefix, page
-				}
-			}
-		}
-		if content == "" {
-			content = "This page has no more about that."
-		}
-		return map[string]any{"title": "Page", "url": u, "content": content}
-	}})
 }
 
 // served sends one model call to an OpenAI-compatible server, at
@@ -188,7 +92,11 @@ func (d stubDriver) Run(t *testing.T, c Case) Result {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { _ = a.DB.Close() })
-	fakeWeb(t, a)
+	web, err := webfixtures.Load("web.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	webfixtures.Register(a.Tools, web)
 	ctx := context.Background()
 
 	// The script: each model call gets the next reply; the rest say "done".

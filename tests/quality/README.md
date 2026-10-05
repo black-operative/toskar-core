@@ -50,7 +50,9 @@ expectations and pages, so the phone is held to what core does.
   (`TOSKAR_QUALITY_MIN_PASS`); `TOSKAR_QUALITY_REPORT` writes every answer to a
   Markdown report. The Release workflow runs this before it publishes, and the
   Quality workflow runs it on pull requests that change how chat decides.
-- **Real models on a daemon:** start a daemon with models installed, then run
+- **Real models on a daemon:** start a daemon with models installed, and with
+  `TOSKAR_WEB_FIXTURES=tests/quality/web.json` so its web tools read the
+  pages above instead of the internet (it logs a warning when they do), then run
   `make quality-real`, setting `TOSKAR_QUALITY_URL` if the daemon is not at
   `http://127.0.0.1:7331`, and `TOSKAR_QUALITY_KEY` if it needs an API key.
   `TOSKAR_QUALITY_INSTALL=recommended` first installs the models the daemon

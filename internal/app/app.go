@@ -66,6 +66,7 @@ import (
 	"github.com/yeixio/toskar-core/internal/tools"
 	"github.com/yeixio/toskar-core/internal/training"
 	"github.com/yeixio/toskar-core/internal/version"
+	"github.com/yeixio/toskar-core/internal/webfixtures"
 	"github.com/yeixio/toskar-core/pkg/contracts"
 	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
@@ -207,6 +208,16 @@ func New(opts Options) (*App, error) {
 	logger := opts.Logger
 	if logger == nil {
 		logger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
+	}
+	// A quality run answers the web from fixed pages (tests/quality/web.json)
+	// so every model reads the same thing; never on for real use. Read
+	// before anything is opened, so a bad file leaves nothing behind.
+	var web *webfixtures.Fixtures
+	if path := config.Env("WEB_FIXTURES"); path != "" {
+		var err error
+		if web, err = webfixtures.Load(path); err != nil {
+			return nil, fmt.Errorf("web fixtures: %w", err)
+		}
 	}
 
 	cfgMgr, err := config.NewManager(opts.DataDir)
@@ -784,6 +795,11 @@ func New(opts Options) (*App, error) {
 		Join:            acceptor.Join,
 		Leave:           a.peerLeft,
 	})
+
+	if web != nil {
+		webfixtures.Register(a.Tools, web)
+		logger.Warn("web tools answer from test pages, not the internet", "file", config.Env("WEB_FIXTURES"))
+	}
 
 	return a, nil
 }

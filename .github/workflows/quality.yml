@@ -59,7 +59,8 @@ jobs:
   # with the models it recommends for the self-hosted runner's hardware
   # (#296). The runner's own Toskar, if any, is never used. Everything built
   # from the checkout runs in containers under the runner's rootless Docker:
-  # the daemon with a throwaway data folder, and the tests beside it, so a
+  # the daemon with a throwaway data folder and the web answered from
+  # tests/quality/web.json (TOSKAR_WEB_FIXTURES), and the tests beside it, so a
   # branch dispatched here can't touch the machine. Models and runtimes are
   # kept in Docker volumes, so only the first run downloads them. It runs
   # when the repository variable QUALITY_RUNNER is "docker".
@@ -107,6 +108,8 @@ jobs:
             --oom-score-adj 1000 --pids-limit 4096 \
             -v toskar-quality-models:/data/models \
             -v toskar-quality-runtimes:/data/runtimes \
+            -v "$PWD/tests/quality/web.json:/fixtures/web.json:ro" \
+            -e TOSKAR_WEB_FIXTURES=/fixtures/web.json \
             -e TOSKAR_API_KEY="$key" \
             -e TOSKAR_DISCOVERY_ENABLED=false \
             -e TOSKAR_INTERNAL_HOST=127.0.0.1 \
