@@ -66,6 +66,9 @@ expectations and pages, so the phone is held to what core does.
   first run downloads them. **Run workflow** takes a `ref` to test a branch
   before it merges; the workflow itself always comes from main. Extra
   `docker run` flags for the daemon, such as GPU access, go in the variable
-  `QUALITY_DOCKER_FLAGS`.
+  `QUALITY_DOCKER_FLAGS`. The daemon is held to `QUALITY_MEMORY` (default
+  `32g`, no swap) and `QUALITY_CPUS` (default three quarters of the cores),
+  and picks its models to fit; each run first removes containers an
+  interrupted run left behind.
 
 Add a case when a change fixes a behavior, so it stays fixed.

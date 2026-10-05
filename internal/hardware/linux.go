@@ -7,6 +7,7 @@ import (
 	"context"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
@@ -63,6 +64,14 @@ func platformMemory(ctx context.Context) (contracts.MemoryInfo, error) {
 			swapTotal = val
 		case "SwapFree:":
 			swapFree = val
+		}
+	}
+	if raw, err := os.ReadFile("/proc/self/cgroup"); err == nil {
+		if group, ok := cgroupGroup(string(raw)); ok {
+			dir := filepath.Join("/sys/fs/cgroup", group)
+			maxRaw, _ := os.ReadFile(filepath.Join(dir, "memory.max"))
+			curRaw, _ := os.ReadFile(filepath.Join(dir, "memory.current"))
+			total, avail = capByCgroup(total, avail, string(maxRaw), string(curRaw))
 		}
 	}
 	info := contracts.MemoryInfo{TotalBytes: total, AvailableBytes: avail, SwapTotalBytes: swapTotal}

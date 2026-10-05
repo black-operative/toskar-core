@@ -63,13 +63,28 @@ jobs:
   # branch dispatched here can't touch the machine. Models and runtimes are
   # kept in Docker volumes, so only the first run downloads them. It runs
   # when the repository variable QUALITY_RUNNER is "docker".
+  #
+  # The runner is someone's computer, so the daemon is held to part of it:
+  # QUALITY_MEMORY (default 32g, with no swap) and QUALITY_CPUS (default
+  # three quarters of the cores). It picks its models to fit that memory,
+  # and if it still runs out, the kernel stops the container, not the
+  # machine.
   real-models:
     if: vars.QUALITY_RUNNER == 'docker'
     runs-on: [self-hosted, toskar-models]
     timeout-minutes: 300
     env:
       NAME: toskar-quality-${{ github.run_id }}-${{ github.run_attempt }}
+      MEMORY: ${{ vars.QUALITY_MEMORY || '32g' }}
+      CPUS: ${{ vars.QUALITY_CPUS }}
     steps:
+      - name: Remove what an interrupted run left
+        run: |
+          # A run cut off by a crash or a runner restart never cleans up, and
+          # its daemon would keep holding memory.
+          docker ps -aq --filter name=toskar-quality- | xargs -r docker rm -f
+          docker network ls -q --filter name=toskar-quality- | xargs -r docker network rm
+          docker images -q --filter reference='toskar-quality-*' | xargs -r docker image rm -f
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref || github.ref }}
@@ -84,8 +99,12 @@ jobs:
           echo "::add-mask::$key"
           echo "QUALITY_KEY=$key" >> "$GITHUB_ENV"
           docker network create "$NAME"
+          cpus="${CPUS:-$(( $(nproc) * 3 / 4 ))}"
+          echo "Daemon limited to $MEMORY of memory and $cpus CPUs"
           docker run -d --name "$NAME" --network "$NAME" \
             --cap-drop ALL --security-opt no-new-privileges \
+            --memory "$MEMORY" --memory-swap "$MEMORY" --cpus "$cpus" \
+            --oom-score-adj 1000 --pids-limit 4096 \
             -v toskar-quality-models:/data/models \
             -v toskar-quality-runtimes:/data/runtimes \
             -e TOSKAR_API_KEY="$key" \
@@ -98,6 +117,7 @@ jobs:
           mkdir -p .quality
           docker run --rm --network "$NAME" \
             --cap-drop ALL --security-opt no-new-privileges \
+            --memory 4g --memory-swap 4g --cpus 2 \
             -v "$PWD:/src" -w /src \
             -v toskar-quality-go:/go \
             -e TOSKAR_QUALITY_URL="http://$NAME:7331" \
@@ -120,7 +140,11 @@ jobs:
           if-no-files-found: ignore
       - name: Daemon log
         if: failure()
-        run: docker logs --tail 200 "$NAME" 2>&1 || true
+        run: |
+          if [ "$(docker inspect -f '{{.State.OOMKilled}}' "$NAME" 2>/dev/null)" = true ]; then
+            echo "::error::The daemon ran out of its $MEMORY of memory. Raise QUALITY_MEMORY or have it pick a smaller model."
+          fi
+          docker logs --tail 200 "$NAME" 2>&1 || true
       - name: Clean up
         if: always()
         run: |

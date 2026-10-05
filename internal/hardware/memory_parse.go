@@ -102,3 +102,39 @@ func parseSizeToken(token string) (uint64, bool) {
 	}
 	return uint64(f * mult), true
 }
+
+// cgroupGroup reads this process's cgroup v2 path from /proc/self/cgroup
+// ("0::/system.slice/toskar.service", or "0::/" inside a container).
+func cgroupGroup(text string) (string, bool) {
+	for _, line := range strings.Split(text, "\n") {
+		if rest, ok := strings.CutPrefix(strings.TrimSpace(line), "0::"); ok {
+			return rest, true
+		}
+	}
+	return "", false
+}
+
+// capByCgroup limits total and available memory to a cgroup v2 memory
+// limit (memory.max, with memory.current in use), so a daemon in a
+// container or a service with MemoryMax= picks models that fit what it may
+// use rather than the whole machine. "max" or an unreadable value leaves
+// them alone.
+func capByCgroup(total, avail uint64, maxText, currentText string) (uint64, uint64) {
+	limit, err := strconv.ParseUint(strings.TrimSpace(maxText), 10, 64)
+	if err != nil || limit == 0 || (total > 0 && limit >= total) {
+		return total, avail
+	}
+	total = limit
+	if used, err := strconv.ParseUint(strings.TrimSpace(currentText), 10, 64); err == nil {
+		free := uint64(0)
+		if used < limit {
+			free = limit - used
+		}
+		if free < avail || avail == 0 {
+			avail = free
+		}
+	} else if avail > limit {
+		avail = limit
+	}
+	return total, avail
+}
