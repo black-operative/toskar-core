@@ -143,6 +143,8 @@ The same job opens a Homebrew formula pull request, updates the `apt` branch, an
 
 A pull request does not edit `CHANGELOG.md`. It adds a fragment under [`changes/unreleased/`](../changes/unreleased/README.md), a small Markdown file with `### Added`, `### Changed`, or `### Fixed` (and so on) and one bullet per change. Two pull requests never touch the same fragment, so they cannot conflict over the changelog. `python3 scripts/changelog.py preview` shows the next release's section; the release preparation runs `python3 scripts/changelog.py release <version>`, which writes it into `CHANGELOG.md` and removes the fragments.
 
+A new minor release also updates [`site/highlights.json`](../site/highlights.json), the few highlights toskar.ai shows as "New in 1.6". `scripts/changelog.py check` fails until its `version` matches the latest stable release in `CHANGELOG.md`, so the site never shows an older release's news.
+
 Other files many pull requests touch merge cleanly when each change goes next to related lines rather than at the end of the file:
 
 - **`api/openapi.yaml`:** add a path beside the other paths for the same area (all the `/api/v1/notifications/...` paths together), and a schema beside related schemas, not at the end of `components`.

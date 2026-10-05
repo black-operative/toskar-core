@@ -8,6 +8,7 @@ After a successful release, the workflow sends a `core-release` event to `yeixio
 
 - [ ] Version passed into the release build matches the tag (`scripts/build/package-core-release.sh` strips a leading `v` in CI).
 - [ ] The release's section is in [CHANGELOG.md](../CHANGELOG.md): `python3 scripts/changelog.py release <version>` writes it from the fragments in [changes/unreleased/](../changes/unreleased/) and removes them. Edit the section's opening sentence by hand if the release needs one.
+- [ ] For a new minor version (1.7.0, not 1.6.2), [site/highlights.json](../site/highlights.json) has its highlights: 3 to 9 short items, each with a realm, a title, and a sentence, written for the people who use Toskar. toskar.ai shows them as "New in 1.7". `python3 scripts/changelog.py check`, which CI runs, fails until the file's `version` matches the latest release in CHANGELOG.md.
 - [ ] CI is green on the commit being tagged, including `gofmt`, `go vet`, golangci-lint, `go test`, web lint, the web build, and the cross-compile job.
 - [ ] `govulncheck` from the security workflow is green. `pnpm audit` is informational today because that step does not fail the job. Read its output.
 - [ ] Linux amd64, Linux arm64, macOS amd64, macOS arm64, and Windows amd64 archives or packages built.

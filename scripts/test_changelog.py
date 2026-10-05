@@ -2,6 +2,7 @@
 """Tests for scripts/changelog.py."""
 
 import importlib.util
+import json
 import pathlib
 import tempfile
 import unittest
@@ -62,6 +63,49 @@ class FragmentTest(unittest.TestCase):
 
     def test_repository_fragments_are_valid(self):
         changelog.gather(changelog.fragment_files())
+
+
+def highlights(version="1.4", count=3, **item):
+    entry = {"realm": "Mimir", "title": "Ask your documents", "text": "Answers cite their sources."}
+    entry.update(item)
+    return json.dumps({"schemaVersion": 1, "version": version, "items": [entry] * count})
+
+
+class HighlightsTest(unittest.TestCase):
+    def test_current_highlights_pass(self):
+        changelog.check_highlights(CHANGELOG, highlights())
+
+    def test_latest_minor_skips_prereleases(self):
+        text = CHANGELOG.replace("## [1.4.0]", "## [1.5.0-beta.1] - 2026-10-03\n\n### Added\n\n- Beta.\n\n## [1.4.0]")
+        self.assertEqual(changelog.latest_minor(text), "1.4")
+        changelog.check_highlights(text, highlights())
+
+    def test_a_new_minor_release_needs_new_highlights(self):
+        text = CHANGELOG.replace("## [1.4.0]", "## [1.5.0] - 2026-10-03\n\n### Added\n\n- New.\n\n## [1.4.0]")
+        with self.assertRaisesRegex(changelog.FragmentError, "write the 1.5 highlights"):
+            changelog.check_highlights(text, highlights())
+        changelog.check_highlights(text, highlights("1.5"))
+
+    def test_a_patch_release_keeps_them(self):
+        text = CHANGELOG.replace("## [1.4.0]", "## [1.4.1] - 2026-10-03\n\n### Fixed\n\n- Fix.\n\n## [1.4.0]")
+        changelog.check_highlights(text, highlights())
+
+    def test_bad_highlights(self):
+        for text, message in [
+            (None, "missing"),
+            ("{", "not valid JSON"),
+            (json.dumps({"version": "1.4", "items": []}), "schemaVersion"),
+            (highlights(count=2), "3 to 9 items"),
+            (highlights(count=10), "3 to 9 items"),
+            (highlights(realm=""), "needs a realm"),
+            (highlights(title="x" * 61), "title is over"),
+            (highlights(text="x" * 281), "text is over"),
+        ]:
+            with self.subTest(message=message), self.assertRaisesRegex(changelog.FragmentError, message):
+                changelog.check_highlights(CHANGELOG, text)
+
+    def test_repository_highlights_are_current(self):
+        changelog.check_highlights(changelog.CHANGELOG.read_text(encoding="utf-8"), changelog.read_highlights())
 
 
 if __name__ == "__main__":

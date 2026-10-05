@@ -322,7 +322,7 @@ The control API and the OpenAI-compatible API require a bearer token whenever th
 | [Privacy](docs/privacy.md) | What stays local and what can leave |
 | [Development](docs/development.md) | Build, test, lint, and CI |
 
-The public site is [toskar.ai](https://toskar.ai). It reads the version index, guide snapshots, the latest GitHub release, and [`site/content.json`](site/content.json) from this repository.
+The public site is [toskar.ai](https://toskar.ai). It reads the version index, guide snapshots, the changelog, the latest GitHub release, and [`site/highlights.json`](site/highlights.json) (the latest minor release's highlights, shown as "New in 1.6") from this repository. Its own text no longer comes from [`site/content.json`](site/content.json).
 
 ### Feature specifications
 

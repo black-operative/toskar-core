@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "1.6",
+  "items": [
+    {
+      "realm": "Ratatoskr",
+      "title": "Yggdrasil is now Toskar",
+      "text": "Same engine, new name. Existing installs keep their data, settings, and paired computers, and Homebrew and apt move them over on the next upgrade."
+    },
+    {
+      "realm": "Valgrind",
+      "title": "Your connected apps keep working",
+      "text": "API keys, MCP settings in Claude Desktop, Cursor, and VS Code, webhooks, and YGGDRASIL_ variables all still work, so nothing you connected needs changing."
+    },
+    {
+      "realm": "Ratatoskr",
+      "title": "Chat picks up where you left off",
+      "text": "Leave Chat for another page and come back, and the conversation you were in reopens, context gauge and all, instead of starting over."
+    },
+    {
+      "realm": "Bifrost",
+      "title": "Private AI on your iPhone",
+      "text": "Toskar Mobile can run a smaller model on the phone itself, look things up on the web with its sources, and keep its memories on the phone."
+    },
+    {
+      "realm": "Odin",
+      "title": "The same chat choices on the phone",
+      "text": "Auto, the profile, which computer answers, effort, and memory: the iPhone app offers the chat options the web UI has."
+    },
+    {
+      "realm": "Heimdall",
+      "title": "One Toskar per computer",
+      "text": "When another Toskar already runs on this computer, the desktop app says so instead of quietly showing the other one's models and chats."
+    }
+  ]
+}

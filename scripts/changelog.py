@@ -6,6 +6,10 @@ changes/unreleased/ instead of editing CHANGELOG.md, so pull requests do not
 conflict over the changelog. A release gathers the fragments into a dated
 section of CHANGELOG.md.
 
+site/highlights.json holds the few highlights toskar.ai shows as "New in
+1.6" for the latest minor release. A release of a new minor version updates
+it in the same pull request; check fails until it does.
+
 A fragment is Markdown with Keep a Changelog section headings and bullets:
 
     ### Added
@@ -13,7 +17,9 @@ A fragment is Markdown with Keep a Changelog section headings and bullets:
     - Push notifications through ntfy, ...
 
 Usage:
-    scripts/changelog.py check              validate every fragment
+    scripts/changelog.py check              validate every fragment, and that
+                                            site/highlights.json is for the
+                                            latest release
     scripts/changelog.py preview            print the Unreleased section
     scripts/changelog.py release 1.5.0 [--date 2026-10-02]
                                             write the release into CHANGELOG.md
@@ -24,6 +30,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import json
 import pathlib
 import re
 import sys
@@ -31,6 +38,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FRAGMENTS = ROOT / "changes" / "unreleased"
 CHANGELOG = ROOT / "CHANGELOG.md"
+HIGHLIGHTS = ROOT / "site" / "highlights.json"
 
 # Keep a Changelog's sections, in the order they are written.
 SECTIONS = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
@@ -38,6 +46,11 @@ SECTIONS = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
 HEADING = re.compile(r"^###\s+(.+?)\s*$")
 VERSION = re.compile(r"^\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d+)?$")
 UNRELEASED = "## [Unreleased]"
+# A stable release's heading; the newest is first in CHANGELOG.md.
+STABLE_RELEASE = re.compile(r"^## \[(\d+)\.(\d+)\.\d+\]", re.M)
+HIGHLIGHT_COUNT = (3, 9)
+HIGHLIGHT_TITLE_MAX = 60
+HIGHLIGHT_TEXT_MAX = 280
 
 
 class FragmentError(Exception):
@@ -116,6 +129,51 @@ def release(changelog: str, version: str, date: str, body: str) -> str:
     return head + UNRELEASED + pointer.rstrip() + "\n\n" + section + older
 
 
+def latest_minor(changelog: str) -> str | None:
+    """The newest stable release's minor version in CHANGELOG.md, such as 1.6."""
+    m = STABLE_RELEASE.search(changelog)
+    return f"{m.group(1)}.{m.group(2)}" if m else None
+
+
+def check_highlights(changelog: str, highlights_text: str | None) -> None:
+    """site/highlights.json is valid and describes the latest minor release."""
+    minor = latest_minor(changelog)
+    if minor is None:
+        return
+    name = "site/highlights.json"
+    if highlights_text is None:
+        raise FragmentError(f"{name} is missing; write the highlights of {minor}")
+    try:
+        data = json.loads(highlights_text)
+    except json.JSONDecodeError as err:
+        raise FragmentError(f"{name} is not valid JSON: {err}") from err
+    if not isinstance(data, dict) or data.get("schemaVersion") != 1:
+        raise FragmentError(f"{name} needs \"schemaVersion\": 1")
+    if data.get("version") != minor:
+        raise FragmentError(
+            f"{name} is for {data.get('version')!r}, but the latest release in CHANGELOG.md is {minor}: "
+            f"write the {minor} highlights that toskar.ai shows as \"New in {minor}\""
+        )
+    items = data.get("items")
+    low, high = HIGHLIGHT_COUNT
+    if not isinstance(items, list) or not low <= len(items) <= high:
+        raise FragmentError(f"{name} needs {low} to {high} items")
+    for number, item in enumerate(items, 1):
+        if not isinstance(item, dict):
+            raise FragmentError(f"{name}: item {number} is not an object")
+        for key in ("realm", "title", "text"):
+            if not isinstance(item.get(key), str) or not item[key].strip():
+                raise FragmentError(f"{name}: item {number} needs a {key}")
+        if len(item["title"]) > HIGHLIGHT_TITLE_MAX:
+            raise FragmentError(f"{name}: item {number}'s title is over {HIGHLIGHT_TITLE_MAX} characters")
+        if len(item["text"]) > HIGHLIGHT_TEXT_MAX:
+            raise FragmentError(f"{name}: item {number}'s text is over {HIGHLIGHT_TEXT_MAX} characters")
+
+
+def read_highlights() -> str | None:
+    return HIGHLIGHTS.read_text(encoding="utf-8") if HIGHLIGHTS.is_file() else None
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -130,7 +188,8 @@ def main(argv: list[str]) -> int:
     try:
         merged = gather(paths)
         if args.command == "check":
-            print(f"{len(paths)} changelog fragment(s) are valid")
+            check_highlights(CHANGELOG.read_text(encoding="utf-8"), read_highlights())
+            print(f"{len(paths)} changelog fragment(s) are valid, and site/highlights.json is current")
         elif args.command == "preview":
             print(render(merged) or "No unreleased changes.")
         elif args.command == "release":
@@ -139,6 +198,10 @@ def main(argv: list[str]) -> int:
             for path in paths:
                 path.unlink()
             print(f"Wrote {args.version} to CHANGELOG.md from {len(paths)} fragment(s)")
+            try:
+                check_highlights(text, read_highlights())
+            except FragmentError as err:
+                print(f"next: {err}. CI fails until it is updated.", file=sys.stderr)
     except FragmentError as err:
         print(f"error: {err}", file=sys.stderr)
         return 1
