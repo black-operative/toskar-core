@@ -51,9 +51,10 @@ jobs:
 
   real-models:
     if: vars.QUALITY_DAEMON_URL != ''
-    # The label is set on the self-hosted runner itself; rename it there
-    # before changing it here, or the job waits for a runner forever.
-    runs-on: [self-hosted, yggdrasil-models]
+    # A self-hosted runner with real models installed, labeled
+    # toskar-models; none is set up yet (#296), so the job
+    # is skipped until QUALITY_DAEMON_URL is set.
+    runs-on: [self-hosted, toskar-models]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v7
