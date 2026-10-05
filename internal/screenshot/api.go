@@ -105,8 +105,27 @@ func screenshotGET(path string) (string, bool) {
 	case path == "/api/v1/diagnostics/runtime":
 		return screenshotRuntimeHistory(), true
 	// Setup status is an object, never a list: the Tools page reads its models.
-	case path == "/api/v1/images/setup" || path == "/api/v1/video/setup":
+	// Images are set up, so the Tools page shows a working setup; video isn't.
+	case path == "/api/v1/images/setup":
+		return screenshotImageSetup, true
+	case path == "/api/v1/video/setup":
 		return `{"supported":true,"ready":false,"program":false,"release":"","models":[]}`, true
+	case path == "/api/v1/training/ais":
+		return screenshotAIs, true
+	case path == "/api/v1/training/ais/ai-trail":
+		return screenshotAITrail(), true
+	case path == "/api/v1/training/ais/ai-trail/revisions/2/export":
+		return screenshotTrailExport, true
+	case strings.HasPrefix(path, "/api/v1/training/ais/") && strings.HasSuffix(path, "/export"):
+		return `{"state":"none"}`, true
+	case path == "/api/v1/knowledge/sources":
+		return screenshotKnowledge, true
+	case path == "/api/v1/memory":
+		return screenshotMemory, true
+	case path == "/api/v1/connectors":
+		return screenshotConnectors, true
+	case path == "/api/v1/mcp/servers":
+		return screenshotMCPServers, true
 	case path == "/v1/models":
 		return `{"object":"list","data":[{"id":"gemma-4-e4b","object":"model"}]}`, true
 	default:
@@ -204,6 +223,34 @@ const screenshotProfiles = `[{
   "roles": [{"role": "assistant", "model_id": "gemma-4-e4b", "node_id": "local", "required": true}],
   "node_policy": {"mode": "prefer_local"},
   "tools": []
+}, {
+  "id": "programming",
+  "name": "Programming",
+  "purpose": "coding",
+  "orchestrator_id": "simple",
+  "roles": [
+    {"role": "planner", "model_id": "gemma-4-e4b", "node_id": "local", "required": true},
+    {"role": "worker", "model_id": "qwen-coder-7b", "node_id": "studio", "required": true},
+    {"role": "reviewer", "model_id": "gemma-4-e4b", "node_id": "local", "required": false}
+  ],
+  "node_policy": {"mode": "automatic", "preferred_nodes": ["studio"]},
+  "orchestration": {"strategy": "team", "parallel": "on", "verification": "check"},
+  "tools": [
+    {"tool_id": "filesystem.read", "policy": "allow"},
+    {"tool_id": "git.status", "policy": "allow"},
+    {"tool_id": "git.commit", "policy": "ask"},
+    {"tool_id": "terminal", "policy": "ask"}
+  ]
+}, {
+  "id": "research",
+  "name": "Research",
+  "purpose": "research",
+  "orchestrator_id": "simple",
+  "roles": [{"role": "assistant", "model_id": "gemma-4-e4b", "node_id": "local", "required": true}],
+  "node_policy": {"mode": "prefer_local"},
+  "orchestration": {"strategy": "planned", "verification": "correct"},
+  "tools": [{"tool_id": "internet.search", "policy": "allow"}, {"tool_id": "internet.open", "policy": "allow"}],
+  "knowledge_sources": ["ks-trails"]
 }]`
 
 const screenshotNodes = `[
@@ -450,7 +497,14 @@ const screenshotAutomationDetail = `{
 
 const screenshotTools = `[
   {"id": "internet.search", "name": "Web Search", "description": "Search the public internet and return titles, links, and snippets.", "capability": "internet", "source": "builtin", "schema": "{}", "default_policy": "allow", "risk": "read", "enabled": true, "profiles": ["general-assistant"]},
-  {"id": "internet.open", "name": "Open Web Page", "description": "Open a web page and return readable text.", "capability": "internet", "source": "builtin", "schema": "{}", "default_policy": "allow", "risk": "read", "enabled": true, "profiles": ["general-assistant"]}
+  {"id": "internet.open", "name": "Open Web Page", "description": "Open a web page and return readable text.", "capability": "internet", "source": "builtin", "schema": "{}", "default_policy": "allow", "risk": "read", "enabled": true, "profiles": ["general-assistant"]},
+  {"id": "places.search", "name": "Find Places", "description": "Find places with OpenStreetMap, with addresses, opening hours, and distances.", "capability": "internet", "source": "builtin", "schema": "{}", "default_policy": "allow", "risk": "read", "enabled": true, "profiles": ["general-assistant"]},
+  {"id": "files.create", "name": "Create File", "description": "Create a Word document or PDF the user can download.", "capability": "files", "source": "builtin", "schema": "{}", "default_policy": "allow", "risk": "write", "enabled": true, "profiles": ["general-assistant", "programming"]},
+  {"id": "spreadsheet.analyze", "name": "Analyze Spreadsheet", "description": "Summarize a spreadsheet in this chat, column by column.", "capability": "files", "source": "builtin", "schema": "{}", "default_policy": "allow", "risk": "read", "enabled": true, "profiles": ["general-assistant"]},
+  {"id": "git.commit", "name": "Git Commit", "description": "Create a git commit.", "capability": "git", "source": "builtin", "schema": "{}", "default_policy": "ask", "risk": "write", "enabled": true, "profiles": ["programming"]},
+  {"id": "code.execute", "name": "Run Code", "description": "Run Python in a sandbox for calculations, data analysis, and charts.", "capability": "code", "source": "builtin", "schema": "{}", "default_policy": "ask", "risk": "execute", "enabled": false, "profiles": []},
+  {"id": "github.issues", "name": "List issues", "description": "List a repository's open issues.", "capability": "connectors", "source": "connector:github", "schema": "{}", "default_policy": "allow", "risk": "read", "enabled": true, "profiles": ["programming"]},
+  {"id": "mcp-notion.search", "name": "Search", "description": "Search pages and databases.", "capability": "mcp", "source": "mcp:Notion", "schema": "{}", "default_policy": "allow", "risk": "read", "enabled": true, "profiles": ["general-assistant"]}
 ]`
 
 const screenshotCapabilities = `{

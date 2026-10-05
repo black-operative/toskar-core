@@ -109,6 +109,42 @@
       "filename": "08-automations-create.png",
       "headline": "Describe a Scheduled Task",
       "readyText": "Notify when the price is below $500"
+    },
+    {
+      "id": "train",
+      "path": "/train",
+      "query": "ai=ai-trail",
+      "filename": "09-train.png",
+      "headline": "Train Your Own AI",
+      "readyText": "Trail Planner"
+    },
+    {
+      "id": "knowledge",
+      "path": "/knowledge",
+      "filename": "10-knowledge.png",
+      "headline": "Ask Your Documents",
+      "readyText": "Returns policy.pdf"
+    },
+    {
+      "id": "memory",
+      "path": "/memory",
+      "filename": "11-memory.png",
+      "headline": "Remember What Matters",
+      "readyText": "hand-dyed yarn"
+    },
+    {
+      "id": "tools",
+      "path": "/tools",
+      "filename": "12-tools.png",
+      "headline": "Connect Your Tools",
+      "readyText": "Notion"
+    },
+    {
+      "id": "profiles",
+      "path": "/profiles",
+      "filename": "13-profiles.png",
+      "headline": "Build an AI Team",
+      "readyText": "Programming"
     }
   ]
 }

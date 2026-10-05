@@ -415,8 +415,9 @@
     @apply inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-medium bg-accent-soft text-accent;
   }
 
+  /* A tenth of the tint keeps the gold text at 4.5:1 on light cards (#304's demo found 4.43 at 15%). */
   .badge-mimir {
-    @apply inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-medium bg-mimir/15 text-mimir;
+    @apply inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-medium bg-mimir/10 text-mimir;
   }
 
   .label-caps {

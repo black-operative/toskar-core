@@ -13,6 +13,11 @@ const routes: Record<string, string> = {
   'api-manager': '/api-access',
   automations: '/automations',
   'automations-create': '/automations',
+  train: '/train',
+  knowledge: '/knowledge',
+  memory: '/memory',
+  tools: '/tools',
+  profiles: '/profiles',
 }
 
 export function screenshotPath(screen: string): string {

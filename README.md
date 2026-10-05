@@ -72,7 +72,7 @@ To make that possible, Core:
 
 <p align="center">
   <a href="docs/screenshots/demo.mp4">
-    <img src="docs/screenshots/demo.gif" alt="Walkthrough of chat, models, computers, performance, diagnostics, and API access" width="850">
+    <img src="docs/screenshots/demo.gif" alt="Walkthrough of every page: chat, models, computers, performance, diagnostics, API access, automations, training, knowledge, memory, tools, and profiles" width="850">
   </a>
 </p>
 
@@ -177,6 +177,12 @@ Background work is idle model unload, model health checks, periodic peer refresh
 | Computers | Performance |
 | <img src="docs/screenshots/05-diagnostics.png" alt="Diagnostics showing the local service is healthy" width="420"> | <img src="docs/screenshots/06-api-manager.png" alt="Local API access and API keys" width="420"> |
 | Diagnostics | API access |
+| <img src="docs/screenshots/09-train.png" alt="Training a specialized AI on a second computer" width="420"> | <img src="docs/screenshots/10-knowledge.png" alt="Folders, a PDF, a spreadsheet, and a database connected as knowledge" width="420"> |
+| Train | Knowledge |
+| <img src="docs/screenshots/11-memory.png" alt="Memories Toskar keeps, one only on this computer" width="420"> | <img src="docs/screenshots/12-tools.png" alt="Image generation, a Notion tool source, and connected services" width="420"> |
+| Memory | Tools |
+| <img src="docs/screenshots/13-profiles.png" alt="Profiles, including a team of planner, worker, and reviewer" width="420"> | <img src="docs/screenshots/07-automations.png" alt="Scheduled automations" width="420"> |
+| Profiles & Orchestration | Automations |
 
 `make screenshots` recaptures these stills and the walkthrough from demo data. It does not start a model. `make appstore-screenshots` writes the App Store sets from the same demo data: iPhone 6.9-inch at 1320×2868, iPad 13-inch at 2064×2752, and Mac at 2880×1800 and 2560×1600.
 
