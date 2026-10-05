@@ -39,6 +39,10 @@ type ModelUse struct {
 	CompletionTokens int     `json:"completion_tokens"`
 	CachedTokens     int     `json:"cached_tokens"`
 	TokPerSec        float64 `json:"tok_per_sec,omitempty"`
+	// Backend and Device ran the model, such as vulkan and "AMD Radeon RX
+	// 7900 XTX" (#317); empty when not known, such as on a paired computer.
+	Backend string `json:"backend,omitempty"`
+	Device  string `json:"device,omitempty"`
 }
 
 // ToolUse is one tool's part in a run.
@@ -212,6 +216,8 @@ type GenerationMetrics struct {
 	CompletionTokens int
 	CachedTokens     int
 	TokPerSec        float64
+	// Backend and Device ran the call, when known.
+	Backend, Device string
 }
 
 // ModelCall records one model call: firstToken is the wall time to its
@@ -241,6 +247,9 @@ func (c *Collector) ModelCall(modelID, role, node string, firstToken time.Durati
 		u.PromptTokens += m.PromptTokens
 		u.CompletionTokens += m.CompletionTokens
 		u.CachedTokens += m.CachedTokens
+		if m.Backend != "" {
+			u.Backend, u.Device = m.Backend, m.Device
+		}
 		if m.TokPerSec > 0 {
 			u.TokPerSec = m.TokPerSec
 		}

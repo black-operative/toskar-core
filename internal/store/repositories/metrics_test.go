@@ -57,3 +57,35 @@ func TestMetricsInsertListRoleSteps(t *testing.T) {
 		t.Fatalf("worker node=%q", run.RoleSteps[1].NodeName)
 	}
 }
+
+// A reply keeps the backend and device that produced it (#317); one
+// recorded without them reads back empty.
+func TestMetricsKeepTheDevice(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	repo := repositories.NewMetricsRepo(db.SQL)
+	ctx := context.Background()
+	if _, err := repo.Insert(ctx, contracts.GenerationRun{ModelID: "gpu", Backend: "vulkan", Device: "AMD Radeon RX 7900 XTX"}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := repo.Insert(ctx, contracts.GenerationRun{ModelID: "unknown"}); err != nil {
+		t.Fatal(err)
+	}
+	items, err := repo.List(ctx, repositories.ListFilter{Limit: 10})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := map[string]contracts.GenerationRun{}
+	for _, it := range items {
+		got[it.ModelID] = it
+	}
+	if g := got["gpu"]; g.Backend != "vulkan" || g.Device != "AMD Radeon RX 7900 XTX" {
+		t.Errorf("gpu reply: %q %q", g.Backend, g.Device)
+	}
+	if u := got["unknown"]; u.Backend != "" || u.Device != "" {
+		t.Errorf("unknown reply: %q %q", u.Backend, u.Device)
+	}
+}

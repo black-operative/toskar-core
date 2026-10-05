@@ -594,6 +594,8 @@ export interface RuntimeDetection {
   version?: string
   path?: string
   message?: string
+  /** What the installed build can run on, such as ["cpu", "vulkan"]. */
+  backends?: string[]
 }
 
 export interface RuntimeInfo {
@@ -772,6 +774,9 @@ export interface GenerationRun {
   cross_machine?: boolean
   node_count?: number
   created_at: string
+  /** The backend and device that produced the reply (#317). */
+  backend?: string
+  device?: string
 }
 
 export interface BenchmarkPrompt {
@@ -820,6 +825,8 @@ export interface BenchmarkSample {
   prompt_tokens: number
   completion_tokens: number
   error?: string
+  backend?: string
+  device?: string
 }
 
 export interface BenchmarkModelSummary {
@@ -1610,6 +1617,8 @@ export interface RunTrace {
     completion_tokens: number
     cached_tokens: number
     tok_per_sec?: number
+    backend?: string
+    device?: string
   }[]
   tools: { tool_id: string; calls: number; failures?: number; total_ms: number }[]
   nodes: string[]

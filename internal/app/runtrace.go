@@ -15,7 +15,7 @@ const minLoad = 150 * time.Millisecond
 
 // traceGeneration passes a model's stream through, noting when its first
 // token arrived and what the runtime reported at the end (§35).
-func traceGeneration(c *runlog.Collector, in <-chan pluginapi.ChatChunk, modelID, role, node string, started time.Time) <-chan pluginapi.ChatChunk {
+func traceGeneration(c *runlog.Collector, in <-chan pluginapi.ChatChunk, modelID, role, node string, started time.Time, acc *pluginapi.Acceleration) <-chan pluginapi.ChatChunk {
 	if c == nil {
 		return in
 	}
@@ -39,6 +39,7 @@ func traceGeneration(c *runlog.Collector, in <-chan pluginapi.ChatChunk, modelID
 				TTFTMs: metrics.TTFTMs, PromptTokens: metrics.PromptTokens, CompletionTokens: metrics.CompletionTokens,
 				CachedTokens: metrics.CachedTokens, TokPerSec: metrics.EvalTokPerSec,
 			}
+			m.Backend, m.Device = accelerationLabel(acc)
 		}
 		c.ModelCall(modelID, role, node, first, m)
 	}()

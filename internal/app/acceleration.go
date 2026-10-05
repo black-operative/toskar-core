@@ -159,3 +159,30 @@ func (a *App) healthAcceleration(ctx context.Context) string {
 	}
 	return accelerationSummary(views)
 }
+
+// localAcceleration is where this computer's running chat instance of a
+// model runs, or nil when it isn't running here or that isn't known.
+func (a *App) localAcceleration(ctx context.Context, modelID string) *pluginapi.Acceleration {
+	if a.Runtimes == nil || modelID == "" {
+		return nil
+	}
+	running, err := a.Runtimes.ListRunning(ctx, "llamacpp")
+	if err != nil {
+		return nil
+	}
+	for _, r := range running {
+		if r.ModelID == modelID && r.Mode == "" && r.Acceleration != nil {
+			return r.Acceleration
+		}
+	}
+	return nil
+}
+
+// accelerationLabel is a report as the backend and device a record keeps:
+// "vulkan" and "AMD Radeon RX 7900 XTX", or "cpu" and "".
+func accelerationLabel(acc *pluginapi.Acceleration) (backend, device string) {
+	if acc == nil {
+		return "", ""
+	}
+	return acc.Backend, strings.Join(acc.Devices, ", ")
+}

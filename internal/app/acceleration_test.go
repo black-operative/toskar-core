@@ -56,3 +56,15 @@ func TestAccelerationSummary(t *testing.T) {
 		}
 	}
 }
+
+func TestAccelerationLabel(t *testing.T) {
+	if b, d := accelerationLabel(nil); b != "" || d != "" {
+		t.Errorf("unknown: %q %q", b, d)
+	}
+	if b, d := accelerationLabel(&pluginapi.Acceleration{Backend: "vulkan", Devices: []string{"A", "B"}}); b != "vulkan" || d != "A, B" {
+		t.Errorf("two cards: %q %q", b, d)
+	}
+	if b, d := accelerationLabel(&pluginapi.Acceleration{Backend: "cpu"}); b != "cpu" || d != "" {
+		t.Errorf("cpu: %q %q", b, d)
+	}
+}

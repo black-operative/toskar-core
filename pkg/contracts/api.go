@@ -638,6 +638,11 @@ type GenerationRun struct {
 	CrossMachine      bool                 `json:"cross_machine"`
 	NodeCount         int                  `json:"node_count,omitempty"`
 	CreatedAt         time.Time            `json:"created_at"`
+	// Backend and Device produced the reply, such as vulkan and "AMD Radeon
+	// RX 7900 XTX", or cpu and "" (#317); empty when not known, such as for
+	// a reply from a paired computer.
+	Backend string `json:"backend,omitempty"`
+	Device  string `json:"device,omitempty"`
 }
 
 // BenchmarkPrompt is one prompt inside a workload category.
@@ -702,6 +707,9 @@ type BenchmarkSample struct {
 	PromptTokens     int     `json:"prompt_tokens"`
 	CompletionTokens int     `json:"completion_tokens"`
 	Error            string  `json:"error,omitempty"`
+	// Backend and Device ran the sample (#317).
+	Backend string `json:"backend,omitempty"`
+	Device  string `json:"device,omitempty"`
 }
 
 // BenchmarkModelSummary aggregates measured samples for one model × workload.

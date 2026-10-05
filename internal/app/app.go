@@ -876,12 +876,6 @@ func (a *App) requireKeyForRemoteBind(ctx context.Context) error {
 
 // Start runs the API server until context cancellation.
 func (a *App) Start(ctx context.Context) error {
-	a.sampler = diagnostics.NewSampler()
-	a.wg.Add(1)
-	go func() {
-		defer a.wg.Done()
-		a.sampler.Run(ctx)
-	}()
 	// Live profiles for diagnosing a running daemon, only when asked for
 	// and only on this computer (#231).
 	if addr := config.Env("PPROF"); addr != "" {
@@ -892,6 +886,15 @@ func (a *App) Start(ctx context.Context) error {
 		}
 	}
 	ctx, a.cancel = context.WithCancel(ctx)
+	// The sampler runs on the context Shutdown cancels: on the caller's, a
+	// Start that failed early (such as without an API key) left Shutdown
+	// waiting for it forever.
+	a.sampler = diagnostics.NewSampler()
+	a.wg.Add(1)
+	go func() {
+		defer a.wg.Done()
+		a.sampler.Run(ctx)
+	}()
 	a.notifyFromEvents(ctx)
 	a.Notifications.Start(ctx)
 	a.watchCapabilities(ctx)

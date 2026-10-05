@@ -12,6 +12,9 @@ type RuntimeDetection struct {
 	Version   string `json:"version,omitempty"`
 	Path      string `json:"path,omitempty"`
 	Message   string `json:"message,omitempty"`
+	// Backends are what the installed build can run on, such as ["cpu",
+	// "vulkan"]; a CPU-only build is just ["cpu"] (#317).
+	Backends []string `json:"backends,omitempty"`
 }
 
 // InstallOptions configures runtime installation.

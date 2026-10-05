@@ -79,3 +79,14 @@ func TestCollectAndStore(t *testing.T) {
 	var nilC *Collector
 	nilC.ToolCall("x", time.Second, false) // safe without a run
 }
+
+// A model call keeps where the model ran (#317).
+func TestModelCallKeepsTheDevice(t *testing.T) {
+	c := New("r", "", "", "chat")
+	c.ModelCall("m", "assistant", "This Mac", time.Second, &GenerationMetrics{TokPerSec: 50, Backend: "metal", Device: "Apple M2 Pro"})
+	c.ModelCall("m", "assistant", "This Mac", time.Second, &GenerationMetrics{TokPerSec: 55})
+	run := c.Finish("done", nil)
+	if len(run.Models) != 1 || run.Models[0].Backend != "metal" || run.Models[0].Device != "Apple M2 Pro" {
+		t.Fatalf("models: %+v", run.Models)
+	}
+}

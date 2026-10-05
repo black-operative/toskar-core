@@ -649,6 +649,18 @@ func (a *App) recordGeneration(
 		run.PromptTokPerSec = metrics.PromptTokPerSec
 		run.EvalTokPerSec = metrics.EvalTokPerSec
 	}
+	// Tag the reply with the device that produced it, when every step ran
+	// on this computer.
+	local := a.Config.Get().NodeID
+	here := true
+	for _, s := range roleSteps {
+		if s.NodeID != "" && s.NodeID != local {
+			here = false
+		}
+	}
+	if here {
+		run.Backend, run.Device = accelerationLabel(a.localAcceleration(ctx, modelID))
+	}
 	if _, err := a.Metrics.Insert(ctx, run); err != nil {
 		a.Logger.Warn("record generation metrics", "error", err)
 	}
@@ -1054,7 +1066,12 @@ func (e *chatExecEnv) Generate(ctx context.Context, role string, messages []plug
 		"model_id": modelID, "node_id": nodeID, "role": role,
 		"node_name": e.app.nodeDisplayName(nodeID),
 	}))
-	return traceGeneration(runlog.From(ctx), ch, modelID, role, e.app.nodeDisplayName(nodeID), started), nil
+	// Where the model ran, for the run trace, when it ran here.
+	var acc *pluginapi.Acceleration
+	if nodeID == "" || nodeID == e.app.Config.Get().NodeID {
+		acc = e.app.localAcceleration(ctx, modelID)
+	}
+	return traceGeneration(runlog.From(ctx), ch, modelID, role, e.app.nodeDisplayName(nodeID), started, acc), nil
 }
 
 func (e *chatExecEnv) ExecuteTool(ctx context.Context, toolID string, args map[string]any) (map[string]any, error) {

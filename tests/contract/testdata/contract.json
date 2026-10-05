@@ -1,5 +1,5 @@
 {
-  "version": "1.6",
+  "version": "1.7",
   "types": {
     "ActivityStep": [
       "kind",
@@ -98,9 +98,11 @@
       "steps"
     ],
     "ModelUse": [
+      "backend",
       "cached_tokens",
       "calls",
       "completion_tokens",
+      "device",
       "first_token_ms",
       "load_ms",
       "model_id",

@@ -18,7 +18,7 @@ func TestRunTraceFromStreamAndEvents(t *testing.T) {
 	in <- pluginapi.ChatChunk{Content: "!", Done: true, Metrics: &pluginapi.GenerationMetrics{PromptTokens: 40, CompletionTokens: 2, CachedTokens: 30, EvalTokPerSec: 55}}
 	close(in)
 	var text string
-	for chunk := range traceGeneration(c, in, "m", "assistant", "This Mac", time.Now().Add(-time.Second)) {
+	for chunk := range traceGeneration(c, in, "m", "assistant", "This Mac", time.Now().Add(-time.Second), nil) {
 		text += chunk.Content
 	}
 	traceEvent(c, simple.EventPlanCreated, map[string]any{"steps": []string{"a", "b"}, "parallel": false})
@@ -35,7 +35,7 @@ func TestRunTraceFromStreamAndEvents(t *testing.T) {
 		r.Strategy[0] != "Worked through 2 parts one after another" || r.Strategy[1] != "Looked up the web first" {
 		t.Fatalf("run = %+v", r)
 	}
-	if traceGeneration(nil, in, "m", "", "", time.Now()) != (<-chan pluginapi.ChatChunk)(in) {
+	if traceGeneration(nil, in, "m", "", "", time.Now(), nil) != (<-chan pluginapi.ChatChunk)(in) {
 		t.Fatal("no collector should pass the stream through")
 	}
 }

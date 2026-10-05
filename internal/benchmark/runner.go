@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
@@ -255,6 +256,11 @@ func (r *Runner) benchmarkModel(
 		return fmt.Errorf("start %q: %w", modelID, err)
 	}
 	loadMs := time.Since(loadStart).Seconds() * 1000
+	// Every sample says where the model ran (#317).
+	backend, device := "", ""
+	if acc := running.Acceleration; acc != nil {
+		backend, device = acc.Backend, strings.Join(acc.Devices, ", ")
+	}
 
 	for _, workload := range workloads {
 		for _, prompt := range workload.Prompts {
@@ -271,6 +277,7 @@ func (r *Runner) benchmarkModel(
 			if err != nil {
 				warmup.Error = err.Error()
 			}
+			warmup.Backend, warmup.Device = backend, device
 			r.appendSample(job.ID, warmup)
 
 			for i := 1; i <= job.Request.Runs; i++ {
@@ -285,6 +292,7 @@ func (r *Runner) benchmarkModel(
 				if err != nil {
 					sample.Error = err.Error()
 				}
+				sample.Backend, sample.Device = backend, device
 				r.appendSample(job.ID, sample)
 			}
 		}

@@ -174,6 +174,7 @@ func (r *Runtime) Detect(ctx context.Context) (pluginapi.RuntimeDetection, error
 			Installed: true,
 			Path:      path,
 			Version:   readVersion(path),
+			Backends:  capabilities(runtime.GOOS, installedGPUBackends(filepath.Dir(path))).Backends,
 		}
 		if r.UpgradeAvailable(ctx) {
 			det.Message = "This llama.cpp runs on the CPU only, but this computer has a GPU it can use. Install llama.cpp again from the Runtimes page to get the GPU build."
