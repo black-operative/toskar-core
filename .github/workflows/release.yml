@@ -14,7 +14,7 @@ jobs:
   # (tests/quality, scripts/quality-model.sh) must pass 90% of its cases
   # before anything is published.
   quality:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +45,7 @@ jobs:
 
   release:
     needs: quality
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     steps:
       - uses: actions/checkout@v4
       - name: Save the release guide
@@ -61,8 +61,11 @@ jobs:
           cache-dependency-path: web/pnpm-lock.yaml
       - name: Install packaging tools
         run: |
-          sudo apt-get update
-          sudo apt-get install -y dpkg-dev apt-utils
+          # A self-hosted runner has dpkg-dev and apt-utils installed already.
+          if [ "$RUNNER_ENVIRONMENT" = github-hosted ]; then
+            sudo apt-get update
+            sudo apt-get install -y dpkg-dev apt-utils
+          fi
           go install github.com/goreleaser/nfpm/v2/cmd/nfpm@v2.41.3
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
       - name: Build packages
@@ -216,7 +219,7 @@ jobs:
   start-desktop:
     needs: release
     if: success()
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     steps:
       - name: Start the matching desktop release
         env:

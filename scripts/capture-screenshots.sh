@@ -29,7 +29,8 @@ if [[ ! -f web/dist/index.html ]]; then
 fi
 
 install_pnpm scripts/screenshots
-if [[ "$(uname -s)" == "Linux" ]]; then
+# A self-hosted runner has Chromium's system libraries and no sudo.
+if [[ "$(uname -s)" == "Linux" && "${RUNNER_ENVIRONMENT:-}" != "self-hosted" ]]; then
   (cd scripts/screenshots && pnpm exec playwright install --with-deps chromium)
 else
   (cd scripts/screenshots && pnpm exec playwright install chromium)

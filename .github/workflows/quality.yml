@@ -24,7 +24,7 @@ jobs:
   # llama-server), the web answered from tests/quality/web.json. It fails
   # when fewer than 90% of cases pass; the report lists every answer.
   served-model:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4

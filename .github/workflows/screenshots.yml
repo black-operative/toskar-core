@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   screenshots:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,6 +47,8 @@ jobs:
             web/pnpm-lock.yaml
             scripts/screenshots/pnpm-lock.yaml
       - name: Install ImageMagick and ffmpeg
+        # A self-hosted runner has them installed already.
+        if: runner.environment == 'github-hosted'
         run: sudo apt-get update && sudo apt-get install -y imagemagick ffmpeg
       - name: Capture and validate
         run: |

@@ -38,7 +38,7 @@ jobs:
   # setup. The cross-compile runs beside it, one job per platform, so it does
   # not wait for the tests.
   go:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNS_ON || '"ubuntu-latest"') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v7
@@ -100,7 +100,7 @@ jobs:
   # toskar and toskarctl build for every platform a release ships, so a
   # change that breaks one OS fails here, not at release.
   cross-compile:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNS_ON || '"ubuntu-latest"') }}
     strategy:
       fail-fast: false
       matrix:
@@ -136,6 +136,8 @@ jobs:
   installer:
     # install.sh on a real Ubuntu with systemd: the .deb from a local
     # release, the service, and install-and-join with a join token (#40).
+    # It installs system-wide with sudo, so it stays on a throwaway GitHub
+    # runner, never a self-hosted one.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -161,7 +163,7 @@ jobs:
   coverage-badge:
     needs: go
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNS_ON || '"ubuntu-latest"') }}
     permissions:
       contents: write
     concurrency:
@@ -186,7 +188,7 @@ jobs:
           ./scripts/publish-coverage-badge.sh coverage.out
 
   frontend:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNS_ON || '"ubuntu-latest"') }}
     defaults:
       run:
         working-directory: web
@@ -207,7 +209,7 @@ jobs:
   # axe-core over every page of the built UI with demo data, in both themes
   # at desktop and phone widths (#217). Contrast needs a real browser.
   accessibility:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNS_ON || '"ubuntu-latest"') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v7
@@ -226,7 +228,9 @@ jobs:
         run: pnpm install && pnpm build
       - name: Install the browser
         working-directory: scripts/screenshots
-        run: pnpm install && pnpm exec playwright install --with-deps chromium
+        # A self-hosted runner has Chromium's system libraries installed
+        # already and no sudo to install them.
+        run: pnpm install && pnpm exec playwright install ${{ runner.environment == 'github-hosted' && '--with-deps' || '' }} chromium
       - name: Check every page
         run: node scripts/screenshots/a11y.mjs
       # Moves between every page many times and fails if the heap, DOM
