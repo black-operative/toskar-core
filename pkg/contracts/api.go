@@ -421,6 +421,11 @@ type AIProfile struct {
 	// Orchestration is how this profile works through a request (§40).
 	// Empty fields keep Yggdrasil's defaults.
 	Orchestration OrchestrationPolicy `json:"orchestration,omitzero"`
+	// ModelCallsNoTools is set for a turn whose model cannot call tools,
+	// such as Gemma 2: it is not shown the tool protocol, but the look-ups
+	// Toskar runs itself (web, places, connected services) still run and
+	// reach it as reference material. Never stored or sent.
+	ModelCallsNoTools bool `json:"-"`
 }
 
 // OrchestrationPolicy is a profile's advanced controls (spec §40, §56).

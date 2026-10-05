@@ -1395,11 +1395,15 @@ func (e *chatExecEnv) switchModel(profile profiles.Profile, modelID string) {
 	e.usedNodes = nil
 }
 
-// withModelTools drops tools for a model that cannot call them.
+// withModelTools marks a turn whose model cannot call tools. Its tools stay
+// allowed, so the look-ups Toskar runs itself still give it the web; it is
+// only not asked to call any. Denying them all, as before, left such a model
+// answering current questions from memory.
 func (a *App) withModelTools(profile profiles.Profile, modelID string) profiles.Profile {
+	profile.ModelCallsNoTools = false
 	if modelID != "" && a.Models != nil {
 		if entry, ok := a.Models.Catalog().Get(modelID); ok && toolCallSupport(entry.Capabilities) == "unsupported" {
-			return withoutTools(profile)
+			profile.ModelCallsNoTools = true
 		}
 	}
 	return profile

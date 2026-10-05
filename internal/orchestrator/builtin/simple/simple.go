@@ -186,7 +186,7 @@ func (o *Orchestrator) Run(
 		// evidence is what the answer may draw figures from, for the check.
 		evidence := reference
 		toolPrompt := tools.PromptFor(profile)
-		if jsonOnly {
+		if jsonOnly || profile.ModelCallsNoTools {
 			toolPrompt = ""
 		}
 		sys := instructions
@@ -212,7 +212,9 @@ func (o *Orchestrator) Run(
 
 		var metrics *pluginapi.GenerationMetrics
 		var usage contextusage.Usage
-		toolsOn := len(tools.Enabled(profile, nil)) > 0
+		// A model that cannot call tools gets the look-ups above as
+		// reference, and no tool loop.
+		toolsOn := len(tools.Enabled(profile, nil)) > 0 && !profile.ModelCallsNoTools
 		nodeID, _ := env.NodeForRole(role)
 
 		if jsonOnly {
