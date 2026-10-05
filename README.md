@@ -108,6 +108,27 @@ The package installs `toskar`, `toskarctl`, the web UI, and `toskar.service`, wh
 
 The GitHub Release includes an unsigned `toskar-<version>-windows-amd64-headless.tar.gz`. A source build is below.
 
+### Use it from other devices (optional)
+
+Toskar answers only on this computer until you turn on local network access. To use it from another computer, a phone, or an app on your network:
+
+1. Open `http://127.0.0.1:7331`, go to **API Access**, and turn on **Local network access**. It asks you to create an API key; copy it, because it is shown once.
+2. Restart Toskar so it listens on the network: on macOS press Ctrl+C and run `toskar` again, on Linux run `sudo systemctl restart toskar`, and on Windows close `toskar.exe` and start it again.
+3. On the other device, open `http://<this computer's address>:7331` and enter the key. Apps that use the OpenAI API take `http://<address>:7331/v1` and the key. The address is the computer's local IP address: `ipconfig getifaddr en0` on macOS, `hostname -I` on Linux, or `ipconfig` on Windows.
+
+A server without a browser can set it before starting instead. The key must be at least 12 characters, for example from `openssl rand -hex 24`:
+
+```bash
+sudo systemctl edit toskar
+# add, then save:
+#   [Service]
+#   Environment=TOSKAR_API_HOST=0.0.0.0
+#   Environment=TOSKAR_API_KEY=your-long-random-key
+sudo systemctl restart toskar
+```
+
+The key keeps others on the network out, but plain HTTP does not encrypt traffic: use it on a network you trust. Allow port 7331 through any firewall. See [API authentication](docs/api.md#authentication) and [docs/privacy.md](docs/privacy.md).
+
 ### Build from source
 
 Go 1.26.3 or newer, Node.js 22, and pnpm 9.
