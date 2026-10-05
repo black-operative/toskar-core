@@ -5,7 +5,9 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -o /out/toskar ./cmd/daemon \
+# The commit the image was built from, for /api/v1/version.
+ARG COMMIT=""
+RUN CGO_ENABLED=0 go build -ldflags "-X github.com/yeixio/toskar-core/internal/version.Commit=${COMMIT}" -o /out/toskar ./cmd/daemon \
  && CGO_ENABLED=0 go build -o /out/clustercheck ./cmd/clustercheck
 
 FROM debian:bookworm-slim AS runtime

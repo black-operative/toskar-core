@@ -100,6 +100,17 @@ func (d realDriver) request(method, path string, body, out any, logf func(string
 			return resp.StatusCode, fmt.Errorf("%s %s: 401: %s", method, path, *d.stop)
 		}
 		if resp.StatusCode >= 300 {
+			// A daemon missing what every chat needs fails every case the
+			// same way, so the run stops with that reason.
+			var e struct {
+				Error struct {
+					Code    string `json:"code"`
+					Message string `json:"message"`
+				} `json:"error"`
+			}
+			if json.Unmarshal(raw, &e) == nil && e.Error.Code == "RUNTIME_NOT_INSTALLED" {
+				*d.stop = "the daemon at " + d.base + " can't chat: " + e.Error.Message
+			}
 			return resp.StatusCode, fmt.Errorf("%s %s: %d %s", method, path, resp.StatusCode, raw)
 		}
 		if out != nil && len(raw) > 0 {

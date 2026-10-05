@@ -47,3 +47,20 @@ func TestRealDriverStopsWhenTheDaemonWantsAKey(t *testing.T) {
 		t.Fatalf("stopped = %q", d.Stopped())
 	}
 }
+
+// A daemon with no runtime fails every chat the same way, so the run stops
+// with that reason.
+func TestRealDriverStopsWithoutARuntime(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte(`{"error":{"code":"RUNTIME_NOT_INSTALLED","message":"llama-server not installed"}}`))
+	}))
+	defer srv.Close()
+	d := newRealDriver(srv.URL)
+	if _, err := d.request(http.MethodPost, "/api/v1/chat", map[string]any{}, nil, t.Logf); err == nil {
+		t.Fatal("no error for a 500")
+	}
+	if !strings.Contains(d.Stopped(), "llama-server not installed") {
+		t.Fatalf("stopped = %q", d.Stopped())
+	}
+}

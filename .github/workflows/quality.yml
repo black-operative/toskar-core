@@ -90,7 +90,7 @@ jobs:
           ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
       - name: Build the daemon
-        run: docker build --pull -t "$NAME" .
+        run: docker build --pull --build-arg COMMIT="$(git rev-parse --short HEAD)" -t "$NAME" .
       - name: Start the daemon
         run: |
           # A key made for this run: the tests reach the daemon over the

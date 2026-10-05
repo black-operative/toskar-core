@@ -14,12 +14,14 @@ import (
 const installWithin = 90 * time.Minute
 
 // installRecommended installs the models the daemon recommends for its
-// hardware, as the setup screen does, and waits until they are installed.
+// hardware, and the runtimes they run on, as the setup screen does, and
+// waits until they are installed.
 // A runner that keeps its models between runs pays for this once.
 func (d realDriver) installRecommended(t *testing.T) {
 	t.Helper()
 	var rec contracts.Recommendation
 	d.do(t, http.MethodGet, "/api/v1/models/recommend", nil, &rec)
+	d.installRuntimes(t, rec.Models)
 	var waiting []string
 	for _, m := range rec.Models {
 		if m.Installed {
@@ -55,6 +57,32 @@ func (d realDriver) installRecommended(t *testing.T) {
 			}
 			time.Sleep(15 * time.Second)
 		}
+	}
+}
+
+// installRuntimes installs the runtimes, such as llama.cpp, that models
+// run on and the daemon doesn't have yet. A fresh daemon has none, and a
+// chat with an installed model and no runtime fails.
+func (d realDriver) installRuntimes(t *testing.T, models []contracts.Model) {
+	t.Helper()
+	need := map[string]bool{}
+	for _, m := range models {
+		for _, id := range m.Runtime {
+			need[id] = true
+		}
+	}
+	var runtimes []struct {
+		ID     string `json:"id"`
+		Status string `json:"status"`
+	}
+	d.do(t, http.MethodGet, "/api/v1/runtimes", nil, &runtimes)
+	for _, rt := range runtimes {
+		if !need[rt.ID] || rt.Status == "installed" {
+			continue
+		}
+		t.Logf("installing runtime %s", rt.ID)
+		d.do(t, http.MethodPost, "/api/v1/runtimes/"+rt.ID+"/install", nil, nil)
+		t.Logf("installed runtime %s", rt.ID)
 	}
 }
 
