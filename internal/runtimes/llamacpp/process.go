@@ -64,6 +64,8 @@ func (r *Runtime) OnProcessExit(fn func(instanceID, modelID string, exitCode int
 }
 
 func (r *Runtime) StartModel(ctx context.Context, cfg pluginapi.ModelStartConfig) (pluginapi.RunningModel, error) {
+	r.installMu.RLock()
+	defer r.installMu.RUnlock()
 	det, err := r.Detect(ctx)
 	if err != nil {
 		return pluginapi.RunningModel{}, err

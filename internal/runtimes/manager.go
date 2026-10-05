@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net"
 	"net/url"
@@ -83,7 +84,17 @@ type RuntimeInfo struct {
 	Status      string           `json:"status"`
 }
 
-// Install installs a runtime by ID. Already-installed runtimes are a no-op.
+// Upgradable is a runtime whose install can be outgrown by the computer, such
+// as llama.cpp's CPU build on a computer with a GPU it could use.
+type Upgradable interface {
+	UpgradeAvailable(ctx context.Context) bool
+	// UpgradeBuild installs the better build when no model is running, and
+	// reports whether it did.
+	UpgradeBuild(ctx context.Context) (bool, error)
+}
+
+// Install installs a runtime by ID. Already-installed runtimes are a no-op,
+// unless a better build fits this computer.
 func (m *Manager) Install(ctx context.Context, id string, opts InstallOptions) error {
 	rt, err := m.registry.Get(id)
 	if err != nil {
@@ -91,9 +102,34 @@ func (m *Manager) Install(ctx context.Context, id string, opts InstallOptions) e
 	}
 	det, err := rt.Detect(ctx)
 	if err == nil && det.Installed && !opts.Force {
-		return nil
+		if u, ok := rt.(Upgradable); !ok || !u.UpgradeAvailable(ctx) {
+			return nil
+		}
 	}
 	return rt.Install(ctx, opts)
+}
+
+// UpgradeBuilds installs a better build of each runtime that has one, such
+// as llama.cpp's GPU build in place of its CPU one, and returns the IDs it
+// upgraded. A runtime with a model running is left for the next start.
+func (m *Manager) UpgradeBuilds(ctx context.Context) ([]string, error) {
+	var done []string
+	var errs []error
+	for _, rt := range m.registry.List() {
+		u, ok := rt.(Upgradable)
+		if !ok {
+			continue
+		}
+		did, err := u.UpgradeBuild(ctx)
+		if err != nil {
+			errs = append(errs, fmt.Errorf("%s: %w", rt.ID(), err))
+			continue
+		}
+		if did {
+			done = append(done, rt.ID())
+		}
+	}
+	return done, errors.Join(errs...)
 }
 
 // Get returns a runtime adapter.

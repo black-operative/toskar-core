@@ -877,6 +877,7 @@ func (a *App) Start(ctx context.Context) error {
 	a.Notifications.Start(ctx)
 	a.watchCapabilities(ctx)
 	a.keepRunRecordsTidy(ctx)
+	a.upgradeRuntimeBuilds(ctx)
 	_ = a.syncInternalBind()
 	cfg := a.Config.Get()
 	if err := a.requireKeyForRemoteBind(ctx); err != nil {

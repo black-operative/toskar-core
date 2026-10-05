@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"sync"
 
 	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
@@ -24,11 +25,89 @@ type Runtime struct {
 	runtimesDir string
 	logsDir     string
 	sup         *ProcessSupervisor
+
+	// installMu keeps a model from starting while its files are replaced.
+	installMu sync.RWMutex
+
+	// goos and goarch pick the release build; they are the host's.
+	goos, goarch string
+	// releases lists llama.cpp releases, newest first.
+	releases func(ctx context.Context) ([]ghRelease, error)
+	// vulkan reports whether the Vulkan build would use a GPU here.
+	vulkan     func(ctx context.Context) bool
+	vulkanOnce sync.Once
+	vulkanOK   bool
 }
 
 // New creates a llama.cpp runtime adapter.
 func New(runtimesDir, logsDir string) *Runtime {
-	return &Runtime{runtimesDir: runtimesDir, logsDir: logsDir}
+	return &Runtime{
+		runtimesDir: runtimesDir,
+		logsDir:     logsDir,
+		goos:        runtime.GOOS,
+		goarch:      runtime.GOARCH,
+		releases:    githubReleases,
+		vulkan:      hostVulkanProbe().usable,
+	}
+}
+
+// vulkanUsable reports, once per run, whether this computer has a GPU the
+// Vulkan build can use.
+func (r *Runtime) vulkanUsable(ctx context.Context) bool {
+	r.vulkanOnce.Do(func() {
+		if r.goos == "linux" || r.goos == "windows" {
+			r.vulkanOK = r.vulkan(ctx)
+		}
+	})
+	return r.vulkanOK
+}
+
+// wantBuilds lists the release builds to install here, best first.
+func (r *Runtime) wantBuilds(ctx context.Context) []string {
+	return platformBuilds(r.goos, r.goarch, r.vulkanUsable(ctx))
+}
+
+// chooseAsset picks the release archive to install on this computer.
+func (r *Runtime) chooseAsset(ctx context.Context) (assetInfo, error) {
+	rels, err := r.releases(ctx)
+	if err != nil {
+		return assetInfo{}, err
+	}
+	return pickAsset(rels, r.wantBuilds(ctx))
+}
+
+// installDir is where Install puts llama-server and its libraries.
+func (r *Runtime) installDir() string {
+	return filepath.Join(r.runtimesDir, "llamacpp")
+}
+
+// UpgradeAvailable reports an install of the CPU build on a computer where
+// the GPU build would run: one installed before the GPU build was chosen, or
+// before a graphics driver was.
+func (r *Runtime) UpgradeAvailable(ctx context.Context) bool {
+	path := r.binaryPath()
+	if filepath.Dir(path) != r.installDir() {
+		return false
+	}
+	if st, err := os.Stat(path); err != nil || st.IsDir() {
+		return false
+	}
+	if len(installedGPUBackends(r.installDir())) > 0 {
+		return false
+	}
+	builds := r.wantBuilds(ctx)
+	return len(builds) > 0 && buildHasGPU(builds[0])
+}
+
+// UpgradeBuild replaces a CPU install with the GPU build when
+// UpgradeAvailable says so, and reports whether it did. It waits for a
+// moment when no model is running, so a llama-server is never left without
+// its files.
+func (r *Runtime) UpgradeBuild(ctx context.Context) (bool, error) {
+	if !r.UpgradeAvailable(ctx) {
+		return false, nil
+	}
+	return r.install(ctx, true)
 }
 
 func (r *Runtime) ID() string          { return runtimeID }
@@ -91,80 +170,127 @@ func bundledLlamaServerBeside(exe string) string {
 func (r *Runtime) Detect(ctx context.Context) (pluginapi.RuntimeDetection, error) {
 	path := r.binaryPath()
 	if st, err := os.Stat(path); err == nil && !st.IsDir() {
-		return pluginapi.RuntimeDetection{
+		det := pluginapi.RuntimeDetection{
 			Installed: true,
 			Path:      path,
 			Version:   readVersion(path),
-		}, nil
+		}
+		if r.UpgradeAvailable(ctx) {
+			det.Message = "This llama.cpp runs on the CPU only, but this computer has a GPU it can use. Install llama.cpp again from the Runtimes page to get the GPU build."
+		}
+		return det, nil
 	}
 	return pluginapi.RuntimeDetection{
 		Installed: false,
-		Message:   "llama-server is not installed. Install from the Runtimes page or place llama-server in " + filepath.Join(r.runtimesDir, "llamacpp"),
+		Message:   "llama-server is not installed. Install from the Runtimes page or place llama-server in " + r.installDir(),
 	}, nil
 }
 
 func (r *Runtime) Install(ctx context.Context, opts pluginapi.InstallOptions) error {
-	asset, err := latestAsset(ctx)
+	_, err := r.install(ctx, false)
+	return err
+}
+
+// install downloads the build chosen for this computer and swaps it in. With
+// idleOnly it gives up, reporting false, when a model is running.
+func (r *Runtime) install(ctx context.Context, idleOnly bool) (bool, error) {
+	asset, err := r.chooseAsset(ctx)
 	if err != nil {
-		return fmt.Errorf("find llama.cpp release: %w", err)
+		return false, fmt.Errorf("find llama.cpp release: %w", err)
 	}
-	destDir := filepath.Join(r.runtimesDir, "llamacpp")
+	destDir := r.installDir()
 	if err := os.MkdirAll(destDir, 0o755); err != nil {
-		return err
+		return false, err
 	}
 	tmp, err := os.CreateTemp(destDir, "download-*")
 	if err != nil {
-		return err
+		return false, err
 	}
 	tmpPath := tmp.Name()
 	defer os.Remove(tmpPath)
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, asset.URL, nil)
 	if err != nil {
-		return err
+		return false, err
 	}
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("download llama.cpp: %w", err)
+		return false, fmt.Errorf("download llama.cpp: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("download failed: HTTP %d", resp.StatusCode)
+		return false, fmt.Errorf("download failed: HTTP %d", resp.StatusCode)
 	}
 	if _, err := io.Copy(tmp, resp.Body); err != nil {
 		_ = tmp.Close()
-		return err
+		return false, err
 	}
 	if err := tmp.Close(); err != nil {
-		return err
+		return false, err
 	}
 
+	// Unpack beside the install, then swap it in, so a reinstall replaces
+	// every file and a failed one leaves the old install as it was.
+	staging, err := os.MkdirTemp(destDir, ".staging-*")
+	if err != nil {
+		return false, err
+	}
+	defer os.RemoveAll(staging)
 	lower := strings.ToLower(asset.Name)
 	switch {
 	case strings.HasSuffix(lower, ".zip"):
-		if err := extractZipAll(tmpPath, destDir); err != nil {
-			return err
+		if err := extractZipAll(tmpPath, staging); err != nil {
+			return false, err
 		}
 	case strings.HasSuffix(lower, ".tar.gz"), strings.HasSuffix(lower, ".tgz"):
-		if err := extractTarGzAll(tmpPath, destDir); err != nil {
-			return err
+		if err := extractTarGzAll(tmpPath, staging); err != nil {
+			return false, err
 		}
 	default:
-		return fmt.Errorf("unsupported release archive: %s (install llama-server manually to %s)", asset.Name, destDir)
+		return false, fmt.Errorf("unsupported release archive: %s (install llama-server manually to %s)", asset.Name, destDir)
+	}
+	// Some archives nest binaries one level deep; promote llama-server (+ libs) to destDir.
+	found, err := findBinary(staging, filepath.Base(r.binaryPath()))
+	if err != nil {
+		return false, err
 	}
 
-	binPath := r.binaryPath()
-	if _, err := os.Stat(binPath); err != nil {
-		// Some archives nest binaries one level deep; promote llama-server (+ libs) to destDir.
-		found, err := findBinary(destDir, filepath.Base(binPath))
-		if err != nil {
-			return err
+	r.installMu.Lock()
+	defer r.installMu.Unlock()
+	if idleOnly {
+		if running, err := r.ListRunning(ctx); err != nil || len(running) > 0 {
+			return false, err
 		}
-		if err := flattenRuntimeDir(filepath.Dir(found), destDir); err != nil {
+	}
+	if err := removeBackendLibs(destDir); err != nil {
+		return false, err
+	}
+	if err := flattenRuntimeDir(filepath.Dir(found), destDir); err != nil {
+		return false, err
+	}
+	if err := os.Chmod(r.binaryPath(), 0o755); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// removeBackendLibs deletes the ggml backend libraries in dir. llama-server
+// loads every one it finds there, so a library the new build lacks, such as
+// the Vulkan one when going back to the CPU build, must not stay behind.
+func removeBackendLibs(dir string) error {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+	for _, e := range entries {
+		if e.IsDir() || !isBackendLib(e.Name()) {
+			continue
+		}
+		if err := os.Remove(filepath.Join(dir, e.Name())); err != nil {
 			return err
 		}
 	}
-	return os.Chmod(r.binaryPath(), 0o755)
+	return nil
 }
 
 func (r *Runtime) Update(ctx context.Context) error {
@@ -172,7 +298,7 @@ func (r *Runtime) Update(ctx context.Context) error {
 }
 
 func (r *Runtime) Capabilities(ctx context.Context) (pluginapi.RuntimeCapabilities, error) {
-	return Capabilities(ctx)
+	return capabilities(r.goos, installedGPUBackends(filepath.Dir(r.binaryPath()))), nil
 }
 
 type ghRelease struct {
@@ -185,60 +311,30 @@ type ghRelease struct {
 type assetInfo struct {
 	Name string
 	URL  string
+	// Build is what follows "-bin-" in the name, such as ubuntu-vulkan-x64.
+	Build string
 }
 
-func latestAsset(ctx context.Context) (assetInfo, error) {
+func githubReleases(ctx context.Context) ([]ghRelease, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://api.github.com/repos/ggml-org/llama.cpp/releases?per_page=20", nil)
 	if err != nil {
-		return assetInfo{}, err
+		return nil, err
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("User-Agent", "toskar-daemon")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return assetInfo{}, err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return assetInfo{}, fmt.Errorf("GitHub API HTTP %d", resp.StatusCode)
+		return nil, fmt.Errorf("GitHub API HTTP %d", resp.StatusCode)
 	}
 	var rels []ghRelease
 	if err := json.NewDecoder(resp.Body).Decode(&rels); err != nil {
-		return assetInfo{}, err
+		return nil, err
 	}
-	want := platformAssetSuffix()
-	for _, rel := range rels {
-		for _, a := range rel.Assets {
-			name := strings.ToLower(a.Name)
-			if strings.Contains(name, want) && (strings.HasSuffix(name, ".tar.gz") || strings.HasSuffix(name, ".tgz") || strings.HasSuffix(name, ".zip")) {
-				// Prefer the main llama-b* bin archives over cuda runtime packs.
-				if strings.Contains(name, "cudart") {
-					continue
-				}
-				return assetInfo{Name: a.Name, URL: a.BrowserDownloadURL}, nil
-			}
-		}
-	}
-	return assetInfo{}, fmt.Errorf("no release asset matching %q found; install llama-server manually", want)
-}
-
-func platformAssetSuffix() string {
-	goos := runtime.GOOS
-	goarch := runtime.GOARCH
-	switch {
-	case goos == "darwin" && goarch == "arm64":
-		return "bin-macos-arm64"
-	case goos == "darwin" && goarch == "amd64":
-		return "bin-macos-x64"
-	case goos == "linux" && goarch == "amd64":
-		return "bin-ubuntu-x64"
-	case goos == "linux" && goarch == "arm64":
-		return "bin-ubuntu-arm64"
-	case goos == "windows" && goarch == "amd64":
-		return "bin-win-cpu-x64"
-	default:
-		return goos + "-" + goarch
-	}
+	return rels, nil
 }
 
 func extractZipAll(archivePath, destDir string) error {

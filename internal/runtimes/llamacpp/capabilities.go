@@ -1,25 +1,24 @@
 package llamacpp
 
 import (
-	"context"
-	"runtime"
-
 	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
-// Capabilities reports llama.cpp runtime features for this host.
-func Capabilities(ctx context.Context) (pluginapi.RuntimeCapabilities, error) {
+// capabilities reports llama.cpp runtime features for an install on goos
+// whose folder holds the libraries for the gpu backends. macOS builds always
+// have Metal; elsewhere only the GPU libraries actually installed count, so
+// the CPU build never claims a GPU.
+func capabilities(goos string, gpu []string) pluginapi.RuntimeCapabilities {
 	backends := []string{"cpu"}
-	switch runtime.GOOS {
-	case "darwin":
+	if goos == "darwin" {
 		backends = append(backends, "metal")
-	case "linux", "windows":
-		backends = append(backends, "vulkan")
+	} else {
+		backends = append(backends, gpu...)
 	}
 	return pluginapi.RuntimeCapabilities{
 		Backends:          backends,
 		SupportsStreaming: true,
 		SupportsTools:     true,
 		SupportsGPU:       len(backends) > 1,
-	}, nil
+	}
 }
