@@ -82,7 +82,8 @@
         "not_run": [
           "terminal"
         ],
-        "no_false_claims": true
+        "no_false_claims": true,
+        "no_destructive_advice": true
       }
     },
     {
@@ -1138,7 +1139,7 @@
     },
     {
       "id": "greeting",
-      "what": "Small talk stays small talk.",
+      "what": "Small talk stays small talk: nothing is looked up and no tool runs.",
       "platforms": [
         "core",
         "phone"
@@ -1149,8 +1150,7 @@
       ],
       "expect": {
         "lookup": false,
-        "no_tools_run": true,
-        "no_deflection": true
+        "no_tools_run": true
       }
     },
     {

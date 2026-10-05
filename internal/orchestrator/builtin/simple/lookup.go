@@ -137,12 +137,22 @@ func webAllowed(profile contracts.AIProfile) bool {
 	return strings.EqualFold(tools.PolicyForProfile(profile, "internet.search"), tools.PolicyAllow)
 }
 
+// figureRe matches a question asking for a figure: a price, an amount, a
+// version, opening hours, a result. Search snippets rarely carry it, so its
+// lookup reads the best page even at Fast effort.
+var figureRe = regexp.MustCompile(`(?i)\b(how (much|many|long|old|far|big)|costs?|price[sd]?|pricing|rates?|fees?|versions?|hours|open (now|until|till)|scores?|results?|winners?|won)\b`)
+
 // lookUp searches the web for query and reads the best pages, up to pages
-// of them (0 uses the search results alone). prompt is the question the
-// material is for.
+// of them (0 uses the search results alone, unless the question asks for a
+// figure: then one). prompt is the question the material is for.
 func lookUp(ctx context.Context, env pluginapi.ExecutionEnvironment, profile contracts.AIProfile, query, prompt string, pages int) (string, bool) {
 	if !webAllowed(profile) {
 		return "", false
+	}
+	if pages == 0 && figureRe.MatchString(prompt) {
+		// "How much does it cost?" at Fast effort answered from snippets
+		// that had no price, though the page it found had one.
+		pages = 1
 	}
 	env.Emit(EventLookup, map[string]any{"query": query})
 	args := map[string]any{"query": query}

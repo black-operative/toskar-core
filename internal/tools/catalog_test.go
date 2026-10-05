@@ -63,3 +63,15 @@ func testProfile(internet string) contracts.AIProfile {
 		},
 	}
 }
+
+// With a tool that changes things, the model is told to call it (it asks
+// first) rather than say it can't and hand over a destructive command.
+func TestPromptSaysChangesAskFirst(t *testing.T) {
+	with := PromptFor(contracts.AIProfile{Tools: []contracts.ToolPolicy{{ToolID: "terminal", Policy: "ask"}}})
+	if !strings.Contains(with, "never give the person a command that deletes") {
+		t.Fatalf("no guidance with the terminal: %s", with)
+	}
+	if without := PromptFor(testProfile("allow")); strings.Contains(without, "never give the person a command that deletes") {
+		t.Fatalf("guidance without a tool that changes things: %s", without)
+	}
+}

@@ -222,10 +222,13 @@ func PromptFor(profile contracts.AIProfile) string {
 		return ""
 	}
 	var lines []string
-	internet := false
+	internet, changes := false, false
 	for _, def := range enabled {
 		if def.Capability == CapInternet {
 			internet = true
+		}
+		if def.Risk == RiskWrite {
+			changes = true
 		}
 		lines = append(lines, "- "+def.ID+" "+def.Schema+" — "+def.Description)
 	}
@@ -237,6 +240,11 @@ func PromptFor(profile contracts.AIProfile) string {
 		"After tool results arrive, answer the user in plain text."
 	if internet {
 		prompt += "\nYou can search and open web pages. For current information, recent events, live data, websites, or facts that may have changed since training, use internet.search and internet.open before answering. Do not tell the user to search the web themselves."
+	}
+	if changes {
+		// A small model told it may delete files often says it can't, then
+		// hands the person the command to run (rm -rf) instead.
+		prompt += "\nYou can change things on this computer with the tools above. Tools that change things ask the person to approve first, so when asked to make a change, call the tool and let them decide. Do not say you are unable to, and never give the person a command that deletes or overwrites files to run themselves."
 	}
 	return prompt
 }
