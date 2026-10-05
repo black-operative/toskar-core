@@ -5,10 +5,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"strings"
 	"sync"
+	"syscall"
 	"testing"
 	"time"
 
@@ -21,40 +25,100 @@ import (
 // over the API. It adds a profile, knowledge, and a chat for the case, and
 // removes the profile and knowledge afterwards; the chat is kept so a
 // failure can be looked at.
-type realDriver struct{ base string }
+type realDriver struct {
+	base string
+	// stop is why the run can't go on, such as a daemon that started
+	// asking for an API key the run doesn't have. Shared by every case.
+	stop *string
+}
+
+func newRealDriver(base string) realDriver {
+	return realDriver{base: base, stop: new(string)}
+}
 
 func (realDriver) Name() string { return "real" }
 
+// Stopped says why the run should end early, or "".
+func (d realDriver) Stopped() string { return *d.stop }
+
+// The daemon can go away for a moment during a long run: a restart, a
+// settings change that rebinds it, a network blip. A request that never
+// reached it, or that it turned away as unavailable, is retried until
+// recoverWithin; one that reached it is never repeated, so a chat is never
+// sent twice.
+const recoverWithin = 3 * time.Minute
+
 func (d realDriver) do(t *testing.T, method, path string, body any, out any) int {
 	t.Helper()
-	var rd io.Reader
-	if body != nil {
-		raw, _ := json.Marshal(body)
-		rd = bytes.NewReader(raw)
-	}
-	req, err := http.NewRequest(method, d.base+path, rd)
+	code, err := d.request(method, path, body, out, t.Logf)
 	if err != nil {
 		t.Fatal(err)
 	}
-	req.Header.Set("Content-Type", "application/json")
-	if key := config.Env("QUALITY_KEY"); key != "" {
-		req.Header.Set("Authorization", "Bearer "+key)
+	return code
+}
+
+// request sends one API request, retrying while the daemon is away (see
+// recoverWithin), and decodes the reply into out.
+func (d realDriver) request(method, path string, body, out any, logf func(string, ...any)) (int, error) {
+	var payload []byte
+	if body != nil {
+		payload, _ = json.Marshal(body)
 	}
-	resp, err := (&http.Client{Timeout: 10 * time.Minute}).Do(req)
-	if err != nil {
-		t.Fatalf("%s %s: %v", method, path, err)
-	}
-	defer resp.Body.Close()
-	raw, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode >= 300 {
-		t.Fatalf("%s %s: %d %s", method, path, resp.StatusCode, raw)
-	}
-	if out != nil && len(raw) > 0 {
-		if err := json.Unmarshal(raw, out); err != nil {
-			t.Fatalf("%s %s: %v in %s", method, path, err, raw)
+	deadline := time.Now().Add(recoverWithin)
+	for wait := 2 * time.Second; ; wait = min(wait*2, 30*time.Second) {
+		req, err := http.NewRequest(method, d.base+path, bytes.NewReader(payload))
+		if err != nil {
+			return 0, err
 		}
+		req.Header.Set("Content-Type", "application/json")
+		if key := config.Env("QUALITY_KEY"); key != "" {
+			req.Header.Set("Authorization", "Bearer "+key)
+		}
+		resp, err := (&http.Client{Timeout: 10 * time.Minute}).Do(req)
+		retry := (err != nil && unreached(err)) || (err == nil && resp.StatusCode == http.StatusServiceUnavailable)
+		if retry && time.Now().Add(wait).Before(deadline) {
+			if resp != nil {
+				resp.Body.Close()
+			}
+			logf("%s %s: the daemon isn't answering; trying again in %s", method, path, wait)
+			time.Sleep(wait)
+			continue
+		}
+		if err != nil {
+			return 0, fmt.Errorf("%s %s: %w", method, path, err)
+		}
+		raw, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		if resp.StatusCode == http.StatusUnauthorized {
+			// The daemon now wants a key: its API was opened to the network
+			// mid-run, or the key was revoked. Nothing later can pass, so
+			// stop the whole run with one reason.
+			*d.stop = "the daemon at " + d.base + " now requires an API key: set the QUALITY_API_KEY secret to a key from its API Access page, or turn off its network access"
+			if config.Env("QUALITY_KEY") != "" {
+				*d.stop = "the daemon at " + d.base + " refused QUALITY_API_KEY: make a new key on its API Access page"
+			}
+			return resp.StatusCode, fmt.Errorf("%s %s: 401: %s", method, path, *d.stop)
+		}
+		if resp.StatusCode >= 300 {
+			return resp.StatusCode, fmt.Errorf("%s %s: %d %s", method, path, resp.StatusCode, raw)
+		}
+		if out != nil && len(raw) > 0 {
+			if err := json.Unmarshal(raw, out); err != nil {
+				return resp.StatusCode, fmt.Errorf("%s %s: %v in %s", method, path, err, raw)
+			}
+		}
+		return resp.StatusCode, nil
 	}
-	return resp.StatusCode
+}
+
+// unreached reports a request that never got to the daemon: refused or
+// reset before a response, so sending it again can't repeat anything.
+func unreached(err error) bool {
+	var op *net.OpError
+	if errors.As(err, &op) && op.Op == "dial" {
+		return true
+	}
+	return errors.Is(err, syscall.ECONNREFUSED)
 }
 
 // watch collects events for one chat and answers every approval no.

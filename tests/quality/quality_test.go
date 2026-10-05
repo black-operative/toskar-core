@@ -157,7 +157,7 @@ func TestQualitySet(t *testing.T) {
 		d = stubDriver{model: strings.TrimRight(url, "/")}
 	}
 	if url := config.Env("QUALITY_URL"); url != "" {
-		d = realDriver{base: strings.TrimRight(url, "/")}
+		d = newRealDriver(strings.TrimRight(url, "/"))
 	}
 	file := loadCases(t)
 	deflection := regexp.MustCompile(file.Deflection)
@@ -166,12 +166,24 @@ func TestQualitySet(t *testing.T) {
 		if !c.On("core") {
 			continue
 		}
+		// A run that can't go on, such as one whose daemon now wants a key,
+		// stops with that reason instead of failing every case left.
+		if s, ok := d.(interface{ Stopped() string }); ok && s.Stopped() != "" {
+			t.Errorf("stopped before %s and the cases after it: %s", c.ID, s.Stopped())
+			break
+		}
+		// A case that stops before it is checked, such as one whose daemon
+		// refuses or drops the request, counts as failed; otherwise a run
+		// that broke partway would report only the cases that got an answer.
+		recorded, skipped := false, false
 		t.Run(c.ID, func(t *testing.T) {
 			if c.StubOnly && d.Name() != "stub" {
+				skipped = true
 				t.Skip("checks a scripted reply")
 			}
 			r := d.Run(t, c)
 			failures := check(d.Name(), c, r, deflection)
+			recorded = true
 			report = append(report, reportRow{Case: c, Answer: r.Answer, Failures: failures})
 			for _, f := range failures {
 				// A real model is held to a pass rate, not every case.
@@ -182,6 +194,9 @@ func TestQualitySet(t *testing.T) {
 				}
 			}
 		})
+		if !recorded && !skipped {
+			report = append(report, reportRow{Case: c, Failures: []string{"the case stopped before it could be checked; see its log"}})
+		}
 	}
 	passed := 0
 	for _, row := range report {
