@@ -21,7 +21,7 @@
   },
   "errors": {
     "action": "Aktion konnte nicht ausgeführt werden",
-    "network": "Erlaube Toskar auf beiden Computern den Zugriff auf das lokale Netzwerk bzw. die Firewall und lass in den Einstellungen „Andere Computer finden“ eingeschaltet.",
+    "network": "Erlaube Toskar auf beiden Computern den Zugriff auf das lokale Netzwerk bzw. die Firewall und lass „Andere Computer finden“ unten unter „Netzwerk & Zugriff“ eingeschaltet.",
     "generic": "Etwas ist schiefgelaufen",
     "claimFailed": "Kopplungsangebot für diesen Code konnte nicht geladen werden"
   },

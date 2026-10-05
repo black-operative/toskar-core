@@ -81,7 +81,7 @@
       "connected_many": "{{count}} ordinateurs connectés",
       "connected_other": "{{count}} ordinateurs connectés",
       "none": "Aucun ordinateur trouvé",
-      "noneHint": "Ajoutez un autre ordinateur ou vérifiez Rechercher d'autres ordinateurs dans Paramètres."
+      "noneHint": "Ajoutez un autre ordinateur ou vérifiez Rechercher d'autres ordinateurs sur la page Ordinateurs."
     },
     "storage": {
       "label": "Stockage",

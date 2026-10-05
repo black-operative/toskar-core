@@ -21,7 +21,7 @@
   },
   "errors": {
     "action": "Could not complete that action",
-    "network": "Allow Local Network / Firewall for Toskar on both computers, and keep Find other computers On in Settings.",
+    "network": "Allow Local Network / Firewall for Toskar on both computers, and keep Find other computers on, under Network & access below.",
     "generic": "Something went wrong",
     "claimFailed": "Could not load pairing offer for that code"
   },

@@ -23,7 +23,7 @@
   },
   "errors": {
     "action": "Impossible d'effectuer cette action",
-    "network": "Autorisez Réseau local / Pare-feu pour Toskar sur les deux ordinateurs, et laissez Rechercher d'autres ordinateurs activé dans Paramètres.",
+    "network": "Autorisez Réseau local / Pare-feu pour Toskar sur les deux ordinateurs, et laissez Rechercher d'autres ordinateurs activé, dans Réseau et accès ci-dessous.",
     "generic": "Un problème est survenu",
     "claimFailed": "Impossible de charger l'offre de jumelage pour ce code"
   },

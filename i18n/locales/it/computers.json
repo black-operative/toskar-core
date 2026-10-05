@@ -23,7 +23,7 @@
   },
   "errors": {
     "action": "Impossibile completare l'azione",
-    "network": "Consenti Rete locale / Firewall per Toskar su entrambi i computer, e lascia attivo Trova altri computer nelle Impostazioni.",
+    "network": "Consenti Rete locale / Firewall per Toskar su entrambi i computer, e lascia attivo Trova altri computer, in Rete e accesso qui sotto.",
     "generic": "Qualcosa è andato storto",
     "claimFailed": "Impossibile caricare l'offerta di associazione per quel codice"
   },

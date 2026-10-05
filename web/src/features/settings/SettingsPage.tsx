@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { api } from '@/lib/api'
@@ -10,14 +10,11 @@ import {
   notifyDesktopBackgroundMode,
   notifyDesktopLaunchAtLogin,
   openPathInOS,
-  quitDesktopForRestart,
 } from '@/lib/desktopBridge'
 import { useUIStore } from '@/stores/uiStore'
 import type { SettingsPatch } from '@/types/api'
 import { RealmKicker } from '@/components/ui/Realm'
-import { ConnectedServices } from './ConnectedServices'
 import { NotificationDestinations } from './NotificationDestinations'
-import { ExternalServer } from './ExternalServer'
 import { WhatLeft } from './WhatLeft'
 import { YourData } from './YourData'
 import { Toggle } from '@/components/ui/Toggle'
@@ -411,70 +408,7 @@ export function SettingsPage() {
       </div>
 
       <div className="settings-group">
-        <p className="settings-group-label">{t('groups.network')}</p>
-        <section className="card space-y-4">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="section-title">{t('discovery.title')}</h2>
-              <p className="mt-1 text-sm text-ink-muted">{t('discovery.description')}</p>
-            </div>
-            <Toggle
-              label={t('discovery.title')}
-              checked={settings?.discovery_enabled ?? true}
-              disabled={busy}
-              onChange={() =>
-                patch({ discovery_enabled: !(settings?.discovery_enabled ?? true) })
-              }
-            />
-          </div>
-          {settings?.discovery_needs_restart ? (
-            <div className="rounded-lg border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-ink">
-              <p>{t('discovery.needsRestart')}</p>
-              <button
-                type="button"
-                className="btn-primary mt-3 px-3 py-1.5 text-xs"
-                onClick={async () => {
-                  const ok = await quitDesktopForRestart()
-                  if (!ok) {
-                    window.alert(t('discovery.restartManually'))
-                  }
-                }}
-              >
-                {t('discovery.restartNow')}
-              </button>
-            </div>
-          ) : (
-            <p className="text-xs text-ink-faint">
-              <Trans
-                t={t}
-                i18nKey="discovery.status"
-                values={{ state: (settings?.discovery_enabled ?? true) ? t('onOff.on') : t('onOff.off') }}
-                components={{ strong: <span className="font-medium text-ink" /> }}
-              />
-            </p>
-          )}
-        </section>
-
-        <section className="card space-y-3">
-          <div>
-            <h2 className="section-title">{t('api.title')}</h2>
-            <p className="mt-1 text-sm text-ink-muted">{t('api.description')}</p>
-          </div>
-          <dl className="space-y-2 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-ink-muted">{t('api.local')}</dt>
-              <dd className="font-medium text-ink">{t('onOff.on')}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt className="text-ink-muted">{t('api.lan')}</dt>
-              <dd className="font-medium text-ink">{settings?.lan_api_enabled ? t('onOff.on') : t('onOff.off')}</dd>
-            </div>
-          </dl>
-          <Link to="/api-access" className="btn-secondary inline-block px-3 py-1.5 text-xs">
-            {t('api.manage')}
-          </Link>
-        </section>
-
+        <p className="settings-group-label">{t('groups.notifications')}</p>
         <section className="card space-y-4">
           <div>
             <h2 className="section-title">{t('notifications.title')}</h2>
@@ -508,13 +442,11 @@ export function SettingsPage() {
           </div>
         </section>
         <NotificationDestinations />
-        {advancedMode ? <ExternalServer /> : null}
       </div>
 
       <div className="settings-group">
         <p className="settings-group-label">{t('groups.privacy')}</p>
         <YourData />
-        <ConnectedServices />
         <WhatLeft />
         <section className="card space-y-4">
           <div>

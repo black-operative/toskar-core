@@ -23,7 +23,7 @@
   },
   "errors": {
     "action": "No se pudo completar esa acción",
-    "network": "Permite Red local / Firewall para Toskar en ambas computadoras y mantén activada la opción Buscar otras computadoras en Configuración.",
+    "network": "Permite Red local / Firewall para Toskar en ambas computadoras y mantén activada la opción Buscar otras computadoras, en Red y acceso más abajo.",
     "generic": "Algo salió mal",
     "claimFailed": "No se pudo cargar la oferta de vinculación para ese código"
   },

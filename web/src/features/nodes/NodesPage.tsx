@@ -9,6 +9,7 @@ import { formatBytes } from '@/lib/format'
 import { useUIStore } from '@/stores/uiStore'
 import type { Model, Node, PairingSession } from '@/types/api'
 import { DeployModelsPanel } from './DeployModelsPanel'
+import { NetworkSettings } from './NetworkSettings'
 import { JoinByCommand } from './JoinByCommand'
 import {
   availableForLabels,
@@ -771,6 +772,8 @@ export function NodesPage() {
           }
         />
       )}
+
+      <NetworkSettings />
     </div>
   )
 }

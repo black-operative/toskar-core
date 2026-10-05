@@ -60,7 +60,7 @@ What lives there:
 | `places_geocoder_url` | `https://nominatim.openstreetmap.org` | The Nominatim service places and routes use to find places and addresses |
 | `places_overpass_url` | `https://overpass-api.de/api/interpreter` | The Overpass service for kinds of places near somewhere |
 | `places_router_url` | `https://routing.openstreetmap.de` | The OSRM service for routes. Your own OSRM server is used as `/route/v1/{driving,foot,bike}/…`. |
-| `external_openai_url` | none | An OpenAI-compatible server (OpenAI, vLLM, Ollama elsewhere…) whose models can be chosen for a chat. Its API key is `secrets/external-openai.key`. Set both in Settings → External server (advanced mode) or with `PUT /api/v1/external-server`. |
+| `external_openai_url` | none | An OpenAI-compatible server (OpenAI, vLLM, Ollama elsewhere…) whose models can be chosen for a chat. Its API key is `secrets/external-openai.key`. Set both on the Computers page, under Network & access → External server (advanced mode) or with `PUT /api/v1/external-server`. |
 | `ratings_url` | `https://ratings.toskar.ai` | The community ratings service that shared ratings go to and the daily summary comes from |
 | `ratings_summary_url` | the summary in `yeixio/toskar-model-data` | The public ratings summary used when the service cannot be reached |
 | `node_name` | the host name | The name other computers see |

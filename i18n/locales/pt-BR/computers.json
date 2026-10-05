@@ -23,7 +23,7 @@
   },
   "errors": {
     "action": "Não foi possível concluir essa ação",
-    "network": "Permita Rede Local / Firewall para o Toskar nos dois computadores e mantenha Encontrar outros computadores ativado em Configurações.",
+    "network": "Permita Rede Local / Firewall para o Toskar nos dois computadores e mantenha Encontrar outros computadores ativado, em Rede e acesso abaixo.",
     "generic": "Algo deu errado",
     "claimFailed": "Não foi possível carregar a oferta de pareamento para esse código"
   },

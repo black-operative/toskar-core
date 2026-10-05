@@ -65,7 +65,7 @@
       "silent_other": "{{names}} 没有响应。",
       "connected_other": "已连接 {{count}} 台电脑",
       "none": "未找到电脑",
-      "noneHint": "添加另一台电脑，或检查“设置”中的“查找其他电脑”。"
+      "noneHint": "添加另一台电脑，或在“电脑”页面检查“查找其他电脑”。"
     },
     "storage": {
       "label": "存储空间",

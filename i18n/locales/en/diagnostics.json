@@ -73,7 +73,7 @@
       "connected_one": "{{count}} computer connected",
       "connected_other": "{{count}} computers connected",
       "none": "No computers found",
-      "noneHint": "Add another computer or check Find other computers in Settings."
+      "noneHint": "Add another computer, or check Find other computers on the Computers page."
     },
     "storage": {
       "label": "Storage",

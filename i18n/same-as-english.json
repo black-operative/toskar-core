@@ -290,6 +290,7 @@
     "profiles:tools.terminal.label",
     "settings:about.build",
     "settings:about.service",
+    "settings:groups.notifications",
     "settings:lifecycle.minutes",
     "settings:notifications.title",
     "settings:personalization.format.label",

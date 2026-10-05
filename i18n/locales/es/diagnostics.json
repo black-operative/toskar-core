@@ -81,7 +81,7 @@
       "connected_many": "{{count}} computadoras conectadas",
       "connected_other": "{{count}} computadoras conectadas",
       "none": "No se encontraron computadoras",
-      "noneHint": "Agrega otra computadora o revisa Buscar otras computadoras en Configuración."
+      "noneHint": "Agrega otra computadora o revisa Buscar otras computadoras en la página Computadoras."
     },
     "storage": {
       "label": "Almacenamiento",

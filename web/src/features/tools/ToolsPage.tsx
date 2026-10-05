@@ -6,6 +6,7 @@ import { api } from '@/lib/api'
 import type { ToolRecord } from '@/types/api'
 import { RealmKicker } from '@/components/ui/Realm'
 import { ImageSetupCard, VideoSetupCard } from './ImageSetup'
+import { ConnectedServices } from './ConnectedServices'
 import { ToolSources } from './ToolSources'
 import { formatDateTime } from '@/i18n/format'
 import { LoadError } from '@/components/ui/LoadError'
@@ -90,6 +91,7 @@ export function ToolsPage() {
       <ImageSetupCard />
       <VideoSetupCard />
       <ToolSources />
+      <ConnectedServices />
       <div>
         <h2 className="section-title">{t('page.allTitle')}</h2>
         <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t('page.allDescription')}</p>

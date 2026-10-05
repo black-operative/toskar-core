@@ -90,7 +90,7 @@ Approve the offer on the second computer. Protected Bifrost routes answer `401` 
 
 ## A connected service or MCP tool source stops working
 
-- **Connected services:** Settings → Connected services → **Check** tests the stored credential. A blank secret field keeps the stored one when you change other values.
+- **Connected services:** Tools → Connected services → **Check** tests the stored credential. A blank secret field keeps the stored one when you change other values.
 - **MCP tool sources:** a source that signs in with a browser says "needs you to sign in again" when its sign-in expires. Open Tools and choose **Sign in**. Tools also shows each source's log.
 
 ## API calls return 401 or 403
