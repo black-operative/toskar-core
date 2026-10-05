@@ -329,7 +329,7 @@ func (s *Server) Shutdown(ctx context.Context) error {
 
 func (s *Server) controlAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if s.deps.Config == nil || !config.ListensBeyondLoopback(s.deps.Config.Get().APIHost) {
+		if s.deps.Config == nil || !config.ListensBeyondLoopback(s.deps.Config.Get().APIHost) || auth.FromThisComputer(r) {
 			next.ServeHTTP(w, r)
 			return
 		}

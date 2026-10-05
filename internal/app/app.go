@@ -809,7 +809,7 @@ func (a *App) openAIPermissions(r *http.Request) (auth.APIKeyPermissions, error)
 	}
 	rec, err := a.APIKeys.Verify(r.Context(), token)
 	if err != nil {
-		if config.ListensBeyondLoopback(a.Config.Get().APIHost) {
+		if config.ListensBeyondLoopback(a.Config.Get().APIHost) && !auth.FromThisComputer(r) {
 			return auth.APIKeyPermissions{}, err
 		}
 		// On this computer a key is optional; a wrong one gets the defaults.
@@ -819,7 +819,7 @@ func (a *App) openAIPermissions(r *http.Request) (auth.APIKeyPermissions, error)
 }
 
 func (a *App) authorizeControlRequest(r *http.Request) error {
-	if !config.ListensBeyondLoopback(a.Config.Get().APIHost) {
+	if !config.ListensBeyondLoopback(a.Config.Get().APIHost) || auth.FromThisComputer(r) {
 		return nil
 	}
 	token, err := auth.BearerToken(r)

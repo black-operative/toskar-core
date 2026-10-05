@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/yeixio/toskar-core/internal/config"
 	"github.com/yeixio/toskar-core/internal/mcp"
 )
 
@@ -270,18 +269,17 @@ func (s *Server) handleMCPShare(w http.ResponseWriter, r *http.Request) {
 	if s.ctl != nil {
 		ctl = s.ctl()
 	}
+	// Apps on this computer reach it over loopback, which never needs a
+	// key, even with network access on.
 	host, port := "127.0.0.1", 7331
-	needsKey := false
 	if s.deps.Config != nil {
-		cfg := s.deps.Config.Get()
-		port = cfg.APIPort
-		needsKey = config.ListensBeyondLoopback(cfg.APIHost)
+		port = s.deps.Config.Get().APIPort
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"url":       "http://" + host + ":" + strconv.Itoa(port) + "/mcp",
 		"command":   ctl,
 		"args":      []string{"mcp"},
-		"needs_key": needsKey,
+		"needs_key": false,
 	})
 }
 

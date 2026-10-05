@@ -299,7 +299,7 @@ Models, runtimes, logs, `toskar.db`, and `secrets/` live under that path. An ins
 
 Toskar Core does not send usage telemetry by default. A search of this repository found no analytics, crash-reporting, or metrics-upload client.
 
-The control API and the OpenAI-compatible API require a bearer token whenever the daemon listens beyond loopback. Loopback access stays open by default. Toskar refuses a non-loopback API until a key is configured. Enabling local network access records `0.0.0.0`; the socket changes on the next start, and the key check follows the configured host immediately. The Docker image listens on `0.0.0.0` and needs `TOSKAR_API_KEY`. A key on plain HTTP does not encrypt traffic. Bifrost listens for pairing on the LAN when discovery is enabled. Read [docs/privacy.md](docs/privacy.md) and [SECURITY.md](SECURITY.md) before exposing either port.
+The control API and the OpenAI-compatible API require a bearer token from other machines whenever the daemon listens beyond loopback. Requests from this computer over loopback never need one, so turning on network access does not break the desktop app or `toskarctl`; a request with proxy forwarding headers counts as coming from the network. Toskar refuses a non-loopback API until a key is configured. Enabling local network access records `0.0.0.0`; the socket changes on the next start, and the key check follows the configured host immediately. The Docker image listens on `0.0.0.0` and needs `TOSKAR_API_KEY`. A key on plain HTTP does not encrypt traffic. Bifrost listens for pairing on the LAN when discovery is enabled. Read [docs/privacy.md](docs/privacy.md) and [SECURITY.md](SECURITY.md) before exposing either port.
 
 ## Documentation
 

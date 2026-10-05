@@ -4,7 +4,7 @@ The daemon listens on `http://127.0.0.1:7331` unless `config.json` or `TOSKAR_AP
 
 ## Authentication
 
-Loopback binds (`127.0.0.1`, `::1`, `localhost`) do not require an API key. Any other API host, including `0.0.0.0` and `::`, requires `Authorization: Bearer YOUR_API_KEY` on every `/api/v1/*` and `/v1/*` request. The daemon refuses to listen on a non-loopback address until at least one API key exists. `GET /about` and `GET /source` stay open so a network user can obtain the corresponding source.
+Loopback binds (`127.0.0.1`, `::1`, `localhost`) do not require an API key. Any other API host, including `0.0.0.0` and `::`, requires `Authorization: Bearer YOUR_API_KEY` on every `/api/v1/*` and `/v1/*` request from another machine. A request that arrives over loopback (`127.0.0.1` or `::1`) still needs no key, so apps on this computer keep working when network access is on. A request carrying `Forwarded`, `X-Forwarded-For`, or `X-Real-IP` came through a proxy and is treated as coming from the network. The daemon refuses to listen on a non-loopback address until at least one API key exists. `GET /about` and `GET /source` stay open so a network user can obtain the corresponding source.
 
 The web UI calls this setting local network access. Turning it on stores `api_host` as `0.0.0.0` and turns the key check on immediately. The process keeps the socket it bound at startup until it is restarted, so quit and reopen Toskar before other computers can connect. The daemon also rejects a settings change that enables that bind when no key exists.
 
@@ -613,7 +613,7 @@ Each API key has `permissions` that a request can only narrow:
 - `tools` is `profile` (the default), `read_only`, or `none`.
 - `placement` (true by default) lets a request choose where it runs.
 
-Asking for something a key does not allow returns 403 and says what was refused. Change a key's permissions with `PUT /api/v1/api-keys/{id}/permissions` or on the API Access page; rotating a key keeps them. When the API listens beyond this computer, every request needs a key, so its limits always apply. On this computer a key is optional; its limits apply when the app sends it, and a request without one gets the defaults.
+Asking for something a key does not allow returns 403 and says what was refused. Change a key's permissions with `PUT /api/v1/api-keys/{id}/permissions` or on the API Access page; rotating a key keeps them. When the API listens beyond this computer, every request from another machine needs a key, so its limits always apply there. On this computer a key is optional; its limits apply when the app sends it, and a request without one gets the defaults.
 
 ### Streaming
 

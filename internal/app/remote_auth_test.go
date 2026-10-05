@@ -66,43 +66,47 @@ func TestStartAcceptsBootstrapKey(t *testing.T) {
 		_ = application.Shutdown(context.Background())
 	})
 
+	// The test reaches the daemon over loopback, which needs no key even
+	// with network access on; a forwarding header stands in for a request
+	// from another machine.
 	base := "http://127.0.0.1:" + strconv.Itoa(apiPort)
 	client := &http.Client{Timeout: 2 * time.Second}
-	deadline := time.Now().Add(10 * time.Second)
-	var denied bool
-	for time.Now().Before(deadline) {
-		resp, err := client.Get(base + "/api/v1/health")
-		if err == nil {
-			_, _ = io.Copy(io.Discard, resp.Body)
-			_ = resp.Body.Close()
-			if resp.StatusCode == http.StatusUnauthorized {
-				denied = true
-				break
-			}
+	get := func(forwarded bool, key string) int {
+		req, err := http.NewRequest(http.MethodGet, base+"/api/v1/health", nil)
+		if err != nil {
+			t.Fatal(err)
 		}
+		if forwarded {
+			req.Header.Set("X-Forwarded-For", "192.168.1.20")
+		}
+		if key != "" {
+			req.Header.Set("Authorization", "Bearer "+key)
+		}
+		resp, err := client.Do(req)
+		if err != nil {
+			return 0
+		}
+		_, _ = io.Copy(io.Discard, resp.Body)
+		_ = resp.Body.Close()
+		return resp.StatusCode
+	}
+	deadline := time.Now().Add(10 * time.Second)
+	for get(false, "") != http.StatusOK {
 		select {
 		case startErr := <-errCh:
 			t.Fatalf("start: %v", startErr)
 		default:
 		}
+		if time.Now().After(deadline) {
+			t.Fatal("health from this computer without a key never answered")
+		}
 		time.Sleep(50 * time.Millisecond)
 	}
-	if !denied {
-		t.Fatal("expected health without a key to be rejected")
+	if code := get(true, ""); code != http.StatusUnauthorized {
+		t.Fatalf("health from the network without a key: %d", code)
 	}
-
-	req, err := http.NewRequest(http.MethodGet, base+"/api/v1/health", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	req.Header.Set("Authorization", "Bearer "+secret)
-	resp, err := client.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("bearer health: %d", resp.StatusCode)
+	if code := get(true, secret); code != http.StatusOK {
+		t.Fatalf("bearer health: %d", code)
 	}
 	if host := application.Config.Get().APIHost; !config.ListensBeyondLoopback(host) {
 		t.Fatalf("api host %q", host)
