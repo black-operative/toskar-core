@@ -63,6 +63,7 @@ import (
 	"github.com/yeixio/toskar-core/internal/store"
 	"github.com/yeixio/toskar-core/internal/store/repositories"
 	"github.com/yeixio/toskar-core/internal/tasks"
+	"github.com/yeixio/toskar-core/internal/telemetry"
 	"github.com/yeixio/toskar-core/internal/tools"
 	"github.com/yeixio/toskar-core/internal/training"
 	"github.com/yeixio/toskar-core/internal/version"
@@ -143,6 +144,8 @@ type App struct {
 	window func(ctx context.Context, endpoint string) (int, error)
 	// sampler keeps a day of the daemon's memory and goroutines (#231).
 	sampler *diagnostics.Sampler
+	// live keeps a day of this computer's CPU, memory, and GPU figures (#317).
+	live *telemetry.Sampler
 	// StubReply, when set with stub inference, scripts what the stub model
 	// says, for the quality test set (§64). It sees every prompt.
 	StubReply func(modelID string, messages []pluginapi.ChatMessage) string
@@ -506,6 +509,7 @@ func New(opts Options) (*App, error) {
 		ExportDiagnostics: func(ctx context.Context, includeConversations bool) (string, error) {
 			return a.exportDiagnostics(ctx, includeConversations)
 		},
+		LiveFigures: a.liveAll,
 		RuntimeHistory: func() diagnostics.RuntimeHistory {
 			if a.sampler == nil {
 				return diagnostics.RuntimeHistory{Now: diagnostics.Sample()}
@@ -780,6 +784,7 @@ func New(opts Options) (*App, error) {
 		Identity:        identity,
 		Pairing:         pairing,
 		Hardware:        a.detectHardware,
+		Live:            a.localLive,
 		ListModels:      modelMgr.List,
 		InstallModel:    modelMgr.Install,
 		InstallFromURL:  modelMgr.InstallFromURL,
@@ -895,6 +900,7 @@ func (a *App) Start(ctx context.Context) error {
 		defer a.wg.Done()
 		a.sampler.Run(ctx)
 	}()
+	a.startLive(ctx)
 	a.notifyFromEvents(ctx)
 	a.Notifications.Start(ctx)
 	a.watchCapabilities(ctx)

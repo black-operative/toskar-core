@@ -203,6 +203,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SettingsView"
+  /api/v1/performance/live:
+    get:
+      summary: Live CPU, memory, and GPU figures for this and paired computers
+      description: >-
+        Each computer's figures now, every few seconds over the last hour (every minute when no model
+        is loaded), and per-minute averages over the last day. A figure a computer can't give, such as
+        GPU temperature on a Mac, is left out rather than reported as 0. A paired computer that doesn't
+        answer within 5 seconds is left out.
+      operationId: listLiveFigures
+      responses:
+        "200":
+          description: One entry per computer, this one first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LiveFigures"
   /api/v1/performance:
     get:
       summary: List generation performance samples
@@ -4876,6 +4894,32 @@ components:
         mode: {type: string, enum: [embedding, reranking]}
         acceleration:
           $ref: "#/components/schemas/Acceleration"
+    LiveFigures:
+      type: object
+      properties:
+        node_id: {type: string}
+        node_name: {type: string}
+        current: {$ref: "#/components/schemas/LiveSample"}
+        recent: {type: array, items: {$ref: "#/components/schemas/LiveSample"}}
+        day: {type: array, items: {$ref: "#/components/schemas/LiveSample"}}
+    LiveSample:
+      type: object
+      properties:
+        at: {type: string, format: date-time}
+        cpu_percent: {type: number}
+        memory_used_bytes: {type: integer}
+        memory_total_bytes: {type: integer}
+        gpus: {type: array, items: {$ref: "#/components/schemas/GPUSample"}}
+    GPUSample:
+      type: object
+      description: On Apple silicon the GPU shares system memory, so its memory figures are what the GPU is using.
+      properties:
+        name: {type: string}
+        busy_percent: {type: number}
+        memory_used_bytes: {type: integer}
+        memory_total_bytes: {type: integer}
+        temperature_c: {type: number}
+        power_watts: {type: number}
     Acceleration:
       type: object
       description: Where a running model runs, from the runtime's own report when it loaded the model.

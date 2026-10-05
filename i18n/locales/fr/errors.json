@@ -70,6 +70,7 @@
   "MEMORY_LOOKS_SECRET": "Cela ressemble à un mot de passe, une clé ou un jeton : Toskar ne l'a donc pas enregistré.",
   "MEMORY_NOT_FOUND": "Ce souvenir a été supprimé.",
   "MESSAGES_LIST_FAILED": "{{detail}}",
+  "LIVE_FIGURES_FAILED": "Impossible de lire les valeurs du processeur, de la mémoire et du GPU de cet ordinateur.",
   "MODELS_LIST_FAILED": "Impossible d'afficher les modèles.",
   "MODEL_BUSY": "{{detail}}",
   "MODEL_NOT_FOUND": "Aucun modèle n'a cet identifiant.",

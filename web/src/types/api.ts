@@ -174,6 +174,35 @@ export interface RunningModelView {
   acceleration?: Acceleration
 }
 
+/** A computer's live CPU, memory, and GPU figures (#317). */
+export interface LiveFigures {
+  node_id: string
+  node_name: string
+  current: LiveSample
+  /** Every few seconds over the last hour (every minute when no model is loaded). */
+  recent: LiveSample[]
+  /** Per-minute averages over the last day. */
+  day: LiveSample[]
+}
+
+/** One reading; a figure the computer can't give is absent, never 0. */
+export interface LiveSample {
+  at: string
+  cpu_percent?: number
+  memory_used_bytes?: number
+  memory_total_bytes?: number
+  gpus?: GPUSample[]
+}
+
+export interface GPUSample {
+  name: string
+  busy_percent?: number
+  memory_used_bytes?: number
+  memory_total_bytes?: number
+  temperature_c?: number
+  power_watts?: number
+}
+
 /** Where a running model runs, from the runtime's own report (#317). */
 export interface Acceleration {
   state: 'gpu' | 'partial' | 'cpu' | 'cpu_expected'

@@ -92,6 +92,13 @@ func (c *Client) Hardware(ctx context.Context) (contracts.HardwareInventory, err
 	return inv, nil
 }
 
+// Live is a paired computer's live CPU, memory, and GPU figures (#317).
+func (c *Client) Live(ctx context.Context) (contracts.LiveFigures, error) {
+	var out contracts.LiveFigures
+	err := c.getJSON(ctx, "/internal/v1/live", &out, true)
+	return out, err
+}
+
 func (c *Client) ListModels(ctx context.Context) ([]contracts.Model, error) {
 	var out []contracts.Model
 	if err := c.getJSON(ctx, "/internal/v1/models", &out, true); err != nil {

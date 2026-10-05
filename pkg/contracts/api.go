@@ -343,6 +343,40 @@ type Acceleration struct {
 	GPUMemoryBytes uint64 `json:"gpu_memory_bytes,omitempty"`
 }
 
+// LiveFigures are a computer's live CPU, memory, and GPU figures, now and
+// over the last hour and day (#317).
+type LiveFigures struct {
+	NodeID   string     `json:"node_id"`
+	NodeName string     `json:"node_name"`
+	Current  LiveSample `json:"current"`
+	// Recent are samples every few seconds while a model is loaded (every
+	// minute otherwise) over the last hour; Day are per-minute averages
+	// over the last day.
+	Recent []LiveSample `json:"recent"`
+	Day    []LiveSample `json:"day"`
+}
+
+// LiveSample is one reading. A figure this computer can't give is left
+// out, never reported as 0.
+type LiveSample struct {
+	At               time.Time   `json:"at"`
+	CPUPercent       *float64    `json:"cpu_percent,omitempty"`
+	MemoryUsedBytes  *uint64     `json:"memory_used_bytes,omitempty"`
+	MemoryTotalBytes *uint64     `json:"memory_total_bytes,omitempty"`
+	GPUs             []GPUSample `json:"gpus,omitempty"`
+}
+
+// GPUSample is one graphics card's reading. On Apple silicon the GPU shares
+// system memory, so its memory figures are the memory the GPU is using.
+type GPUSample struct {
+	Name             string   `json:"name"`
+	BusyPercent      *float64 `json:"busy_percent,omitempty"`
+	MemoryUsedBytes  *uint64  `json:"memory_used_bytes,omitempty"`
+	MemoryTotalBytes *uint64  `json:"memory_total_bytes,omitempty"`
+	TemperatureC     *float64 `json:"temperature_c,omitempty"`
+	PowerWatts       *float64 `json:"power_watts,omitempty"`
+}
+
 // BrowseModel is a Hugging Face browse-all hit (GGUF filtered).
 type BrowseModel struct {
 	ID          string   `json:"id"`

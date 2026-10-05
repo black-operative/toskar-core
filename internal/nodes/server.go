@@ -35,6 +35,8 @@ type InternalDeps struct {
 	Identity *auth.NodeIdentity
 	Pairing  *auth.PairingManager
 	Hardware func(ctx context.Context) (contracts.HardwareInventory, error)
+	// Live is this computer's live CPU, memory, and GPU figures (#317).
+	Live func(ctx context.Context) (contracts.LiveFigures, error)
 
 	ListModels     func(ctx context.Context) ([]contracts.Model, error)
 	InstallModel   func(ctx context.Context, id string, wait bool) error
@@ -89,6 +91,7 @@ func NewInternalServer(deps InternalDeps) *InternalServer {
 	api.HandleFunc("/health", s.handleHealth).Methods(http.MethodGet)
 	api.HandleFunc("/node", s.handleNode).Methods(http.MethodGet)
 	api.HandleFunc("/hardware", s.handleHardware).Methods(http.MethodGet)
+	api.HandleFunc("/live", s.handleLive).Methods(http.MethodGet)
 	api.HandleFunc("/models", s.handleListModels).Methods(http.MethodGet)
 	api.HandleFunc("/models/install", s.handleInstallModel).Methods(http.MethodPost)
 	api.HandleFunc("/models/install-from-url", s.handleInstallFromURL).Methods(http.MethodPost)
@@ -258,6 +261,19 @@ func (s *InternalServer) handleNode(w http.ResponseWriter, r *http.Request) {
 		"name":     s.cfg.NodeName,
 		"cert_pem": cert,
 	})
+}
+
+func (s *InternalServer) handleLive(w http.ResponseWriter, r *http.Request) {
+	if s.deps.Live == nil {
+		http.Error(w, "unavailable", http.StatusServiceUnavailable)
+		return
+	}
+	live, err := s.deps.Live(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	writeJSON(w, live)
 }
 
 func (s *InternalServer) handleHardware(w http.ResponseWriter, r *http.Request) {

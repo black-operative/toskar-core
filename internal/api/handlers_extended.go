@@ -646,6 +646,21 @@ func (s *Server) handleDiagnostics(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// handleLiveFigures reports each computer's CPU, memory, and GPU figures
+// now and over the last hour and day, for the Performance page (#317).
+func (s *Server) handleLiveFigures(w http.ResponseWriter, r *http.Request) {
+	if s.deps.LiveFigures == nil {
+		writeJSON(w, http.StatusOK, []contracts.LiveFigures{})
+		return
+	}
+	figures, err := s.deps.LiveFigures(r.Context())
+	if err != nil {
+		writeErrFrom(w, http.StatusInternalServerError, "LIVE_FIGURES_FAILED", err)
+		return
+	}
+	writeJSON(w, http.StatusOK, figures)
+}
+
 // handleRuntimeHistory reports the daemon's memory and goroutines now and
 // over the last day, for the Diagnostics page (#231).
 func (s *Server) handleRuntimeHistory(w http.ResponseWriter, r *http.Request) {

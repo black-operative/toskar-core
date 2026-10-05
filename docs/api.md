@@ -106,6 +106,7 @@ Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under
 | POST | `/models/install-from-url` | Install a GGUF from a URL |
 | DELETE | `/models/{id}` | Remove an installed model |
 | POST | `/models/{id}/start`, `/models/{id}/stop` | Load or unload a model |
+| GET | `/performance/live` | Live CPU, memory, and GPU figures for this and paired computers: now, the last hour, and per-minute averages for the day (see [GPU acceleration](#gpu-acceleration)) |
 | GET | `/models/running` | Loaded models, with `mode` (`embedding` or `reranking` for supporting models), `speed_tok_per_sec` from their latest replies, and `acceleration`: where each runs (see [GPU acceleration](#gpu-acceleration)) |
 | GET, PUT, DELETE | `/models/{id}/rating` | This person's 1–5 star rating of a model, and exactly what sharing it would send. See [Community ratings](#community-ratings). |
 | POST | `/models/{id}/rating/dismiss` | Stop asking for a rating of a model |
@@ -654,3 +655,14 @@ When llama-server loads a model, it logs which devices it found, how many of the
 The same report tags what each model produced, so a GPU reply can be told from a CPU one: `GET /performance` records and the models in a run (`GET /runs/{id}`) carry `backend` and `device` (such as `vulkan` and `AMD Radeon RX 7900 XTX`, or `cpu` and an empty device), and so does every benchmark sample. They are empty for replies recorded before this, and for steps that ran on a paired computer. `GET /runtimes` lists what the installed llama.cpp build can run on in `detection.backends`, such as `["cpu", "vulkan"]`; a CPU-only build is `["cpu"]`.
 
 `GET /health` sums it up in `acceleration`: the least accelerated loaded chat model's state, or `idle` when no model is loaded. It never changes `status`; a computer without a GPU is healthy.
+
+### Live figures
+
+`GET /performance/live` returns one entry per computer, this one first: `current`, `recent` (a reading every 5 seconds while a model is loaded, every minute otherwise, over the last hour), and `day` (per-minute averages). Each reading has `cpu_percent`, `memory_used_bytes`, `memory_total_bytes`, and `gpus`, each with `busy_percent`, `memory_used_bytes`, `memory_total_bytes`, `temperature_c`, and `power_watts`. A figure a computer can't give is left out, never reported as 0. None of them need root or admin rights:
+
+| Platform | CPU and memory | GPU |
+| --- | --- | --- |
+| Linux | `/proc/stat`, `/proc/meminfo` | AMD: the kernel's `gpu_busy_percent`, `mem_info_vram_*`, and hwmon temperature and power. Intel: hwmon where exposed. NVIDIA: `nvidia-smi` |
+| macOS | `top`, `vm_stat` | `ioreg` (busy %, and on Apple silicon the shared memory the GPU is using). Temperature and power need root, so they are left out |
+| Windows | `typeperf`, `GlobalMemoryStatusEx` | Windows' GPU counters (busy %, dedicated memory). NVIDIA: `nvidia-smi`, which also gives temperature and power |
+

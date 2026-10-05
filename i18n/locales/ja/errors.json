@@ -70,6 +70,7 @@
   "MEMORY_LOOKS_SECRET": "パスワード、キー、トークンのように見えるため、Toskarは保存しませんでした。",
   "MEMORY_NOT_FOUND": "そのメモリは削除されています。",
   "MESSAGES_LIST_FAILED": "{{detail}}",
+  "LIVE_FIGURES_FAILED": "このコンピュータのCPU、メモリ、GPUの値を読み取れませんでした。",
   "MODELS_LIST_FAILED": "モデルの一覧を取得できませんでした。",
   "MODEL_BUSY": "{{detail}}",
   "MODEL_NOT_FOUND": "そのIDのモデルはありません。",

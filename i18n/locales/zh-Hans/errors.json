@@ -70,6 +70,7 @@
   "MEMORY_LOOKS_SECRET": "这看起来像密码、密钥或令牌，所以 Toskar 没有保存它。",
   "MEMORY_NOT_FOUND": "该记忆已被移除。",
   "MESSAGES_LIST_FAILED": "{{detail}}",
+  "LIVE_FIGURES_FAILED": "无法读取这台电脑的 CPU、内存和 GPU 数据。",
   "MODELS_LIST_FAILED": "无法列出模型。",
   "MODEL_BUSY": "{{detail}}",
   "MODEL_NOT_FOUND": "没有使用该 ID 的模型。",

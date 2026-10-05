@@ -122,10 +122,13 @@ type Dependencies struct {
 	ExportDiagnostics func(ctx context.Context, includeConversations bool) (string, error)
 	// RuntimeHistory is the daemon's memory and goroutines over the last day.
 	RuntimeHistory func() diagnostics.RuntimeHistory
-	ListLogs       func(ctx context.Context) ([]logs.Entry, error)
-	GetLog         func(ctx context.Context, name string, tailBytes int64) (logs.Content, error)
-	Version        func() contracts.VersionResponse
-	WebRoot        fs.FS
+	// LiveFigures are this computer's and each paired computer's live CPU,
+	// memory, and GPU figures (#317).
+	LiveFigures func(ctx context.Context) ([]contracts.LiveFigures, error)
+	ListLogs    func(ctx context.Context) ([]logs.Entry, error)
+	GetLog      func(ctx context.Context, name string, tailBytes int64) (logs.Content, error)
+	Version     func() contracts.VersionResponse
+	WebRoot     fs.FS
 }
 
 // Server is the control-plane HTTP server.
@@ -241,6 +244,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/settings", s.handlePatchSettings).Methods(http.MethodPatch, http.MethodPut)
 	api.HandleFunc("/settings/reset", s.handleResetApp).Methods(http.MethodPost, http.MethodOptions)
 	api.HandleFunc("/performance", s.handleListPerformance).Methods(http.MethodGet, http.MethodOptions)
+	api.HandleFunc("/performance/live", s.handleLiveFigures).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/benchmarks/workloads", s.handleListBenchmarkWorkloads).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/benchmarks", s.handleListBenchmarks).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/benchmarks", s.handleStartBenchmark).Methods(http.MethodPost)

@@ -70,6 +70,7 @@
   "MEMORY_LOOKS_SECRET": "Isso parece uma senha, chave ou token, então o Toskar não salvou.",
   "MEMORY_NOT_FOUND": "Essa memória foi removida.",
   "MESSAGES_LIST_FAILED": "{{detail}}",
+  "LIVE_FIGURES_FAILED": "Não foi possível ler os dados de CPU, memória e GPU deste computador.",
   "MODELS_LIST_FAILED": "Não foi possível listar os modelos.",
   "MODEL_BUSY": "{{detail}}",
   "MODEL_NOT_FOUND": "Nenhum modelo tem esse ID.",
