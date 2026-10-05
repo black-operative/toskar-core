@@ -30,6 +30,9 @@ type realDriver struct {
 	// stop is why the run can't go on, such as a daemon that started
 	// asking for an API key the run doesn't have. Shared by every case.
 	stop *string
+	// model is the model every chat asks for, such as qwen2.5-32b-q4, or
+	// "" for the daemon's own pick ("auto").
+	model string
 }
 
 func newRealDriver(base string) realDriver {
@@ -37,6 +40,14 @@ func newRealDriver(base string) realDriver {
 }
 
 func (realDriver) Name() string { return "real" }
+
+// modelID is the model chats ask for.
+func (d realDriver) modelID() string {
+	if d.model == "" {
+		return "auto"
+	}
+	return d.model
+}
 
 // Stopped says why the run should end early, or "".
 func (d realDriver) Stopped() string { return *d.stop }
@@ -224,10 +235,10 @@ func (d realDriver) Run(t *testing.T, c Case) Result {
 	var conv struct {
 		ID string `json:"id"`
 	}
-	d.do(t, http.MethodPost, "/api/v1/conversations", map[string]any{"title": "Quality " + c.ID, "profile_id": created.ID, "model_id": "auto"}, &conv)
+	d.do(t, http.MethodPost, "/api/v1/conversations", map[string]any{"title": "Quality " + c.ID, "profile_id": created.ID, "model_id": d.modelID()}, &conv)
 	chat := func(message string) {
 		d.do(t, http.MethodPost, "/api/v1/chat", map[string]any{
-			"conversation_id": conv.ID, "profile_id": created.ID, "model_id": "auto", "message": message, "stream": false,
+			"conversation_id": conv.ID, "profile_id": created.ID, "model_id": d.modelID(), "message": message, "stream": false,
 		}, nil)
 	}
 	// The real model answers the earlier turns itself.

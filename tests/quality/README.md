@@ -75,5 +75,10 @@ expectations and pages, so the phone is held to what core does.
   Vulkan and Mesa's drivers (`gpu.Dockerfile`) and passes in the AMD or Intel
   card (`--device /dev/dri`); the runner's user must be able to open
   `/dev/dri/renderD*`. The report names the card or CPU the run used.
+  The job runs once per model in `QUALITY_MODELS` (a JSON list; the
+  **Run workflow** `models` input overrides it), one at a time:
+  `recommended` is what the daemon picks for a new user, and a catalog id
+  such as `qwen2.5-32b-q4` tests that model (`TOSKAR_QUALITY_MODEL`), which
+  is installed first and asked for by every chat.
 
 Add a case when a change fixes a behavior, so it stays fixed.

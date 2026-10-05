@@ -3,8 +3,8 @@ name: Quality
 # The quality test set against real models (spec §64). The same cases run
 # against the stub model in CI on every change; this runs them against a
 # daemon with real models installed, on a self-hosted runner, so defaults
-# are changed with evidence. It runs only when the repository variable
-# QUALITY_DAEMON_URL names that daemon.
+# are changed with evidence. The self-hosted job runs when the repository
+# variable QUALITY_RUNNER is "docker".
 
 on:
   schedule:
@@ -18,6 +18,9 @@ on:
       ref:
         description: Branch, tag, or commit to test. The workflow itself always comes from main.
         default: main
+      models:
+        description: 'Models for the self-hosted run, as a JSON list, such as ["recommended","qwen2.5-32b-q4"]. Blank for QUALITY_MODELS.'
+        default: ""
 
 jobs:
   # The quality set with a real model on CPU (Llama 3.2 1B through
@@ -71,12 +74,22 @@ jobs:
   # Intel card (/dev/dri) and Vulkan drivers. It picks its models to fit,
   # and if it still runs out, the kernel stops the container, not the
   # machine.
+  #
+  # It runs once per model in QUALITY_MODELS (or the models input), one at a
+  # time on the one GPU: "recommended" is what the daemon picks for a new
+  # user; a catalog id, such as qwen2.5-32b-q4, tests that model.
   real-models:
     if: vars.QUALITY_RUNNER == 'docker'
     runs-on: [self-hosted, toskar-models]
     timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        model: ${{ fromJSON(inputs.models || vars.QUALITY_MODELS || '["recommended"]') }}
+    name: real-models (${{ matrix.model }})
     env:
-      NAME: toskar-quality-${{ github.run_id }}-${{ github.run_attempt }}
+      NAME: toskar-quality-${{ github.run_id }}-${{ github.run_attempt }}-${{ strategy.job-index }}
       MEMORY: ${{ vars.QUALITY_MEMORY || '32g' }}
       CPUS: ${{ vars.QUALITY_CPUS }}
       GPU: ${{ vars.QUALITY_GPU }}
@@ -141,6 +154,7 @@ jobs:
             -e TOSKAR_QUALITY_URL="http://$NAME:7331" \
             -e TOSKAR_QUALITY_KEY="$QUALITY_KEY" \
             -e TOSKAR_QUALITY_INSTALL=recommended \
+            -e TOSKAR_QUALITY_MODEL="${{ matrix.model }}" \
             -e TOSKAR_QUALITY_REPORT=/src/.quality/report.md \
             golang:1.26-bookworm \
             go test ./tests/quality -run TestQualitySet -count=1 -v -timeout 280m
@@ -153,7 +167,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: quality-report-real-models
+          name: quality-report-real-models-${{ matrix.model }}
           path: .quality/report.md
           if-no-files-found: ignore
       - name: Daemon log

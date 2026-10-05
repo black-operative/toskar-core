@@ -21,9 +21,31 @@ func (d realDriver) installRecommended(t *testing.T) {
 	t.Helper()
 	var rec contracts.Recommendation
 	d.do(t, http.MethodGet, "/api/v1/models/recommend", nil, &rec)
-	d.installRuntimes(t, rec.Models)
+	d.installModels(t, rec.Models)
+}
+
+// installModel installs one catalog model, such as qwen2.5-32b-q4, and its
+// runtime, for a run that tests that model (TOSKAR_QUALITY_MODEL).
+func (d realDriver) installModel(t *testing.T, id string) {
+	t.Helper()
+	var models []contracts.Model
+	d.do(t, http.MethodGet, "/api/v1/models", nil, &models)
+	for _, m := range models {
+		if m.ID == id {
+			d.installModels(t, []contracts.Model{m})
+			return
+		}
+	}
+	t.Fatalf("%s is not in the daemon's catalog", id)
+}
+
+// installModels installs models and their runtimes and waits until they
+// are installed.
+func (d realDriver) installModels(t *testing.T, models []contracts.Model) {
+	t.Helper()
+	d.installRuntimes(t, models)
 	var waiting []string
-	for _, m := range rec.Models {
+	for _, m := range models {
 		if m.Installed {
 			continue
 		}

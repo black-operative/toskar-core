@@ -159,12 +159,20 @@ func TestQualitySet(t *testing.T) {
 	build := ""
 	if url := config.Env("QUALITY_URL"); url != "" {
 		real := newRealDriver(strings.TrimRight(url, "/"))
-		// A daemon started fresh for the run, as the self-hosted job does,
-		// gets the models it recommends first.
-		if config.Env("QUALITY_INSTALL") == "recommended" {
+		// TOSKAR_QUALITY_MODEL tests one model, installed first; otherwise
+		// a daemon started fresh for the run, as the self-hosted job does,
+		// gets the models it recommends.
+		if m := config.Env("QUALITY_MODEL"); m != "" && m != "recommended" {
+			real.model = m
+			real.installModel(t, m)
+		} else if config.Env("QUALITY_INSTALL") == "recommended" {
 			real.installRecommended(t)
 		}
-		build = real.version(t) + " on " + real.hardware(t)
+		model := real.model
+		if model == "" {
+			model = "the recommended models"
+		}
+		build = real.version(t) + " on " + real.hardware(t) + ", with " + model
 		d = real
 	}
 	file := loadCases(t)
