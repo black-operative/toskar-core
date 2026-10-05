@@ -807,14 +807,24 @@ func writeErrFrom(w http.ResponseWriter, status int, code string, err error) {
 	writeErr(w, status, code, err.Error(), nil)
 }
 
+// corsMiddleware lets the web UI, the desktop webview and keyed clients call
+// the API from a browser, and turns websites away (see checkBrowser).
 func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Add("Vary", "Origin")
+		check := s.checkBrowser(r)
+		if check.writeRefusal(w) {
+			return
+		}
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, Access-Control-Request-Private-Network, "+contracts.ClientContractHeader+", "+contracts.LegacyClientContractHeader)
 		w.Header().Set("Access-Control-Expose-Headers", contracts.ContractHeader+", "+contracts.LegacyContractHeader)
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
-		// Chrome / WebKit Private Network Access: Wails webview → 127.0.0.1 API.
-		w.Header().Set("Access-Control-Allow-Private-Network", "true")
+		if check.originAllowed {
+			// Echo the one allowed origin, never "*".
+			w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+			// Chrome / WebKit Private Network Access: Wails webview → 127.0.0.1 API.
+			w.Header().Set("Access-Control-Allow-Private-Network", "true")
+		}
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)
 			return

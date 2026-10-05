@@ -15,7 +15,7 @@ import (
 func TestKnowledgeRoutes(t *testing.T) {
 	srv := NewServer(Dependencies{})
 	rec := httptest.NewRecorder()
-	srv.Handler().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/api/v1/knowledge/sources", nil))
+	srv.Handler().ServeHTTP(rec, localRequest(http.MethodGet, "/api/v1/knowledge/sources", nil))
 	if rec.Code != http.StatusNotImplemented {
 		t.Fatalf("unbound knowledge: got %d", rec.Code)
 	}
@@ -29,7 +29,7 @@ func TestKnowledgeRoutes(t *testing.T) {
 
 	do := func(method, path, body string) *httptest.ResponseRecorder {
 		rec := httptest.NewRecorder()
-		srv.Handler().ServeHTTP(rec, httptest.NewRequest(method, path, strings.NewReader(body)))
+		srv.Handler().ServeHTTP(rec, localRequest(method, path, strings.NewReader(body)))
 		return rec
 	}
 	rec = do(http.MethodPost, "/api/v1/knowledge/sources", `{"kind":"text","filename":"hours.md","text":"Open 9 to 5 on weekdays."}`)
@@ -77,7 +77,7 @@ func TestKnowledgeDatabaseSourceThroughAPI(t *testing.T) {
 	srv.BindKnowledge(mimir.NewStore(db.SQL, t.TempDir()))
 	rec := httptest.NewRecorder()
 	body := `{"kind":"database","name":"Hours","remote":{"driver":"sqlite","database":"` + filepath.ToSlash(shop) + `","query":"SELECT day, opens FROM hours"}}`
-	srv.Handler().ServeHTTP(rec, httptest.NewRequest(http.MethodPost, "/api/v1/knowledge/sources", strings.NewReader(body)))
+	srv.Handler().ServeHTTP(rec, localRequest(http.MethodPost, "/api/v1/knowledge/sources", strings.NewReader(body)))
 	if rec.Code != http.StatusCreated {
 		t.Fatalf("create: %d %s", rec.Code, rec.Body)
 	}
@@ -88,7 +88,7 @@ func TestKnowledgeDatabaseSourceThroughAPI(t *testing.T) {
 	}
 	rec = httptest.NewRecorder()
 	body = `{"kind":"database","remote":{"driver":"sqlite","database":"x.db","query":"DROP TABLE hours"}}`
-	srv.Handler().ServeHTTP(rec, httptest.NewRequest(http.MethodPost, "/api/v1/knowledge/sources", strings.NewReader(body)))
+	srv.Handler().ServeHTTP(rec, localRequest(http.MethodPost, "/api/v1/knowledge/sources", strings.NewReader(body)))
 	if rec.Code != http.StatusBadRequest || !strings.Contains(rec.Body.String(), "only SELECT") {
 		t.Fatalf("write query: %d %s", rec.Code, rec.Body)
 	}

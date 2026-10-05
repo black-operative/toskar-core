@@ -15,7 +15,7 @@ import (
 func TestClientContractOnResponses(t *testing.T) {
 	srv := NewServer(Dependencies{})
 	do := func(header string) *httptest.ResponseRecorder {
-		req := httptest.NewRequest(http.MethodGet, "/api/v1/version", nil)
+		req := localRequest(http.MethodGet, "/api/v1/version", nil)
 		if header != "" {
 			req.Header.Set(contracts.ClientContractHeader, header)
 		}
@@ -48,7 +48,7 @@ func TestClientContractOnResponses(t *testing.T) {
 func TestClientContractLegacyHeaders(t *testing.T) {
 	srv := NewServer(Dependencies{})
 	do := func(method string, set map[string]string) *httptest.ResponseRecorder {
-		req := httptest.NewRequest(method, "/api/v1/version", nil)
+		req := localRequest(method, "/api/v1/version", nil)
 		for k, v := range set {
 			req.Header.Set(k, v)
 		}

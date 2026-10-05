@@ -24,7 +24,7 @@ func TestArtifactRoutes(t *testing.T) {
 	srv.BindArtifacts(files)
 	do := func(method, path, body string) *httptest.ResponseRecorder {
 		rec := httptest.NewRecorder()
-		srv.Handler().ServeHTTP(rec, httptest.NewRequest(method, path, strings.NewReader(body)))
+		srv.Handler().ServeHTTP(rec, localRequest(method, path, strings.NewReader(body)))
 		return rec
 	}
 

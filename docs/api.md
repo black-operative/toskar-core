@@ -14,6 +14,15 @@ Create a key from the web UI or `POST /api/v1/api-keys`. The response includes t
 
 A bearer token on plain HTTP does not encrypt traffic. It stops anonymous use of a trusted LAN. TLS or mTLS for remote access is not implemented.
 
+### Browsers and websites
+
+A website open in a browser on this computer can send requests to `127.0.0.1`, so the daemon checks two headers before anything else, on every route:
+
+- **`Origin`**, when a browser sends one, must be the daemon's own address (its web UI), the desktop app's webview (`wails://wails`, `http://wails.localhost`), or a loopback address on the API port, such as `http://localhost:7331`. The allowed origin is echoed in `Access-Control-Allow-Origin`; `*` is never sent. Other origins get `403 ORIGIN_NOT_ALLOWED`.
+- **`Host`** must name this computer: `localhost`, a `.localhost` name, or a loopback IP. With local network access on, any IP is accepted, and so is a hostname on a request from another device. A hostname on a request over loopback gets `403 HOST_NOT_ALLOWED`, which stops DNS rebinding.
+
+A request with a valid API key passes both checks, and a preflight that announces an `Authorization` header is answered for any origin. Clients that are not browsers, such as `toskarctl` and `curl`, send no `Origin` and are unaffected. A reverse proxy on this computer must keep a loopback `Host` or send a key.
+
 Bifrost, on port 7332, is a separate server. Its protected routes require a paired-node token. Pairing routes answer before trust exists; they check signatures and limit attempts. See [clustering.md](clustering.md).
 
 ## Corresponding source

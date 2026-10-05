@@ -18,7 +18,7 @@ import (
 func TestTrainingRoutes(t *testing.T) {
 	srv := NewServer(Dependencies{})
 	rec := httptest.NewRecorder()
-	srv.Handler().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/api/v1/training/ais", nil))
+	srv.Handler().ServeHTTP(rec, localRequest(http.MethodGet, "/api/v1/training/ais", nil))
 	if rec.Code != http.StatusNotImplemented {
 		t.Fatalf("unbound training: %d", rec.Code)
 	}
@@ -41,7 +41,7 @@ func TestTrainingRoutes(t *testing.T) {
 
 	do := func(method, path, body string) *httptest.ResponseRecorder {
 		rec := httptest.NewRecorder()
-		srv.Handler().ServeHTTP(rec, httptest.NewRequest(method, path, strings.NewReader(body)))
+		srv.Handler().ServeHTTP(rec, localRequest(method, path, strings.NewReader(body)))
 		return rec
 	}
 	rec = do(http.MethodPost, "/api/v1/training/classify", `{"filename":"stock.csv","text":"sku,price\nA1,9.99\n"}`)

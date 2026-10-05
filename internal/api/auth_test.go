@@ -55,8 +55,7 @@ func TestControlAPIAuthFollowsBind(t *testing.T) {
 
 	// An app on this computer needs no key with network access on; one
 	// behind a proxy here is from the network.
-	local := httptest.NewRequest(http.MethodGet, "/api/v1/health", nil)
-	local.RemoteAddr = "127.0.0.1:50000"
+	local := localRequest(http.MethodGet, "/api/v1/health", nil)
 	rec = httptest.NewRecorder()
 	srv.Handler().ServeHTTP(rec, local)
 	if rec.Code != http.StatusOK {
@@ -80,7 +79,7 @@ func TestControlAPIAuthFollowsBind(t *testing.T) {
 		t.Fatal(err)
 	}
 	rec = httptest.NewRecorder()
-	srv.Handler().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/api/v1/health", nil))
+	srv.Handler().ServeHTTP(rec, localRequest(http.MethodGet, "/api/v1/health", nil))
 	if rec.Code != http.StatusOK {
 		t.Fatalf("loopback: %d", rec.Code)
 	}

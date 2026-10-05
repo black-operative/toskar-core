@@ -38,6 +38,7 @@ There is no bug-bounty program in this repository.
 These parts of the system deserve extra care in review:
 
 - **API authentication.** Loopback does not require a key. Any other bind requires `Authorization: Bearer` on `/api/v1` and `/v1` from other machines (loopback requests without proxy forwarding headers still need none), and the daemon refuses to listen there until a key exists. Keys are stored as bcrypt hashes. A bearer token on plain HTTP does not encrypt traffic.
+- **Browsers on this computer.** Websites can send requests to `127.0.0.1`. Without an API key, the daemon answers a browser only from its own web UI, the desktop app, or a loopback origin on the API port, and only when the `Host` header names this computer (a loopback name or IP, or with network access on, any IP), which blocks DNS rebinding. It never sends `Access-Control-Allow-Origin: *`.
 - **Bifrost pairing.** Port 7332 is reachable on the LAN when discovery is on. Pairing routes are unauthenticated until a peer is trusted. Later node calls use certificate-backed tokens.
 - **Network exposure.** Defaults keep the control API on loopback and advertise the node on the local network.
 - **Tool execution.** Profiles can allow a model to run shell commands, write files, or use git. Defaults for terminal, file writes, and git are `ask`.
