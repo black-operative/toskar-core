@@ -53,10 +53,19 @@ expectations and pages, so the phone is held to what core does.
 - **Real models on a daemon:** start a daemon with models installed, then run
   `make quality-real`, setting `TOSKAR_QUALITY_URL` if the daemon is not at
   `http://127.0.0.1:7331`, and `TOSKAR_QUALITY_KEY` if it needs an API key.
-  Each case adds a profile and knowledge, which are removed afterwards, and a
+  `TOSKAR_QUALITY_INSTALL=recommended` first installs the models the daemon
+  recommends for its hardware. Each case adds a profile and knowledge, which are removed afterwards, and a
   chat, which is kept so a failure can be read.
-- **On a schedule:** `.github/workflows/quality.yml` runs the real-model set
-  weekly on a self-hosted runner labelled `yggdrasil-models`, when the
-  repository variable `QUALITY_DAEMON_URL` is set.
+- **On a schedule or by hand:** `.github/workflows/quality.yml` runs the
+  real-model set weekly on a self-hosted runner labelled `toskar-models`, when
+  the repository variable `QUALITY_RUNNER` is `docker`. It builds the daemon
+  image from the commit under test, starts it with a throwaway data folder and
+  a key made for the run, and runs the tests in a Go container beside it, all
+  under the runner's rootless Docker. Models and runtimes stay in the Docker
+  volumes `toskar-quality-models` and `toskar-quality-runtimes`, so only the
+  first run downloads them. **Run workflow** takes a `ref` to test a branch
+  before it merges; the workflow itself always comes from main. Extra
+  `docker run` flags for the daemon, such as GPU access, go in the variable
+  `QUALITY_DOCKER_FLAGS`.
 
 Add a case when a change fixes a behavior, so it stays fixed.

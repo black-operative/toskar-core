@@ -9,7 +9,9 @@ RUN CGO_ENABLED=0 go build -o /out/toskar ./cmd/daemon \
  && CGO_ENABLED=0 go build -o /out/clustercheck ./cmd/clustercheck
 
 FROM debian:bookworm-slim AS runtime
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+# libgomp1 and libcurl4 are for the llama.cpp release the daemon installs
+# when a model is first started.
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libgomp1 libcurl4 \
  && rm -rf /var/lib/apt/lists/*
 COPY --from=build /out/toskar /usr/local/bin/toskar
 # The name from before the rename, for setups that run it by path (#237).

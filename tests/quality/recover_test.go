@@ -43,7 +43,7 @@ func TestRealDriverStopsWhenTheDaemonWantsAKey(t *testing.T) {
 	if _, err := d.request(http.MethodGet, "/api/v1/profiles/general-assistant", nil, nil, t.Logf); err == nil {
 		t.Fatal("no error for a 401")
 	}
-	if !strings.Contains(d.Stopped(), "QUALITY_API_KEY") {
+	if !strings.Contains(d.Stopped(), "TOSKAR_QUALITY_KEY") {
 		t.Fatalf("stopped = %q", d.Stopped())
 	}
 }

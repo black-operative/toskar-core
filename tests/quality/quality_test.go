@@ -156,8 +156,16 @@ func TestQualitySet(t *testing.T) {
 	if url := config.Env("QUALITY_MODEL_URL"); url != "" {
 		d = stubDriver{model: strings.TrimRight(url, "/")}
 	}
+	build := ""
 	if url := config.Env("QUALITY_URL"); url != "" {
-		d = newRealDriver(strings.TrimRight(url, "/"))
+		real := newRealDriver(strings.TrimRight(url, "/"))
+		// A daemon started fresh for the run, as the self-hosted job does,
+		// gets the models it recommends first.
+		if config.Env("QUALITY_INSTALL") == "recommended" {
+			real.installRecommended(t)
+		}
+		build = real.version(t)
+		d = real
 	}
 	file := loadCases(t)
 	deflection := regexp.MustCompile(file.Deflection)
@@ -210,7 +218,11 @@ func TestQualitySet(t *testing.T) {
 	}
 	t.Logf("quality: %d of %d cases passed (%.0f%%) with the %s model", passed, len(report), rate*100, d.Name())
 	if path := config.Env("QUALITY_REPORT"); path != "" {
-		if err := os.WriteFile(path, []byte(markdownReport(d.Name(), report, rate, minPass(d.Name()))), 0o644); err != nil {
+		md := markdownReport(d.Name(), report, rate, minPass(d.Name()))
+		if build != "" {
+			md = strings.Replace(md, "\n\n", "\n\nTested Toskar "+build+".\n\n", 1)
+		}
+		if err := os.WriteFile(path, []byte(md), 0o644); err != nil {
 			t.Errorf("report: %v", err)
 		}
 	}

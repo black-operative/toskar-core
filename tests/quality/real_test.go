@@ -90,12 +90,12 @@ func (d realDriver) request(method, path string, body, out any, logf func(string
 		raw, _ := io.ReadAll(resp.Body)
 		resp.Body.Close()
 		if resp.StatusCode == http.StatusUnauthorized {
-			// The daemon now wants a key: its API was opened to the network
-			// mid-run, or the key was revoked. Nothing later can pass, so
+			// The daemon wants a key the run doesn't have, or refused the
+			// one it has, such as a revoked key. Nothing later can pass, so
 			// stop the whole run with one reason.
-			*d.stop = "the daemon at " + d.base + " now requires an API key: set the QUALITY_API_KEY secret to a key from its API Access page, or turn off its network access"
+			*d.stop = "the daemon at " + d.base + " requires an API key: set TOSKAR_QUALITY_KEY to a key from its API Access page"
 			if config.Env("QUALITY_KEY") != "" {
-				*d.stop = "the daemon at " + d.base + " refused QUALITY_API_KEY: make a new key on its API Access page"
+				*d.stop = "the daemon at " + d.base + " refused TOSKAR_QUALITY_KEY: make a new key on its API Access page"
 			}
 			return resp.StatusCode, fmt.Errorf("%s %s: 401: %s", method, path, *d.stop)
 		}

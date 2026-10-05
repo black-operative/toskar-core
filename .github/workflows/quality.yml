@@ -14,6 +14,10 @@ on:
   # real model by the Release workflow. Start this by hand to check a
   # change to chat before it merges.
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag, or commit to test. The workflow itself always comes from main.
+        default: main
 
 jobs:
   # The quality set with a real model on CPU (Llama 3.2 1B through
@@ -24,6 +28,8 @@ jobs:
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
       - uses: actions/setup-go@v7
         with:
           go-version: "1.26.x"
@@ -49,19 +55,75 @@ jobs:
           path: ${{ runner.temp }}/quality-report.md
           if-no-files-found: ignore
 
+  # The quality set against the daemon built from the commit under test,
+  # with the models it recommends for the self-hosted runner's hardware
+  # (#296). The runner's own Toskar, if any, is never used. Everything built
+  # from the checkout runs in containers under the runner's rootless Docker:
+  # the daemon with a throwaway data folder, and the tests beside it, so a
+  # branch dispatched here can't touch the machine. Models and runtimes are
+  # kept in Docker volumes, so only the first run downloads them. It runs
+  # when the repository variable QUALITY_RUNNER is "docker".
   real-models:
-    if: vars.QUALITY_DAEMON_URL != ''
-    # A self-hosted runner with real models installed, labeled
-    # toskar-models; none is set up yet (#296), so the job
-    # is skipped until QUALITY_DAEMON_URL is set.
+    if: vars.QUALITY_RUNNER == 'docker'
     runs-on: [self-hosted, toskar-models]
+    timeout-minutes: 300
+    env:
+      NAME: toskar-quality-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v7
         with:
-          go-version: "1.26.x"
+          ref: ${{ inputs.ref || github.ref }}
+          persist-credentials: false
+      - name: Build the daemon
+        run: docker build --pull -t "$NAME" .
+      - name: Start the daemon
+        run: |
+          # A key made for this run: the tests reach the daemon over the
+          # container network, which is not loopback, so they send it.
+          key="ygg_$(openssl rand -hex 24)"
+          echo "::add-mask::$key"
+          echo "QUALITY_KEY=$key" >> "$GITHUB_ENV"
+          docker network create "$NAME"
+          docker run -d --name "$NAME" --network "$NAME" \
+            --cap-drop ALL --security-opt no-new-privileges \
+            -v toskar-quality-models:/data/models \
+            -v toskar-quality-runtimes:/data/runtimes \
+            -e TOSKAR_API_KEY="$key" \
+            -e TOSKAR_DISCOVERY_ENABLED=false \
+            -e TOSKAR_INTERNAL_HOST=127.0.0.1 \
+            ${{ vars.QUALITY_DOCKER_FLAGS }} \
+            "$NAME"
       - name: Quality set
-        env:
-          TOSKAR_QUALITY_URL: ${{ vars.QUALITY_DAEMON_URL }}
-          TOSKAR_QUALITY_KEY: ${{ secrets.QUALITY_API_KEY }}
-        run: go test ./tests/quality -count=1 -v -timeout 60m
+        run: |
+          mkdir -p .quality
+          docker run --rm --network "$NAME" \
+            --cap-drop ALL --security-opt no-new-privileges \
+            -v "$PWD:/src" -w /src \
+            -v toskar-quality-go:/go \
+            -e TOSKAR_QUALITY_URL="http://$NAME:7331" \
+            -e TOSKAR_QUALITY_KEY="$QUALITY_KEY" \
+            -e TOSKAR_QUALITY_INSTALL=recommended \
+            -e TOSKAR_QUALITY_REPORT=/src/.quality/report.md \
+            golang:1.26-bookworm \
+            go test ./tests/quality -run TestQualitySet -count=1 -v -timeout 280m
+      - name: Report
+        if: always()
+        run: |
+          if [ -f .quality/report.md ]; then
+            head -c 60000 .quality/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-report-real-models
+          path: .quality/report.md
+          if-no-files-found: ignore
+      - name: Daemon log
+        if: failure()
+        run: docker logs --tail 200 "$NAME" 2>&1 || true
+      - name: Clean up
+        if: always()
+        run: |
+          docker rm -f "$NAME" >/dev/null 2>&1 || true
+          docker network rm "$NAME" >/dev/null 2>&1 || true
+          docker image rm "$NAME" >/dev/null 2>&1 || true
