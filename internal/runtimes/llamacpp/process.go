@@ -37,6 +37,9 @@ type managedProcess struct {
 	logFile     *os.File
 	logPath     string
 	intentional bool
+	// acceleration is where llama-server put the model, read from its log
+	// once it answered.
+	acceleration *pluginapi.Acceleration
 	// exited is closed when the process ends.
 	exited chan struct{}
 }
@@ -161,14 +164,23 @@ func (r *Runtime) StartModel(ctx context.Context, cfg pluginapi.ModelStartConfig
 		return pluginapi.RunningModel{}, pluginapi.LoadFailed(err)
 	}
 
+	// llama-server logs where it put the model before it answers.
+	acc := readAcceleration(logPath)
+	r.sup.mu.Lock()
+	if p, ok := r.sup.procs[instanceID]; ok {
+		p.acceleration = acc
+	}
+	r.sup.mu.Unlock()
+
 	return pluginapi.RunningModel{
-		ID:        instanceID,
-		ModelID:   cfg.ModelID,
-		Endpoint:  endpoint,
-		Status:    "running",
-		RuntimeID: runtimeID,
-		Adapters:  wantAdapters,
-		Mode:      cfg.Mode,
+		ID:           instanceID,
+		ModelID:      cfg.ModelID,
+		Endpoint:     endpoint,
+		Status:       "running",
+		RuntimeID:    runtimeID,
+		Adapters:     wantAdapters,
+		Mode:         cfg.Mode,
+		Acceleration: acc,
 	}, nil
 }
 
@@ -235,13 +247,14 @@ func (r *Runtime) ListRunning(ctx context.Context) ([]pluginapi.RunningModel, er
 			status = "exited"
 		}
 		out = append(out, pluginapi.RunningModel{
-			ID:        id,
-			ModelID:   p.modelID,
-			Endpoint:  p.endpoint,
-			Status:    status,
-			RuntimeID: runtimeID,
-			Adapters:  append([]string(nil), p.adapters...),
-			Mode:      p.mode,
+			ID:           id,
+			ModelID:      p.modelID,
+			Endpoint:     p.endpoint,
+			Status:       status,
+			RuntimeID:    runtimeID,
+			Adapters:     append([]string(nil), p.adapters...),
+			Mode:         p.mode,
+			Acceleration: p.acceleration,
 		})
 	}
 	return out, nil

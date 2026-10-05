@@ -84,6 +84,25 @@ type RunningModel struct {
 	Adapters []string `json:"adapters,omitempty"`
 	// Mode is how the instance was started (see ModelStartConfig.Mode).
 	Mode string `json:"mode,omitempty"`
+	// Acceleration is where the instance runs, from the runtime's own
+	// report when it loaded the model; nil when it is not known.
+	Acceleration *Acceleration `json:"acceleration,omitempty"`
+}
+
+// Acceleration is where a loaded model runs: the backend and devices the
+// runtime used, and how much of the model it put on them.
+type Acceleration struct {
+	// Backend is "metal", "vulkan", "cuda", "rocm", "sycl", or "cpu".
+	Backend string `json:"backend"`
+	// Devices are the GPUs it used, such as "AMD Radeon RX 7900 XTX".
+	Devices []string `json:"devices,omitempty"`
+	// LayersOffloaded of LayersTotal layers are on a GPU; LayersTotal is 0
+	// when the runtime did not say.
+	LayersOffloaded int `json:"layers_offloaded"`
+	LayersTotal     int `json:"layers_total"`
+	// GPUMemoryBytes is what the model, its cache, and its working memory
+	// take on the GPUs.
+	GPUMemoryBytes uint64 `json:"gpu_memory_bytes,omitempty"`
 }
 
 // Runtime is the replaceable inference runtime adapter.

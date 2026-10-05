@@ -22,6 +22,10 @@ type HealthResponse struct {
 	Status  string `json:"status"`
 	Product string `json:"product"`
 	Version string `json:"version"`
+	// Acceleration sums up where the loaded models run: gpu, partial, cpu,
+	// cpu_expected, or idle (#317). It never changes Status: a computer
+	// without a GPU is healthy.
+	Acceleration string `json:"acceleration,omitempty"`
 }
 
 // VersionResponse is returned by GET /api/v1/version.
@@ -290,6 +294,53 @@ type RunningModelView struct {
 	// Mode is "embedding" or "reranking" for a supporting model serving
 	// knowledge search, and empty for a chat model.
 	Mode string `json:"mode,omitempty"`
+	// Acceleration is where the model runs, from the runtime's own report;
+	// absent when that is not known.
+	Acceleration *Acceleration `json:"acceleration,omitempty"`
+}
+
+// Acceleration states.
+const (
+	// AccelerationGPU: every layer is on a GPU.
+	AccelerationGPU = "gpu"
+	// AccelerationPartial: some layers are on a GPU, the rest on the CPU.
+	AccelerationPartial = "partial"
+	// AccelerationCPU: on the CPU although this computer has a GPU.
+	AccelerationCPU = "cpu"
+	// AccelerationCPUExpected: on the CPU, and there is no GPU to use.
+	AccelerationCPUExpected = "cpu_expected"
+	// AccelerationIdle: no model is loaded (health only).
+	AccelerationIdle = "idle"
+)
+
+// Acceleration reasons, for a state short of "gpu".
+const (
+	// AccelerationReasonCPUBuild: the CPU-only runtime build is installed
+	// while a GPU build would run here.
+	AccelerationReasonCPUBuild = "cpu_build"
+	// AccelerationReasonGPUMemory: the model doesn't fit in GPU memory.
+	AccelerationReasonGPUMemory = "gpu_memory"
+	// AccelerationReasonGPUUnavailable: a GPU build found no GPU it could
+	// use, such as without a graphics driver or Vulkan.
+	AccelerationReasonGPUUnavailable = "gpu_unavailable"
+	// AccelerationReasonNoGPU: this computer has no GPU.
+	AccelerationReasonNoGPU = "no_gpu"
+)
+
+// Acceleration is where a running model runs (#317).
+type Acceleration struct {
+	// State is gpu, partial, cpu, or cpu_expected (Acceleration* constants).
+	State string `json:"state"`
+	// Reason says why for a state short of gpu (AccelerationReason*).
+	Reason string `json:"reason,omitempty"`
+	// Backend is metal, vulkan, cuda, rocm, sycl, or cpu.
+	Backend string `json:"backend"`
+	// Devices are the GPUs the model is on.
+	Devices         []string `json:"devices,omitempty"`
+	LayersOffloaded int      `json:"layers_offloaded"`
+	LayersTotal     int      `json:"layers_total"`
+	// GPUMemoryBytes is what the model takes on its GPUs.
+	GPUMemoryBytes uint64 `json:"gpu_memory_bytes,omitempty"`
 }
 
 // BrowseModel is a Hugging Face browse-all hit (GGUF filtered).

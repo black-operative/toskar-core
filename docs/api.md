@@ -59,7 +59,7 @@ Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under
 
 | Method | Path | Purpose |
 | --- | --- | --- |
-| GET | `/health` | The process is up |
+| GET | `/health` | The process is up, and `acceleration`: where the loaded models run (`gpu`, `partial`, `cpu`, `cpu_expected`, or `idle`) |
 | GET | `/version` | Version, commit, license, corresponding source, and client `contract` |
 | GET | `/hardware` | This computer's CPU, memory, disk, and accelerators |
 | GET, PATCH | `/settings` | Read or change settings (see [Configuration](configuration.md#settings)). `PUT` is accepted as `PATCH`. |
@@ -106,7 +106,7 @@ Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under
 | POST | `/models/install-from-url` | Install a GGUF from a URL |
 | DELETE | `/models/{id}` | Remove an installed model |
 | POST | `/models/{id}/start`, `/models/{id}/stop` | Load or unload a model |
-| GET | `/models/running` | Loaded models, with `mode` (`embedding` or `reranking` for supporting models) |
+| GET | `/models/running` | Loaded models, with `mode` (`embedding` or `reranking` for supporting models), `speed_tok_per_sec` from their latest replies, and `acceleration`: where each runs (see [GPU acceleration](#gpu-acceleration)) |
 | GET, PUT, DELETE | `/models/{id}/rating` | This person's 1–5 star rating of a model, and exactly what sharing it would send. See [Community ratings](#community-ratings). |
 | POST | `/models/{id}/rating/dismiss` | Stop asking for a rating of a model |
 | GET | `/ratings/community` | Everyone's ratings of the models here, from hardware like this computer's, overall, and by language |
@@ -637,3 +637,18 @@ Asking for something a key does not allow returns 403 and says what was refused.
 - A model must already be installed and startable. The HTTP call does not download one for you.
 
 Examples that match this behavior are in [examples/](../examples/).
+
+## GPU acceleration
+
+When llama-server loads a model, it logs which devices it found, how many of the model's layers it put on a GPU, and the memory it took there. The daemon reads that log, so `GET /models/running` reports each model's `acceleration`:
+
+| Field | Meaning |
+| --- | --- |
+| `state` | `gpu` (every layer on a GPU), `partial` (some layers), `cpu` (on the CPU although this computer has a GPU), or `cpu_expected` (on the CPU, with no GPU to use) |
+| `reason` | Why a state is short of `gpu`: `cpu_build` (the CPU-only llama.cpp is installed where the GPU build would run; reinstall it from Diagnostics), `gpu_memory` (the model doesn't fit in GPU memory), `gpu_unavailable` (the GPU build found no GPU it could use, such as without a graphics driver or Vulkan), or `no_gpu` |
+| `backend` | `metal`, `vulkan`, `cuda`, `rocm`, `sycl`, or `cpu` |
+| `devices` | The GPUs the model is on |
+| `layers_offloaded`, `layers_total` | Layers on a GPU, of the model's total (0 when the runtime didn't say) |
+| `gpu_memory_bytes` | What the model, its cache, and its working memory take on the GPUs |
+
+`GET /health` sums it up in `acceleration`: the least accelerated loaded chat model's state, or `idle` when no model is loaded. It never changes `status`; a computer without a GPU is healthy.

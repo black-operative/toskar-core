@@ -32,13 +32,8 @@ func (a *App) localRunningViews(ctx context.Context) ([]contracts.RunningModelVi
 		return nil, err
 	}
 	cfg := a.Config.Get()
-	accel := ""
-	if hw, err := a.detectHardware(ctx); err == nil {
-		for _, ac := range hw.Accelerators {
-			accel = ac.Model
-			break
-		}
-	}
+	gpu, cpuBuild := a.accelerationFacts(ctx)
+	speeds := a.recentSpeeds(ctx)
 	profileNames := a.profilesUsingModels(ctx)
 	out := make([]contracts.RunningModelView, 0, len(running))
 	for _, r := range running {
@@ -59,9 +54,17 @@ func (a *App) localRunningViews(ctx context.Context) ([]contracts.RunningModelVi
 			Status:         r.Status,
 			MemoryBytes:    mem,
 			Endpoint:       r.Endpoint,
-			Accelerator:    accel,
 			UsedByProfiles: profileNames[r.ModelID],
 			Mode:           r.Mode,
+			SpeedTokPerSec: speeds[r.ModelID],
+			Acceleration:   accelerationView(r.Acceleration, gpu, cpuBuild),
+		}
+		// The device the model is on, from the runtime, not a guess from
+		// the hardware list.
+		if acc := view.Acceleration; acc != nil && len(acc.Devices) > 0 {
+			view.Accelerator = strings.Join(acc.Devices, ", ")
+		} else if acc != nil {
+			view.Accelerator = "CPU"
 		}
 		if t, ok := runtimeLastUsed.Load(r.ModelID); ok {
 			tt := t.(time.Time)

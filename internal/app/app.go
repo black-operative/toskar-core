@@ -179,6 +179,8 @@ type App struct {
 	python *pyenv.Manager
 
 	hw *hardware.Detector
+	// accel holds the facts the acceleration state needs (acceleration.go).
+	accel accelFacts
 	// discoveryMu guards advertiser, which settings changes, renames, and
 	// shutdown replace or stop from different requests.
 	discoveryMu sync.Mutex
@@ -546,6 +548,7 @@ func New(opts Options) (*App, error) {
 			return a.deleteModelOn(ctx, id, nodeID)
 		},
 		ListRunningModels: a.listRunningAll,
+		Acceleration:      a.healthAcceleration,
 		StartModel: func(ctx context.Context, id, nodeID string) (contracts.RunningModelView, error) {
 			return a.startModel(ctx, id, nodeID)
 		},

@@ -1,0 +1,5 @@
+llama_model_load_from_file_impl: using device Vulkan0 (AMD Radeon RX 6600 (RADV NAVI23)) - 7900 MiB free
+load_tensors: offloading 40 repeating layers to GPU
+load_tensors: offloaded 40/65 layers to GPU
+load_tensors:      Vulkan0 model buffer size =  7101.25 MiB
+load_tensors:   CPU_Mapped model buffer size = 11305.80 MiB

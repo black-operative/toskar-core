@@ -44,14 +44,17 @@ type Dependencies struct {
 	OpenAI   *openai.Handler
 	Hardware func(ctx context.Context) (contracts.HardwareInventory, error)
 
-	ListModels            func(ctx context.Context) ([]contracts.Model, error)
-	RecommendModels       func(ctx context.Context, purpose string) (contracts.Recommendation, error)
-	ModelsFit             func(ctx context.Context) ([]contracts.ModelsFitResponse, error)
-	BrowseModels          func(ctx context.Context, query string, limit int) ([]contracts.BrowseModel, error)
-	InstallModel          func(ctx context.Context, id string, wait bool, nodeID string) error
-	InstallModelFromURL   func(ctx context.Context, req contracts.InstallFromURLRequest, wait bool) (string, error)
-	DeleteModel           func(ctx context.Context, id string, nodeID string) error
-	ListRunningModels     func(ctx context.Context) ([]contracts.RunningModelView, error)
+	ListModels          func(ctx context.Context) ([]contracts.Model, error)
+	RecommendModels     func(ctx context.Context, purpose string) (contracts.Recommendation, error)
+	ModelsFit           func(ctx context.Context) ([]contracts.ModelsFitResponse, error)
+	BrowseModels        func(ctx context.Context, query string, limit int) ([]contracts.BrowseModel, error)
+	InstallModel        func(ctx context.Context, id string, wait bool, nodeID string) error
+	InstallModelFromURL func(ctx context.Context, req contracts.InstallFromURLRequest, wait bool) (string, error)
+	DeleteModel         func(ctx context.Context, id string, nodeID string) error
+	ListRunningModels   func(ctx context.Context) ([]contracts.RunningModelView, error)
+	// Acceleration sums up where this computer's loaded models run, for
+	// health (#317).
+	Acceleration          func(ctx context.Context) string
 	StartModel            func(ctx context.Context, id string, nodeID string) (contracts.RunningModelView, error)
 	StopModel             func(ctx context.Context, instanceID string, nodeID string) error
 	ListRuntimes          func(ctx context.Context) ([]runtimes.RuntimeInfo, error)
@@ -359,11 +362,15 @@ func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	if s.deps.Version != nil {
 		ver = s.deps.Version().Version
 	}
-	writeJSON(w, http.StatusOK, contracts.HealthResponse{
+	resp := contracts.HealthResponse{
 		Status:  "ok",
 		Product: "Yggdrasil",
 		Version: ver,
-	})
+	}
+	if s.deps.Acceleration != nil {
+		resp.Acceleration = s.deps.Acceleration(r.Context())
+	}
+	writeJSON(w, http.StatusOK, resp)
 }
 
 func (s *Server) handleVersion(w http.ResponseWriter, r *http.Request) {

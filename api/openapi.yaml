@@ -1354,8 +1354,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  additionalProperties: true
+                  $ref: "#/components/schemas/RunningModelView"
   /api/v1/models/install-from-url:
     post:
       summary: Download a GGUF from a URL
@@ -4853,6 +4852,47 @@ components:
           type: string
         version:
           type: string
+        acceleration:
+          type: string
+          enum: [gpu, partial, cpu, cpu_expected, idle]
+          description: >-
+            Where this computer's loaded models run: every layer on a GPU, some, on the CPU although
+            there is a GPU, on the CPU with no GPU to use, or no model loaded. Never changes status.
+    RunningModelView:
+      type: object
+      properties:
+        model_id: {type: string}
+        display_name: {type: string}
+        instance_id: {type: string}
+        node_id: {type: string}
+        node_name: {type: string}
+        status: {type: string}
+        memory_bytes: {type: integer}
+        endpoint: {type: string}
+        speed_tok_per_sec: {type: number, description: Generation speed in the model's latest replies}
+        used_by_profiles: {type: array, items: {type: string}}
+        accelerator: {type: string, description: "The devices the model is on, or CPU"}
+        last_used_at: {type: string, format: date-time}
+        mode: {type: string, enum: [embedding, reranking]}
+        acceleration:
+          $ref: "#/components/schemas/Acceleration"
+    Acceleration:
+      type: object
+      description: Where a running model runs, from the runtime's own report when it loaded the model.
+      properties:
+        state: {type: string, enum: [gpu, partial, cpu, cpu_expected]}
+        reason:
+          type: string
+          enum: [cpu_build, gpu_memory, gpu_unavailable, no_gpu]
+          description: >-
+            Why a state is short of gpu: the CPU-only runtime build is installed where a GPU build would run,
+            the model doesn't fit in GPU memory, a GPU build found no GPU it could use (driver or Vulkan
+            missing), or this computer has no GPU.
+        backend: {type: string, enum: [metal, vulkan, cuda, rocm, sycl, cpu]}
+        devices: {type: array, items: {type: string}}
+        layers_offloaded: {type: integer}
+        layers_total: {type: integer, description: 0 when the runtime did not say}
+        gpu_memory_bytes: {type: integer, description: "The model, its cache, and its working memory on the GPUs"}
     VersionResponse:
       type: object
       properties:

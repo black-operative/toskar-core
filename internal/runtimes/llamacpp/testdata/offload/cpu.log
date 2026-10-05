@@ -1,0 +1,5 @@
+build: 6500 (abcdef12) with cc (Ubuntu 13.2.0) for x86_64-linux-gnu
+system info: n_threads = 16, n_threads_batch = 16, total_threads = 32
+load_tensors: loading model tensors, this can take a while... (mmap = true)
+load_tensors:   CPU_Mapped model buffer size =  4460.45 MiB
+llama_kv_cache:        CPU KV buffer size =   448.00 MiB

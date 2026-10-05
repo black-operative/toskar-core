@@ -1,0 +1,5 @@
+ggml_cuda_init: found 1 ROCm devices:
+  Device 0: AMD Radeon RX 7900 XTX, gfx1100 (0x1100), VMM: no, Wave Size: 32
+llama_model_load_from_file_impl: using device ROCm0 (AMD Radeon RX 7900 XTX) - 24432 MiB free
+load_tensors: offloaded 29/29 layers to GPU
+load_tensors:        ROCm0 model buffer size =  4168.09 MiB

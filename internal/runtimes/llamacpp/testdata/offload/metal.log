@@ -1,0 +1,9 @@
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M2 Pro
+ggml_metal_init: picking default device: Apple M2 Pro
+llama_model_load_from_file_impl: using device Metal (Apple M2 Pro) - 21845 MiB free
+llm_load_tensors: offloading 28 repeating layers to GPU
+llm_load_tensors: offloaded 29/29 layers to GPU
+llm_load_tensors: Metal_Mapped model buffer size =  4460.45 MiB
+llm_load_tensors:   CPU_Mapped model buffer size =   292.36 MiB
+llama_kv_cache_init:      Metal KV buffer size =   448.00 MiB

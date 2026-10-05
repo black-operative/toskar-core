@@ -12,6 +12,8 @@ export interface HealthResponse {
   status: string
   product: string
   version: string
+  /** Where the loaded models run; never changes status (#317). */
+  acceleration?: 'gpu' | 'partial' | 'cpu' | 'cpu_expected' | 'idle'
 }
 
 export interface VersionResponse {
@@ -168,6 +170,19 @@ export interface RunningModelView {
   used_by_profiles?: string[]
   accelerator?: string
   last_used_at?: string
+  mode?: 'embedding' | 'reranking'
+  acceleration?: Acceleration
+}
+
+/** Where a running model runs, from the runtime's own report (#317). */
+export interface Acceleration {
+  state: 'gpu' | 'partial' | 'cpu' | 'cpu_expected'
+  reason?: 'cpu_build' | 'gpu_memory' | 'gpu_unavailable' | 'no_gpu'
+  backend: 'metal' | 'vulkan' | 'cuda' | 'rocm' | 'sycl' | 'cpu'
+  devices?: string[]
+  layers_offloaded: number
+  layers_total: number
+  gpu_memory_bytes?: number
 }
 
 export interface BrowseModel {
