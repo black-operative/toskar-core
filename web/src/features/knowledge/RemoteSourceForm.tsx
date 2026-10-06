@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { api } from '@/lib/api'
-import type { KnowledgeRemoteInput } from '@/types/api'
+import type { KnowledgeRemoteInput, KnowledgeSource } from '@/types/api'
 import { errorText } from '@/features/train/display'
 
 type Driver = NonNullable<KnowledgeRemoteInput['driver']>
@@ -19,7 +19,16 @@ const refreshChoices = [
 // RemoteSourceForm connects a database query or a web API as knowledge.
 // Passwords and tokens go to the daemon's secrets directory and are never
 // shown again.
-export function RemoteSourceForm({ kind, onAdded }: { kind: 'database' | 'api'; onAdded: () => void }) {
+export function RemoteSourceForm({
+  kind,
+  beforeConnect,
+  onAdded,
+}: {
+  kind: 'database' | 'api'
+  /** Shown above the Connect button, such as which profiles will use it. */
+  beforeConnect?: ReactNode
+  onAdded: (source?: KnowledgeSource | null) => void
+}) {
   const { t } = useTranslation('knowledge')
   const [name, setName] = useState('')
   const [driver, setDriver] = useState<Driver>('sqlite')
@@ -55,7 +64,7 @@ export function RemoteSourceForm({ kind, onAdded }: { kind: 'database' | 'api'; 
         setConnection('')
         setHeaderValue('')
       }
-      onAdded()
+      onAdded(src)
     },
   })
   const ready =
@@ -150,9 +159,10 @@ export function RemoteSourceForm({ kind, onAdded }: { kind: 'database' | 'api'; 
         <span className="text-sm text-ink">{t('remote.name')}</span>
         <input className="field w-full" value={name} onChange={(e) => setName(e.target.value)} />
       </label>
+      {beforeConnect}
       {add.error && <p className="text-sm text-danger">{errorText(add.error)}</p>}
       {add.data?.status === 'failed' && <p className="text-sm text-danger">{add.data.error}</p>}
-      <button type="button" className="btn-primary px-3 py-1.5 text-sm" disabled={add.isPending || !ready} onClick={() => add.mutate()}>
+      <button type="button" className="btn-primary" disabled={add.isPending || !ready} onClick={() => add.mutate()}>
         {add.isPending ? t('remote.connecting') : t('remote.connect')}
       </button>
     </>

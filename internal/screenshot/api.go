@@ -228,7 +228,8 @@ const screenshotProfiles = `[{
   "orchestrator_id": "simple",
   "roles": [{"role": "assistant", "model_id": "gemma-4-e4b", "node_id": "local", "required": true}],
   "node_policy": {"mode": "prefer_local"},
-  "tools": []
+  "tools": [],
+  "knowledge_sources": ["ks-trails", "ks-returns", "ks-budget"]
 }, {
   "id": "programming",
   "name": "Programming",

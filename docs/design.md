@@ -104,6 +104,7 @@ React components to reuse:
 | Component | Where | Use |
 | --- | --- | --- |
 | `EmptyState` | `components/ui` | A list with nothing in it yet: title, description, next action, optional mascot |
+| `HowItWorks` | `components/ui` | A page's idea in three numbered steps, for a page people find unclear: shown when it is empty, and behind a "How it works" button (`aria-expanded`) once it isn't. Pair it with examples that start the real flow (Automations, Knowledge) |
 | `LoadError` | `components/ui` | A query that failed: "couldn't load this", Try again, Diagnostics, details |
 | `PageErrorBoundary` | `components/layout` | Wraps every page; a crash shows Try again, and the sidebar keeps working |
 | `Skeleton` | `components/ui` | Content loading: placeholder rows, cards, or chat bubbles in the shape of what's coming, with a screen-reader label |

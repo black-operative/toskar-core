@@ -1,10 +1,53 @@
 {
   "page": {
     "title": "Conoscenza",
-    "description": "Toskar rende ricercabili cataloghi, prezzi, regolamenti e documenti. Quando un profilo o un'IA specializzata usa una fonte, i passaggi pertinenti a ogni domanda vengono aggiunti al contesto. Modifica un file e la domanda successiva vede la modifica. Nessun riaddestramento.",
+    "description": "Dai a Toskar i tuoi file e dati, come cataloghi, listini prezzi, regole e note, perché le sue risposte li usino. Per ogni domanda, Toskar trova i passaggi corrispondenti, risponde da quelli e mostra la fonte. Modifica un file e la domanda successiva vede la modifica.",
+    "howItWorks": "Come funziona",
+    "hideHowItWorks": "Nascondi la spiegazione",
     "loading": "Caricamento…",
     "emptyTitle": "Nessuna conoscenza collegata",
     "emptyDescription": "Collega un file o una cartella di questo computer, incolla del contenuto, oppure leggi da un database o da un'API web. Funzionano file PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, di testo e HTML."
+  },
+  "intro": {
+    "title": "Come funziona la conoscenza",
+    "steps": {
+      "connect": {
+        "title": "Collega i tuoi file o dati",
+        "body": "Un file o una cartella su questo computer, testo incollato, un database o un'API web. Toskar li legge sul posto e segue le modifiche."
+      },
+      "use": {
+        "title": "Scegli quali profili la usano",
+        "body": "Aggiungila a un profilo, come {{profile}}. Le chat con quel profilo la consultano prima di rispondere."
+      },
+      "ask": {
+        "title": "Chiedi in chat",
+        "body": "Toskar risponde dai passaggi che corrispondono alla tua domanda e indica la fonte sotto la risposta."
+      }
+    }
+  },
+  "examples": {
+    "title": "Cosa si collega",
+    "connect": "Collega questo tipo",
+    "catalog": {
+      "title": "Un listino o un catalogo",
+      "body": "Un foglio di calcolo o un CSV di prodotti, prezzi e disponibilità."
+    },
+    "policies": {
+      "title": "Regole e manuali",
+      "body": "PDF e documenti che le tue risposte devono seguire."
+    },
+    "notes": {
+      "title": "Una cartella di note",
+      "body": "Note in Markdown o testo, aggiornate mentre le modifichi."
+    },
+    "database": {
+      "title": "Un database",
+      "body": "Ordini, clienti o magazzino, in sola lettura, una riga per passaggio."
+    },
+    "api": {
+      "title": "Un'API web",
+      "body": "Dati in tempo reale come le scorte, recuperati di nuovo quando invecchiano."
+    }
   },
   "badge": {
     "linked": "Collegato",
@@ -47,7 +90,10 @@
     "saveHint": "Il salvataggio reindicizza la fonte. Le chat e le IA specializzate vedono la modifica alla domanda successiva.",
     "saving": "Salvataggio…",
     "save": "Salva",
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "usedBy": "Usata nelle chat con {{profiles}}",
+    "unused": "Nessun profilo la usa ancora, quindi la chat non la consulta.",
+    "useWith": "Usa con {{profile}}"
   },
   "add": {
     "title": "Collega conoscenza",
@@ -64,7 +110,9 @@
     "content": "Contenuto",
     "name": "Nome (facoltativo)",
     "indexing": "Indicizzazione…",
-    "connect": "Collega"
+    "connect": "Collega",
+    "useWith": "Usala nelle chat con",
+    "useWithHint": "Le chat con questi profili consultano questa fonte prima di rispondere. Puoi cambiarlo più tardi in Profili."
   },
   "remote": {
     "database": "Database",

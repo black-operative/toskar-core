@@ -1,10 +1,53 @@
 {
   "page": {
     "title": "Conocimiento",
-    "description": "Toskar mantiene catálogos, precios, políticas y documentos disponibles para búsqueda. Cuando un perfil o una IA especializada usa una fuente, se le agregan los fragmentos que coinciden con cada pregunta. Edita un archivo y la siguiente pregunta verá el cambio. Sin volver a entrenar.",
+    "description": "Dale a Toskar tus propios archivos y datos, como catálogos, listas de precios, políticas y notas, para que sus respuestas los usen. Para cada pregunta, Toskar encuentra los fragmentos que coinciden, responde a partir de ellos y muestra la fuente. Edita un archivo y la siguiente pregunta verá el cambio.",
+    "howItWorks": "Cómo funciona",
+    "hideHowItWorks": "Ocultar cómo funciona",
     "loading": "Cargando…",
     "emptyTitle": "No hay conocimiento conectado",
     "emptyDescription": "Conecta un archivo o una carpeta de esta computadora, pega contenido, o lee de una base de datos o una API web. Funcionan archivos PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, de texto y HTML."
+  },
+  "intro": {
+    "title": "Cómo funciona el conocimiento",
+    "steps": {
+      "connect": {
+        "title": "Conecta tus archivos o datos",
+        "body": "Un archivo o una carpeta en este equipo, texto pegado, una base de datos o una API web. Toskar lo lee en su sitio y sigue los cambios."
+      },
+      "use": {
+        "title": "Elige qué perfiles lo usan",
+        "body": "Añádelo a un perfil, como {{profile}}. Los chats con ese perfil lo consultan antes de responder."
+      },
+      "ask": {
+        "title": "Pregunta en el chat",
+        "body": "Toskar responde a partir de los fragmentos que coinciden con tu pregunta e indica la fuente bajo la respuesta."
+      }
+    }
+  },
+  "examples": {
+    "title": "Lo que la gente conecta",
+    "connect": "Conectar este tipo",
+    "catalog": {
+      "title": "Una lista de precios o un catálogo",
+      "body": "Una hoja de cálculo o un CSV de productos, precios y existencias."
+    },
+    "policies": {
+      "title": "Políticas y manuales",
+      "body": "PDF y documentos que tus respuestas deben seguir."
+    },
+    "notes": {
+      "title": "Una carpeta de notas",
+      "body": "Notas en Markdown o texto, al día mientras las editas."
+    },
+    "database": {
+      "title": "Una base de datos",
+      "body": "Pedidos, clientes o inventario, solo lectura, una fila por fragmento."
+    },
+    "api": {
+      "title": "Una API web",
+      "body": "Datos en vivo como existencias, que se vuelven a obtener cuando envejecen."
+    }
   },
   "badge": {
     "linked": "Vinculado",
@@ -47,7 +90,10 @@
     "saveHint": "Al guardar se reindexa la fuente. Los chats y las IA especializadas ven el cambio en su siguiente pregunta.",
     "saving": "Guardando…",
     "save": "Guardar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "usedBy": "Se usa en chats con {{profiles}}",
+    "unused": "Ningún perfil usa esto todavía, así que el chat no lo consulta.",
+    "useWith": "Usar con {{profile}}"
   },
   "add": {
     "title": "Conectar conocimiento",
@@ -64,7 +110,9 @@
     "content": "Contenido",
     "name": "Nombre (opcional)",
     "indexing": "Indexando…",
-    "connect": "Conectar"
+    "connect": "Conectar",
+    "useWith": "Usarlo en chats con",
+    "useWithHint": "Los chats con estos perfiles consultan esta fuente antes de responder. Puedes cambiarlo después en Perfiles."
   },
   "remote": {
     "database": "Base de datos",

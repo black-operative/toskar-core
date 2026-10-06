@@ -1,10 +1,53 @@
 {
   "page": {
     "title": "Knowledge",
-    "description": "Toskar keeps catalogs, prices, policies, and documents searchable. When a profile or a specialized AI uses a source, the passages that match each question are added to it. Edit a file and the next question sees the change. No retraining.",
+    "description": "Give Toskar your own files and data, such as catalogs, price lists, policies, and notes, so its answers use them. For each question, Toskar finds the passages that match and answers from them, and shows the source. Edit a file and the next question sees the change.",
+    "howItWorks": "How it works",
+    "hideHowItWorks": "Hide how it works",
     "loading": "Loading…",
     "emptyTitle": "No knowledge connected",
     "emptyDescription": "Connect a file or folder on this computer, paste content, or read from a database or web API. PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, text, and HTML files work."
+  },
+  "intro": {
+    "title": "How knowledge works",
+    "steps": {
+      "connect": {
+        "title": "Connect your files or data",
+        "body": "A file or folder on this computer, pasted text, a database, or a web API. Toskar reads it in place and keeps up with changes."
+      },
+      "use": {
+        "title": "Choose which profiles use it",
+        "body": "Add it to a profile, such as {{profile}}. Chats with that profile look in it before answering."
+      },
+      "ask": {
+        "title": "Ask in Chat",
+        "body": "Toskar answers from the passages that match your question and lists the source under the reply."
+      }
+    }
+  },
+  "examples": {
+    "title": "What people connect",
+    "connect": "Connect this kind",
+    "catalog": {
+      "title": "A price list or catalog",
+      "body": "A spreadsheet or CSV of products, prices, and stock."
+    },
+    "policies": {
+      "title": "Policies and manuals",
+      "body": "PDFs and documents your answers should follow."
+    },
+    "notes": {
+      "title": "A notes folder",
+      "body": "Markdown or text notes, kept up to date as you edit them."
+    },
+    "database": {
+      "title": "A database",
+      "body": "Orders, customers, or inventory, read-only, one row per passage."
+    },
+    "api": {
+      "title": "A web API",
+      "body": "Live data such as stock levels, fetched again when it gets old."
+    }
   },
   "badge": {
     "linked": "Linked",
@@ -43,7 +86,10 @@
     "saveHint": "Saving reindexes the source. Chats and specialized AIs see the change on their next question.",
     "saving": "Saving…",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "usedBy": "Used in chats with {{profiles}}",
+    "unused": "No profile uses this yet, so Chat doesn't look in it.",
+    "useWith": "Use with {{profile}}"
   },
   "add": {
     "title": "Connect knowledge",
@@ -60,7 +106,9 @@
     "content": "Content",
     "name": "Name (optional)",
     "indexing": "Indexing…",
-    "connect": "Connect"
+    "connect": "Connect",
+    "useWith": "Use it in chats with",
+    "useWithHint": "Chats with these profiles look in this source before answering. You can change this later on Profiles."
   },
   "remote": {
     "database": "Database",

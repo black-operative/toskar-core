@@ -1,10 +1,53 @@
 {
   "page": {
     "title": "Wissen",
-    "description": "Toskar hält Kataloge, Preise, Richtlinien und Dokumente durchsuchbar. Wenn ein Profil oder eine spezialisierte KI eine Quelle nutzt, werden die zu jeder Frage passenden Textstellen hinzugefügt. Bearbeite eine Datei, und die nächste Frage sieht die Änderung. Ohne neues Training.",
+    "description": "Gib Toskar deine eigenen Dateien und Daten, etwa Kataloge, Preislisten, Richtlinien und Notizen, damit seine Antworten sie nutzen. Für jede Frage findet Toskar die passenden Abschnitte, antwortet daraus und zeigt die Quelle. Bearbeite eine Datei, und die nächste Frage sieht die Änderung.",
+    "howItWorks": "So funktioniert's",
+    "hideHowItWorks": "Erklärung ausblenden",
     "loading": "Wird geladen …",
     "emptyTitle": "Kein Wissen verbunden",
     "emptyDescription": "Verbinde eine Datei oder einen Ordner auf diesem Computer, füge Inhalte ein oder lies aus einer Datenbank oder Web-API. PDF-, Excel-, CSV-, TSV-, JSON-, JSONL-, Markdown-, Text- und HTML-Dateien funktionieren."
+  },
+  "intro": {
+    "title": "So funktioniert Wissen",
+    "steps": {
+      "connect": {
+        "title": "Verbinde deine Dateien oder Daten",
+        "body": "Eine Datei oder ein Ordner auf diesem Computer, eingefügter Text, eine Datenbank oder eine Web-API. Toskar liest sie an Ort und Stelle und bleibt bei Änderungen aktuell."
+      },
+      "use": {
+        "title": "Wähle, welche Profile es nutzen",
+        "body": "Füge es einem Profil hinzu, etwa {{profile}}. Chats mit diesem Profil schauen dort nach, bevor sie antworten."
+      },
+      "ask": {
+        "title": "Frag im Chat",
+        "body": "Toskar antwortet aus den Abschnitten, die zu deiner Frage passen, und nennt die Quelle unter der Antwort."
+      }
+    }
+  },
+  "examples": {
+    "title": "Was andere verbinden",
+    "connect": "Diese Art verbinden",
+    "catalog": {
+      "title": "Eine Preisliste oder ein Katalog",
+      "body": "Eine Tabelle oder CSV mit Produkten, Preisen und Lagerbestand."
+    },
+    "policies": {
+      "title": "Richtlinien und Handbücher",
+      "body": "PDFs und Dokumente, nach denen sich deine Antworten richten sollen."
+    },
+    "notes": {
+      "title": "Ein Notizordner",
+      "body": "Markdown- oder Textnotizen, aktuell, während du sie bearbeitest."
+    },
+    "database": {
+      "title": "Eine Datenbank",
+      "body": "Bestellungen, Kunden oder Bestand, nur lesend, eine Zeile pro Abschnitt."
+    },
+    "api": {
+      "title": "Eine Web-API",
+      "body": "Live-Daten wie Lagerbestände, neu abgerufen, wenn sie veralten."
+    }
   },
   "badge": {
     "linked": "Verknüpft",
@@ -43,7 +86,10 @@
     "saveHint": "Beim Speichern wird die Quelle neu indiziert. Chats und spezialisierte KIs sehen die Änderung bei ihrer nächsten Frage.",
     "saving": "Wird gespeichert …",
     "save": "Speichern",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "usedBy": "Genutzt in Chats mit {{profiles}}",
+    "unused": "Noch kein Profil nutzt diese Quelle, daher schaut der Chat dort nicht nach.",
+    "useWith": "Mit {{profile}} nutzen"
   },
   "add": {
     "title": "Wissen verbinden",
@@ -60,7 +106,9 @@
     "content": "Inhalt",
     "name": "Name (optional)",
     "indexing": "Wird indiziert …",
-    "connect": "Verbinden"
+    "connect": "Verbinden",
+    "useWith": "In Chats nutzen mit",
+    "useWithHint": "Chats mit diesen Profilen schauen in dieser Quelle nach, bevor sie antworten. Du kannst das später unter Profile ändern."
   },
   "remote": {
     "database": "Datenbank",

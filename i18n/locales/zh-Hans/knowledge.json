@@ -1,10 +1,53 @@
 {
   "page": {
     "title": "知识库",
-    "description": "Toskar 让目录、价格、政策和文档都可以被搜索。当某个配置或专用 AI 使用某个来源时，与每个问题匹配的段落会被提供给它。编辑文件后，下一个问题就能看到变化，无需重新训练。",
+    "description": "把你自己的文件和数据交给 Toskar，比如目录、价目表、政策和笔记，让它的回答用上它们。每个问题，Toskar 都会找到相关的段落，据此回答，并显示来源。修改文件后，下一个问题就能看到变化。",
+    "howItWorks": "工作原理",
+    "hideHowItWorks": "隐藏工作原理",
     "loading": "正在加载…",
     "emptyTitle": "尚未连接知识库",
     "emptyDescription": "连接这台电脑上的文件或文件夹、粘贴内容，或从数据库或 Web API 读取。支持 PDF、Excel、CSV、TSV、JSON、JSONL、Markdown、文本和 HTML 文件。"
+  },
+  "intro": {
+    "title": "知识如何运作",
+    "steps": {
+      "connect": {
+        "title": "连接你的文件或数据",
+        "body": "这台电脑上的文件或文件夹、粘贴的文本、数据库或 Web API。Toskar 就地读取，并跟上变化。"
+      },
+      "use": {
+        "title": "选择哪些配置文件使用它",
+        "body": "把它加到一个配置文件中，比如“{{profile}}”。使用该配置文件的聊天会在回答前查阅它。"
+      },
+      "ask": {
+        "title": "在聊天中提问",
+        "body": "Toskar 根据与问题相关的段落回答，并在回复下方列出来源。"
+      }
+    }
+  },
+  "examples": {
+    "title": "大家常连接的内容",
+    "connect": "连接这类来源",
+    "catalog": {
+      "title": "价目表或目录",
+      "body": "包含产品、价格和库存的电子表格或 CSV。"
+    },
+    "policies": {
+      "title": "政策和手册",
+      "body": "回答需要遵循的 PDF 和文档。"
+    },
+    "notes": {
+      "title": "笔记文件夹",
+      "body": "Markdown 或文本笔记，编辑后随时保持最新。"
+    },
+    "database": {
+      "title": "数据库",
+      "body": "订单、客户或库存，只读，每一行是一个段落。"
+    },
+    "api": {
+      "title": "Web API",
+      "body": "库存数量等实时数据，过时后会重新获取。"
+    }
   },
   "badge": {
     "linked": "已链接",
@@ -39,7 +82,10 @@
     "saveHint": "保存会重新索引此来源。聊天和专用 AI 在下一个问题时就会看到变化。",
     "saving": "正在保存…",
     "save": "保存",
-    "cancel": "取消"
+    "cancel": "取消",
+    "usedBy": "在 {{profiles}} 的聊天中使用",
+    "unused": "还没有配置文件使用它，所以聊天不会查阅它。",
+    "useWith": "在 {{profile}} 中使用"
   },
   "add": {
     "title": "连接知识库",
@@ -56,7 +102,9 @@
     "content": "内容",
     "name": "名称（可选）",
     "indexing": "正在索引…",
-    "connect": "连接"
+    "connect": "连接",
+    "useWith": "在以下配置文件的聊天中使用",
+    "useWithHint": "使用这些配置文件的聊天会在回答前查阅这个来源。之后可以在“配置文件”中更改。"
   },
   "remote": {
     "database": "数据库",

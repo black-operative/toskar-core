@@ -49,15 +49,16 @@
       "title": "Connect knowledge",
       "paragraphs": [
         "Knowledge keeps catalogs, prices, policies, and documents searchable. When a profile or a specialized AI uses a source, the passages that match each question are added to its answers, and the answer cites them. Changing the data changes the next answer. Nothing is retrained.",
+        "A chat looks in a source only when its profile uses it, so each source on the Knowledge page says which profiles use it. A source no profile uses says so and offers Use with, which adds it to the profile chats start with. With nothing connected yet, the page explains this in three steps and shows what people connect; How it works shows the same later.",
         "Connect knowledge has four kinds of source. File or folder reads files on this computer in place and reindexes them when they change. Upload or paste keeps a copy of what you give it. Database runs one read-only SELECT query on a SQLite file, PostgreSQL, or MySQL; each row becomes a passage, and Toskar never changes the database. Web API fetches a URL that returns JSON, CSV, or text; a list of items becomes one passage per item. Database and Web API sources are fetched again when a question uses data older than the interval you choose, from 5 minutes to a day, and passwords and tokens are stored apart and never shown again.",
         "PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, text, and HTML files work. Each Excel sheet is a table, and each PDF page is cited by its number. Scanned PDFs are read with text recognition; the first one installs the recognizer, about 110 MB, on this computer.",
         "Search matches the words in a question. Install an embedding model, such as Nomic Embed Text v1.5 from Models, and it also matches meaning, so a question about a warranty finds a passage about a guarantee. A source then says when it is searchable by meaning. Try a question shows which passages a question would bring into a chat. Mark a source This computer only to keep chats that use it on this computer. Reindex reads a source again now."
       ],
       "steps": [
-        "Open Knowledge and choose the kind of source in Connect knowledge.",
-        "Choose the file, folder, or database, paste the content, or enter the URL, then Connect.",
-        "Use Try a question to check what it finds.",
-        "Open Profiles in advanced mode and add the source to a profile, or add it to a specialized AI on the Train page."
+        "Open Knowledge and choose the kind of source in Connect knowledge, or choose an example under What people connect.",
+        "Choose the file, folder, or database, paste the content, or enter the URL.",
+        "Under Use it in chats with, keep the profiles whose chats should look in it. The profile chats start with is checked already. Then Connect.",
+        "Use Try a question to check what it finds. To add a source to a profile later, use Use with on the Knowledge page or open Profiles; to add it to a specialized AI, use the Train page."
       ]
     },
     {

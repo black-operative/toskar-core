@@ -1,10 +1,53 @@
 {
   "page": {
     "title": "知識",
-    "description": "Toskar 讓目錄、價格、政策和文件都能被搜尋。當設定檔或專用 AI 使用某個來源時，與每個問題相符的段落會加入其中。編輯檔案後，下一個問題就會看到變更，不需要重新訓練。",
+    "description": "把你自己的檔案和資料交給 Toskar，例如目錄、價目表、政策和筆記，讓它的回答用上它們。每個問題，Toskar 都會找到相關的段落，據此回答，並顯示來源。修改檔案後，下一個問題就能看到變化。",
+    "howItWorks": "運作方式",
+    "hideHowItWorks": "隱藏運作方式",
     "loading": "正在載入…",
     "emptyTitle": "尚未連接任何知識",
     "emptyDescription": "連接這台電腦上的檔案或檔案夾、貼上內容，或從資料庫或 Web API 讀取。支援 PDF、Excel、CSV、TSV、JSON、JSONL、Markdown、純文字和 HTML 檔案。"
+  },
+  "intro": {
+    "title": "知識如何運作",
+    "steps": {
+      "connect": {
+        "title": "連接你的檔案或資料",
+        "body": "這台電腦上的檔案或資料夾、貼上的文字、資料庫或 Web API。Toskar 就地讀取，並跟上變化。"
+      },
+      "use": {
+        "title": "選擇哪些設定檔使用它",
+        "body": "把它加到一個設定檔中，例如「{{profile}}」。使用該設定檔的聊天會在回答前查閱它。"
+      },
+      "ask": {
+        "title": "在聊天中提問",
+        "body": "Toskar 根據與問題相關的段落回答，並在回覆下方列出來源。"
+      }
+    }
+  },
+  "examples": {
+    "title": "大家常連接的內容",
+    "connect": "連接這類來源",
+    "catalog": {
+      "title": "價目表或目錄",
+      "body": "包含產品、價格和庫存的試算表或 CSV。"
+    },
+    "policies": {
+      "title": "政策和手冊",
+      "body": "回答需要遵循的 PDF 和文件。"
+    },
+    "notes": {
+      "title": "筆記資料夾",
+      "body": "Markdown 或文字筆記，編輯後隨時保持最新。"
+    },
+    "database": {
+      "title": "資料庫",
+      "body": "訂單、客戶或庫存，唯讀，每一列是一個段落。"
+    },
+    "api": {
+      "title": "Web API",
+      "body": "庫存數量等即時資料，過時後會重新取得。"
+    }
   },
   "badge": {
     "linked": "已連結",
@@ -39,7 +82,10 @@
     "saveHint": "儲存後會重新索引這個來源。聊天和專用 AI 會在下一個問題時看到變更。",
     "saving": "正在儲存…",
     "save": "儲存",
-    "cancel": "取消"
+    "cancel": "取消",
+    "usedBy": "在 {{profiles}} 的聊天中使用",
+    "unused": "還沒有設定檔使用它，所以聊天不會查閱它。",
+    "useWith": "在 {{profile}} 中使用"
   },
   "add": {
     "title": "連接知識",
@@ -56,7 +102,9 @@
     "content": "內容",
     "name": "名稱（選填）",
     "indexing": "正在建立索引…",
-    "connect": "連接"
+    "connect": "連接",
+    "useWith": "在以下設定檔的聊天中使用",
+    "useWithHint": "使用這些設定檔的聊天會在回答前查閱這個來源。之後可以在「設定檔」中變更。"
   },
   "remote": {
     "database": "資料庫",

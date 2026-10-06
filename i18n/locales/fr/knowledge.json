@@ -1,10 +1,53 @@
 {
   "page": {
     "title": "Connaissances",
-    "description": "Toskar permet de rechercher dans vos catalogues, prix, politiques et documents. Lorsqu'un profil ou une IA spécialisée utilise une source, les passages correspondant à chaque question lui sont ajoutés. Modifiez un fichier, et la question suivante voit le changement. Aucun réentraînement.",
+    "description": "Donnez à Toskar vos propres fichiers et données, comme des catalogues, des listes de prix, des règles et des notes, pour que ses réponses s'en servent. Pour chaque question, Toskar trouve les passages qui correspondent, répond à partir d'eux et indique la source. Modifiez un fichier et la question suivante voit le changement.",
+    "howItWorks": "Comment ça marche",
+    "hideHowItWorks": "Masquer l'explication",
     "loading": "Chargement…",
     "emptyTitle": "Aucune connaissance connectée",
     "emptyDescription": "Connectez un fichier ou un dossier de cet ordinateur, collez du contenu, ou lisez depuis une base de données ou une API web. Les fichiers PDF, Excel, CSV, TSV, JSON, JSONL, Markdown, texte et HTML sont pris en charge."
+  },
+  "intro": {
+    "title": "Comment fonctionne la connaissance",
+    "steps": {
+      "connect": {
+        "title": "Connectez vos fichiers ou données",
+        "body": "Un fichier ou un dossier sur cet ordinateur, du texte collé, une base de données ou une API web. Toskar les lit sur place et suit les modifications."
+      },
+      "use": {
+        "title": "Choisissez les profils qui s'en servent",
+        "body": "Ajoutez-la à un profil, comme {{profile}}. Les discussions avec ce profil la consultent avant de répondre."
+      },
+      "ask": {
+        "title": "Posez la question dans la discussion",
+        "body": "Toskar répond à partir des passages qui correspondent à votre question et indique la source sous la réponse."
+      }
+    }
+  },
+  "examples": {
+    "title": "Ce que l'on connecte",
+    "connect": "Connecter ce type",
+    "catalog": {
+      "title": "Une liste de prix ou un catalogue",
+      "body": "Un tableur ou un CSV de produits, de prix et de stock."
+    },
+    "policies": {
+      "title": "Règles et manuels",
+      "body": "Des PDF et documents que vos réponses doivent suivre."
+    },
+    "notes": {
+      "title": "Un dossier de notes",
+      "body": "Des notes Markdown ou texte, à jour à mesure que vous les modifiez."
+    },
+    "database": {
+      "title": "Une base de données",
+      "body": "Commandes, clients ou stock, en lecture seule, une ligne par passage."
+    },
+    "api": {
+      "title": "Une API web",
+      "body": "Des données en direct comme le stock, récupérées à nouveau quand elles vieillissent."
+    }
   },
   "badge": {
     "linked": "Lié",
@@ -47,7 +90,10 @@
     "saveHint": "L'enregistrement réindexe la source. Les discussions et les IA spécialisées voient le changement dès leur prochaine question.",
     "saving": "Enregistrement…",
     "save": "Enregistrer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "usedBy": "Utilisée dans les discussions avec {{profiles}}",
+    "unused": "Aucun profil ne l'utilise encore, la discussion ne la consulte donc pas.",
+    "useWith": "Utiliser avec {{profile}}"
   },
   "add": {
     "title": "Connecter des connaissances",
@@ -64,7 +110,9 @@
     "content": "Contenu",
     "name": "Nom (facultatif)",
     "indexing": "Indexation…",
-    "connect": "Connecter"
+    "connect": "Connecter",
+    "useWith": "L'utiliser dans les discussions avec",
+    "useWithHint": "Les discussions avec ces profils consultent cette source avant de répondre. Vous pourrez changer cela dans Profils."
   },
   "remote": {
     "database": "Base de données",
