@@ -122,5 +122,16 @@
     "recentHint": "ジョブはToskarの実行中は保持されます。",
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_other": "勝者{{count}}件"
+  },
+  "live": {
+    "cpu": "CPU",
+    "memory": "メモリ",
+    "gpuBusy": "使用率",
+    "gpuMemory": "ビデオメモリ",
+    "sharedMemory": "使用中のメモリ",
+    "temperature": "温度",
+    "power": "消費電力",
+    "busyChart": "過去1時間の{{name}}の使用率",
+    "cpuChart": "過去1時間のCPU"
   }
 }

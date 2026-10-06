@@ -138,5 +138,16 @@
     "winners_one": "{{count}} gagnant",
     "winners_many": "{{count}} gagnants",
     "winners_other": "{{count}} gagnants"
+  },
+  "live": {
+    "cpu": "Processeur",
+    "memory": "Mémoire",
+    "gpuBusy": "Utilisation",
+    "gpuMemory": "Mémoire vidéo",
+    "sharedMemory": "Mémoire utilisée",
+    "temperature": "Température",
+    "power": "Consommation",
+    "busyChart": "Utilisation de {{name}} sur la dernière heure",
+    "cpuChart": "Processeur sur la dernière heure"
   }
 }

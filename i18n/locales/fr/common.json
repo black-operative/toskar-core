@@ -57,7 +57,9 @@
   "units": {
     "ms": "{{value}} ms",
     "seconds": "{{value}} s",
-    "tokPerSec": "{{value}} tok/s"
+    "tokPerSec": "{{value}} tok/s",
+    "celsius": "{{value}} °C",
+    "watts": "{{value}} W"
   },
   "pageError": {
     "title": "Cette page a rencontré un problème",
@@ -73,5 +75,34 @@
     "retrying": "Nouvel essai…",
     "diagnostics": "Ouvrir les Diagnostics",
     "details": "Détails"
+  },
+  "acceleration": {
+    "state": {
+      "gpu": "GPU",
+      "partial": "En partie sur GPU",
+      "cpu": "CPU seul",
+      "cpu_expected": "CPU"
+    },
+    "backend": {
+      "metal": "Metal",
+      "vulkan": "Vulkan",
+      "cuda": "CUDA",
+      "rocm": "ROCm",
+      "sycl": "SYCL",
+      "cpu": "CPU"
+    },
+    "detailsLabel": "Où s'exécute {{model}}",
+    "device": "Appareil",
+    "runsWith": "S'exécute avec",
+    "layers": "Couches sur le GPU",
+    "layersValue": "{{offloaded}} sur {{total}}",
+    "gpuMemory": "Mémoire du GPU",
+    "reason": {
+      "cpu_build": "Cet ordinateur a un GPU, mais le llama.cpp installé ne fonctionne que sur le processeur. Arrêtez vos modèles, puis quittez et rouvrez Toskar pour obtenir la version GPU.",
+      "gpu_memory": "Le modèle ne tient pas dans la mémoire du GPU : une partie s'exécute donc sur le processeur, plus lent. Un modèle plus petit, ou une version plus petite de celui-ci, tient entièrement.",
+      "gpu_unavailable": "llama.cpp n'a pas pu utiliser le GPU. Le pilote graphique ou Vulkan manque peut-être. Les diagnostics indiquent quoi vérifier.",
+      "no_gpu": "Cet ordinateur n'a pas de GPU que Toskar peut utiliser : les modèles s'exécutent donc sur le processeur."
+    },
+    "openDiagnostics": "Ouvrir les diagnostics"
   }
 }

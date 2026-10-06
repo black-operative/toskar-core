@@ -78,6 +78,15 @@
       "lan": "已啟用 LAN",
       "local": "僅限本機",
       "lanHint": "經授權後，網路上的其他裝置可以連線到 API。"
+    },
+    "gpu": {
+      "label": "GPU 加速",
+      "gpu": "模型在 GPU 上執行",
+      "partial": "部分在 GPU 上",
+      "cpu": "未使用 GPU",
+      "cpu_expected": "僅 CPU（沒有 GPU）",
+      "idle": "未載入模型",
+      "openModels": "查看執行中的模型"
     }
   },
   "env": {

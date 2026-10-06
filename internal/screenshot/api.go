@@ -48,7 +48,7 @@ func writeJSON(w http.ResponseWriter, status int, body string) {
 func screenshotGET(path string) (string, bool) {
 	switch {
 	case path == "/api/v1/health":
-		return `{"status":"ok","product":"Yggdrasil","version":"0.1.0"}`, true
+		return `{"status":"ok","product":"Yggdrasil","version":"0.1.0","acceleration":"gpu"}`, true
 	case path == "/api/v1/version":
 		return `{"version":"0.1.0","commit":"screenshot","build_date":"2026-09-24T00:00:00Z","product":"Yggdrasil"}`, true
 	case path == "/api/v1/hardware":
@@ -83,6 +83,9 @@ func screenshotGET(path string) (string, bool) {
 		return screenshotLogs, true
 	case strings.HasPrefix(path, "/api/v1/logs/"):
 		return screenshotLogBody, true
+	// This Mac's last hour while a model answers, for the Performance page.
+	case path == "/api/v1/performance/live":
+		return screenshotLive(), true
 	case strings.HasPrefix(path, "/api/v1/performance"):
 		return screenshotPerformance, true
 	case path == "/api/v1/tasks":
@@ -212,7 +215,8 @@ const screenshotRunning = `[{
   "memory_bytes": 4500000000,
   "speed_tok_per_sec": 58,
   "accelerator": "Apple M4 Pro",
-  "used_by_profiles": ["General"]
+  "used_by_profiles": ["General"],
+  "acceleration": {"state": "gpu", "backend": "metal", "devices": ["Apple M4 Pro"], "layers_offloaded": 35, "layers_total": 35, "gpu_memory_bytes": 4800000000}
 }]`
 
 const screenshotProfiles = `[{
@@ -545,5 +549,28 @@ func screenshotRuntimeHistory() string {
 		fmt.Fprintf(&b, `{"at":"%s","goroutines":%d,"heap_bytes":%d,"sys_bytes":%d}`, start.Add(time.Duration(i)*5*time.Minute).Format(time.RFC3339), 40+i%3, heap, 60<<20)
 	}
 	b.WriteString("]}")
+	return b.String()
+}
+
+// screenshotLive is an hour of readings every minute on an Apple silicon Mac
+// answering now and then: CPU, memory, and the GPU's busy % and the shared
+// memory it uses (no temperature or power, as on a real Mac).
+func screenshotLive() string {
+	start := time.Date(2026, 9, 25, 8, 0, 0, 0, time.UTC)
+	sample := func(i int) string {
+		busy := 8 + (i*37)%55
+		cpu := 6 + (i*13)%22
+		return fmt.Sprintf(`{"at":"%s","cpu_percent":%d,"memory_used_bytes":%d,"memory_total_bytes":51539607552,"gpus":[{"name":"Apple M4 Pro","busy_percent":%d,"memory_used_bytes":4800000000}]}`,
+			start.Add(time.Duration(i)*time.Minute).Format(time.RFC3339), cpu, 20<<30+int64(i%7)<<28, busy)
+	}
+	var b strings.Builder
+	b.WriteString(`[{"node_id":"local","node_name":"This Mac","current":` + sample(59) + `,"recent":[`)
+	for i := range 60 {
+		if i > 0 {
+			b.WriteString(",")
+		}
+		b.WriteString(sample(i))
+	}
+	b.WriteString(`],"day":[]}]`)
 	return b.String()
 }

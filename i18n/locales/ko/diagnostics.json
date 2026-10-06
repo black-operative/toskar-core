@@ -78,6 +78,15 @@
       "lan": "LAN 사용 중",
       "local": "로컬 전용",
       "lanHint": "승인된 경우 네트워크의 다른 기기에서 API에 접속할 수 있어요."
+    },
+    "gpu": {
+      "label": "GPU 가속",
+      "gpu": "모델이 GPU에서 실행 중",
+      "partial": "일부가 GPU에서 실행 중",
+      "cpu": "GPU를 사용하지 않음",
+      "cpu_expected": "CPU만 사용(GPU 없음)",
+      "idle": "로드된 모델 없음",
+      "openModels": "실행 중인 모델 보기"
     }
   },
   "env": {

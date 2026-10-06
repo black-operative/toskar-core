@@ -130,5 +130,16 @@
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_one": "{{count}} Sieger",
     "winners_other": "{{count}} Sieger"
+  },
+  "live": {
+    "cpu": "CPU",
+    "memory": "Speicher",
+    "gpuBusy": "Auslastung",
+    "gpuMemory": "Grafikspeicher",
+    "sharedMemory": "Belegter Speicher",
+    "temperature": "Temperatur",
+    "power": "Leistung",
+    "busyChart": "Auslastung von {{name}} in der letzten Stunde",
+    "cpuChart": "CPU in der letzten Stunde"
   }
 }

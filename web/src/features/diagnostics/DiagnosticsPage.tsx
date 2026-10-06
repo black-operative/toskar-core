@@ -288,6 +288,26 @@ export function DiagnosticsPage() {
       actions: runtimeActions,
     })
 
+    // Where this computer's loaded models run (#317): amber when a model is
+    // only partly on the GPU, or a GPU sits unused; the reason comes from
+    // the model in that state.
+    const accel = healthQuery.data?.acceleration
+    if (serviceOk && accel) {
+      const localId = nodes.find((n) => n.is_local)?.id
+      const reason = running.find(
+        (r) => (!localId || r.node_id === localId) && r.acceleration?.state === accel,
+      )?.acceleration?.reason
+      const needsLook = accel === 'partial' || accel === 'cpu'
+      out.push({
+        id: 'gpu',
+        label: t('rows.gpu.label'),
+        tone: needsLook ? 'warn' : 'ok',
+        detail: t(`rows.gpu.${accel}`),
+        message: needsLook && reason ? i18n.t(`common:acceleration.reason.${reason}`) : undefined,
+        actions: needsLook ? [{ kind: 'link', label: t('rows.gpu.openModels'), to: '/models' }] : undefined,
+      })
+    }
+
     out.push({
       id: 'database',
       label: t('rows.database.label'),
@@ -373,7 +393,8 @@ export function DiagnosticsPage() {
     serviceOk,
     connected,
     nodes,
-    running.length,
+    running,
+    healthQuery.data?.acceleration,
     runtimeInstalled,
     hasModel,
     diskAvail,

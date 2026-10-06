@@ -2,6 +2,7 @@ package screenshot
 
 import (
 	"encoding/json"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -79,5 +80,29 @@ func TestMCPShareFixtureHasTheShareShape(t *testing.T) {
 	}
 	if err := json.Unmarshal([]byte(body), &share); err != nil || share.URL == "" || share.Command == "" || len(share.Args) == 0 {
 		t.Fatalf("share = %+v, %v", share, err)
+	}
+}
+
+// The Performance page reads live figures and running models' acceleration
+// in the contract's shapes, so the screenshots show the GPU card and pill.
+func TestGPUFixturesHaveTheContractShape(t *testing.T) {
+	body, ok := screenshotGET("/api/v1/performance/live")
+	if !ok {
+		t.Fatal("no live fixture")
+	}
+	var live []contracts.LiveFigures
+	if err := json.Unmarshal([]byte(body), &live); err != nil {
+		t.Fatal(err)
+	}
+	if len(live) != 1 || live[0].NodeID != "local" || len(live[0].Recent) != 60 || len(live[0].Current.GPUs) != 1 || live[0].Current.GPUs[0].BusyPercent == nil {
+		t.Errorf("live: %+v", live)
+	}
+	body, _ = screenshotGET("/api/v1/models/running")
+	var running []contracts.RunningModelView
+	if err := json.Unmarshal([]byte(body), &running); err != nil {
+		t.Fatal(err)
+	}
+	if len(running) == 0 || running[0].Acceleration == nil || running[0].Acceleration.State != contracts.AccelerationGPU {
+		t.Errorf("running: %+v", running)
 	}
 }

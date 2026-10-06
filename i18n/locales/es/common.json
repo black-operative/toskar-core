@@ -57,7 +57,9 @@
   "units": {
     "ms": "{{value}} ms",
     "seconds": "{{value}} s",
-    "tokPerSec": "{{value}} tok/s"
+    "tokPerSec": "{{value}} tok/s",
+    "celsius": "{{value}} °C",
+    "watts": "{{value}} W"
   },
   "pageError": {
     "title": "Esta página tuvo un problema",
@@ -73,5 +75,34 @@
     "retrying": "Reintentando…",
     "diagnostics": "Abrir Diagnóstico",
     "details": "Detalles"
+  },
+  "acceleration": {
+    "state": {
+      "gpu": "GPU",
+      "partial": "En parte en GPU",
+      "cpu": "Solo CPU",
+      "cpu_expected": "CPU"
+    },
+    "backend": {
+      "metal": "Metal",
+      "vulkan": "Vulkan",
+      "cuda": "CUDA",
+      "rocm": "ROCm",
+      "sycl": "SYCL",
+      "cpu": "CPU"
+    },
+    "detailsLabel": "Dónde se ejecuta {{model}}",
+    "device": "Dispositivo",
+    "runsWith": "Se ejecuta con",
+    "layers": "Capas en la GPU",
+    "layersValue": "{{offloaded}} de {{total}}",
+    "gpuMemory": "Memoria de GPU",
+    "reason": {
+      "cpu_build": "Esta computadora tiene una GPU, pero el llama.cpp instalado solo funciona en la CPU. Detén tus modelos, cierra Toskar y vuelve a abrirlo para obtener la versión para GPU.",
+      "gpu_memory": "El modelo no cabe en la memoria de la GPU, así que una parte se ejecuta en la CPU, que es más lenta. Un modelo más pequeño, o una versión más pequeña de este, cabe por completo.",
+      "gpu_unavailable": "llama.cpp no pudo usar la GPU. Puede faltar el controlador gráfico o Vulkan. Diagnóstico muestra qué revisar.",
+      "no_gpu": "Esta computadora no tiene una GPU que Toskar pueda usar, así que los modelos se ejecutan en la CPU."
+    },
+    "openDiagnostics": "Abrir Diagnóstico"
   }
 }

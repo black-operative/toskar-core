@@ -55,7 +55,9 @@
   "units": {
     "ms": "{{value}}ms",
     "seconds": "{{value}}초",
-    "tokPerSec": "{{value}} tok/s"
+    "tokPerSec": "{{value}} tok/s",
+    "celsius": "{{value}} °C",
+    "watts": "{{value}} W"
   },
   "pageError": {
     "title": "이 페이지에 문제가 생겼어요",
@@ -71,5 +73,34 @@
     "retrying": "다시 시도하는 중…",
     "diagnostics": "진단 열기",
     "details": "자세히"
+  },
+  "acceleration": {
+    "state": {
+      "gpu": "GPU",
+      "partial": "일부 GPU",
+      "cpu": "CPU만",
+      "cpu_expected": "CPU"
+    },
+    "backend": {
+      "metal": "Metal",
+      "vulkan": "Vulkan",
+      "cuda": "CUDA",
+      "rocm": "ROCm",
+      "sycl": "SYCL",
+      "cpu": "CPU"
+    },
+    "detailsLabel": "{{model}} 실행 위치",
+    "device": "장치",
+    "runsWith": "실행 방식",
+    "layers": "GPU의 레이어",
+    "layersValue": "{{total}}개 중 {{offloaded}}개",
+    "gpuMemory": "GPU 메모리",
+    "reason": {
+      "cpu_build": "이 컴퓨터에는 GPU가 있지만 설치된 llama.cpp는 CPU에서만 실행돼요. 모델을 멈추고 Toskar를 종료했다가 다시 열면 GPU 버전을 받을 수 있어요.",
+      "gpu_memory": "모델이 GPU 메모리에 다 들어가지 않아 일부가 더 느린 CPU에서 실행돼요. 더 작은 모델이나 이 모델의 더 작은 버전은 전부 들어가요.",
+      "gpu_unavailable": "llama.cpp가 GPU를 사용하지 못했어요. 그래픽 드라이버나 Vulkan이 없을 수 있어요. 진단에서 확인할 항목을 볼 수 있어요.",
+      "no_gpu": "이 컴퓨터에는 Toskar가 사용할 수 있는 GPU가 없어서 모델이 CPU에서 실행돼요."
+    },
+    "openDiagnostics": "진단 열기"
   }
 }

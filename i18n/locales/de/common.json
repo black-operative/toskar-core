@@ -56,7 +56,9 @@
   "units": {
     "ms": "{{value}} ms",
     "seconds": "{{value}} s",
-    "tokPerSec": "{{value}} tok/s"
+    "tokPerSec": "{{value}} tok/s",
+    "celsius": "{{value}} °C",
+    "watts": "{{value}} W"
   },
   "pageError": {
     "title": "Auf dieser Seite ist ein Problem aufgetreten",
@@ -72,5 +74,34 @@
     "retrying": "Wird erneut versucht…",
     "diagnostics": "Diagnose öffnen",
     "details": "Details"
+  },
+  "acceleration": {
+    "state": {
+      "gpu": "GPU",
+      "partial": "Teilweise auf GPU",
+      "cpu": "Nur CPU",
+      "cpu_expected": "CPU"
+    },
+    "backend": {
+      "metal": "Metal",
+      "vulkan": "Vulkan",
+      "cuda": "CUDA",
+      "rocm": "ROCm",
+      "sycl": "SYCL",
+      "cpu": "CPU"
+    },
+    "detailsLabel": "Wo {{model}} läuft",
+    "device": "Gerät",
+    "runsWith": "Läuft mit",
+    "layers": "Schichten auf der GPU",
+    "layersValue": "{{offloaded}} von {{total}}",
+    "gpuMemory": "GPU-Speicher",
+    "reason": {
+      "cpu_build": "Dieser Computer hat eine GPU, aber das installierte llama.cpp läuft nur auf der CPU. Halte deine Modelle an, beende Toskar und öffne es erneut, um die GPU-Version zu erhalten.",
+      "gpu_memory": "Das Modell passt nicht in den Speicher der GPU, daher läuft ein Teil davon auf der CPU, was langsamer ist. Ein kleineres Modell oder eine kleinere Version dieses Modells passt vollständig.",
+      "gpu_unavailable": "llama.cpp konnte die GPU nicht verwenden. Der Grafiktreiber oder Vulkan fehlt möglicherweise. Die Diagnose zeigt, was zu prüfen ist.",
+      "no_gpu": "Dieser Computer hat keine GPU, die Toskar verwenden kann, daher laufen Modelle auf der CPU."
+    },
+    "openDiagnostics": "Diagnose öffnen"
   }
 }

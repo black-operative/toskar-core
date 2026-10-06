@@ -56,7 +56,9 @@
   "units": {
     "ms": "{{value}} ms",
     "seconds": "{{value}} s",
-    "tokPerSec": "{{value}} tok/s"
+    "tokPerSec": "{{value}} tok/s",
+    "celsius": "{{value}} °C",
+    "watts": "{{value}} W"
   },
   "pageError": {
     "title": "This page ran into a problem",
@@ -72,5 +74,34 @@
     "retrying": "Trying again…",
     "diagnostics": "Open Diagnostics",
     "details": "Details"
+  },
+  "acceleration": {
+    "state": {
+      "gpu": "GPU",
+      "partial": "Partly on GPU",
+      "cpu": "CPU only",
+      "cpu_expected": "CPU"
+    },
+    "backend": {
+      "metal": "Metal",
+      "vulkan": "Vulkan",
+      "cuda": "CUDA",
+      "rocm": "ROCm",
+      "sycl": "SYCL",
+      "cpu": "CPU"
+    },
+    "detailsLabel": "Where {{model}} runs",
+    "device": "Device",
+    "runsWith": "Runs with",
+    "layers": "Layers on the GPU",
+    "layersValue": "{{offloaded}} of {{total}}",
+    "gpuMemory": "GPU memory",
+    "reason": {
+      "cpu_build": "This computer has a GPU, but the llama.cpp installed runs on the CPU only. Stop your models, then quit and reopen Toskar to get the GPU build.",
+      "gpu_memory": "The model doesn't fit in the GPU's memory, so part of it runs on the CPU, which is slower. A smaller model, or a smaller version of this one, fits completely.",
+      "gpu_unavailable": "llama.cpp couldn't use the GPU. Its graphics driver, or Vulkan, may be missing. Diagnostics shows what to check.",
+      "no_gpu": "This computer has no GPU Toskar can use, so models run on the CPU."
+    },
+    "openDiagnostics": "Open Diagnostics"
   }
 }

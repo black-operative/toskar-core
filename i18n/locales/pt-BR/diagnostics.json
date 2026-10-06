@@ -94,6 +94,15 @@
       "lan": "LAN ativada",
       "local": "Somente local",
       "lanHint": "Outros dispositivos na sua rede podem acessar a API quando autorizados."
+    },
+    "gpu": {
+      "label": "Aceleração por GPU",
+      "gpu": "Os modelos rodam na GPU",
+      "partial": "Parte na GPU",
+      "cpu": "A GPU não está sendo usada",
+      "cpu_expected": "Só CPU (sem GPU)",
+      "idle": "Nenhum modelo carregado",
+      "openModels": "Ver modelos em execução"
     }
   },
   "env": {

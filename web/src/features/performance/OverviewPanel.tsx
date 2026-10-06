@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { api } from '@/lib/api'
 import { describeNodeHardware } from '@/features/nodes/nodePresentation'
-import type { Node, RunningModelView, Task } from '@/types/api'
+import type { LiveFigures, Node, RunningModelView, Task } from '@/types/api'
+import { AccelerationPill } from '@/components/AccelerationPill'
+import { LiveFiguresPanel } from './LiveFiguresPanel'
 import { formatTokPerSec, memoryUsePercent } from './performanceFormat'
 import { formatPercent } from '@/i18n/format'
 import { LoadError } from '@/components/ui/LoadError'
@@ -28,9 +30,11 @@ function MemoryBar({ percent }: { percent: number }) {
 function NodeLiveCard({
   node,
   running,
+  live,
 }: {
   node: Node
   running: RunningModelView[]
+  live?: LiveFigures
 }) {
   const { t } = useTranslation('performance')
   const hw = describeNodeHardware(node.hardware)
@@ -69,25 +73,31 @@ function NodeLiveCard({
 
       {!online ? (
         <p className="text-sm text-ink-faint">{t('overview.unreachable')}</p>
-      ) : idle ? (
-        <p className="text-sm text-ink-muted">{t('overview.idleNoModels')}</p>
       ) : (
         <div className="space-y-3">
-          {memPct != null && <MemoryBar percent={memPct} />}
-          <ul className="space-y-3">
-            {running.map((r) => (
-              <li key={r.instance_id} className="space-y-1 text-sm">
-                <div className="flex justify-between gap-2">
-                  <span className="text-ink-muted">{t('overview.model')}</span>
-                  <span className="truncate font-medium text-ink">{r.display_name}</span>
-                </div>
-                <div className="flex justify-between gap-2">
-                  <span className="text-ink-muted">{t('overview.speed')}</span>
-                  <span className="tabular-nums text-ink">{formatTokPerSec(r.speed_tok_per_sec ?? 0)}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {/* Live figures when the computer gives them; the memory its hardware last reported otherwise. */}
+          {live ? <LiveFiguresPanel figures={live} /> : memPct != null && !idle ? <MemoryBar percent={memPct} /> : null}
+          {idle ? (
+            <p className="text-sm text-ink-muted">{t('overview.idleNoModels')}</p>
+          ) : (
+            <ul className="space-y-3">
+              {running.map((r) => (
+                <li key={r.instance_id} className="space-y-1 text-sm">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-ink-muted">{t('overview.model')}</span>
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span className="truncate font-medium text-ink">{r.display_name}</span>
+                      <AccelerationPill acceleration={r.acceleration} model={r.display_name} align="end" />
+                    </span>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <span className="text-ink-muted">{t('overview.speed')}</span>
+                    <span className="tabular-nums text-ink">{formatTokPerSec(r.speed_tok_per_sec ?? 0)}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </article>
@@ -108,6 +118,13 @@ export function OverviewPanel() {
     queryFn: () => api.listRunningModels(),
     retry: false,
     refetchInterval: 3_000,
+  })
+
+  const liveQuery = useQuery({
+    queryKey: ['performance-live'],
+    queryFn: () => api.getLiveFigures(),
+    retry: false,
+    refetchInterval: 5_000,
   })
 
   const tasksQuery = useQuery({
@@ -135,6 +152,10 @@ export function OverviewPanel() {
     list.push(r)
     byNode.set(id, list)
   }
+
+  // An older daemon answers without live figures; the cards then show what they did before.
+  const liveByNode = new Map<string, LiveFigures>()
+  for (const f of Array.isArray(liveQuery.data) ? liveQuery.data : []) liveByNode.set(f.node_id, f)
 
   if (nodesQuery.isLoading) {
     return <LoadingSpinner label={t('overview.loading')} />
@@ -180,6 +201,7 @@ export function OverviewPanel() {
               <NodeLiveCard
                 node={node}
                 running={byNode.get(node.id) ?? []}
+                live={liveByNode.get(node.id)}
               />
             </li>
           ))}

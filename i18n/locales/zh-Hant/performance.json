@@ -122,5 +122,16 @@
     "recentHint": "Toskar 執行期間，這些工作會持續保留。",
     "jobSummary": "{{models}} · {{workloads}} · {{when}}",
     "winners_other": "{{count}} 個勝出者"
+  },
+  "live": {
+    "cpu": "CPU",
+    "memory": "記憶體",
+    "gpuBusy": "使用率",
+    "gpuMemory": "顯示記憶體",
+    "sharedMemory": "已用記憶體",
+    "temperature": "溫度",
+    "power": "功耗",
+    "busyChart": "過去一小時 {{name}} 的使用率",
+    "cpuChart": "過去一小時的 CPU"
   }
 }

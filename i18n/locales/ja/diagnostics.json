@@ -78,6 +78,15 @@
       "lan": "LAN有効",
       "local": "ローカルのみ",
       "lanHint": "許可されていれば、ネットワーク上の他のデバイスからAPIにアクセスできます。"
+    },
+    "gpu": {
+      "label": "GPUアクセラレーション",
+      "gpu": "モデルはGPUで動作中",
+      "partial": "一部がGPUで動作中",
+      "cpu": "GPUを使っていません",
+      "cpu_expected": "CPUのみ（GPUなし）",
+      "idle": "モデルは読み込まれていません",
+      "openModels": "実行中のモデルを見る"
     }
   },
   "env": {

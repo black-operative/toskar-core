@@ -98,6 +98,7 @@ import type {
   NodeToolProviders,
   FileRef,
   StopChatResponse,
+  LiveFigures,
 } from '@/types/api'
 import type { Upload } from '@/lib/upload'
 
@@ -1106,6 +1107,8 @@ export const api = {
     `${getApiBase()}/api/v1/training/ais/${id}/revisions/${revision}/export/file`,
 
   getRuntimeHistory: () => request<RuntimeHistory>('/api/v1/diagnostics/runtime'),
+  /** Each computer's live CPU, memory, and GPU figures, this one first (#317). */
+  getLiveFigures: () => request<LiveFigures[]>('/api/v1/performance/live'),
 
   exportDiagnostics: (includeConversations = false) =>
     request<DiagnosticsExportResult>('/api/v1/diagnostics', {

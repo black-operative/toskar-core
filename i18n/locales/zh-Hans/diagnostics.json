@@ -78,6 +78,15 @@
       "lan": "已启用局域网",
       "local": "仅限本机",
       "lanHint": "获得授权后，你网络中的其他设备可以访问 API。"
+    },
+    "gpu": {
+      "label": "GPU 加速",
+      "gpu": "模型在 GPU 上运行",
+      "partial": "部分在 GPU 上",
+      "cpu": "未使用 GPU",
+      "cpu_expected": "仅 CPU（无 GPU）",
+      "idle": "未加载模型",
+      "openModels": "查看正在运行的模型"
     }
   },
   "env": {

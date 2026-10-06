@@ -55,7 +55,9 @@
   "units": {
     "ms": "{{value}} ms",
     "seconds": "{{value}} s",
-    "tokPerSec": "{{value}} tok/s"
+    "tokPerSec": "{{value}} tok/s",
+    "celsius": "{{value}} °C",
+    "watts": "{{value}} W"
   },
   "pageError": {
     "title": "このページで問題が発生しました",
@@ -71,5 +73,34 @@
     "retrying": "再試行中…",
     "diagnostics": "診断を開く",
     "details": "詳細"
+  },
+  "acceleration": {
+    "state": {
+      "gpu": "GPU",
+      "partial": "一部GPU",
+      "cpu": "CPUのみ",
+      "cpu_expected": "CPU"
+    },
+    "backend": {
+      "metal": "Metal",
+      "vulkan": "Vulkan",
+      "cuda": "CUDA",
+      "rocm": "ROCm",
+      "sycl": "SYCL",
+      "cpu": "CPU"
+    },
+    "detailsLabel": "{{model}}の実行場所",
+    "device": "デバイス",
+    "runsWith": "使用バックエンド",
+    "layers": "GPU上のレイヤー",
+    "layersValue": "{{total}}中{{offloaded}}",
+    "gpuMemory": "GPUメモリ",
+    "reason": {
+      "cpu_build": "このコンピュータにはGPUがありますが、インストールされているllama.cppはCPU専用です。モデルを停止し、Toskarを終了してから開き直すと、GPU版が入ります。",
+      "gpu_memory": "モデルがGPUのメモリに収まらないため、一部がCPUで動いていて遅くなります。小さいモデルか、このモデルの小さい版なら全体が収まります。",
+      "gpu_unavailable": "llama.cppがGPUを使えませんでした。グラフィックドライバーかVulkanが入っていない可能性があります。確認する項目は診断で見られます。",
+      "no_gpu": "このコンピュータにはToskarが使えるGPUがないため、モデルはCPUで動きます。"
+    },
+    "openDiagnostics": "診断を開く"
   }
 }

@@ -55,7 +55,9 @@
   "units": {
     "ms": "{{value}} ms",
     "seconds": "{{value}} 秒",
-    "tokPerSec": "{{value}} tok/s"
+    "tokPerSec": "{{value}} tok/s",
+    "celsius": "{{value}} °C",
+    "watts": "{{value}} W"
   },
   "pageError": {
     "title": "此页面出现了问题",
@@ -71,5 +73,34 @@
     "retrying": "正在重试…",
     "diagnostics": "打开诊断",
     "details": "详细信息"
+  },
+  "acceleration": {
+    "state": {
+      "gpu": "GPU",
+      "partial": "部分在 GPU",
+      "cpu": "仅 CPU",
+      "cpu_expected": "CPU"
+    },
+    "backend": {
+      "metal": "Metal",
+      "vulkan": "Vulkan",
+      "cuda": "CUDA",
+      "rocm": "ROCm",
+      "sycl": "SYCL",
+      "cpu": "CPU"
+    },
+    "detailsLabel": "{{model}} 的运行位置",
+    "device": "设备",
+    "runsWith": "运行方式",
+    "layers": "GPU 上的层数",
+    "layersValue": "{{offloaded}} / {{total}}",
+    "gpuMemory": "GPU 内存",
+    "reason": {
+      "cpu_build": "这台电脑有 GPU，但安装的 llama.cpp 只能在 CPU 上运行。请停止模型，然后退出并重新打开 Toskar，以获取 GPU 版本。",
+      "gpu_memory": "模型放不进 GPU 的内存，所以有一部分在较慢的 CPU 上运行。换一个更小的模型，或此模型的较小版本，就能完全放下。",
+      "gpu_unavailable": "llama.cpp 无法使用 GPU。可能缺少显卡驱动或 Vulkan。诊断页会显示需要检查的内容。",
+      "no_gpu": "这台电脑没有 Toskar 可以使用的 GPU，所以模型在 CPU 上运行。"
+    },
+    "openDiagnostics": "打开诊断"
   }
 }

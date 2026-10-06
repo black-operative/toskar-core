@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { formatBytes } from '@/lib/format'
 import type { AIProfile, HardwareInventory, RunningModelView } from '@/types/api'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
+import { AccelerationPill } from '@/components/AccelerationPill'
 
 export function RunningTab({
   running,
@@ -65,10 +66,14 @@ export function RunningTab({
                       {t('tightFit.label')}
                     </p>
                   ) : null}
-                  <p className="mt-1 text-sm text-success">
-                    {t('runningTab.runningOn', { computer: item.node_name })}
-                    {item.accelerator ? ` · ${item.accelerator}` : ''}
-                  </p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                    <p className="text-sm text-success">
+                      {t('runningTab.runningOn', { computer: item.node_name })}
+                      {/* A daemon that reports acceleration names the device in the pill. */}
+                      {!item.acceleration && item.accelerator ? ` · ${item.accelerator}` : ''}
+                    </p>
+                    <AccelerationPill acceleration={item.acceleration} model={item.display_name} />
+                  </div>
                 </div>
                 <button
                   type="button"
