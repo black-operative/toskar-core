@@ -13,6 +13,10 @@ describe('Skeleton', () => {
 
   it('draws a conversation for chats', () => {
     const { container } = render(<Skeleton label="Loading this chat…" shape="chat" count={2} />)
-    expect(container.querySelectorAll('.rounded-2xl')).toHaveLength(2)
+    // A question bubble, then a reply drawn as plain lines.
+    const turns = container.querySelectorAll('[aria-hidden] > div')
+    expect(turns).toHaveLength(2)
+    expect(turns[0].querySelector('.rounded-2xl')).not.toBeNull()
+    expect(turns[1].querySelector('.rounded-2xl')).toBeNull()
   })
 })

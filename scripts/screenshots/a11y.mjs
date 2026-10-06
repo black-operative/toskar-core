@@ -15,6 +15,8 @@ const axePath = createRequire(import.meta.url).resolve('axe-core/axe.min.js')
 
 const allPages = [
   '/chat',
+  // A conversation, with a reply, its sources, and the chat's header.
+  '/chat?c=conv-local',
   '/automations',
   '/models',
   '/train',

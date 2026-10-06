@@ -43,6 +43,7 @@ import { useChatFollow } from './useChatFollow'
 import { chatToResume, lastContextUsage } from './resume'
 import { RatingDialogHost, RatingPrompt } from '@/features/models/ratings'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { YggdrasilMark } from '@/components/ui/YggdrasilMark'
 import { moveStored } from '@/lib/storage'
 
 type TeamStep = {
@@ -160,6 +161,15 @@ function toolProgress(toolId?: string, summary?: string): string {
 // Each chat's last context reading, kept while the app is open so leaving
 // Chat and coming back shows it rather than an empty gauge (#230).
 const usageByChat = new Map<string, ContextUsage>()
+
+/** The Toskar mark beside each reply, in the column's start gutter from sm up. */
+function ReplyMark() {
+  return (
+    <span className="chat-reply-mark" aria-hidden>
+      <YggdrasilMark size={18} />
+    </span>
+  )
+}
 
 export function ChatPage() {
   const { t } = useTranslation('chat')
@@ -1306,7 +1316,7 @@ export function ChatPage() {
         // What is typed takes its own direction; the empty box follows the page.
         dir={draft ? 'auto' : undefined}
         value={draft}
-        rows={showLanding ? 5 : 4}
+        rows={showLanding ? 3 : 1}
         onChange={(event) => setDraft(event.target.value)}
         onPaste={(event) => {
           if (event.clipboardData.files.length > 0) {
@@ -1326,7 +1336,7 @@ export function ChatPage() {
         aria-label={t('composer.message')}
       />
       <div className="composer-toolbar">
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             className="composer-attach"
@@ -1496,34 +1506,43 @@ export function ChatPage() {
           windowLimit={contextWindow(chatModel?.context)}
         />
         {isSending ? (
-          <button type="button" className="btn-secondary px-3 py-2" onClick={handleStop}>
+          <button type="button" className="composer-stop" onClick={handleStop}>
+            <span className="h-2.5 w-2.5 rounded-[3px] bg-current" aria-hidden />
             {t('composer.stop')}
           </button>
         ) : (
           <button
             type="submit"
-            className="btn-primary h-9 w-9 shrink-0 rounded-full p-0 text-lg leading-none"
+            className="composer-send"
             disabled={!draft.trim() && !pendingFiles.some((f) => f.status === 'ready')}
             aria-label={t('composer.send')}
             title={t('composer.send')}
           >
-            ↑
+            <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M8 13V3.5M3.5 7.5 8 3l4.5 4.5" />
+            </svg>
           </button>
         )}
       </div>
-            {(chatModel || isAuto) && (
-          <p
-            className="mt-2 text-xs text-ink-muted"
-            title={isAuto ? t('composer.autoHint') : chatToolAssessment?.detail}
-          >
-            {isAuto
+      {/* What Auto picked, and what the model can do. A chosen model's name is
+          already in the Model menu, so it isn't repeated here. */}
+      {isAuto || (chatModel && capabilityLine.length > 0) ? (
+        <p
+          className="composer-hint"
+          title={isAuto ? t('composer.autoHint') : chatToolAssessment?.detail}
+        >
+          {[
+            isAuto
               ? chatModel
                 ? t('composer.autoLastUsed', { model: chatModel.display_name || chatModel.id })
                 : t('composer.autoPicks')
-              : chatModel?.display_name || chatModel?.id}
-            {capabilityLine.length > 0 ? ` · ${capabilityLine.join(' · ')}` : ''}
-          </p>
-        )}
+              : '',
+            ...capabilityLine,
+          ]
+            .filter(Boolean)
+            .join(' · ')}
+        </p>
+      ) : null}
       {!modelIdForChat && modelsQuery.isError && !modelsQuery.data && (
         <p role="alert" className="mt-2 text-xs text-ink-muted">
           {t('composer.modelsFailedHint')}{' '}
@@ -1579,58 +1598,69 @@ export function ChatPage() {
       <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden">
         {showPinnedSidebar ? historyDrawer : null}
 
-        <section className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-panel bg-canvas/40 px-1 sm:px-2">
-          <div className="flex shrink-0 items-center gap-2 px-1 pb-2 pt-1">
+        <section className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+          {/* History on the start side, the chat's name in the middle, and
+              its actions at the end, the same at every width. */}
+          <div className="chat-header">
             <button
               type="button"
               className={[
-                'inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium transition',
-                historyOpen && historyMode === 'overlay'
-                  ? 'bg-primary-soft text-primary-active'
-                  : 'text-ink-muted hover:bg-raised hover:text-ink',
+                'chat-header-button',
+                historyOpen && historyMode === 'overlay' ? 'bg-primary-soft text-primary-active' : '',
               ].join(' ')}
               aria-expanded={historyOpen}
               aria-controls="chat-history-drawer"
               onClick={() => setHistoryOpen((open) => !open)}
             >
-              <span aria-hidden className="text-base leading-none">
-                ☰
-              </span>
-              {t('header.history')}
+              <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+                <path d="M2.5 4h11M2.5 8h11M2.5 12h7" />
+              </svg>
+              <span className="hidden sm:inline">{t('header.history')}</span>
+              <span className="sr-only sm:hidden">{t('header.history')}</span>
             </button>
+
+            <div className="min-w-0 flex-1 px-1 text-center">
+              {selectedId ? (
+                <>
+                  {/* The page's heading while a chat is open; the landing's is hidden then. */}
+                  <h1 className="truncate font-display text-[15px] font-semibold leading-tight text-ink">
+                    {selectedConversation?.title || t('header.untitledChat')}
+                  </h1>
+                  <p className="hidden truncate text-[11px] leading-tight text-ink-faint sm:block" title={runOnTitle}>
+                    {activeProfile?.name ?? t('header.assistant')}
+                    <span className="mx-1.5" aria-hidden>·</span>
+                    {effectiveRunMode === 'automatic' ? t('composer.automatic') : t('composer.thisComputer')}
+                  </p>
+                </>
+              ) : null}
+            </div>
+
+            {selectedConversation ? (
+              <button
+                type="button"
+                className="chat-header-button hover:bg-danger/10 hover:text-danger"
+                title={t('header.deleteChat')}
+                aria-label={t('header.deleteChat')}
+                onClick={(e) => handleDelete(selectedConversation, e)}
+              >
+                <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5M7 7v4M9 7v4" />
+                </svg>
+              </button>
+            ) : null}
             <button
               type="button"
-              className="btn-primary inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-xs"
+              className="chat-header-button text-ink"
               title={t('header.newChat')}
               onClick={startNewChat}
             >
-              <span aria-hidden>+</span>
-              {t('header.newChat')}
+              <svg viewBox="0 0 16 16" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M8.5 2.5H4a1.5 1.5 0 0 0-1.5 1.5v8A1.5 1.5 0 0 0 4 13.5h8a1.5 1.5 0 0 0 1.5-1.5V7.5" />
+                <path d="m12 2 2 2-5.5 5.5H6.5v-2z" />
+              </svg>
+              <span className="hidden sm:inline">{t('header.newChat')}</span>
+              <span className="sr-only sm:hidden">{t('header.newChat')}</span>
             </button>
-
-            {selectedId ? (
-              <div className="ms-auto flex min-w-0 items-center gap-2">
-                <h2 className="min-w-0 truncate font-display text-base font-semibold text-ink sm:text-lg">
-                  {selectedConversation?.title || t('header.untitledChat')}
-                </h2>
-                <p className="hidden shrink-0 text-xs text-ink-faint sm:inline" title={runOnTitle}>
-                  {activeProfile?.name ?? t('header.assistant')}
-                  <span className="mx-1.5 text-ink-faint/60">·</span>
-                  {effectiveRunMode === 'automatic' ? t('composer.automatic') : t('composer.thisComputer')}
-                </p>
-                {selectedConversation && (
-                  <button
-                    type="button"
-                    className="shrink-0 rounded-md px-2 py-1 text-xs text-ink-faint transition hover:bg-danger/15 hover:text-danger"
-                    title={t('header.deleteChat')}
-                    aria-label={t('header.deleteChat')}
-                    onClick={(e) => handleDelete(selectedConversation, e)}
-                  >
-                    {t('header.delete')}
-                  </button>
-                )}
-              </div>
-            ) : null}
           </div>
 
           {!showPinnedSidebar && historyMode === 'overlay' ? historyDrawer : null}
@@ -1658,9 +1688,9 @@ export function ChatPage() {
               <div className="relative min-h-0 flex-1">
                 <div
                   ref={scrollerRef}
-                  className="chat-transcript absolute inset-0 overflow-y-auto px-1 pb-2 [overflow-anchor:none]"
+                  className="chat-transcript absolute inset-0 overflow-y-auto pb-4 [overflow-anchor:none]"
                 >
-                  <div ref={contentRef} className="space-y-4">
+                  <div ref={contentRef} className="chat-column space-y-6 pt-2">
                 {messagesQuery.isLoading && <Skeleton label={t('status.loadingChat')} shape="chat" />}
                 {messages.map((message) => {
                   const text = displayChatText(message.content)
@@ -1668,15 +1698,11 @@ export function ChatPage() {
                   return (
                   <div
                     key={message.id}
-                    className={[
-                      'max-w-[min(42rem,85%)] break-words rounded-2xl px-4 py-3 text-[15px] leading-relaxed',
-                      message.role === 'user'
-                        ? 'ms-auto bg-primary text-primary-fg'
-                        : 'bg-raised/80 text-ink',
-                    ].join(' ')}
+                    className={message.role === 'user' ? 'chat-user-turn' : 'chat-reply'}
                   >
                     {message.role === 'assistant' ? (
                       <>
+                        <ReplyMark />
                         <ChatMarkdown text={text} />
                         <AnswerDetails meta={message.meta} />
                         {message.meta?.setup ? (
@@ -1705,7 +1731,7 @@ export function ChatPage() {
                 })}
 
                 {isSending && planSteps.length > 0 && (
-                  <ol className="max-w-[min(42rem,85%)] space-y-1.5 border-s-2 border-norn/40 ps-3" aria-label={t('transcript.plan')}>
+                  <ol className="chat-aside space-y-1.5 border-s-2 border-norn/40 ps-3" aria-label={t('transcript.plan')}>
                     {planSteps.map((s, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-ink-muted">
                         <span aria-hidden className={s.status === 'done' ? 'text-success' : s.status === 'failed' ? 'text-warning' : s.status === 'running' ? 'text-norn' : 'text-ink-faint'}>
@@ -1718,7 +1744,7 @@ export function ChatPage() {
                 )}
 
                 {teamSteps.length > 0 && (
-                  <ol className="max-w-[min(42rem,85%)] space-y-1.5 border-s-2 border-primary/30 ps-3">
+                  <ol className="chat-aside space-y-1.5 border-s-2 border-primary/30 ps-3">
                     {teamSteps.map((step) => (
                       <li key={step.role} className="text-sm text-ink-muted">
                         <span className="font-medium text-ink">
@@ -1741,7 +1767,7 @@ export function ChatPage() {
                 )}
 
                 {toolFailure && !isSending && !statusMessage && (
-                  <p className="text-sm text-ink-muted">
+                  <p className="chat-aside text-sm text-ink-muted">
                     {t('tools.failed', { tool: toolFailure })}
                     {' · '}
                     <button
@@ -1754,7 +1780,7 @@ export function ChatPage() {
                   </p>
                 )}
                 {toolTraces.length > 0 && (
-                  <div className="max-w-[min(42rem,85%)] text-xs text-ink-muted">
+                  <div className="chat-aside text-xs text-ink-muted">
                     <button
                       type="button"
                       className="underline-offset-2 hover:underline"
@@ -1777,7 +1803,8 @@ export function ChatPage() {
                 )}
 
                 {streamingText ? (
-                  <div className="max-w-[min(42rem,85%)] break-words rounded-2xl bg-raised/80 px-4 py-3 text-[15px] leading-relaxed text-ink">
+                  <div className="chat-reply">
+                    <ReplyMark />
                     <ChatMarkdown text={streamingText} />
                     {responseInterrupted && !isSending ? (
                       <p className="mt-2 text-xs text-ink-muted">{t('transcript.interrupted')}</p>
@@ -1836,7 +1863,7 @@ export function ChatPage() {
                 {showJump ? (
                   <button
                     type="button"
-                    className="chat-jump absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full border border-line/80 bg-surface/95 px-3 py-1 text-xs font-medium text-ink-muted shadow-panel backdrop-blur transition hover:text-ink"
+                    className="chat-jump absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full border border-line/80 bg-surface/95 px-3 py-1.5 text-xs font-medium text-ink-muted shadow-panel backdrop-blur transition hover:text-ink"
                     onClick={jumpToLatest}
                   >
                     <span aria-hidden>↓ </span>
@@ -1850,7 +1877,7 @@ export function ChatPage() {
 
             <div
               className={[
-                'mx-auto w-full max-w-2xl px-2 transition-[margin,padding] duration-300 ease-out sm:px-4',
+                'mx-auto w-full max-w-3xl px-2 transition-[margin,padding] duration-300 ease-out sm:px-6',
                 showLanding ? 'mb-1 mt-10 pb-2' : 'mt-auto pb-1 pt-2',
               ].join(' ')}
             >

@@ -27,12 +27,19 @@ export function Skeleton({ label, shape = 'rows', count = 3 }: SkeletonProps) {
       {shape === 'chat' ? (
         <div className="space-y-4" aria-hidden>
           {items.map((i) => (
-            <div key={i} className={['flex', i % 2 === 0 ? 'justify-end' : 'justify-start'].join(' ')}>
-              <div className="w-2/3 max-w-md space-y-2 rounded-2xl bg-surface p-4">
-                <Bar className="h-3 w-11/12" />
-                <Bar className="h-3 w-3/4" />
-                {i % 2 === 1 ? <Bar className="h-3 w-1/2" /> : null}
-              </div>
+            // A question on the end side, then a reply as plain lines.
+            <div key={i} className={['flex', i % 2 === 0 ? 'justify-end' : 'justify-start sm:ps-10'].join(' ')}>
+              {i % 2 === 0 ? (
+                <div className="w-1/2 max-w-sm space-y-2 rounded-2xl bg-surface p-4">
+                  <Bar className="h-3 w-11/12" />
+                </div>
+              ) : (
+                <div className="w-full space-y-2.5 py-1">
+                  <Bar className="h-3 w-11/12" />
+                  <Bar className="h-3 w-4/5" />
+                  <Bar className="h-3 w-1/2" />
+                </div>
+              )}
             </div>
           ))}
         </div>

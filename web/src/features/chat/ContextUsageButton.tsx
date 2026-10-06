@@ -53,7 +53,7 @@ export function ContextUsageButton({
     <div ref={rootRef} className="relative shrink-0">
       <button
         type="button"
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full text-ink-muted transition hover:bg-raised hover:text-ink"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-ink-muted transition hover:bg-raised hover:text-ink"
         aria-label={usage ? t('context.full', { percent: formatPercent(percent / 100) }) : t('context.usage')}
         aria-expanded={open}
         aria-controls={titleId}

@@ -87,7 +87,11 @@ Use these classes before writing new styles.
 | `.status-chip` | Small status pill, with a tinted background and a dot |
 | `.realm-kicker` | The small Norse name above a page title (`RealmKicker` component) |
 | `.empty-hero` | Layout for empty, error, and "page failed" states |
-| `.composer`, `.composer-options` | The chat box and its Options panel |
+| `.composer`, `.composer-options` | The chat box and its Options panel; `.composer-send` is its round Send button |
+| `.chat-header`, `.chat-header-button` | The conversation's top row: History, the chat's name (the page's `h1`), Delete, New chat |
+| `.chat-column` | The centred reading column (`max-w-3xl`) that messages and the chat box share |
+| `.chat-user-turn`, `.chat-reply` | A question in a soft primary bubble on the end side; a reply as unboxed text beside the Toskar mark (from `sm`) |
+| `.chat-aside` | Plans, team steps and tool lists, lined up with the reply text |
 
 React components to reuse:
 
@@ -146,7 +150,7 @@ Focus is always visible: the global `:focus-visible` ring is primary teal, and a
 
 ## Layout and breakpoints
 
-- **Phone (<768px, `md`):** the sidebar becomes a drawer; the gutter is 1rem; every page fits 390px wide with no horizontal scroll outside code and tables. In a conversation the chat box starts at one line and grows with the text, up to 30% of the screen.
+- **Phone (<768px, `md`):** the sidebar becomes a drawer; the gutter is 1rem; every page fits 390px wide with no horizontal scroll outside code and tables. In a conversation the chat box starts small and grows with the text, up to 30% of the screen (40% wider up); its toolbar stays on one row.
 - **Store screenshots:** the phone captures (`data-form=phone`) show this same layout; capture-only CSS hides nothing but the transient jump-to-latest button.
 - **Tablet and up:** the sidebar is always shown.
 - **RTL:** use logical properties (`ms-`, `me-`, `ps-`, `start-`, `end-`); drawers slide from the inline start (`--ygg-inline-sign`).

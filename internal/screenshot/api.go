@@ -346,6 +346,26 @@ const screenshotMessages = `[
     "role": "assistant",
     "content": "Take the ridge above the reservoir. It is about 6 miles, stays in the trees for the first hour, and the viewpoint is usually quiet by late morning. Pack water; there is no faucet after the trailhead.",
     "created_at": "2026-09-24T15:01:20Z"
+  },
+  {
+    "id": "m3",
+    "conversation_id": "conv-local",
+    "role": "user",
+    "content": "Can you make it a loop, with a good place to stop for lunch?",
+    "created_at": "2026-09-24T15:03:00Z"
+  },
+  {
+    "id": "m4",
+    "conversation_id": "conv-local",
+    "role": "assistant",
+    "content": "Here is a loop that comes back past the creek:\n\n1. **Trailhead to the ridge**, 2.5 miles. The only steep part, through pines.\n2. **Ridge to the viewpoint**, 1 mile. Stop here for lunch: flat rocks, and shade after noon.\n3. **Down the creek trail**, 2.8 miles. An easy grade back to the car park.\n\nAbout **6.3 miles** and three and a half hours with lunch. Your notes say you prefer to start before 9, which keeps the climb in the shade.",
+    "meta": {
+      "sources": [
+        {"kind": "knowledge", "title": "Ridge and creek loop", "source": "Trail notes", "snippet": "Creek trail: 2.8 mi, gentle grade, rejoins the car park."},
+        {"kind": "memory", "title": "Hiking", "snippet": "Likes to start hikes before 9 am."}
+      ]
+    },
+    "created_at": "2026-09-24T15:03:30Z"
   }
 ]`
 
