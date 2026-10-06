@@ -115,7 +115,9 @@ type Dependencies struct {
 	Devices *auth.DevicePairer
 	// PhoneAddress is where a phone reaches this computer, and whether it
 	// can yet: false while the API answers only on this computer.
-	PhoneAddress           func() (address string, reachable bool)
+	PhoneAddress func() (address string, reachable bool)
+	// EnableLANForPhone turns on local network access so a phone can connect.
+	EnableLANForPhone      func(ctx context.Context) error
 	GetSettings            func(ctx context.Context) (contracts.SettingsView, error)
 	UpdateSettings         func(ctx context.Context, patch map[string]any) (contracts.SettingsView, error)
 	ResetApp               func(ctx context.Context, deleteModels bool) (contracts.SettingsView, error)

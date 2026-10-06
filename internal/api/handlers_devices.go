@@ -53,11 +53,22 @@ func (s *Server) pairingView(p auth.DevicePairing) pairingView {
 	return v
 }
 
-// handleStartDevicePairing shows a new code, replacing any other.
+// handleStartDevicePairing shows a new code, replacing any other. With
+// enable_lan it first turns on local network access, which a phone needs.
 func (s *Server) handleStartDevicePairing(w http.ResponseWriter, r *http.Request) {
 	if s.deps.Devices == nil {
 		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Connecting a phone isn't available.", nil)
 		return
+	}
+	var body struct {
+		EnableLAN bool `json:"enable_lan"`
+	}
+	_ = json.NewDecoder(io.LimitReader(r.Body, 1024)).Decode(&body)
+	if body.EnableLAN && s.deps.EnableLANForPhone != nil {
+		if err := s.deps.EnableLANForPhone(r.Context()); err != nil {
+			writeErrFrom(w, http.StatusInternalServerError, "LAN_ACCESS_FAILED", err)
+			return
+		}
 	}
 	p, err := s.deps.Devices.Start()
 	if err != nil {

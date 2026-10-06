@@ -119,5 +119,13 @@
     },
     "otherText": "地址：{{url}}\n命令：{{command}}",
     "otherHeader": "\n请求头：Authorization: Bearer {{key}}"
+  },
+  "phones": {
+    "title": "手机",
+    "description": "用代码连接的手机。每部都有自己的密钥，可以聊天和查看列表，但不能更改这台电脑。",
+    "none": "还没有手机。",
+    "meta": "连接于 {{connected}} · 上次使用 {{lastUsed}}",
+    "confirmDisconnect": "断开 {{name}}？再次连接需要新的代码。",
+    "disconnect": "断开"
   }
 }

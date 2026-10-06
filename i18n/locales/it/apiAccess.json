@@ -119,5 +119,13 @@
     },
     "otherText": "Indirizzo: {{url}}\nComando: {{command}}",
     "otherHeader": "\nIntestazione:  Authorization: Bearer {{key}}"
+  },
+  "phones": {
+    "title": "Telefoni",
+    "description": "Telefoni collegati con un codice. Ognuno ha la propria chiave, che può chattare e leggere elenchi ma non modificare questo computer.",
+    "none": "Ancora nessun telefono.",
+    "meta": "Collegato {{connected}} · Ultimo uso {{lastUsed}}",
+    "confirmDisconnect": "Scollegare {{name}}? Servirà un nuovo codice per ricollegarlo.",
+    "disconnect": "Scollega"
   }
 }

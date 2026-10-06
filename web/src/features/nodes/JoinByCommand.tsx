@@ -2,9 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { api, ApiError } from '@/lib/api'
-import { formatNumber, formatRelativeTime } from '@/i18n/format'
+import { formatRelativeTime } from '@/i18n/format'
 import type { JoinToken, JoinTokenCreated } from '@/types/api'
 import { rovingKeyDown } from '@/lib/roving'
+import { clock, useCountdown } from './countdown'
 
 type Kind = 'installed' | 'install' | 'windows'
 
@@ -18,22 +19,6 @@ function commandFor(created: JoinTokenCreated, kind: Kind): string {
       return created.windows_command
   }
   return created.command
-}
-
-/** The time left until a moment, as m:ss, ticking each second. */
-function useCountdown(until: string | undefined): number {
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    if (!until) return
-    const id = window.setInterval(() => setNow(Date.now()), 1000)
-    return () => window.clearInterval(id)
-  }, [until])
-  return until ? Math.max(0, new Date(until).getTime() - now) : 0
-}
-
-function clock(ms: number): string {
-  const s = Math.ceil(ms / 1000)
-  return `${formatNumber(Math.floor(s / 60))}:${String(s % 60).padStart(2, '0')}`
 }
 
 /**

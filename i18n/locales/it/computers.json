@@ -185,5 +185,32 @@
     "recent_one": "{{count}} comando recente",
     "recent_many": "{{count}} comandi recenti",
     "recent_other": "{{count}} comandi recenti"
+  },
+  "phone": {
+    "open": "Collega un telefono",
+    "title": "Collega un telefono",
+    "description": "Usa Toskar sul tuo iPhone, con i modelli e le chat di questo computer.",
+    "thisComputer": "questo computer",
+    "lanOff": "Il telefono raggiunge questo computer tramite la tua rete, quindi Toskar lascerà collegare i dispositivi della rete. Ognuno ha bisogno della propria chiave; le app su questo computer no.",
+    "show": "Mostra un codice",
+    "allowAndShow": "Consenti e mostra un codice",
+    "showing": "Creazione del codice…",
+    "getApp": "Non hai l'app? <store>Scarica Toskar per iPhone</store>.",
+    "connected": "{{name}} è collegato.",
+    "manage": "Puoi scollegarlo quando vuoi in <access>Accesso API</access>.",
+    "another": "Collega un altro telefono",
+    "codeLabel": "Codice {{code}}",
+    "steps": {
+      "open": "Apri <store>Toskar</store> sull'iPhone, sulla stessa rete Wi-Fi.",
+      "choose": "Scegli {{name}} in Su questa rete.",
+      "typeAddress": "Inserisci l'indirizzo di questo computer:",
+      "enter": "Inserisci questo codice."
+    },
+    "address": "Oppure inserisci questo indirizzo sul telefono:",
+    "unreachable": "L'accesso dalla rete locale è ancora disattivato, quindi il telefono non può ancora raggiungere questo computer.",
+    "newCode": "Mostra un nuovo codice",
+    "http": "Su HTTP semplice, altri su questa rete potrebbero vedere il codice e la chiave del telefono.",
+    "cancelled": "Il codice è stato annullato dopo troppi tentativi errati.",
+    "expired": "Il codice è scaduto."
   }
 }

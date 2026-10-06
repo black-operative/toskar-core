@@ -11,6 +11,7 @@ import type { APIKeyRecord } from '@/types/api'
 import { KeyPermissions } from './KeyPermissions'
 import { RealmKicker } from '@/components/ui/Realm'
 import { ShareWithApps } from './ShareWithApps'
+import { ConnectPhone } from '@/features/nodes/ConnectPhone'
 import { formatDate } from '@/i18n/format'
 
 type ProbeState = 'checking' | 'ok' | 'fail'
@@ -114,6 +115,7 @@ export function ApiAccessPage() {
   const [dialogKeyName, setDialogKeyName] = useState(() => t('lan.defaultKeyName'))
   const [docsOpen, setDocsOpen] = useState(false)
   const [showCreate, setShowCreate] = useState(false)
+  const [phoneOpen, setPhoneOpen] = useState(false)
 
   const settingsQuery = useQuery({
     queryKey: ['settings'],
@@ -206,7 +208,10 @@ export function ApiAccessPage() {
 
   const settings = settingsQuery.data
   const keys = keysQuery.data ?? []
-  const activeKeys = keys.filter((k) => !k.revoked)
+  const allActive = keys.filter((k) => !k.revoked)
+  // A phone's key from Connect a phone is listed under Phones (#216).
+  const phones = allActive.filter((k) => k.kind === 'device')
+  const activeKeys = allActive.filter((k) => k.kind !== 'device')
   const probe = probeQuery.data
   const probeState: ProbeState = probeQuery.isLoading
     ? 'checking'
@@ -387,7 +392,7 @@ export function ApiAccessPage() {
           />
         </div>
 
-        {lanEnabled && activeKeys.length === 0 && (
+        {lanEnabled && allActive.length === 0 && (
           <div className="rounded-lg border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-ink">
             {t('lan.noKeys')}
           </div>
@@ -395,6 +400,53 @@ export function ApiAccessPage() {
 
         {lanEnabled && (
           <p className="text-xs text-ink-faint">{t('lan.notes')}</p>
+        )}
+      </section>
+
+      {phoneOpen ? <ConnectPhone onClose={() => setPhoneOpen(false)} /> : null}
+
+      <section className="card space-y-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="section-title">{t('phones.title')}</h2>
+            <p className="mt-1 text-sm text-ink-muted">{t('phones.description')}</p>
+          </div>
+          {!phoneOpen && (
+            <button type="button" className="btn-primary btn-sm" onClick={() => setPhoneOpen(true)}>
+              {t('phone.open', { ns: 'computers' })}
+            </button>
+          )}
+        </div>
+        {phones.length === 0 && !keysQuery.isLoading ? (
+          <p className="text-sm text-ink-muted">{t('phones.none')}</p>
+        ) : (
+          <ul className="divide-y divide-line">
+            {phones.map((phone) => (
+              <li key={phone.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
+                <div className="min-w-0">
+                  <p className="font-medium text-ink">{phone.name}</p>
+                  <p className="mt-0.5 text-xs text-ink-muted">
+                    {t('phones.meta', {
+                      connected: formatDate(phone.created_at, { month: 'short', day: 'numeric' }),
+                      lastUsed: formatLastUsed(phone.last_used_at),
+                    })}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn-danger btn-sm"
+                  disabled={deleteKeyMutation.isPending}
+                  onClick={() => {
+                    if (window.confirm(t('phones.confirmDisconnect', { name: phone.name }))) {
+                      deleteKeyMutation.mutate(phone.id)
+                    }
+                  }}
+                >
+                  {t('phones.disconnect')}
+                </button>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 

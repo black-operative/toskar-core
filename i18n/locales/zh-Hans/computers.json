@@ -175,5 +175,32 @@
     },
     "usedBy": "由 {{name}} 使用",
     "recent_other": "最近的 {{count}} 条命令"
+  },
+  "phone": {
+    "open": "连接手机",
+    "title": "连接手机",
+    "description": "在 iPhone 上使用 Toskar，用的是这台电脑的模型和聊天。",
+    "thisComputer": "这台电脑",
+    "lanOff": "手机通过你的网络连接这台电脑，因此 Toskar 会允许你网络中的设备连接。每台设备需要自己的密钥；这台电脑上的应用不需要。",
+    "show": "显示代码",
+    "allowAndShow": "允许并显示代码",
+    "showing": "正在获取代码…",
+    "getApp": "还没有应用？<store>获取 iPhone 版 Toskar</store>。",
+    "connected": "{{name}} 已连接。",
+    "manage": "你可以随时在<access>API 访问</access>中断开它。",
+    "another": "连接另一部手机",
+    "codeLabel": "代码 {{code}}",
+    "steps": {
+      "open": "在连接同一 Wi-Fi 的 iPhone 上打开 <store>Toskar</store>。",
+      "choose": "在“在此网络中”下选择 {{name}}。",
+      "typeAddress": "输入这台电脑的地址：",
+      "enter": "输入此代码。"
+    },
+    "address": "或在手机上输入此地址：",
+    "unreachable": "本地网络访问仍处于关闭状态，手机暂时无法连接这台电脑。",
+    "newCode": "显示新代码",
+    "http": "通过普通 HTTP，此网络中的其他人可能看到代码和手机的密钥。",
+    "cancelled": "错误尝试过多，代码已取消。",
+    "expired": "代码已过期。"
   }
 }

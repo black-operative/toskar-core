@@ -667,6 +667,22 @@ export interface APIKeyRecord {
   revoked: boolean
   /** What the key may ask of the assistant (spec §62). */
   permissions?: APIKeyPermissions
+  /** "device" for a phone's key from Connect a phone (#216). */
+  kind?: string
+}
+
+/** A code a phone connects with (#216). */
+export interface DevicePairing {
+  /** The 6 digits; only when the code is made. */
+  code?: string
+  expires_at: string
+  state: '' | 'waiting' | 'connected' | 'expired' | 'cancelled'
+  /** The phone that connected with the code. */
+  device?: APIKeyRecord
+  /** Where a phone reaches this computer, such as 192.168.1.20:7331. */
+  address?: string
+  /** False while the API answers only on this computer. */
+  reachable: boolean
 }
 
 export interface APIKeyPermissions {

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo, useState, type MouseEvent } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import i18n from '@/i18n'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ApiError, api } from '@/lib/api'
@@ -11,6 +11,7 @@ import type { Model, Node, PairingSession } from '@/types/api'
 import { DeployModelsPanel } from './DeployModelsPanel'
 import { NetworkSettings } from './NetworkSettings'
 import { JoinByCommand } from './JoinByCommand'
+import { ConnectPhone } from './ConnectPhone'
 import { HowItWorks, stepIcons } from '@/components/ui/HowItWorks'
 import {
   availableForLabels,
@@ -366,6 +367,9 @@ export function NodesPage() {
   const [claimCodes, setClaimCodes] = useState<Record<string, string>>({})
   const [removingKey, setRemovingKey] = useState<string | null>(null)
   const [joinOpen, setJoinOpen] = useState(false)
+  // ?connect=phone opens Connect a phone, as API Access links it.
+  const [searchParams] = useSearchParams()
+  const [phoneOpen, setPhoneOpen] = useState(() => searchParams.get('connect') === 'phone')
 
   const nodesQuery = useQuery({
     queryKey: ['nodes'],
@@ -553,6 +557,9 @@ export function NodesPage() {
           <button type="button" className="btn-secondary" aria-expanded={joinOpen} onClick={() => setJoinOpen((v) => !v)}>
             {t('join.open')}
           </button>
+          <button type="button" className="btn-secondary" aria-expanded={phoneOpen} onClick={() => setPhoneOpen((v) => !v)}>
+            {t('phone.open')}
+          </button>
           <button
             type="button"
             className="btn-primary"
@@ -607,6 +614,7 @@ export function NodesPage() {
       ) : null}
 
       {joinOpen ? <JoinByCommand onClose={() => setJoinOpen(false)} /> : null}
+      {phoneOpen ? <ConnectPhone onClose={() => setPhoneOpen(false)} /> : null}
 
       {actionError && (
         <div className="rounded-lg bg-danger/10 px-4 py-3 text-sm text-danger">

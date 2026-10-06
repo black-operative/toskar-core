@@ -967,6 +967,15 @@ paths:
     post:
       summary: Show a 6-digit code a phone connects with, replacing any other
       operationId: startDevicePairing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enable_lan:
+                  type: boolean
+                  description: Turn on local network access first, which a phone needs
       responses:
         "201":
           description: The code, when it expires, this computer's address, and whether a phone can reach it yet

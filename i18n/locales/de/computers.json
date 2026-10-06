@@ -180,5 +180,32 @@
     "usedBy": "verwendet von {{name}}",
     "recent_one": "{{count}} letzter Befehl",
     "recent_other": "{{count}} letzte Befehle"
+  },
+  "phone": {
+    "open": "Telefon verbinden",
+    "title": "Telefon verbinden",
+    "description": "Nutze Toskar auf deinem iPhone, mit den Modellen und Chats dieses Computers.",
+    "thisComputer": "diesen Computer",
+    "lanOff": "Dein Telefon erreicht diesen Computer über dein Netzwerk, daher lässt Toskar Geräte in deinem Netzwerk zu. Jedes braucht einen eigenen Schlüssel, Apps auf diesem Computer nicht.",
+    "show": "Code anzeigen",
+    "allowAndShow": "Zulassen und Code anzeigen",
+    "showing": "Code wird erstellt…",
+    "getApp": "Noch keine App? <store>Hol dir Toskar für iPhone</store>.",
+    "connected": "{{name}} ist verbunden.",
+    "manage": "Du kannst es jederzeit im <access>API-Zugriff</access> trennen.",
+    "another": "Weiteres Telefon verbinden",
+    "codeLabel": "Code {{code}}",
+    "steps": {
+      "open": "Öffne <store>Toskar</store> auf deinem iPhone, im selben WLAN.",
+      "choose": "Wähle {{name}} unter „In diesem Netzwerk“.",
+      "typeAddress": "Gib die Adresse dieses Computers ein:",
+      "enter": "Gib diesen Code ein."
+    },
+    "address": "Oder gib diese Adresse auf dem Telefon ein:",
+    "unreachable": "Der Zugriff aus dem lokalen Netzwerk ist noch aus, daher erreicht das Telefon diesen Computer noch nicht.",
+    "newCode": "Neuen Code anzeigen",
+    "http": "Über einfaches HTTP könnten andere in diesem Netzwerk den Code und den Schlüssel des Telefons sehen.",
+    "cancelled": "Der Code wurde nach zu vielen falschen Versuchen ungültig.",
+    "expired": "Der Code ist abgelaufen."
   }
 }

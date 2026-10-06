@@ -180,5 +180,32 @@
     "usedBy": "used by {{name}}",
     "recent_one": "{{count}} recent command",
     "recent_other": "{{count}} recent commands"
+  },
+  "phone": {
+    "open": "Connect a phone",
+    "title": "Connect a phone",
+    "description": "Use Toskar on your iPhone, with this computer's models and chats.",
+    "thisComputer": "this computer",
+    "lanOff": "Your phone reaches this computer over your network, so Toskar will let devices on your network connect. Each needs its own key; apps on this computer don't.",
+    "show": "Show a code",
+    "allowAndShow": "Allow and show a code",
+    "showing": "Getting a code…",
+    "getApp": "Don't have the app? <store>Get Toskar for iPhone</store>.",
+    "connected": "{{name}} is connected.",
+    "manage": "You can disconnect it any time in <access>API Access</access>.",
+    "another": "Connect another phone",
+    "codeLabel": "Code {{code}}",
+    "steps": {
+      "open": "Open <store>Toskar</store> on your iPhone, on the same Wi-Fi.",
+      "choose": "Choose {{name}} under On this network.",
+      "typeAddress": "Enter this computer's address:",
+      "enter": "Enter this code."
+    },
+    "address": "Or enter this address on the phone:",
+    "unreachable": "Local network access is still off, so the phone can't reach this computer yet.",
+    "newCode": "Show a new code",
+    "http": "Over plain HTTP, others on this network could see the code and the phone's key.",
+    "cancelled": "The code was cancelled after too many wrong tries.",
+    "expired": "The code expired."
   }
 }

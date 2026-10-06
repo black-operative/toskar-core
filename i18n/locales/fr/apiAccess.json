@@ -119,5 +119,13 @@
     },
     "otherText": "Adresse : {{url}}\nCommande : {{command}}",
     "otherHeader": "\nEn-tête :  Authorization: Bearer {{key}}"
+  },
+  "phones": {
+    "title": "Téléphones",
+    "description": "Téléphones connectés avec un code. Chacun a sa propre clé, qui peut discuter et lire des listes, mais pas modifier cet ordinateur.",
+    "none": "Aucun téléphone pour l'instant.",
+    "meta": "Connecté {{connected}} · Dernière utilisation {{lastUsed}}",
+    "confirmDisconnect": "Déconnecter {{name}} ? Il lui faudra un nouveau code pour se reconnecter.",
+    "disconnect": "Déconnecter"
   }
 }

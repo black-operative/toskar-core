@@ -14,7 +14,7 @@ Create a key from the web UI or `POST /api/v1/api-keys`. The response includes t
 
 A phone gets its own key with a 6-digit code instead of a copied secret:
 
-1. **The computer shows a code.** Its own UI calls `POST /api/v1/devices/pairing`, which returns `code`, `expires_at` (10 minutes on), `address` (where a phone reaches this computer, such as `192.168.1.20:7331`), and `reachable` (false while the API answers only on this computer). A new code replaces the last one. `GET /api/v1/devices/pairing` returns the same without the code, plus `state` (`waiting`, `connected`, `expired`, or `cancelled`) and `device`, the key a phone connected with. `DELETE` stops showing the code.
+1. **The computer shows a code.** Its own UI calls `POST /api/v1/devices/pairing`, which returns `code`, `expires_at` (10 minutes on), `address` (where a phone reaches this computer, such as `192.168.1.20:7331`), and `reachable` (false while the API answers only on this computer). With `{"enable_lan": true}` it first turns on local network access, without the key that setting otherwise needs, since pairing makes the phone's key; if no phone or key ever uses it, the next start turns it off again instead of refusing to start. A new code replaces the last one. `GET /api/v1/devices/pairing` returns the same without the code, plus `state` (`waiting`, `connected`, `expired`, or `cancelled`) and `device`, the key a phone connected with. `DELETE` stops showing the code.
 2. **The phone sends it.** `POST /api/v1/devices/pair` with `{"code": "123456", "device_name": "Sam's iPhone"}` needs no key. It answers `201` with `api_key`, shown once, and `key`, its record, named after the phone, with `kind` `device`.
 
 Rules for the exchange:

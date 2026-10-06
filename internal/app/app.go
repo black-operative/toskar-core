@@ -616,6 +616,7 @@ func New(opts Options) (*App, error) {
 		VerifyAPIKey:         apiKeyMgr.Verify,
 		Devices:              &auth.DevicePairer{CreateKey: apiKeyMgr.CreateDevice},
 		PhoneAddress:         a.phoneAddress,
+		EnableLANForPhone:    a.enableLANForPhone,
 		StopChat:             a.StopChat,
 		Chat: func(w http.ResponseWriter, r *http.Request, conversationID, profileID, modelID, message string, stream bool, execution string) error {
 			return a.HandleHTTPChat(w, r, conversationID, profileID, modelID, message, stream, execution)
@@ -877,6 +878,16 @@ func (a *App) requireKeyForRemoteBind(ctx context.Context) error {
 		return err
 	}
 	if len(keys) == 0 {
+		// Turned on in the app, such as by Connect a phone, with no phone
+		// ever connecting: nothing could connect without a key, so go back
+		// to this computer only rather than refuse to start (#216). A host
+		// set in the environment, as in Docker, still needs a key.
+		if cfg.LANAPIEnabled && config.Env("API_HOST") == "" {
+			a.Logger.Warn("local network access turned off: no API key or phone can use it")
+			return a.Config.Update(func(c *config.Config) {
+				c.LANAPIEnabled, c.APIHost = false, config.DefaultBindLoopback
+			})
+		}
 		return fmt.Errorf("%w (api host %s)", auth.ErrAPIKeyRequired, cfg.APIHost)
 	}
 	return nil
@@ -915,10 +926,10 @@ func (a *App) Start(ctx context.Context) error {
 	a.keepRunRecordsTidy(ctx)
 	a.upgradeRuntimeBuilds(ctx)
 	_ = a.syncInternalBind()
-	cfg := a.Config.Get()
 	if err := a.requireKeyForRemoteBind(ctx); err != nil {
 		return err
 	}
+	cfg := a.Config.Get()
 	if err := a.enableBackgroundWhenScheduled(ctx); err != nil && a.Logger != nil {
 		a.Logger.Warn("could not keep the daemon running for schedules", "error", err)
 	}
@@ -1346,6 +1357,27 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 			a.discoveryNeedsRestart = false
 		}
 	}
+	return nil
+}
+
+// enableLANForPhone turns on local network access for Connect a phone
+// (#216), without the key the setting otherwise needs first: the phone's
+// key comes from pairing.
+func (a *App) enableLANForPhone(ctx context.Context) error {
+	before := a.Config.Get()
+	if config.ListensBeyondLoopback(before.APIHost) {
+		return nil
+	}
+	if err := a.Config.Update(func(c *config.Config) { c.LANAPIEnabled, c.APIHost = true, "0.0.0.0" }); err != nil {
+		return err
+	}
+	if a.API != nil && a.API.Addr() != "" {
+		if err := a.API.Rebind(a.Config.Get().APIAddr()); err != nil {
+			_ = a.Config.Update(func(c *config.Config) { c.LANAPIEnabled, c.APIHost = before.LANAPIEnabled, before.APIHost })
+			return fmt.Errorf("turn on local network access: %w", err)
+		}
+	}
+	a.restartAdvertiser()
 	return nil
 }
 

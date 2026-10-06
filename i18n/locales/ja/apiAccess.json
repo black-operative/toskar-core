@@ -119,5 +119,13 @@
     },
     "otherText": "アドレス：{{url}}\nコマンド：{{command}}",
     "otherHeader": "\nヘッダー：Authorization: Bearer {{key}}"
+  },
+  "phones": {
+    "title": "スマートフォン",
+    "description": "コードで接続したスマートフォンです。それぞれ専用のキーを持ち、チャットや一覧の閲覧はできますが、このコンピュータの設定は変更できません。",
+    "none": "まだスマートフォンはありません。",
+    "meta": "接続：{{connected}} · 最終使用：{{lastUsed}}",
+    "confirmDisconnect": "{{name}} の接続を解除しますか？もう一度接続するには新しいコードが必要です。",
+    "disconnect": "接続を解除"
   }
 }

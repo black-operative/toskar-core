@@ -3,6 +3,7 @@ import type {
   AIProfile,
   APIKeyPermissions,
   APIKeyRecord,
+  DevicePairing,
   BrowseModel,
   ChatRequest,
   ChatResponse,
@@ -657,6 +658,14 @@ export const api = {
 
   deleteApiKey: (id: string) =>
     request<null>(`/api/v1/api-keys/${id}`, { method: 'DELETE' }),
+
+  /** Shows a new code a phone connects with; enableLan turns on local network access first. */
+  startDevicePairing: (enableLan = false) =>
+    request<DevicePairing>('/api/v1/devices/pairing', { method: 'POST', body: JSON.stringify({ enable_lan: enableLan }) }),
+
+  getDevicePairing: () => request<DevicePairing>('/api/v1/devices/pairing'),
+
+  cancelDevicePairing: () => request<null>('/api/v1/devices/pairing', { method: 'DELETE' }),
 
   setApiKeyPermissions: (id: string, permissions: APIKeyPermissions) =>
     request<APIKeyRecord>(`/api/v1/api-keys/${id}/permissions`, { method: 'PUT', body: JSON.stringify(permissions) }),

@@ -146,5 +146,6 @@
   "PAIRING_NOT_STARTED": "Dieser Computer zeigt keinen Code. Wähle dort zuerst „Telefon verbinden“.",
   "PAIRING_THROTTLED": "Zu viele Versuche. Warte ein paar Minuten und versuche es dann erneut.",
   "PAIRING_WRONG_CODE": "Das ist nicht der Code, den der Computer zeigt. Prüfe ihn und versuche es erneut.",
-  "LAN_ACCESS_OFF": "Der Zugriff aus dem lokalen Netzwerk ist auf diesem Computer aus, daher antwortet er nur Apps auf ihm selbst."
+  "LAN_ACCESS_OFF": "Der Zugriff aus dem lokalen Netzwerk ist auf diesem Computer aus, daher antwortet er nur Apps auf ihm selbst.",
+  "LAN_ACCESS_FAILED": "Der Zugriff aus dem lokalen Netzwerk konnte nicht eingeschaltet werden."
 }

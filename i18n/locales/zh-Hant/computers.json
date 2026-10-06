@@ -175,5 +175,32 @@
     },
     "usedBy": "由 {{name}} 使用",
     "recent_other": "最近的 {{count}} 個指令"
+  },
+  "phone": {
+    "open": "連接手機",
+    "title": "連接手機",
+    "description": "在 iPhone 上使用 Toskar，用的是這台電腦的模型和聊天。",
+    "thisComputer": "這台電腦",
+    "lanOff": "手機透過你的網路連到這台電腦，因此 Toskar 會允許你網路中的裝置連線。每台裝置需要自己的金鑰；這台電腦上的應用程式不需要。",
+    "show": "顯示代碼",
+    "allowAndShow": "允許並顯示代碼",
+    "showing": "正在取得代碼…",
+    "getApp": "還沒有 App？<store>取得 iPhone 版 Toskar</store>。",
+    "connected": "{{name}} 已連接。",
+    "manage": "你可以隨時在<access>API 存取</access>中中斷連線。",
+    "another": "連接另一支手機",
+    "codeLabel": "代碼 {{code}}",
+    "steps": {
+      "open": "在連到同一個 Wi-Fi 的 iPhone 上打開 <store>Toskar</store>。",
+      "choose": "在「在這個網路上」下選擇 {{name}}。",
+      "typeAddress": "輸入這台電腦的位址：",
+      "enter": "輸入這個代碼。"
+    },
+    "address": "或在手機上輸入這個位址：",
+    "unreachable": "本地網路存取仍是關閉的，手機暫時無法連到這台電腦。",
+    "newCode": "顯示新代碼",
+    "http": "透過一般 HTTP，這個網路中的其他人可能看到代碼和手機的金鑰。",
+    "cancelled": "錯誤嘗試過多，代碼已取消。",
+    "expired": "代碼已過期。"
   }
 }

@@ -146,5 +146,6 @@
   "PAIRING_NOT_STARTED": "那台电脑没有显示代码。请先在那台电脑上选择“连接手机”。",
   "PAIRING_THROTTLED": "尝试次数过多。请等几分钟后再试。",
   "PAIRING_WRONG_CODE": "这不是电脑上显示的代码。请检查后再试。",
-  "LAN_ACCESS_OFF": "这台电脑关闭了本地网络访问，因此只响应这台电脑上的应用。"
+  "LAN_ACCESS_OFF": "这台电脑关闭了本地网络访问，因此只响应这台电脑上的应用。",
+  "LAN_ACCESS_FAILED": "无法开启本地网络访问。"
 }

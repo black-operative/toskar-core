@@ -185,5 +185,32 @@
     "recent_one": "{{count}} commande récente",
     "recent_many": "{{count}} commandes récentes",
     "recent_other": "{{count}} commandes récentes"
+  },
+  "phone": {
+    "open": "Connecter un téléphone",
+    "title": "Connecter un téléphone",
+    "description": "Utilisez Toskar sur votre iPhone, avec les modèles et les discussions de cet ordinateur.",
+    "thisComputer": "cet ordinateur",
+    "lanOff": "Votre téléphone joint cet ordinateur par votre réseau ; Toskar laissera donc les appareils de votre réseau se connecter. Chacun a besoin de sa propre clé ; les apps de cet ordinateur, non.",
+    "show": "Afficher un code",
+    "allowAndShow": "Autoriser et afficher un code",
+    "showing": "Obtention d'un code…",
+    "getApp": "Vous n'avez pas l'app ? <store>Téléchargez Toskar pour iPhone</store>.",
+    "connected": "{{name}} est connecté.",
+    "manage": "Vous pouvez le déconnecter à tout moment dans <access>Accès API</access>.",
+    "another": "Connecter un autre téléphone",
+    "codeLabel": "Code {{code}}",
+    "steps": {
+      "open": "Ouvrez <store>Toskar</store> sur votre iPhone, sur le même Wi-Fi.",
+      "choose": "Choisissez {{name}} sous Sur ce réseau.",
+      "typeAddress": "Saisissez l'adresse de cet ordinateur :",
+      "enter": "Saisissez ce code."
+    },
+    "address": "Ou saisissez cette adresse sur le téléphone :",
+    "unreachable": "L'accès depuis le réseau local est encore désactivé : le téléphone ne peut pas encore joindre cet ordinateur.",
+    "newCode": "Afficher un nouveau code",
+    "http": "En HTTP simple, d'autres personnes sur ce réseau pourraient voir le code et la clé du téléphone.",
+    "cancelled": "Le code a été annulé après trop d'essais erronés.",
+    "expired": "Le code a expiré."
   }
 }

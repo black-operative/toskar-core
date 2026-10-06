@@ -122,3 +122,56 @@ func freePort(t *testing.T) int {
 	defer ln.Close()
 	return ln.Addr().(*net.TCPAddr).Port
 }
+
+// Network access turned on in the app with no key or phone ever using it
+// goes back to this computer only at the next start, instead of refusing to
+// start (#216).
+func TestStartTurnsOffUnusedLANAccess(t *testing.T) {
+	for _, prefix := range []string{"YGGDRASIL_", "TOSKAR_"} {
+		t.Setenv(prefix+"API_HOST", "")
+	}
+	t.Setenv("YGGDRASIL_API_PORT", strconv.Itoa(freePort(t)))
+	t.Setenv("YGGDRASIL_INTERNAL_HOST", "127.0.0.1")
+	t.Setenv("YGGDRASIL_INTERNAL_PORT", strconv.Itoa(freePort(t)))
+	t.Setenv("YGGDRASIL_DISCOVERY_ENABLED", "false")
+	application, err := New(Options{DataDir: t.TempDir()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := application.Config.Update(func(c *config.Config) { c.LANAPIEnabled, c.APIHost = true, "0.0.0.0" }); err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	errCh := make(chan error, 1)
+	go func() { errCh <- application.Start(ctx) }()
+	t.Cleanup(func() {
+		cancel()
+		_ = application.Shutdown(context.Background())
+	})
+	deadline := time.Now().Add(10 * time.Second)
+	for application.API.Addr() == "" && time.Now().Before(deadline) {
+		select {
+		case err := <-errCh:
+			t.Fatalf("start: %v", err)
+		case <-time.After(20 * time.Millisecond):
+		}
+	}
+	cfg := application.Config.Get()
+	if cfg.LANAPIEnabled || config.ListensBeyondLoopback(cfg.APIHost) {
+		t.Fatalf("config = lan %v host %q", cfg.LANAPIEnabled, cfg.APIHost)
+	}
+	if host, _, _ := net.SplitHostPort(application.API.Addr()); host != "127.0.0.1" {
+		t.Fatalf("listening on %s", application.API.Addr())
+	}
+
+	// Connect a phone turns it on again, with no key yet, at once.
+	if err := application.enableLANForPhone(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	if host, _, _ := net.SplitHostPort(application.API.Addr()); host != "0.0.0.0" && host != "::" {
+		t.Fatalf("after enabling, listening on %s", application.API.Addr())
+	}
+	if !application.Config.Get().LANAPIEnabled {
+		t.Fatal("the setting didn't change")
+	}
+}
