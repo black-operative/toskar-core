@@ -84,7 +84,11 @@
     "loading": "Carregando atividade…",
     "emptyTitle": "Nenhuma atividade ainda",
     "emptyDescription": "Envie algumas mensagens no chat. Rodadas que usam mais de um computador são marcadas como execuções em equipe.",
-    "noMatches": "Nenhuma execução corresponde a esses filtros."
+    "noMatches": "Nenhuma execução corresponde a esses filtros.",
+    "filterHardware": "Filtrar por GPU ou CPU",
+    "hardware": "GPU ou CPU",
+    "onGPU": "Na GPU",
+    "onCPU": "Na CPU"
   },
   "benchmark": {
     "fastest": "Mais rápido",
@@ -149,5 +153,11 @@
     "power": "Consumo",
     "busyChart": "Uso de {{name}} na última hora",
     "cpuChart": "CPU na última hora"
+  },
+  "ranOn": {
+    "label": "Rodou em",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

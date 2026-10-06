@@ -84,7 +84,11 @@
     "loading": "Chargement de l'activité…",
     "emptyTitle": "Aucune activité pour l'instant",
     "emptyDescription": "Envoyez quelques messages dans une discussion. Les tours d'équipe qui utilisent plusieurs ordinateurs sont signalés comme exécutions en équipe.",
-    "noMatches": "Aucune exécution ne correspond à ces filtres."
+    "noMatches": "Aucune exécution ne correspond à ces filtres.",
+    "filterHardware": "Filtrer par GPU ou processeur",
+    "hardware": "GPU ou processeur",
+    "onGPU": "Sur le GPU",
+    "onCPU": "Sur le processeur"
   },
   "benchmark": {
     "fastest": "Le plus rapide",
@@ -149,5 +153,11 @@
     "power": "Consommation",
     "busyChart": "Utilisation de {{name}} sur la dernière heure",
     "cpuChart": "Processeur sur la dernière heure"
+  },
+  "ranOn": {
+    "label": "Exécuté sur",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

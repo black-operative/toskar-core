@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import i18n from '@/i18n'
+import { RanOnTag } from './RanOnTag'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { api } from '@/lib/api'
 import { useUIStore } from '@/stores/uiStore'
@@ -113,6 +114,12 @@ function VisualBars({
       })}
     </ul>
   )
+}
+
+/** Where a model's benchmark ran, from its first sample that says (#317). */
+function ranOnFor(job: BenchmarkJob, modelId: string): { backend?: string; device?: string } {
+  const sample = (job.samples ?? []).find((s) => s.model_id === modelId && s.backend)
+  return { backend: sample?.backend, device: sample?.device }
 }
 
 function BenchmarkResults({
@@ -258,6 +265,7 @@ function BenchmarkResults({
                       <thead>
                         <tr className="border-b border-line text-ink-muted">
                           <th className="px-3 py-2 font-medium">{t('benchmark.model')}</th>
+                          <th className="px-3 py-2 font-medium">{t('ranOn.label')}</th>
                           <th className="px-3 py-2 text-end font-medium">
                             {labels.speed}
                           </th>
@@ -280,6 +288,9 @@ function BenchmarkResults({
                           <tr key={`${row.model_id}-${row.workload_id}`}>
                             <td className="px-3 py-2.5 text-ink">
                               {modelDisplayName(models, row.model_id)}
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <RanOnTag {...ranOnFor(job, row.model_id)} />
                             </td>
                             <td className="px-3 py-2.5 text-end tabular-nums">
                               {formatRate(row.avg_eval_tok_per_sec)}

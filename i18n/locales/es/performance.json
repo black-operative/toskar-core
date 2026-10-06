@@ -84,7 +84,11 @@
     "loading": "Cargando la actividad…",
     "emptyTitle": "Todavía no hay actividad",
     "emptyDescription": "Envía algunos mensajes en el chat. Los turnos en equipo que usan más de una computadora se marcan como ejecuciones en equipo.",
-    "noMatches": "Ninguna ejecución coincide con estos filtros."
+    "noMatches": "Ninguna ejecución coincide con estos filtros.",
+    "filterHardware": "Filtrar por GPU o CPU",
+    "hardware": "GPU o CPU",
+    "onGPU": "En la GPU",
+    "onCPU": "En la CPU"
   },
   "benchmark": {
     "fastest": "Más rápido",
@@ -149,5 +153,11 @@
     "power": "Consumo",
     "busyChart": "Uso de {{name}} en la última hora",
     "cpuChart": "CPU en la última hora"
+  },
+  "ranOn": {
+    "label": "Se ejecutó en",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

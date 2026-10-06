@@ -14,11 +14,13 @@ import {
   metricLabels,
   modelDisplayName,
   nodeRoute,
+  ranOnDetail,
   routeLabel,
   stepMetricRows,
 } from './performanceFormat'
 import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { RanOnTag } from './RanOnTag'
 
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
@@ -70,7 +72,10 @@ function ActivityRow({
             )}
           </div>
           <p className="text-xs text-ink-faint">{formatWhen(run.created_at)}</p>
-          <p className="text-sm text-ink">{modelName}</p>
+          <p className="flex flex-wrap items-center gap-2 text-sm text-ink">
+            {modelName}
+            <RanOnTag backend={run.backend} device={run.device} />
+          </p>
           <p className="text-sm text-ink-muted">
             {route.length > 1 ? (
               <span className="inline-flex flex-wrap items-center gap-1">
@@ -116,6 +121,12 @@ function ActivityRow({
               <dt className="text-ink-muted">{labels.total}</dt>
               <dd className="tabular-nums text-ink">{formatMs(run.total_ms)}</dd>
             </div>
+            {run.backend ? (
+              <div className="flex justify-between gap-2 text-sm">
+                <dt className="text-ink-muted">{t('ranOn.label')}</dt>
+                <dd className="min-w-0 text-end text-ink">{ranOnDetail(run.backend, run.device, t)}</dd>
+              </div>
+            ) : null}
             {advanced && (
               <>
                 <div className="flex justify-between gap-2 text-sm">
@@ -182,6 +193,7 @@ export function ActivityPanel() {
   const [filterModel, setFilterModel] = useState('')
   const [filterProfile, setFilterProfile] = useState('')
   const [filterDate, setFilterDate] = useState('')
+  const [filterHardware, setFilterHardware] = useState<'' | 'gpu' | 'cpu'>('')
 
   const performanceQuery = useQuery({
     queryKey: ['performance', 'activity'],
@@ -235,9 +247,16 @@ export function ActivityPanel() {
         const day = r.created_at?.slice(0, 10)
         if (day !== filterDate) return false
       }
+      if (filterHardware) {
+        if (!r.backend) return false
+        if ((r.backend !== 'cpu') !== (filterHardware === 'gpu')) return false
+      }
       return true
     })
-  }, [runs, filterComputer, filterModel, filterProfile, filterDate])
+  }, [runs, filterComputer, filterModel, filterProfile, filterDate, filterHardware])
+
+  // Only replies recorded since Toskar noted the device have one to filter by.
+  const anyRanOn = runs.some((r) => r.backend)
 
   const summary = useMemo(() => {
     if (filtered.length === 0) return null
@@ -317,6 +336,18 @@ export function ActivityPanel() {
               </option>
             ))}
           </select>
+          {anyRanOn ? (
+            <select
+              className="field py-1.5 text-xs"
+              value={filterHardware}
+              onChange={(e) => setFilterHardware(e.target.value as '' | 'gpu' | 'cpu')}
+              aria-label={t('activity.filterHardware')}
+            >
+              <option value="">{t('activity.hardware')}</option>
+              <option value="gpu">{t('activity.onGPU')}</option>
+              <option value="cpu">{t('activity.onCPU')}</option>
+            </select>
+          ) : null}
           <input
             type="date"
             className="field py-1.5 text-xs"

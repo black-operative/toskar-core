@@ -123,3 +123,9 @@ export function stepMetricRows(step: GenerationRoleStep, advanced: boolean) {
     },
   ]
 }
+
+/** "Vulkan · AMD Radeon RX 7900 XTX", or "CPU". */
+export function ranOnDetail(backend: string, device: string | undefined, t: (key: string, options?: Record<string, unknown>) => string): string {
+  const name = t(`common:acceleration.backend.${backend}`, { defaultValue: backend })
+  return device ? t('ranOn.detail', { backend: name, device }) : name
+}

@@ -84,7 +84,11 @@
     "loading": "Caricamento dell'attività…",
     "emptyTitle": "Ancora nessuna attività",
     "emptyDescription": "Invia qualche messaggio in chat. I turni di team che usano più di un computer vengono etichettati come esecuzioni di team.",
-    "noMatches": "Nessuna esecuzione corrisponde a questi filtri."
+    "noMatches": "Nessuna esecuzione corrisponde a questi filtri.",
+    "filterHardware": "Filtra per GPU o CPU",
+    "hardware": "GPU o CPU",
+    "onGPU": "Sulla GPU",
+    "onCPU": "Sulla CPU"
   },
   "benchmark": {
     "fastest": "Il più veloce",
@@ -149,5 +153,11 @@
     "power": "Consumo",
     "busyChart": "Utilizzo di {{name}} nell'ultima ora",
     "cpuChart": "CPU nell'ultima ora"
+  },
+  "ranOn": {
+    "label": "Eseguito su",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

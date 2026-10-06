@@ -416,7 +416,9 @@ const screenshotPerformance = `[{
   "eval_tok_per_sec": 61.8,
   "cross_machine": false,
   "node_count": 1,
-  "created_at": "2026-09-24T15:01:20Z"
+  "created_at": "2026-09-24T15:01:20Z",
+  "backend": "metal",
+  "device": "Apple M4 Pro"
 }]`
 
 const screenshotAutomations = `[

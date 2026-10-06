@@ -78,7 +78,11 @@
     "loading": "활동을 불러오는 중…",
     "emptyTitle": "아직 활동이 없어요",
     "emptyDescription": "채팅 메시지를 몇 개 보내 보세요. 두 대 이상의 컴퓨터를 사용한 팀 턴은 팀 실행으로 표시돼요.",
-    "noMatches": "이 필터와 일치하는 실행이 없어요."
+    "noMatches": "이 필터와 일치하는 실행이 없어요.",
+    "filterHardware": "GPU 또는 CPU로 필터",
+    "hardware": "GPU 또는 CPU",
+    "onGPU": "GPU에서 실행",
+    "onCPU": "CPU에서 실행"
   },
   "benchmark": {
     "fastest": "가장 빠름",
@@ -133,5 +137,11 @@
     "power": "전력",
     "busyChart": "지난 1시간 동안 {{name}} 사용률",
     "cpuChart": "지난 1시간 동안 CPU"
+  },
+  "ranOn": {
+    "label": "실행 위치",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

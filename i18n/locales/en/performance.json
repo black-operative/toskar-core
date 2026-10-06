@@ -81,7 +81,11 @@
     "loading": "Loading activity…",
     "emptyTitle": "No activity yet",
     "emptyDescription": "Send a few chat messages. Team turns that use more than one computer are labeled as team runs.",
-    "noMatches": "No runs match these filters."
+    "noMatches": "No runs match these filters.",
+    "filterHardware": "Filter by GPU or CPU",
+    "hardware": "GPU or CPU",
+    "onGPU": "On the GPU",
+    "onCPU": "On the CPU"
   },
   "benchmark": {
     "fastest": "Fastest",
@@ -141,5 +145,11 @@
     "power": "Power",
     "busyChart": "{{name}} busy over the last hour",
     "cpuChart": "CPU over the last hour"
+  },
+  "ranOn": {
+    "label": "Ran on",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

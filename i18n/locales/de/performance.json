@@ -81,7 +81,11 @@
     "loading": "Aktivität wird geladen …",
     "emptyTitle": "Noch keine Aktivität",
     "emptyDescription": "Sende ein paar Chatnachrichten. Teamschritte, die mehr als einen Computer nutzen, werden als Teamdurchläufe gekennzeichnet.",
-    "noMatches": "Keine Durchläufe passen zu diesen Filtern."
+    "noMatches": "Keine Durchläufe passen zu diesen Filtern.",
+    "filterHardware": "Nach GPU oder CPU filtern",
+    "hardware": "GPU oder CPU",
+    "onGPU": "Auf der GPU",
+    "onCPU": "Auf der CPU"
   },
   "benchmark": {
     "fastest": "Am schnellsten",
@@ -141,5 +145,11 @@
     "power": "Leistung",
     "busyChart": "Auslastung von {{name}} in der letzten Stunde",
     "cpuChart": "CPU in der letzten Stunde"
+  },
+  "ranOn": {
+    "label": "Lief auf",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

@@ -246,6 +246,22 @@
       ]
     },
     {
+      "id": "gpu",
+      "title": "Is my model using the GPU?",
+      "paragraphs": [
+        "Each running model shows where it runs, on Models › Running and on the Performance overview. Toskar reads this from llama.cpp when it loads the model, so it shows what actually happened, not what the hardware could do.",
+        "GPU (green) means the whole model is on the graphics card. Partly on GPU (amber) means it doesn't fit in the GPU's memory, so some of it runs on the slower CPU; a smaller model, or a smaller version of the same one, fits completely. CPU only (red) means this computer has a GPU that isn't being used. CPU (grey) means the computer has no GPU Toskar can use, which is expected.",
+        "Select the status to see the device, how many of the model's layers are on the GPU, and the GPU memory it uses. When a model isn't fully on the GPU, it also says why and what to do. Diagnostics has a GPU acceleration row with the same states.",
+        "The Performance overview shows each computer's live CPU and memory, and each graphics card's use, video memory, temperature, and power, with the last hour as a line. A Mac doesn't report GPU temperature or power without administrator rights, and Windows reports them only for NVIDIA cards, so those figures are left out there rather than shown as zero. Activity marks each reply GPU or CPU and can filter by it."
+      ],
+      "steps": [
+        "If a model shows CPU only, open Diagnostics and read the reason under GPU acceleration.",
+        "If the installed llama.cpp runs on the CPU only, stop your models, then quit and reopen Toskar. It installs the GPU build when no model is running.",
+        "If llama.cpp couldn't use the GPU, install or update the graphics driver. On Linux with an AMD or Intel card, also install the Vulkan drivers (on Ubuntu and Debian, mesa-vulkan-drivers and libvulkan1).",
+        "Start the model again and check its status."
+      ]
+    },
+    {
       "id": "troubleshooting",
       "title": "Troubleshooting",
       "paragraphs": [

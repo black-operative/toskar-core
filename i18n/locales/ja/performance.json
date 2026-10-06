@@ -78,7 +78,11 @@
     "loading": "アクティビティを読み込んでいます…",
     "emptyTitle": "まだアクティビティはありません",
     "emptyDescription": "チャットでメッセージをいくつか送ってみてください。複数のコンピュータを使ったターンはチーム実行として表示されます。",
-    "noMatches": "この条件に一致する実行はありません。"
+    "noMatches": "この条件に一致する実行はありません。",
+    "filterHardware": "GPUかCPUで絞り込む",
+    "hardware": "GPUまたはCPU",
+    "onGPU": "GPUで実行",
+    "onCPU": "CPUで実行"
   },
   "benchmark": {
     "fastest": "最速",
@@ -133,5 +137,11 @@
     "power": "消費電力",
     "busyChart": "過去1時間の{{name}}の使用率",
     "cpuChart": "過去1時間のCPU"
+  },
+  "ranOn": {
+    "label": "実行場所",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }

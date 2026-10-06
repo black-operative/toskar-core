@@ -78,7 +78,11 @@
     "loading": "正在加载活动…",
     "emptyTitle": "暂无活动",
     "emptyDescription": "发送几条聊天消息。使用多台电脑的团队轮次会被标记为团队运行。",
-    "noMatches": "没有符合这些筛选条件的运行。"
+    "noMatches": "没有符合这些筛选条件的运行。",
+    "filterHardware": "按 GPU 或 CPU 筛选",
+    "hardware": "GPU 或 CPU",
+    "onGPU": "在 GPU 上",
+    "onCPU": "在 CPU 上"
   },
   "benchmark": {
     "fastest": "最快",
@@ -133,5 +137,11 @@
     "power": "功耗",
     "busyChart": "过去一小时 {{name}} 的使用率",
     "cpuChart": "过去一小时的 CPU"
+  },
+  "ranOn": {
+    "label": "运行于",
+    "gpu": "GPU",
+    "cpu": "CPU",
+    "detail": "{{backend}} · {{device}}"
   }
 }
