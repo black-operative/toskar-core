@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     timeout-minutes: 150
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
           go-version: "1.26.x"
@@ -47,7 +47,7 @@ jobs:
     needs: quality
     runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Save the release guide
         run: cp docs/user-guide/guide.json /tmp/guide.json
       - uses: actions/setup-go@v7

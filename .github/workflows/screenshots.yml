@@ -31,7 +31,7 @@ jobs:
   screenshots:
     runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Capture the release's own interface, not whatever main has now.
           ref: ${{ inputs.tag || github.ref }}

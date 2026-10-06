@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ fromJSON(vars.TRUSTED_RUNS_ON || '"ubuntu-latest"') }}
     timeout-minutes: 150
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref || github.ref }}
       - uses: actions/setup-go@v7
@@ -101,7 +101,7 @@ jobs:
           docker ps -aq --filter name=toskar-quality- | xargs -r docker rm -f
           docker network ls -q --filter name=toskar-quality- | xargs -r docker network rm
           docker images -q --filter reference='toskar-quality-*' | xargs -r docker image rm -f
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
