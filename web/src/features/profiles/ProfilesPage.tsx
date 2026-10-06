@@ -4,11 +4,13 @@ import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 're
 import { Trans, useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { Toggle } from '@/components/ui/Toggle'
 import { api } from '@/lib/api'
 import { blankProfileTemplate, profileTemplateFromPurpose } from '@/lib/profilePresets'
 import { useUIStore } from '@/stores/uiStore'
 import type { AIProfile, ModelRole, NodePolicy, OrchestrationPolicy, ToolPolicy } from '@/types/api'
 import { KnowledgePicker } from '@/features/knowledge/KnowledgePicker'
+import { TOOL_CATALOG, defaultToolsFrom } from './editorTools'
 import { CAPABILITIES, capabilityDescription, capabilityEnabled, capabilityLabel, setCapability } from './capabilities'
 import {
   computerSelectionLabel,
@@ -39,33 +41,8 @@ import { rovingKeyDown, useMenu } from '@/lib/roving'
 import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
 
-// The tools a profile can set one by one; each name and description is profiles:tools.<tool id> in the catalog.
-const TOOL_CATALOG: string[] = [
-  'internet.search',
-  'internet.open',
-  'filesystem.search',
-  'filesystem.read',
-  'filesystem.write',
-  'terminal',
-  'git.status',
-  'git.diff',
-  'git.log',
-  'git.show',
-  'git.add',
-  'git.commit',
-  'git.push',
-]
-
 // The permission choices; each is profiles:policies.<policy> in the catalog.
 const POLICY_OPTIONS: ToolPolicy['policy'][] = ['deny', 'ask', 'allow-for-session', 'allow']
-
-function defaultToolsFrom(profile: AIProfile): ToolPolicy[] {
-  const existing = new Map((profile.tools ?? []).map((t) => [t.tool_id, t.policy]))
-  return TOOL_CATALOG.map((id) => ({
-    tool_id: id,
-    policy: existing.get(id) ?? 'allow',
-  }))
-}
 
 function PurposeGlyph({ purpose }: { purpose: string }) {
   const kind = purposeIcon(purpose)
@@ -322,7 +299,7 @@ export function ProfilesPage() {
       )}
 
       {allProfiles.length > 0 && (
-        <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('page.filter')} onKeyDown={rovingKeyDown}>
+        <div className="segmented" role="tablist" aria-label={t('page.filter')} onKeyDown={rovingKeyDown}>
           {(
             [
               { id: 'all', label: t('page.filters.all') },
@@ -336,12 +313,7 @@ export function ProfilesPage() {
               role="tab"
               aria-selected={filter === tab.id}
               tabIndex={filter === tab.id ? 0 : -1}
-              className={[
-                'rounded-lg px-3 py-1.5 text-xs font-medium transition',
-                filter === tab.id
-                  ? 'bg-primary-soft text-primary-active'
-                  : 'text-ink-muted hover:bg-raised hover:text-ink',
-              ].join(' ')}
+              className="segmented-item"
               onClick={() => setFilter(tab.id)}
             >
               {tab.label}
@@ -392,6 +364,8 @@ export function ProfilesPage() {
                 className={[
                   'card space-y-3 transition',
                   purposeAccentClass(profile.purpose),
+                  // The editor needs the room: it takes the whole row.
+                  isEditing ? 'lg:col-span-2' : '',
                 ].join(' ')}
               >
                 <div className="flex items-start gap-3">
@@ -489,7 +463,7 @@ export function ProfilesPage() {
                         {roleDisplayName(roles[0]?.role ?? 'assistant')}
                       </p>
                     )}
-                    {showDetails && (
+                    {showDetails && !isEditing && (
                       <ul className="mt-2 space-y-1.5">
                         {roles.map((r) => (
                           <li key={r.role} className="rounded-lg bg-raised/70 px-2.5 py-1.5">
@@ -507,14 +481,15 @@ export function ProfilesPage() {
                 <div className="flex flex-wrap items-center gap-2 pt-1">
                   <button
                     type="button"
-                    className="btn-primary px-3 py-1.5 text-xs"
+                    className="btn-primary btn-sm"
                     onClick={() => openProfileInChat(profile.id)}
                   >
                     {t('card.useInChat')}
                   </button>
                   <button
                     type="button"
-                    className="btn-secondary px-3 py-1.5 text-xs"
+                    className="btn-secondary btn-sm"
+                    aria-expanded={advancedMode ? isEditing : showDetails}
                     onClick={() => {
                       if (advancedMode) {
                         setEditingId(isEditing ? null : profile.id)
@@ -536,19 +511,24 @@ export function ProfilesPage() {
                   <div className="relative ms-auto">
                     <button
                       type="button"
-                      className="rounded-md px-2 py-1.5 text-xs text-ink-faint hover:bg-raised hover:text-ink"
+                      className="icon-button"
                       aria-label={t('card.moreActions', { name: profile.name })}
+                      aria-haspopup="menu"
                       aria-expanded={menuOpenId === profile.id}
                       onClick={(e: MouseEvent) => {
                         e.stopPropagation()
                         setMenuOpenId((id) => (id === profile.id ? null : profile.id))
                       }}
                     >
-                      ···
+                      <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor" aria-hidden>
+                        <circle cx="3.5" cy="8" r="1.2" />
+                        <circle cx="8" cy="8" r="1.2" />
+                        <circle cx="12.5" cy="8" r="1.2" />
+                      </svg>
                     </button>
                     {menuOpenId === profile.id && (
                       <div
-                        className="absolute end-0 top-full z-20 mt-1 min-w-[9.5rem] rounded-lg border border-line bg-surface py-1 shadow-panel"
+                        className="menu min-w-[9.5rem]"
                         ref={menuRef}
                         role="menu"
                         onKeyDown={rovingKeyDown}
@@ -685,10 +665,7 @@ function MenuItem({
       type="button"
       role="menuitem"
       disabled={disabled}
-      className={[
-        'block w-full px-3 py-1.5 text-start text-sm hover:bg-raised disabled:opacity-50',
-        danger ? 'text-danger hover:bg-danger/10' : 'text-ink',
-      ].join(' ')}
+      className={['menu-item disabled:opacity-50', danger ? 'menu-item-danger' : ''].join(' ')}
       onClick={onClick}
     >
       {children}
@@ -754,242 +731,269 @@ function AdvancedEditor({
   }
 
   const nodeHint = computerSelectionLabel(nodeMode).detail
+  const [tab, setTab] = useState<EditorTab>('models')
+  const [allRoles, setAllRoles] = useState(false)
+  // The roles in use (the primary one, and any with a model or a computer);
+  // the rest wait behind "Show all roles" so a simple profile stays short.
+  const inUse = (r: ModelRole) => r.role === 'assistant' || Boolean(r.model_id) || Boolean(r.node_id)
+  const hiddenRoles = roles.filter((r) => !inUse(r)).length
+  const tabID = (id: EditorTab) => `profile-${profile.id}-tab-${id}`
+  const panelID = (id: EditorTab) => `profile-${profile.id}-panel-${id}`
 
   return (
     <div className="space-y-5 border-t border-line pt-4">
-      <section className="space-y-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t('editor.profile')}</h3>
-        <label className="block text-xs text-ink-muted">
-          {t('editor.name')}
-          <input
-            className="field mt-1 w-full py-1.5 text-sm"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder={t('editor.namePlaceholder')}
-          />
-        </label>
-      </section>
+      <label className="block max-w-md text-sm text-ink-muted">
+        {t('editor.name')}
+        <input
+          className="field mt-1 w-full"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder={t('editor.namePlaceholder')}
+        />
+      </label>
 
-      <section className="space-y-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t('editor.models')}</h3>
-        <p className="text-xs text-ink-muted">{t('editor.modelsHint')}</p>
-        {roles.map((role, index) => (
-          <div
-            key={`${profile.id}-${role.role}-${index}`}
-            className="space-y-2 rounded-lg bg-raised px-3 py-3"
+      <div className="segmented" role="tablist" aria-label={t('editor.tabs.label')} onKeyDown={rovingKeyDown}>
+        {EDITOR_TABS.map((id) => (
+          <button
+            key={id}
+            id={tabID(id)}
+            type="button"
+            role="tab"
+            aria-selected={tab === id}
+            aria-controls={panelID(id)}
+            tabIndex={tab === id ? 0 : -1}
+            className="segmented-item"
+            onClick={() => setTab(id)}
           >
-            <p className="text-xs leading-relaxed text-ink-muted">{roleHelp(role.role)}</p>
-            <div className="grid gap-2 sm:grid-cols-3">
-              <p className="text-sm font-medium text-ink sm:pt-5">{roleDisplayName(role.role)}</p>
-              <label className="text-xs text-ink-muted">
-                {t('editor.model')}
-                <select
-                  className="field mt-1 w-full py-1.5 text-sm"
-                  value={role.model_id}
-                  onChange={(e) => updateRole(index, { model_id: e.target.value })}
-                >
-                  <option value="">{t('editor.automatic')}</option>
-                  {installedModels.map((m) => (
-                    <option key={m.id} value={m.id}>
-                      {m.name || m.id}
-                    </option>
-                  ))}
-                  {role.model_id && !installedModels.some((m) => m.id === role.model_id) && (
-                    <option value={role.model_id}>{role.model_id}</option>
-                  )}
-                </select>
-              </label>
-              <label className="text-xs text-ink-muted">
-                {t('editor.computer')}
-                <select
-                  className="field mt-1 w-full py-1.5 text-sm"
-                  value={role.node_id ?? ''}
-                  onChange={(e) =>
-                    updateRole(index, { node_id: e.target.value || undefined })
-                  }
-                >
-                  <option value="">{t('editor.automatic')}</option>
-                  {nodes.map((n) => (
-                    <option key={n.id} value={n.id}>
-                      {n.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          </div>
+            {t(`editor.tabs.${id}`)}
+          </button>
         ))}
-        <div className="space-y-2 rounded-lg bg-raised px-3 py-3">
-          <p className="text-sm font-medium text-ink">{t('editor.fallback')}</p>
-          <p className="text-xs leading-relaxed text-ink-muted">{t('editor.fallbackHint')}</p>
-          <div className="grid gap-2 sm:grid-cols-3">
-            {[0, 1, 2].map((i) => (
-              <label key={i} className="text-xs text-ink-muted">
-                {i + 1}.
-                <select
-                  className="field mt-1 w-full py-1.5 text-sm"
-                  value={fallbacks[i] ?? ''}
-                  disabled={i > fallbacks.length}
-                  onChange={(e) => setFallback(i, e.target.value)}
-                >
-                  <option value="">{t('editor.none')}</option>
-                  {installedModels.map((m) => (
-                    <option key={m.id} value={m.id}>
-                      {m.name || m.id}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ))}
-          </div>
-        </div>
-      </section>
+      </div>
 
-      <section className="space-y-3">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t('editor.tools')}</h3>
-        <ul className="space-y-2">
-          {CAPABILITIES.map((capability) => {
-            const on = capabilityEnabled(tools, capability.id)
-            return (
-              <li key={capability.id} className="flex items-start justify-between gap-3 rounded-lg bg-raised px-3 py-3">
-                <div>
-                  <p className="text-sm font-medium text-ink">{capabilityLabel(capability.id)}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-ink-muted">{capabilityDescription(capability.id)}</p>
-                </div>
-                <button
-                  type="button"
-                  className={on ? 'btn-primary px-3 py-1.5 text-xs' : 'btn-secondary px-3 py-1.5 text-xs'}
-                  aria-pressed={on}
-                  onClick={() => setTools((current) => setCapability(current, capability.id, !on))}
-                >
-                  {on ? t('editor.on') : t('editor.off')}
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-        {advancedMode && (
-          <div className="space-y-3">
-        <p className="text-xs font-medium text-ink-muted">{t('editor.individualTools')}</p>
-        <ul className="space-y-2">
-          {TOOL_CATALOG.map((id) => {
-            const policy = tools.find((tool) => tool.tool_id === id)?.policy ?? 'ask'
-            const policyKey = POLICY_OPTIONS.includes(policy) ? policy : 'ask'
-            return (
-              <li key={id} className="rounded-lg bg-raised px-3 py-3">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-ink">{t(`tools.${id}.label`)}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-ink-muted">{t(`tools.${id}.description`)}</p>
+      {tab === 'models' && (
+        <section id={panelID('models')} role="tabpanel" aria-labelledby={tabID('models')} className="space-y-3">
+          <p className="text-sm text-ink-muted">{t('editor.modelsHint')}</p>
+          <div className="grid gap-3 xl:grid-cols-2">
+            {roles.map((role, index) =>
+              allRoles || inUse(role) ? (
+                <div key={`${profile.id}-${role.role}-${index}`} className="space-y-2 rounded-lg bg-raised/60 p-3">
+                  <div>
+                    <p className="text-sm font-semibold text-ink">{roleDisplayName(role.role)}</p>
+                    <p className="text-xs leading-relaxed text-ink-muted">{roleHelp(role.role)}</p>
                   </div>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <label className="text-xs text-ink-muted">
+                      {t('editor.model')}
+                      <select
+                        className="field mt-1 w-full py-1.5 text-sm"
+                        value={role.model_id}
+                        onChange={(e) => updateRole(index, { model_id: e.target.value })}
+                      >
+                        <option value="">{t('editor.automatic')}</option>
+                        {installedModels.map((m) => (
+                          <option key={m.id} value={m.id}>
+                            {m.name || m.id}
+                          </option>
+                        ))}
+                        {role.model_id && !installedModels.some((m) => m.id === role.model_id) && (
+                          <option value={role.model_id}>{role.model_id}</option>
+                        )}
+                      </select>
+                    </label>
+                    <label className="text-xs text-ink-muted">
+                      {t('editor.computer')}
+                      <select
+                        className="field mt-1 w-full py-1.5 text-sm"
+                        value={role.node_id ?? ''}
+                        onChange={(e) => updateRole(index, { node_id: e.target.value || undefined })}
+                      >
+                        <option value="">{t('editor.automatic')}</option>
+                        {nodes.map((n) => (
+                          <option key={n.id} value={n.id}>
+                            {n.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              ) : null,
+            )}
+          </div>
+          {hiddenRoles > 0 || allRoles ? (
+            <button type="button" className="btn-secondary btn-sm" aria-expanded={allRoles} onClick={() => setAllRoles((v) => !v)}>
+              {allRoles ? t('editor.fewerRoles') : t('editor.moreRoles', { count: hiddenRoles })}
+            </button>
+          ) : null}
+          <div className="space-y-2 rounded-lg border border-line/60 p-3">
+            <p className="text-sm font-semibold text-ink">{t('editor.fallback')}</p>
+            <p className="text-xs leading-relaxed text-ink-muted">{t('editor.fallbackHint')}</p>
+            <div className="grid gap-2 sm:grid-cols-3">
+              {[0, 1, 2].map((i) => (
+                <label key={i} className="text-xs text-ink-muted">
+                  {i + 1}.
                   <select
-                    className="field max-w-[200px] py-1 text-sm"
-                    value={policy}
-                    title={t(`policies.${policyKey}.description`)}
-                    onChange={(e) =>
-                      updateToolPolicy(id, e.target.value as ToolPolicy['policy'])
-                    }
+                    className="field mt-1 w-full py-1.5 text-sm"
+                    value={fallbacks[i] ?? ''}
+                    disabled={i > fallbacks.length}
+                    onChange={(e) => setFallback(i, e.target.value)}
                   >
-                    {POLICY_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt} title={t(`policies.${opt}.description`)}>
-                        {t(`policies.${opt}.label`)}
+                    <option value="">{t('editor.none')}</option>
+                    {installedModels.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.name || m.id}
                       </option>
                     ))}
                   </select>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
+                </label>
+              ))}
+            </div>
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
-      <section className="space-y-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t('editor.memory')}</h3>
-        <p className="text-xs text-ink-muted">{t('editor.memoryHint')}</p>
-        <KnowledgePicker selected={knowledge} onChange={setKnowledge} disabled={saving} />
-        {advancedMode && (
-          <OrchestrationControls value={orchestration} onChange={setOrchestration} disabled={saving} only={MEMORY_KEYS} />
-        )}
-      </section>
+      {tab === 'tools' && (
+        <section id={panelID('tools')} role="tabpanel" aria-labelledby={tabID('tools')} className="space-y-3">
+          <ul className="grid gap-2 xl:grid-cols-2">
+            {CAPABILITIES.map((capability) => {
+              const on = capabilityEnabled(tools, capability.id)
+              return (
+                <li key={capability.id} className="flex items-start justify-between gap-3 rounded-lg bg-raised/60 p-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-ink">{capabilityLabel(capability.id)}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-ink-muted">{capabilityDescription(capability.id)}</p>
+                  </div>
+                  <Toggle
+                    checked={on}
+                    label={capabilityLabel(capability.id)}
+                    onChange={() => setTools((current) => setCapability(current, capability.id, !on))}
+                  />
+                </li>
+              )
+            })}
+          </ul>
+          {advancedMode && (
+            <details className="rounded-lg border border-line/60 p-3">
+              <summary className="cursor-pointer text-sm font-semibold text-ink">{t('editor.individualTools')}</summary>
+              <ul className="mt-3 grid gap-2 xl:grid-cols-2">
+                {TOOL_CATALOG.map((id) => {
+                  const policy = tools.find((tool) => tool.tool_id === id)?.policy ?? 'ask'
+                  const policyKey = POLICY_OPTIONS.includes(policy) ? policy : 'ask'
+                  return (
+                    <li key={id} className="flex flex-wrap items-start justify-between gap-3 rounded-lg bg-raised/60 p-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-ink">{t(`tools.${id}.label`)}</p>
+                        <p className="mt-0.5 text-xs leading-relaxed text-ink-muted">{t(`tools.${id}.description`)}</p>
+                      </div>
+                      <select
+                        className="field max-w-[200px] py-1 text-sm"
+                        value={policy}
+                        aria-label={t(`tools.${id}.label`)}
+                        title={t(`policies.${policyKey}.description`)}
+                        onChange={(e) => updateToolPolicy(id, e.target.value as ToolPolicy['policy'])}
+                      >
+                        {POLICY_OPTIONS.map((opt) => (
+                          <option key={opt} value={opt} title={t(`policies.${opt}.description`)}>
+                            {t(`policies.${opt}.label`)}
+                          </option>
+                        ))}
+                      </select>
+                    </li>
+                  )
+                })}
+              </ul>
+            </details>
+          )}
+        </section>
+      )}
 
-      <section className="space-y-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t('editor.orchestration')}</h3>
-        <label className="block text-xs text-ink-muted">
-          {t('editor.strategy')}
-          <select
-            className="field mt-1 w-full py-1.5 text-sm"
-            value={strategy}
-            onChange={(e) =>
-              setOrchestration({ ...orchestration, strategy: e.target.value as OrchestrationPolicy['strategy'] })
-            }
-          >
-            {STRATEGY_VALUES.map((value) => (
-              <option key={value} value={value}>
-                {strategyOption(value).label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <p className="text-xs leading-relaxed text-ink-faint">{orchHint}</p>
-        {advancedMode && (
-          <OrchestrationControls value={orchestration} onChange={setOrchestration} disabled={saving} only={ORCHESTRATION_KEYS} />
-        )}
-      </section>
+      {tab === 'knowledge' && (
+        <section id={panelID('knowledge')} role="tabpanel" aria-labelledby={tabID('knowledge')} className="max-w-2xl space-y-3">
+          <p className="text-sm text-ink-muted">{t('editor.memoryHint')}</p>
+          <KnowledgePicker selected={knowledge} onChange={setKnowledge} disabled={saving} />
+          {advancedMode && (
+            <OrchestrationControls value={orchestration} onChange={setOrchestration} disabled={saving} only={MEMORY_KEYS} />
+          )}
+        </section>
+      )}
 
-      <section className="space-y-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t('editor.execution')}</h3>
-        <label className="block text-xs text-ink-muted">
-          {t('editor.computerSelection')}
-          <select
-            className="field mt-1 w-full py-1.5 text-sm"
-            value={nodeMode}
-            onChange={(e) =>
-              setNodeMode(e.target.value as AIProfile['node_policy']['mode'])
-            }
-          >
-            <option value="automatic">{t('editor.selectionOptions.automatic')}</option>
-            <option value="prefer_local">{t('editor.selectionOptions.prefer_local')}</option>
-            <option value="manual">{t('editor.selectionOptions.manual')}</option>
-          </select>
-        </label>
-        <p className="text-xs leading-relaxed text-ink-faint">{nodeHint}</p>
-        <label className="flex items-center gap-2 text-xs text-ink-muted">
-          <input
-            type="checkbox"
-            checked={placement.remote === 'off'}
-            onChange={(e) => setPlacement({ ...placement, remote: e.target.checked ? 'off' : '' })}
-          />
-          {t('editor.localOnly')}
-        </label>
-        {placement.remote !== 'off' && nodes.length > 0 && (
-          <div className="space-y-1.5">
-            {nodes.map((n) => (
-              <label key={n.id} className="flex items-center justify-between gap-3 text-xs text-ink-muted">
-                <span className="truncate text-ink">{n.name}</span>
-                <select
-                  className="field max-w-[160px] py-1 text-xs"
-                  value={placement.preferred.includes(n.id) ? 'preferred' : placement.denied.includes(n.id) ? 'denied' : ''}
-                  onChange={(e) => setPlacement(withPlacement(placement, n.id, e.target.value))}
-                >
-                  <option value="">{t('editor.allowed')}</option>
-                  <option value="preferred">{t('editor.preferred')}</option>
-                  <option value="denied">{t('editor.never')}</option>
-                </select>
-              </label>
-            ))}
+      {tab === 'behavior' && (
+        <section id={panelID('behavior')} role="tabpanel" aria-labelledby={tabID('behavior')} className="grid gap-5 lg:grid-cols-2">
+          <div className="space-y-2">
+            <h3 className="label-caps">{t('editor.orchestration')}</h3>
+            <label className="block text-xs text-ink-muted">
+              {t('editor.strategy')}
+              <select
+                className="field mt-1 w-full py-1.5 text-sm"
+                value={strategy}
+                onChange={(e) =>
+                  setOrchestration({ ...orchestration, strategy: e.target.value as OrchestrationPolicy['strategy'] })
+                }
+              >
+                {STRATEGY_VALUES.map((value) => (
+                  <option key={value} value={value}>
+                    {strategyOption(value).label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="text-xs leading-relaxed text-ink-muted">{orchHint}</p>
+            {advancedMode && (
+              <OrchestrationControls value={orchestration} onChange={setOrchestration} disabled={saving} only={ORCHESTRATION_KEYS} />
+            )}
           </div>
-        )}
-        {advancedMode && (
-          <OrchestrationControls value={orchestration} onChange={setOrchestration} disabled={saving} only={EXECUTION_KEYS} />
-        )}
-      </section>
+          <div className="space-y-2">
+            <h3 className="label-caps">{t('editor.execution')}</h3>
+            <label className="block text-xs text-ink-muted">
+              {t('editor.computerSelection')}
+              <select
+                className="field mt-1 w-full py-1.5 text-sm"
+                value={nodeMode}
+                onChange={(e) => setNodeMode(e.target.value as AIProfile['node_policy']['mode'])}
+              >
+                <option value="automatic">{t('editor.selectionOptions.automatic')}</option>
+                <option value="prefer_local">{t('editor.selectionOptions.prefer_local')}</option>
+                <option value="manual">{t('editor.selectionOptions.manual')}</option>
+              </select>
+            </label>
+            <p className="text-xs leading-relaxed text-ink-muted">{nodeHint}</p>
+            <label className="flex items-center gap-2 text-xs text-ink-muted">
+              <input
+                type="checkbox"
+                checked={placement.remote === 'off'}
+                onChange={(e) => setPlacement({ ...placement, remote: e.target.checked ? 'off' : '' })}
+              />
+              {t('editor.localOnly')}
+            </label>
+            {placement.remote !== 'off' && nodes.length > 0 && (
+              <div className="space-y-1.5">
+                {nodes.map((n) => (
+                  <label key={n.id} className="flex items-center justify-between gap-3 text-xs text-ink-muted">
+                    <span className="truncate text-ink">{n.name}</span>
+                    <select
+                      className="field max-w-[160px] py-1 text-xs"
+                      value={placement.preferred.includes(n.id) ? 'preferred' : placement.denied.includes(n.id) ? 'denied' : ''}
+                      onChange={(e) => setPlacement(withPlacement(placement, n.id, e.target.value))}
+                    >
+                      <option value="">{t('editor.allowed')}</option>
+                      <option value="preferred">{t('editor.preferred')}</option>
+                      <option value="denied">{t('editor.never')}</option>
+                    </select>
+                  </label>
+                ))}
+              </div>
+            )}
+            {advancedMode && (
+              <OrchestrationControls value={orchestration} onChange={setOrchestration} disabled={saving} only={EXECUTION_KEYS} />
+            )}
+          </div>
+        </section>
+      )}
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 border-t border-line/60 pt-4">
         <button
           type="button"
-          className="btn-primary px-3 py-1.5 text-xs"
+          className="btn-primary"
           disabled={saving || !name.trim()}
           onClick={() =>
             onSave({
@@ -1006,13 +1010,16 @@ function AdvancedEditor({
         >
           {t('editor.save')}
         </button>
-        <button type="button" className="btn-secondary px-3 py-1.5 text-xs" onClick={onCancel}>
+        <button type="button" className="btn-secondary" onClick={onCancel}>
           {t('editor.cancel')}
         </button>
       </div>
     </div>
   )
 }
+
+type EditorTab = 'models' | 'tools' | 'knowledge' | 'behavior'
+const EDITOR_TABS: EditorTab[] = ['models', 'tools', 'knowledge', 'behavior']
 
 /** One row per model role (spec §20), filled from the profile; older role names map onto the current ones. */
 function editorRoles(profile: AIProfile): ModelRole[] {
