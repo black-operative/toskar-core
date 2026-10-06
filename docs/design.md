@@ -83,6 +83,11 @@ Use these classes before writing new styles.
 | `.btn-primary` | The one main action in a view |
 | `.btn-secondary` | Other actions |
 | `.btn-danger` | Destructive actions; never the default |
+| `.btn-sm` | Add to a button for actions inside cards and rows (32px tall); every action in a card uses it |
+| `.icon-button` | A square icon-only button (a "more" menu, close); needs an `aria-label` |
+| `.menu`, `.menu-item`, `.menu-item-danger` | A pop-up menu and its items, with `useMenu` and `rovingKeyDown` |
+| `.segmented`, `.segmented-item` | Page tabs as one segmented control (`role="tablist"` and `role="tab"`); the chosen tab is raised |
+| `.search-field` | A label around an icon `svg` and a `.field` search input |
 | `.field` | Text inputs and selects; focus is a primary border and ring |
 | `.selectable`, `.selectable-active` | Choice cards (onboarding purposes, profiles); add `aria-pressed` or radio semantics |
 | `.status-chip` | Small status pill, with a tinted background and a dot |

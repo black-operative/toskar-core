@@ -55,9 +55,9 @@ export function RunningTab({
             <li key={item.instance_id} className="card min-w-0 space-y-3">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <h3 className="font-display text-lg font-semibold text-ink">
+                  <h2 className="font-display text-lg font-semibold text-ink">
                     {item.display_name}
-                  </h3>
+                  </h2>
                   {tightModelIds?.has(item.model_id) ? (
                     <p
                       className="mt-1 text-xs text-ink-muted"
@@ -75,13 +75,6 @@ export function RunningTab({
                     <AccelerationPill acceleration={item.acceleration} model={item.display_name} />
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="btn-secondary shrink-0 px-3 py-1.5 text-xs"
-                  onClick={() => onStop(item.model_id, item.instance_id, item.node_id)}
-                >
-                  {t('runningTab.stop')}
-                </button>
               </div>
 
               <dl className="grid grid-cols-2 gap-3 text-sm">
@@ -93,6 +86,15 @@ export function RunningTab({
                         ? `${formatBytes(item.memory_bytes)} / ${formatBytes(hostMem)}`
                         : formatBytes(item.memory_bytes)
                       : t('runningTab.memoryUnavailable')}
+                    {/* How much of the computer's memory the model holds. */}
+                    {item.memory_bytes && hostMem > 0 ? (
+                      <span className="mt-1.5 block h-1.5 max-w-[12rem] overflow-hidden rounded-full bg-raised" aria-hidden>
+                        <span
+                          className="block h-full rounded-full bg-primary"
+                          style={{ width: `${Math.min(100, Math.max(2, (item.memory_bytes / hostMem) * 100))}%` }}
+                        />
+                      </span>
+                    ) : null}
                   </dd>
                 </div>
                 <div>
@@ -110,9 +112,17 @@ export function RunningTab({
               )}
 
               <div className="flex flex-wrap gap-2">
-                <Link to="/chat" className="btn-primary px-3 py-1.5 text-xs">
+                <Link to="/chat" className="btn-primary btn-sm">
                   {t('runningTab.openChat')}
                 </Link>
+                <button
+                  type="button"
+                  className="btn-secondary btn-sm"
+                  onClick={() => onStop(item.model_id, item.instance_id, item.node_id)}
+                >
+                  <span className="h-2 w-2 rounded-[2px] bg-current" aria-hidden />
+                  {t('runningTab.stop')}
+                </button>
               </div>
             </li>
           )

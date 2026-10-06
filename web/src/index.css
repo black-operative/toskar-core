@@ -223,6 +223,62 @@
     @apply inline-flex items-center justify-center rounded-lg bg-danger/10 px-4 py-2.5 text-sm font-semibold text-danger transition duration-150 hover:bg-danger/20 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
+  /* A smaller button for actions inside cards and rows: add to btn-primary,
+     btn-secondary, or btn-danger. Every action in a card uses it. */
+  .btn-sm {
+    @apply h-8 gap-1.5 px-3 py-0 text-xs;
+  }
+
+  /* A square icon-only button; give it an aria-label. */
+  .icon-button {
+    @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink-muted transition duration-150 hover:bg-raised hover:text-ink;
+  }
+
+  .icon-button[aria-expanded='true'] {
+    @apply bg-raised text-ink;
+  }
+
+  /* A pop-up menu and its items (useMenu and rovingKeyDown). */
+  .menu {
+    @apply absolute end-0 top-full z-20 mt-1 min-w-[9rem] rounded-xl border border-line/70 bg-surface p-1;
+    box-shadow: var(--shadow-panel);
+  }
+
+  .menu-item {
+    @apply block w-full rounded-lg px-3 py-1.5 text-start text-sm text-ink hover:bg-raised;
+  }
+
+  .menu-item-danger {
+    @apply text-danger hover:bg-danger/10;
+  }
+
+  /* Tabs as one segmented control: a track, and the chosen tab raised on it. */
+  .segmented {
+    @apply inline-flex max-w-full gap-1 overflow-x-auto rounded-lg bg-raised/60 p-1;
+  }
+
+  .segmented-item {
+    @apply shrink-0 whitespace-nowrap rounded-md px-3.5 py-1.5 text-sm font-medium text-ink-muted transition duration-150 hover:text-ink;
+  }
+
+  .segmented-item[aria-selected='true'] {
+    @apply bg-surface text-ink;
+    box-shadow: var(--shadow-panel), inset 0 0 0 1px rgb(var(--rgb-line) / 0.6);
+  }
+
+  /* A search box with its magnifier drawn inside the start edge. */
+  .search-field {
+    @apply relative block;
+  }
+
+  .search-field > svg {
+    @apply pointer-events-none absolute start-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-faint;
+  }
+
+  .search-field > input {
+    @apply w-full py-2 ps-9;
+  }
+
   .nav-link {
     @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-ink-muted transition duration-150 hover:bg-raised/60 hover:text-ink;
   }

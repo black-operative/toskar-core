@@ -78,13 +78,15 @@ export function ModelCard({
         <p className="mt-1 text-xs text-ink-muted">{t('ratings.chosenByCommunity')}</p>
       ) : null}
 
-      <p className="mt-3 text-sm text-ink">
-        <span className="font-medium">{fitLabelText(fit?.label) || t('fit.unknown')}</span>
-        <span className="text-ink-faint"> · </span>
+      <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-muted">
+        <span className={['status-chip', fitTone(fit?.label)].join(' ')}>
+          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-current" aria-hidden />
+          {fitLabelText(fit?.label) || t('fit.unknown')}
+        </span>
         <span className="tabular-nums">{memoryLabel(model)}</span>
         {speed ? (
           <>
-            <span className="text-ink-faint"> · </span>
+            <span className="text-ink-faint" aria-hidden>·</span>
             <span className="tabular-nums">{speed}</span>
           </>
         ) : null}
@@ -131,11 +133,11 @@ export function ModelCard({
         </div>
       )}
 
-      <div className="mt-auto flex flex-wrap gap-2 pt-4">
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
         {!model.installed ? (
           <button
             type="button"
-            className="btn-primary px-3 py-1.5 text-xs"
+            className="btn-primary btn-sm"
             disabled={installing || isDownloading || install.disabled}
             onClick={onInstall}
           >
@@ -143,13 +145,19 @@ export function ModelCard({
           </button>
         ) : (
           <>
-            <span className="status-chip bg-success/15 text-success">{t('install.installed')}</span>
+            <span className="status-chip h-8 bg-success/15 px-2.5 text-success">
+              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="m3.5 8.5 3 3 6-7" />
+              </svg>
+              {t('install.installed')}
+            </span>
             <RateButton modelId={model.id} modelName={model.display_name} />
           </>
         )}
         <button
           type="button"
-          className="btn-secondary px-3 py-1.5 text-xs"
+          className="btn-secondary btn-sm"
+          aria-expanded={detailsOpen}
           onClick={() => setDetailsOpen((v) => !v)}
         >
           {detailsOpen ? t('card.hideDetails') : t('card.details')}
@@ -222,6 +230,23 @@ export function ModelCard({
       )}
     </article>
   )
+}
+
+/** The fit chip's colours: green when it runs well, amber when tight, red when it won't. */
+function fitTone(label?: string): string {
+  switch (label) {
+    case 'excellent':
+    case 'good':
+      return 'bg-success/15 text-success'
+    case 'tight':
+      return 'bg-warning/15 text-warning'
+    case 'heavy':
+    case 'too_large':
+    case 'unsupported':
+      return 'bg-danger/15 text-danger'
+    default:
+      return 'bg-raised text-ink-muted'
+  }
 }
 
 function Row({ label, value }: { label: string; value: string }) {

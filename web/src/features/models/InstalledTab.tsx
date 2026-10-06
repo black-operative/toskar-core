@@ -103,9 +103,9 @@ export function InstalledTab({
           <li key={model.id} className="card relative min-w-0">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
-                <h3 className="font-display text-lg font-semibold text-ink">
+                <h2 className="font-display text-lg font-semibold text-ink">
                   {model.display_name}
-                </h3>
+                </h2>
                 {tightModelIds?.has(model.id) ? (
                   <p
                     className="mt-1 text-xs text-ink-muted"
@@ -135,9 +135,9 @@ export function InstalledTab({
                 <SmallModelNote model={model} alternative={alternative} onInstallAlternative={onInstall} />
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-1.5">
                 {live ? (
-                  <Link to="/chat" className="btn-primary px-3 py-1.5 text-xs">
+                  <Link to="/chat" className="btn-primary btn-sm">
                     {t('installedTab.chat')}
                   </Link>
                 ) : (
@@ -145,7 +145,7 @@ export function InstalledTab({
                   !dl && (
                     <button
                       type="button"
-                      className="btn-primary px-3 py-1.5 text-xs"
+                      className="btn-primary btn-sm"
                       onClick={() => onStart(model.id)}
                     >
                       {t('installedTab.start')}
@@ -155,7 +155,7 @@ export function InstalledTab({
                 {missing.length > 0 && onInstallElsewhere && (
                   <button
                     type="button"
-                    className="btn-secondary px-3 py-1.5 text-xs"
+                    className="btn-secondary btn-sm"
                     disabled={installingId === model.id}
                     onClick={() => onInstallElsewhere(model.id)}
                   >
@@ -166,7 +166,7 @@ export function InstalledTab({
                 <div className="relative">
                   <button
                     type="button"
-                    className="rounded-md px-2 py-1.5 text-xs text-ink-faint hover:bg-raised hover:text-ink"
+                    className="icon-button"
                     aria-label={t('installedTab.moreActions', { model: model.display_name })}
                     aria-expanded={menuOpenId === model.id}
                     onClick={(e: MouseEvent) => {
@@ -174,11 +174,15 @@ export function InstalledTab({
                       setMenuOpenId((id) => (id === model.id ? null : model.id))
                     }}
                   >
-                    ···
+                    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor" aria-hidden>
+                      <circle cx="3.5" cy="8" r="1.2" />
+                      <circle cx="8" cy="8" r="1.2" />
+                      <circle cx="12.5" cy="8" r="1.2" />
+                    </svg>
                   </button>
                   {menuOpenId === model.id && (
                     <div
-                      className="absolute end-0 top-full z-20 mt-1 min-w-[9rem] rounded-lg border border-line bg-surface py-1 shadow-panel"
+                      className="menu"
                       ref={menuRef}
                       role="menu"
                       onKeyDown={rovingKeyDown}
@@ -188,7 +192,7 @@ export function InstalledTab({
                         <button
                           type="button"
                           role="menuitem"
-                          className="block w-full px-3 py-1.5 text-start text-sm text-ink hover:bg-raised"
+                          className="menu-item"
                           onClick={() => {
                             setMenuOpenId(null)
                             onStop(model.id, live.instance_id)
@@ -200,7 +204,7 @@ export function InstalledTab({
                       <button
                         type="button"
                         role="menuitem"
-                        className="block w-full px-3 py-1.5 text-start text-sm text-danger hover:bg-danger/10"
+                        className="menu-item menu-item-danger"
                         onClick={() => {
                           setMenuOpenId(null)
                           onDelete(model.id)

@@ -92,50 +92,53 @@ export function ModelsTargetBar({
   const runningLabel = t('target.running', { count: runningForTarget.length })
 
   return (
-    <div className="min-w-0 rounded-xl border border-line/70 bg-surface px-4 py-3 shadow-panel">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="min-w-0">
-          <label className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-ink-muted">{t('target.label')}</span>
-            <select
-              className="field max-w-full py-1.5 text-sm font-semibold text-ink"
-              value={target}
-              onChange={(e) => onTargetChange(e.target.value as ModelsTarget)}
-              aria-label={t('target.aria')}
-            >
-              <option value="local">
-                {localHardware?.hostname || localNode?.name || t('target.thisComputer')}
+    // Which computer the page is about, what it has, and a way to change it.
+    <div className="card-outline flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-3">
+      <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-active sm:flex" aria-hidden>
+        <svg viewBox="0 0 16 16" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.3} strokeLinejoin="round">
+          <rect x="4" y="4" width="8" height="8" rx="1.2" />
+          <path d="M6.5 1.5V4M9.5 1.5V4M6.5 12v2.5M9.5 12v2.5M1.5 6.5H4M1.5 9.5H4M12 6.5h2.5M12 9.5h2.5" strokeLinecap="round" />
+        </svg>
+      </span>
+      {/* Wide enough that, on a phone, the button wraps below rather than squeezing it. */}
+      <div className="min-w-[14rem] flex-1">
+        <label className="flex flex-wrap items-center gap-2">
+          <span className="text-sm text-ink-muted">{t('target.label')}</span>
+          <select
+            className="field max-w-full py-1 ps-2.5 text-sm font-semibold text-ink"
+            value={target}
+            onChange={(e) => onTargetChange(e.target.value as ModelsTarget)}
+            aria-label={t('target.aria')}
+          >
+            <option value="local">
+              {localHardware?.hostname || localNode?.name || t('target.thisComputer')}
+            </option>
+            {hasCluster && <option value="all">{t('target.all')}</option>}
+            {onlinePeers.map((n) => (
+              <option key={n.id} value={n.id}>
+                {n.name}
               </option>
-              {hasCluster && <option value="all">{t('target.all')}</option>}
-              {onlinePeers.map((n) => (
-                <option key={n.id} value={n.id}>
-                  {n.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <p className="mt-1.5 text-sm text-ink-muted">
-            {target === 'all' ? (
-              <>{t('target.clusterView', { running: runningLabel })}</>
-            ) : (
-              <>
-                {line}
-                <span className="text-ink-faint"> · </span>
-                {runningLabel}
-              </>
-            )}
-          </p>
-          <p className="mt-1 text-xs text-ink-faint">
-            {target === 'all' ? t('target.allHint') : t('target.basedOn', { name })}
-          </p>
-        </div>
-        <Link
-          to="/nodes"
-          className="shrink-0 text-sm font-medium text-primary underline-offset-2 hover:underline"
-        >
-          {hasCluster ? t('target.manage') : t('target.useAnother')}
-        </Link>
+            ))}
+          </select>
+        </label>
+        <p className="mt-1.5 text-sm text-ink">
+          {target === 'all' ? (
+            <>{t('target.clusterView', { running: runningLabel })}</>
+          ) : (
+            <>
+              {line}
+              <span className="text-ink-faint"> · </span>
+              <span className="text-ink-muted">{runningLabel}</span>
+            </>
+          )}
+        </p>
+        <p className="mt-0.5 text-xs text-ink-faint">
+          {target === 'all' ? t('target.allHint') : t('target.basedOn', { name })}
+        </p>
       </div>
+      <Link to="/nodes" className="btn-secondary btn-sm shrink-0">
+        {hasCluster ? t('target.manage') : t('target.useAnother')}
+      </Link>
     </div>
   )
 }

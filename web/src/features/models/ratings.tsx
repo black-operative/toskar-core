@@ -91,7 +91,7 @@ export function RateButton({ modelId, modelName }: { modelId: string; modelName:
   return (
     <button
       type="button"
-      className="btn-secondary px-3 py-1.5 text-xs"
+      className="btn-secondary btn-sm"
       aria-label={rating?.stars ? t('ratings.yourRatingLabel', { model: modelName, count: rating.stars }) : t('ratings.rateLabel', { model: modelName })}
       onClick={() => open(modelId, modelName)}
     >

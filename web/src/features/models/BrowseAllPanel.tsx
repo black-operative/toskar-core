@@ -93,7 +93,7 @@ export function BrowseAllPanel({
             </div>
             <button
               type="button"
-              className="btn-primary shrink-0 px-3 py-1.5 text-xs"
+              className="btn-primary btn-sm shrink-0"
               disabled={installMutation.isPending}
               onClick={() => installMutation.mutate(item)}
             >

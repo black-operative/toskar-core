@@ -235,8 +235,8 @@ export function ModelsPage() {
         running={running}
       />
 
-      <div className="flex flex-wrap items-center gap-2">
-        <div role="tablist" aria-label={t('page.title')} className="flex flex-wrap gap-2" onKeyDown={rovingKeyDown}>
+      <div className="flex flex-wrap items-center gap-3">
+        <div role="tablist" aria-label={t('page.title')} className="segmented" onKeyDown={rovingKeyDown}>
         {(
           [
             { id: 'discover', label: t('tabs.discover') },
@@ -254,26 +254,27 @@ export function ModelsPage() {
               setTab(option.id)
               if (option.id !== 'discover') setBrowseOpen(false)
             }}
-            className={[
-              'rounded-lg border px-4 py-2 text-sm font-medium transition',
-              tab === option.id
-                ? 'border-primary bg-primary-soft text-primary-active'
-                : 'border-line bg-surface text-ink-muted hover:border-primary/40 hover:text-ink',
-            ].join(' ')}
+            className="segmented-item"
           >
             {option.label}
           </button>
         ))}
         </div>
         {(tab === 'discover' || tab === 'installed') && (
-          <input
-            type="search"
-            className="field ms-auto min-w-[200px] max-w-sm flex-1"
-            aria-label={t('page.search')}
-            placeholder={t('page.search')}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <label className="search-field w-full sm:ms-auto sm:w-auto sm:min-w-[200px] sm:max-w-xs sm:flex-1">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+              <circle cx="7" cy="7" r="4.5" />
+              <path d="m10.5 10.5 3 3" />
+            </svg>
+            <input
+              type="search"
+              className="field"
+              aria-label={t('page.search')}
+              placeholder={t('page.search')}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </label>
         )}
       </div>
 

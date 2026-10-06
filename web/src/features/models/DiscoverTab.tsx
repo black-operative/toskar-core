@@ -74,7 +74,7 @@ export function DiscoverTab({
             <h2 className="section-title">{t('discover.recommended')}</h2>
             <p className="mt-1 text-sm text-ink-muted">{t('discover.recommendedHint')}</p>
           </div>
-          <button type="button" className="btn-secondary text-sm" onClick={onBrowseAll}>
+          <button type="button" className="btn-secondary gap-1.5" onClick={onBrowseAll}>
             {t('discover.browseAll')}{' '}
             <span className="inline-block rtl:-scale-x-100" aria-hidden>
               →
