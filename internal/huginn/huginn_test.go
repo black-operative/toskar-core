@@ -315,3 +315,28 @@ func TestSmallTalk(t *testing.T) {
 		}
 	}
 }
+
+// An answer that tells the person to make the file is caught; one that made
+// it, or talks about documents otherwise, isn't (#281).
+func TestTellsToMakeFile(t *testing.T) {
+	for _, s := range []string{
+		"You can copy this text and use any word processor to create your own PDF document, or I can help you with further instructions.",
+		"Copy the recipe into Microsoft Word and save it as a PDF.",
+		"Paste it into Google Docs, then use File > Download > PDF. You can create the PDF yourself in a minute.",
+		"Use an online PDF converter to turn this into a file.",
+	} {
+		if !TellsToMakeFile(s) {
+			t.Errorf("missed %q", s)
+		}
+	}
+	for _, s := range []string{
+		"Here is **recipes.pdf**. It's attached below.",
+		"The document says the loaf bakes for 50 minutes.",
+		"Word processors such as Pages and Word both open .docx files.",
+		"Banana bread: mash three bananas, mix in the flour, and bake for an hour.",
+	} {
+		if TellsToMakeFile(s) {
+			t.Errorf("flagged %q", s)
+		}
+	}
+}

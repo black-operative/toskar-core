@@ -567,6 +567,9 @@ type Citation struct {
 	// Source is the knowledge source name or the file path.
 	Source  string `json:"source,omitempty"`
 	Snippet string `json:"snippet,omitempty"`
+	// ArtifactID is the chat file a file citation names, so a client can
+	// offer it for download (contract 1.9).
+	ArtifactID string `json:"artifact_id,omitempty"`
 }
 
 // ActivityStep is one thing the assistant did for an answer, in plain language.

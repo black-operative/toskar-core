@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import i18n from '@/i18n'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import type { Citation, MessageMeta } from '@/types/api'
+import { downloadArtifact } from '@/lib/api'
 import { useUIStore } from '@/stores/uiStore'
 import { RunDetails } from './RunDetails'
 import { FileChip } from './FileChips'
@@ -15,7 +16,7 @@ function hostOf(url: string): string {
 }
 
 /** One chip: a web page, a file, or a knowledge source with its passages. */
-type SourceItem = { kind: string; label: string; url?: string; passages: Citation[] }
+type SourceItem = { kind: string; label: string; url?: string; artifactId?: string; passages: Citation[] }
 
 function groupSources(sources: Citation[]): SourceItem[] {
   const out: SourceItem[] = []
@@ -38,7 +39,7 @@ function groupSources(sources: Citation[]): SourceItem[] {
     } else if (s.kind === 'web') {
       out.push({ kind: 'web', label: s.title || hostOf(s.url ?? ''), url: s.url, passages: [s] })
     } else {
-      out.push({ kind: s.kind, label: s.title, passages: [s] })
+      out.push({ kind: s.kind, label: s.title, artifactId: s.artifact_id, passages: [s] })
     }
   }
   return out
@@ -63,6 +64,10 @@ function SourceChip({ item, index }: { item: SourceItem; index: number }) {
         <span className="shrink-0 text-ink-faint">{hostOf(item.url)}</span>
       </a>
     )
+  }
+  // A chat file can be saved, like the Files chips (#281).
+  if (item.kind === 'file' && item.artifactId) {
+    return <FileSourceChip item={item} id={item.artifactId} badge={badge} />
   }
   const count = item.passages.length
   // A memory's text is its title; show it as the passage.
@@ -89,6 +94,38 @@ function SourceChip({ item, index }: { item: SourceItem; index: number }) {
         </span>
       ) : null}
     </span>
+  )
+}
+
+function FileSourceChip({ item, id, badge }: { item: SourceItem; id: string; badge: ReactNode }) {
+  const { t } = useTranslation('chat')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  return (
+    <button
+      type="button"
+      className={chipClass}
+      disabled={busy}
+      title={error ?? t('attachments.download', { name: item.label })}
+      onClick={async () => {
+        setBusy(true)
+        setError(null)
+        try {
+          await downloadArtifact({ id, name: item.label })
+        } catch (err) {
+          setError(err instanceof Error ? err.message : t('attachments.downloadFailed'))
+        } finally {
+          setBusy(false)
+        }
+      }}
+    >
+      {badge}
+      <svg viewBox="0 0 16 16" className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>
+        <path d="M8 2.5v7.5M4.5 6.5 8 10l3.5-3.5M3 13h10" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span className="truncate">{item.label}</span>
+      {error ? <span className="shrink-0 text-danger">{t('attachments.downloadFailed')}</span> : null}
+    </button>
   )
 }
 

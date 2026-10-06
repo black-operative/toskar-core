@@ -16,6 +16,11 @@ func TestAskedForFile(t *testing.T) {
 		"Export this as a CSV":                               {Name: "data.csv", Table: true},
 		"Write a short report on the trip":                   {Name: "document.md"},
 		"Put the summary in a markdown file called notes.md": {Name: "notes.md"},
+		// #281: a PDF or Word file, asked for either way.
+		"Make a PDF of that.":                        {Name: "document.pdf"},
+		"Can I have that recipe as a PDF?":           {Name: "document.pdf"},
+		"Turn it into a Word document":               {Name: "document.docx"},
+		"Save the recipe as 10_Loaf_Pan_Recipes.pdf": {Name: "10_Loaf_Pan_Recipes.pdf"},
 	}
 	for msg, want := range cases {
 		got, ok := askedForFile(msg)
@@ -23,7 +28,7 @@ func TestAskedForFile(t *testing.T) {
 			t.Errorf("askedForFile(%q) = %+v %v, want %+v", msg, got, ok, want)
 		}
 	}
-	for _, msg := range []string{"What is a CSV file?", "How do I open a spreadsheet?", "Summarize this file."} {
+	for _, msg := range []string{"What is a CSV file?", "How do I open a spreadsheet?", "Summarize this file.", "How do I save this as a PDF?", "What's in the PDF?"} {
 		if _, ok := askedForFile(msg); ok {
 			t.Errorf("%q is not a request for a file", msg)
 		}
@@ -96,5 +101,58 @@ func TestFileRequestNeedsPermission(t *testing.T) {
 	}
 	if env.tools != 0 {
 		t.Fatal("a file was made without permission")
+	}
+}
+
+// "Make a PDF of that" makes the PDF, from the conversation (#281).
+func TestPDFRequestIsMade(t *testing.T) {
+	env := &fileEnv{scriptedEnv: scriptedEnv{replies: []string{"# Banana bread\n\nMash three bananas, then bake for an hour."}}}
+	events, err := New().Run(context.Background(), contracts.Task{Prompt: "Make a PDF of that."}, contracts.AIProfile{
+		Roles: []contracts.ModelRole{{Role: "assistant", ModelID: "m"}},
+		Tools: []contracts.ToolPolicy{{ToolID: "files.create", Policy: "allow"}},
+	}, env)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range events {
+	}
+	if env.created["name"] != "document.pdf" || !strings.HasPrefix(env.created["content"].(string), "# Banana bread") {
+		t.Fatalf("created %+v", env.created)
+	}
+}
+
+// An answer that tells the person to make the file is asked for once more,
+// and the model makes it (#281).
+func TestMakeItYourselfIsAskedAgain(t *testing.T) {
+	env := &fileEnv{scriptedEnv: scriptedEnv{replies: []string{
+		"You can copy this text and use any word processor to create your own PDF document.",
+		`{"tool_call":{"id":"files.create","args":{"name":"recipe.pdf","content":"# Banana bread"}}}`,
+		"Here's recipe.pdf, attached below.",
+	}}}
+	events, err := New().Run(context.Background(), contracts.Task{Prompt: "I'd like to keep this recipe somewhere."}, contracts.AIProfile{
+		Roles: []contracts.ModelRole{{Role: "assistant", ModelID: "m"}},
+		Tools: []contracts.ToolPolicy{{ToolID: "files.create", Policy: "allow"}},
+	}, env)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var text string
+	for evt := range events {
+		if evt.Type == "agent.message" {
+			text += evt.Content
+		}
+	}
+	if env.created["name"] != "recipe.pdf" {
+		t.Fatalf("created %+v", env.created)
+	}
+	if strings.Contains(text, "word processor") || !strings.Contains(text, "recipe.pdf") {
+		t.Fatalf("reply = %q", text)
+	}
+	if last := env.seen[1][len(env.seen[1])-1]; last.Role != "user" || last.Content != makeTheFile {
+		t.Fatalf("the retry asked %+v", last)
+	}
+	// The message didn't ask for a file, so files.create is offered for the retry.
+	if strings.Contains(env.seen[0][0].Content, "files.create") || !strings.Contains(env.seen[1][0].Content, "files.create") {
+		t.Fatal("files.create should be offered only for the retry")
 	}
 }

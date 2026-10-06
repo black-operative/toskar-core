@@ -119,9 +119,13 @@ func TestTraceKnowsWhenDataWasUsed(t *testing.T) {
 	if tr.dataKind() != "knowledge" {
 		t.Fatal("knowledge")
 	}
-	tr.attachment(artifacts.Artifact{Name: "tires.xlsx", Producer: artifacts.ProducerAssistant}, 1, 1)
+	tr.attachment(artifacts.Artifact{ID: "art-1", Name: "tires.xlsx", Producer: artifacts.ProducerAssistant}, 1, 1)
 	if tr.dataKind() != "file" {
 		t.Fatal("files outrank knowledge in the note")
+	}
+	// A file source names its file, so the app can save it (#281).
+	if src := tr.meta().Sources; src[len(src)-1].ArtifactID != "art-1" {
+		t.Fatalf("file source = %+v", src[len(src)-1])
 	}
 	tr.noticeIfNone("first")
 	tr.noticeIfNone("second")

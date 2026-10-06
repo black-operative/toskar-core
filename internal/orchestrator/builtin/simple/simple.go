@@ -244,6 +244,7 @@ func (o *Orchestrator) Run(
 		changed := false
 		retriedPlain := false
 		retriedLookup := false
+		retriedFile := false
 
 		for {
 			content, m, err := generateText(ctx, env, role, messages)
@@ -353,6 +354,26 @@ func (o *Orchestrator) Run(
 				toolsOn = false
 				env.Emit(events.ToolFailed, map[string]any{"narrated": true, "error": "described tools instead of answering"})
 				messages[0] = pluginapi.ChatMessage{Role: "system", Content: plainSys}
+				continue
+			}
+			// An answer that tells the person to make the file themselves,
+			// when the profile allows files.create, is asked for once more
+			// with files.create offered, though the message didn't ask for a
+			// file in so many words (#281).
+			if !retriedFile && !changed && !jsonOnly && !profile.ModelCallsNoTools && calls < budget.MaxToolCalls && toolEnabled(webProfile, "files.create") && huginn.TellsToMakeFile(parsed.Text) {
+				retriedFile = true
+				env.Emit(events.ToolFailed, map[string]any{"deflected": true, "error": "told the person to make the file"})
+				if !toolEnabled(profile, "files.create") {
+					offered = append(offered, "files.create")
+					profile = offerOnly(webProfile, offered)
+					toolPrompt = tools.PromptFor(profile)
+					messages[0] = pluginapi.ChatMessage{Role: "system", Content: plainSys + "\n" + toolPrompt}
+				}
+				toolsOn = true
+				messages = append(messages,
+					pluginapi.ChatMessage{Role: "assistant", Content: content},
+					pluginapi.ChatMessage{Role: "user", Content: makeTheFile},
+				)
 				continue
 			}
 			// An answer that sends the person off to search, or pretends to,

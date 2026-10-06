@@ -17,7 +17,7 @@ import (
 //     client built for another major version is told to update.
 //
 // tests/contract checks that no field in the contract is removed or renamed.
-const ContractVersion = "1.8"
+const ContractVersion = "1.9"
 
 // Headers that carry the contract version. Each has a name from before the
 // Toskar rename that is still sent and accepted, so clients and computers

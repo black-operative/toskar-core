@@ -391,6 +391,8 @@ export interface Citation {
   url?: string
   source?: string
   snippet?: string
+  /** The chat file a file citation names, for download (contract 1.9). */
+  artifact_id?: string
 }
 
 export interface ActivityStep {

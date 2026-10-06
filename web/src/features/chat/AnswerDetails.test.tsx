@@ -3,8 +3,32 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
 import { AnswerDetails } from './AnswerDetails'
 import { ChatErrorCard } from './ChatErrorCard'
+import { downloadArtifact } from '@/lib/api'
+
+vi.mock('@/lib/api', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/api')>()),
+  downloadArtifact: vi.fn(async () => undefined),
+}))
 
 describe('AnswerDetails', () => {
+  it('saves a chat file named in the sources (#281)', () => {
+    render(
+      <AnswerDetails
+        meta={{
+          sources: [
+            { kind: 'file', title: '10_Loaf_Pan_Recipes.pdf', source: 'Made in this chat', artifact_id: 'art-1' },
+            { kind: 'file', title: 'old.pdf', source: 'Attached file' },
+          ],
+        }}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /10_Loaf_Pan_Recipes\.pdf/ }))
+    expect(downloadArtifact).toHaveBeenCalledWith({ id: 'art-1', name: '10_Loaf_Pan_Recipes.pdf' })
+    // A source recorded before files carried their ID stays a label.
+    fireEvent.click(screen.getByRole('button', { name: /old\.pdf/ }))
+    expect(downloadArtifact).toHaveBeenCalledTimes(1)
+  })
+
   it('shows numbered sources and the steps on request', () => {
     render(
       <AnswerDetails

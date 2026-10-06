@@ -15,9 +15,17 @@ import (
 var (
 	// fileAskRe matches a request to produce a file: a verb that makes
 	// something, then the kind of file, close together.
-	fileAskRe = regexp.MustCompile(`(?i)\b(create|make|generate|export|build|produce|write|save|put|give me|turn)\b[^.?!\n]{0,60}?\b(spreadsheet|excel|xlsx|csv|workbook|file|document|markdown|report|json)\b`)
+	fileAskRe = regexp.MustCompile(`(?i)\b(create|make|generate|export|build|produce|write|save|put|give me|turn)\b[^.?!\n]{0,60}?\b(spreadsheet|excel|xlsx|csv|workbook|file|document|markdown|report|json|pdf|docx|word document|word file)\b`)
+	// fileAsRe matches asking for something in a file format, such as "can I
+	// have that as a PDF?" (#281).
+	fileAsRe = regexp.MustCompile(`(?i)\b(as|into|in) an? (spreadsheet|excel file|xlsx|csv|pdf|docx|word document|word file|markdown file|json file)\b`)
+	// fileNamedRe matches a request to make a document with a name given,
+	// such as "save it as recipes.pdf".
+	fileNamedRe = regexp.MustCompile(`(?i)\b(create|make|generate|export|build|produce|write|save|put|give me|turn)\b[^.?!\n]{0,60}?\b[\w][\w-]*\.(pdf|docx|xlsx|csv|tsv|md|txt)\b`)
+	// howToRe matches a question about how to do it, which isn't a request.
+	howToRe = regexp.MustCompile(`(?i)^\s*(how|what|why|where|when)\b`)
 	// fileNameRe finds a file name the user gave.
-	fileNameRe = regexp.MustCompile(`(?i)\b([\w][\w .-]{0,60}?\.(xlsx|csv|tsv|md|txt|json|html|py|js|ts|go|sql|yaml|yml))\b`)
+	fileNameRe = regexp.MustCompile(`(?i)\b([\w][\w .-]{0,60}?\.(xlsx|csv|tsv|md|txt|json|html|py|js|ts|go|sql|yaml|yml|pdf|docx))\b`)
 )
 
 // fileRequest is a file the user asked for.
@@ -30,7 +38,16 @@ type fileRequest struct {
 // askedForFile reports whether a message asks for a file, and which. A name
 // in the message wins; otherwise the kind of file decides the extension.
 func askedForFile(prompt string) (fileRequest, bool) {
+	if howToRe.MatchString(prompt) {
+		return fileRequest{}, false
+	}
 	m := fileAskRe.FindStringSubmatch(prompt)
+	if m == nil {
+		m = fileAsRe.FindStringSubmatch(prompt)
+	}
+	if m == nil && fileNamedRe.MatchString(prompt) {
+		m = []string{"", "", "file"}
+	}
 	if m == nil {
 		return fileRequest{}, false
 	}
@@ -44,12 +61,16 @@ func askedForFile(prompt string) (fileRequest, bool) {
 	}
 	if name == "" {
 		switch strings.ToLower(m[2]) {
-		case "spreadsheet", "excel", "xlsx", "workbook":
+		case "spreadsheet", "excel", "excel file", "xlsx", "workbook":
 			name = "spreadsheet.xlsx"
 		case "csv":
 			name = "data.csv"
-		case "json":
+		case "json", "json file":
 			name = "data.json"
+		case "pdf":
+			name = "document.pdf"
+		case "docx", "word document", "word file":
+			name = "document.docx"
 		default:
 			name = "document.md"
 		}
@@ -143,6 +164,9 @@ func makeFileFirst(ctx context.Context, env pluginapi.ExecutionEnvironment, prof
 	}
 	return reply, metrics, true
 }
+
+// makeTheFile asks a model that told the person to make a file to make it.
+const makeTheFile = "Don't tell the user to make the file themselves: you can make it. Call files.create with a file name, such as recipe.pdf or notes.docx, and the contents as Markdown (CSV for a spreadsheet). Then tell the user briefly that it's attached."
 
 // EventMakingFile tells the UI that Yggdrasil is writing a file.
 const EventMakingFile = "chat.making_file"

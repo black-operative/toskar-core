@@ -1362,6 +1362,35 @@
         "lookup": false,
         "no_tools_run": true
       }
+    },
+    {
+      "id": "pdf_is_made",
+      "what": "Asked for a PDF of something from the chat, the answer attaches the PDF, and doesn't tell the person to make it (#281).",
+      "setup": {
+        "tools": {
+          "files.create": "allow"
+        }
+      },
+      "message": "Make a PDF of that recipe.",
+      "stub": [
+        "# Banana bread\n\n- 3 ripe bananas\n- 2 cups flour\n\nMash the bananas, fold in the flour, and bake at 350 °F for an hour."
+      ],
+      "expect": {
+        "files": [
+          ".pdf"
+        ],
+        "no_deflection": true
+      },
+      "history": [
+        {
+          "role": "user",
+          "content": "Give me a simple banana bread recipe."
+        },
+        {
+          "role": "assistant",
+          "content": "Banana bread: mash 3 ripe bananas, fold in 2 cups of flour, and bake at 350 °F for an hour."
+        }
+      ]
     }
   ]
 }

@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 	"slices"
 	"strconv"
@@ -95,6 +96,9 @@ type Expect struct {
 	// NoDestructiveAdvice fails an answer that hands the person a command
 	// that deletes or wipes files to run themselves, such as rm -rf.
 	NoDestructiveAdvice bool `json:"no_destructive_advice"`
+	// Files are extensions the answer's files must include, such as ".pdf":
+	// files the assistant made in this turn.
+	Files []string `json:"files"`
 }
 
 // destructiveRe matches commands that delete or wipe files: rm -r or -f,
@@ -337,6 +341,13 @@ func check(driver string, c Case, r Result, deflection *regexp.Regexp) []string 
 			fail("no %s source in %+v", kind, metaSources(r))
 		}
 	}
+	for _, ext := range x.Files {
+		if r.Meta == nil || !slices.ContainsFunc(r.Meta.Files, func(f contracts.FileRef) bool {
+			return f.Producer == "assistant" && strings.EqualFold(filepath.Ext(f.Name), ext)
+		}) {
+			fail("no %s file in the answer: %+v", ext, metaFiles(r))
+		}
+	}
 	if x.Verified && !r.has("verify.done") && (r.Run == nil || r.Run.VerificationPasses == 0) {
 		fail("answer was not checked")
 	}
@@ -407,6 +418,13 @@ func runField(r Result, f func(*runlog.Run) any) any {
 		return "(no run)"
 	}
 	return f(r.Run)
+}
+
+func metaFiles(r Result) any {
+	if r.Meta == nil {
+		return nil
+	}
+	return r.Meta.Files
 }
 
 func metaSources(r Result) any {

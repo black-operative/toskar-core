@@ -1,5 +1,5 @@
 {
-  "version": "1.8",
+  "version": "1.9",
   "types": {
     "ActivityStep": [
       "kind",
@@ -17,6 +17,7 @@
       "source_task"
     ],
     "Citation": [
+      "artifact_id",
       "kind",
       "snippet",
       "source",

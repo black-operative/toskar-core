@@ -113,7 +113,7 @@ func (t *turnTrace) attachment(a artifacts.Artifact, picked, total int) {
 	if a.Producer == artifacts.ProducerAssistant {
 		source = "madeInChat"
 	}
-	t.addSource(contracts.Citation{Kind: "file", Title: a.Name, Source: locale.T(t.lang, "chat:answer."+source, nil)})
+	t.addSource(contracts.Citation{Kind: "file", Title: a.Name, Source: locale.T(t.lang, "chat:answer."+source, nil), ArtifactID: a.ID})
 }
 
 // dataKind reports whether the answer drew on the user's own data: "file"

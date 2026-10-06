@@ -18,6 +18,18 @@ func Deflects(answer string) bool {
 	return deflectRe.MatchString(answer)
 }
 
+// makeItYourselfRe matches answers that tell the person to make a file
+// themselves: "use any word processor to create your own PDF", "copy this
+// text into Word" (#281). They aren't looked up on the web; the file is made
+// instead.
+var makeItYourselfRe = regexp.MustCompile(`(?i)(\b(use|using|open|in) (a|any|your|an) (word processor|text editor|document editor|spreadsheet (app|program)|pdf (converter|creator|maker|tool|printer)|online (pdf|converter|tool))|\b(create|make|generate|save|export|print) (your own|it yourself|it as a pdf yourself|the (pdf|document|file|spreadsheet) yourself)|\bcopy (and paste )?(this|the|that|it)( text| content| recipe| table)?\b[^.\n]{0,80}\b(word|google docs|pages|word processor|text editor|document))`)
+
+// TellsToMakeFile reports an answer that tells the person to make a file
+// themselves, when the assistant could make it (§21).
+func TellsToMakeFile(answer string) bool {
+	return makeItYourselfRe.MatchString(answer)
+}
+
 // smallTalkRe matches one phrase of small talk: a greeting, thanks, or "how
 // are you". "As an AI, I don't have feelings" answers these; it is not a
 // deflection to look up.
