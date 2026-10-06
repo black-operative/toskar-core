@@ -36,6 +36,13 @@ toskarctl version | head -1
 yggctl version | head -1
 yggdrasil-daemon -version | head -1
 curl -fsS http://127.0.0.1:7331/api/v1/health
+echo "== GPU support (#317)"
+# The service user may open the GPU's render device, and apt brought the
+# Vulkan packages the .deb recommends.
+if getent group render >/dev/null; then
+	id -nG yggdrasil | tr ' ' '\n' | grep -qx render || { echo "yggdrasil is not in the render group: $(id -nG yggdrasil)" >&2; exit 1; }
+fi
+dpkg -s libvulkan1 mesa-vulkan-drivers >/dev/null || { echo "the recommended Vulkan packages weren't installed" >&2; exit 1; }
 
 echo "== installing again leaves it running"
 sh scripts/install.sh | grep -q "already installed and running"

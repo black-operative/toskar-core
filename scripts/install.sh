@@ -195,6 +195,39 @@ install_linux() {
 	start_service_linux
 }
 
+# gpu_hints: what this Linux still needs for Toskar to use its graphics
+# card (#317). The packages bring AMD and Intel's Vulkan drivers; NVIDIA's
+# driver is the computer's own, so say how to get it. Advice only: Toskar
+# runs on the CPU without them.
+gpu_hints() {
+	command -v lspci >/dev/null 2>&1 || return 0
+	cards="$(lspci 2>/dev/null | grep -Ei 'vga|3d|display' || true)"
+	[ -n "$cards" ] || return 0
+	distro=""
+	if [ -r /etc/os-release ]; then
+		# shellcheck disable=SC1091 # the system's own file
+		distro="$(. /etc/os-release && printf '%s %s' "${ID:-}" "${ID_LIKE:-}")"
+	fi
+	if printf '%s' "$cards" | grep -qi nvidia && ! command -v nvidia-smi >/dev/null 2>&1; then
+		say "Toskar can use this computer's NVIDIA card once NVIDIA's driver is installed, then a restart:"
+		case "$distro" in
+		*ubuntu*) say "  sudo ubuntu-drivers install" ;;
+		*fedora*) say "  sudo dnf install akmod-nvidia   (from RPM Fusion: https://rpmfusion.org/Howto/NVIDIA)" ;;
+		*debian*) say "  sudo apt-get install nvidia-driver   (from Debian's non-free-firmware: https://wiki.debian.org/NvidiaGraphicsDrivers)" ;;
+		*) say "  see https://www.nvidia.com/Download/index.aspx" ;;
+		esac
+	fi
+	if printf '%s' "$cards" | grep -Eqi 'amd|ati|radeon|intel' && ! ls /usr/lib/*/libvulkan.so.1 /usr/lib64/libvulkan.so.1 /usr/lib/libvulkan.so.1 >/dev/null 2>&1; then
+		say "Toskar can use this computer's AMD or Intel graphics once its Vulkan drivers are installed:"
+		case "$distro" in
+		*fedora* | *rhel*) say "  sudo dnf install vulkan-loader mesa-vulkan-drivers" ;;
+		*arch*) say "  sudo pacman -S vulkan-icd-loader vulkan-radeon vulkan-intel" ;;
+		*) say "  sudo apt-get install libvulkan1 mesa-vulkan-drivers" ;;
+		esac
+	fi
+	return 0
+}
+
 install_macos() {
 	old_prefix=""
 	if [ -n "$TOSKAR_PREFIX" ]; then
@@ -311,6 +344,7 @@ else
 		wait_healthy || die "Toskar didn't start within a minute; see its log (journalctl -u toskar on Linux, the logs folder in ~/Library/Application Support/Toskar, or Yggdrasil for an install from before the rename, on macOS) and try again"
 		ok "Toskar Core is running"
 	fi
+	if [ "$os" = "Linux" ]; then gpu_hints; fi
 fi
 
 if [ "$joining" -eq 1 ]; then

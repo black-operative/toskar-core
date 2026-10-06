@@ -107,13 +107,11 @@ jobs:
           persist-credentials: false
       - name: Build the daemon
         run: |
-          docker build --pull --build-arg COMMIT="$(git rev-parse --short HEAD)" -t "$NAME" .
-          # QUALITY_GPU=vulkan adds Vulkan and Mesa's drivers for an AMD or
-          # Intel card. No --pull: its base is the image just built.
-          if [ "$GPU" = vulkan ]; then
-            docker pull -q debian:trixie-slim
-            docker build --build-arg BASE="$NAME" -t "$NAME" -f tests/quality/gpu.Dockerfile tests/quality
-          fi
+          # QUALITY_GPU=vulkan builds the image with Vulkan and Mesa's
+          # drivers for an AMD or Intel card (the Dockerfile's gpu target).
+          target=runtime
+          if [ "$GPU" = vulkan ]; then target=gpu; fi
+          docker build --pull --target "$target" --build-arg COMMIT="$(git rev-parse --short HEAD)" -t "$NAME" .
       - name: Start the daemon
         run: |
           # A key made for this run: the tests reach the daemon over the

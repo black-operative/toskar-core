@@ -239,6 +239,8 @@ curl http://127.0.0.1:7331/v1/chat/completions \
 
 The daemon inventories the host on macOS, Windows, and Linux, including NVIDIA, AMD, Intel, and Apple GPUs when the platform probes succeed. Detection is not a promise that inference has been measured on every combination. The matrix is in [docs/compatibility.md](docs/compatibility.md). A hardware report is a useful contribution.
 
+Each running model shows whether it runs on the GPU, partly, or on the CPU, read from llama.cpp's own report, and the Performance page shows live GPU use, memory, temperature, and power. What each computer needs for its GPU, what the installers set up, and how to fix a model stuck on the CPU are in [docs/gpu.md](docs/gpu.md).
+
 ## Supported runtimes
 
 | Runtime id | What it is | Status |
@@ -246,7 +248,7 @@ The daemon inventories the host on macOS, Windows, and Linux, including NVIDIA, 
 | `llamacpp` | Managed `llama-server` from llama.cpp GitHub releases. Models are GGUF. | Implemented |
 | `external-openai` | A remote OpenAI-compatible base URL you configure. It is not installed as a local binary. | Implemented |
 
-Asset selection is per OS and CPU architecture. The Windows asset the installer looks for is `bin-win-cpu-x64`. See [docs/runtimes.md](docs/runtimes.md).
+Asset selection is per OS and CPU architecture: on Linux and Windows, the Vulkan build (`bin-ubuntu-vulkan-x64`, `bin-win-vulkan-x64`) when a usable GPU is found, and the CPU build otherwise. See [docs/runtimes.md](docs/runtimes.md) and [docs/gpu.md](docs/gpu.md).
 
 ## CLI
 
@@ -313,6 +315,7 @@ The control API and the OpenAI-compatible API require a bearer token from other 
 | --- | --- |
 | [User guide](docs/user-guide/README.md) | Source for the public guide |
 | [Troubleshooting](docs/troubleshooting.md) | First checks when something fails |
+| [GPU acceleration](docs/gpu.md) | Whether a model runs on the GPU, what each computer needs, and fixes |
 | [Configuration](docs/configuration.md) | Data directory, `config.json`, environment variables, settings |
 | [CLI](docs/cli.md) | `toskar` and `toskarctl` |
 | [Capabilities](docs/capabilities.md) | Internet, Files, Shell, Git, connected services, and MCP |

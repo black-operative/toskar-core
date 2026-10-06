@@ -12,6 +12,10 @@ make start
 
 Then open `http://127.0.0.1:7331`. `GET /api/v1/health` still works if the UI was not built.
 
+## A model runs on the CPU, not the GPU
+
+Its status on Models › Running says why: the CPU-only llama.cpp is installed, the model doesn't fit in the GPU's memory, or llama.cpp couldn't use the GPU (a missing driver or Vulkan). Diagnostics shows the same reason. [GPU acceleration](gpu.md#troubleshooting) has the fix for each, and what each kind of computer needs.
+
 ## Port already in use
 
 The API defaults to `7331` and Bifrost to `7332`. Stop the other process, or change `api_port` and `internal_port` in `config.json` in the data directory and restart. A second daemon needs its own data directory (`-data-dir`) as well.

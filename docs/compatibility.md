@@ -8,12 +8,12 @@ Submit a correction with the [hardware compatibility](../.github/ISSUE_TEMPLATE/
 | --- | --- | --- | --- | --- | --- |
 | macOS / Apple Silicon | Experimental | Experimental | Untested | Untested | `internal/hardware/darwin.go` reports CPU, memory, disk, and an Apple GPU with Metal. llama.cpp install selects `bin-macos-arm64`. Release CI cross-compiles darwin/arm64 from Linux. CI does not run the daemon on Apple Silicon. |
 | macOS / Intel | Experimental | Experimental | Untested | Untested | Same Darwin detector. llama.cpp install selects `bin-macos-x64`. Release archives include darwin/amd64. No Intel Mac run is recorded in CI. |
-| Windows / NVIDIA | Experimental | Experimental | Untested | Untested | `internal/hardware/windows.go` classifies a GPU name that contains "nvidia" and lists CUDA and Vulkan as backends. The llama.cpp installer selects `bin-win-cpu-x64`. No Windows GPU run is recorded in CI. |
-| Windows / AMD | Experimental | Experimental | Untested | Untested | Name heuristic for AMD or Radeon. Runtime asset is the Windows CPU archive. Vulkan is listed as a capability, not installed as a separate backend. |
-| Windows / Intel | Experimental | Experimental | Untested | Untested | Name heuristic for Intel graphics. Runtime asset is the Windows CPU archive. |
-| Linux / NVIDIA | Experimental | Experimental | Untested | Untested | `nvidia-smi` is used when it is on `PATH`. Unit tests run on Ubuntu in CI and do not require a GPU. llama.cpp install selects `bin-ubuntu-x64` or `bin-ubuntu-arm64`. |
-| Linux / AMD | Experimental | Experimental | Untested | Untested | `lspci` text match for AMD, ATI, or Radeon. `rocminfo` on `PATH` adds `rocm` to the reported backends. No ROCm inference run is recorded here. |
-| Linux / Intel | Experimental | Experimental | Untested | Untested | `lspci` text match for Intel display devices, and only when no other accelerator was added. Backends reported are Vulkan and CPU. |
+| Windows / NVIDIA | Experimental | Experimental | Untested | Untested | `internal/hardware/windows.go` classifies a GPU name that contains "nvidia" and lists CUDA and Vulkan as backends. The llama.cpp installer selects `bin-win-vulkan-x64` when NVIDIA's driver provides Vulkan, and `bin-win-cpu-x64` otherwise. Live figures come from `nvidia-smi`. No Windows GPU run is recorded in CI. |
+| Windows / AMD | Experimental | Experimental | Untested | Untested | Name heuristic for AMD or Radeon. The installer selects `bin-win-vulkan-x64` when the card's driver provides Vulkan. Live busy % and memory come from Windows' GPU counters; temperature and power are not available. |
+| Windows / Intel | Experimental | Experimental | Untested | Untested | Name heuristic for Intel graphics. As for AMD. |
+| Linux / NVIDIA | Experimental | Experimental | Untested | Untested | `nvidia-smi` is used when it is on `PATH`. Unit tests run on Ubuntu in CI and do not require a GPU. llama.cpp install selects `bin-ubuntu-vulkan-x64` when the driver provides Vulkan, and `bin-ubuntu-x64` or `bin-ubuntu-arm64` otherwise. |
+| Linux / AMD | Experimental | Experimental | Tested | Untested | Cards come from `/sys/class/drm` (named by `lspci` when installed), with their video memory. The installer selects `bin-ubuntu-vulkan-x64`. The weekly quality runs use a Radeon RX 7900 XTX through Vulkan in Docker (#296, #317): all layers on the GPU, and the quality set passes with Qwen 2.5 7B, 14B, and 32B. `rocminfo` on `PATH` adds `rocm` to the reported backends; no ROCm run is recorded. |
+| Linux / Intel | Experimental | Experimental | Untested | Untested | Cards come from `/sys/class/drm`, counted only when no other accelerator was found. Backends reported are Vulkan and CPU. |
 
 ## Training, knowledge, and text recognition
 

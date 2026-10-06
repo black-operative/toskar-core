@@ -17,12 +17,12 @@ Install looks up recent GitHub releases of `ggml-org/llama.cpp` and downloads on
 | --- | --- |
 | macOS arm64 | `bin-macos-arm64` |
 | macOS amd64 | `bin-macos-x64` |
-| Linux amd64 | `bin-ubuntu-x64` |
+| Linux amd64 | `bin-ubuntu-vulkan-x64` with a usable GPU, `bin-ubuntu-x64` otherwise |
 | Linux arm64 | `bin-ubuntu-arm64` |
-| Windows amd64 | `bin-win-cpu-x64` |
+| Windows amd64 | `bin-win-vulkan-x64` with a usable GPU, `bin-win-cpu-x64` otherwise |
 | anything else | the GOOS-GOARCH pair, which usually fails the lookup |
 
-The binary is stored under the data directory `runtimes/llamacpp/` unless a macOS build finds a `llama-server` placed beside the daemon. Capability reporting adds `metal` on macOS and `vulkan` on Linux and Windows next to `cpu`. The Windows archive the installer selects is the CPU build named above. CUDA and ROCm are names the hardware inventory can attach to a GPU it sees. They are not a separate installer path in this code.
+The binary is stored under the data directory `runtimes/llamacpp/` unless a macOS build finds a `llama-server` placed beside the daemon. A usable GPU is a Vulkan loader that finds a graphics card (`vulkaninfo`, or the loader, a GPU driver, and a detected card). A CPU install on a computer where the Vulkan build would run is replaced at the next start with no model running. Capability reporting lists `cpu` and the GPU backends of the installed build (`metal` on macOS, `vulkan` when the Vulkan build is installed). CUDA and ROCm are names the hardware inventory can attach to a GPU it sees; they are not a separate installer path. Whether a running model is actually on the GPU is read from llama-server's log; see [GPU acceleration](gpu.md).
 
 On a Mac App Store build, the sandbox cannot `fork` a binary downloaded into the container. Those builds are expected to ship a signed `llama-server` next to the daemon. That packaging is outside this repository.
 

@@ -50,6 +50,25 @@ function Fail([string]$Message) {
     exit 1
 }
 
+# What this PC still needs for Toskar to use its graphics card (#317):
+# Vulkan comes with the card maker's driver (vulkan-1.dll). Windows' basic
+# display driver has none. Advice only: Toskar runs on the CPU without it.
+function Show-GpuHints {
+    $cards = @(Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -and $_.Name -notmatch 'Basic Display|Basic Render|Remote Display' })
+    if ($cards.Count -eq 0) { return }
+    $vulkan = Test-Path (Join-Path $env:SystemRoot 'System32\vulkan-1.dll')
+    $nvidia = $cards | Where-Object { $_.Name -match 'NVIDIA' }
+    if ($vulkan -and (-not $nvidia -or (Get-Command nvidia-smi -ErrorAction SilentlyContinue))) { return }
+    Write-Host "Toskar can use this PC's graphics card ($($cards[0].Name)) once its maker's driver is installed:"
+    switch -Regex ($cards[0].Name) {
+        'NVIDIA' { Write-Host '  https://www.nvidia.com/Download/index.aspx' }
+        'AMD|Radeon' { Write-Host '  https://www.amd.com/en/support/download/drivers.html' }
+        'Intel' { Write-Host '  https://www.intel.com/content/www/us/en/download-center/home.html' }
+        default { Write-Host "  from the card maker's website" }
+    }
+}
+
 function Test-Healthy {
     try {
         Invoke-RestMethod -Uri "$Api/api/v1/health" -TimeoutSec 2 | Out-Null
@@ -164,6 +183,7 @@ if ($installed -and (Test-Healthy)) {
         Start-Sleep -Seconds 1
     }
     Write-Host '✓ Toskar Core is running'
+    Show-GpuHints
 }
 
 if ($Command -eq 'join') {

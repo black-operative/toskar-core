@@ -73,7 +73,7 @@ expectations and pages, so the phone is held to what core does.
   `32g`, no swap) and `QUALITY_CPUS` (default three quarters of the cores),
   and picks its models to fit; each run first removes containers an
   interrupted run left behind. `QUALITY_GPU=vulkan` builds the image with
-  Vulkan and Mesa's drivers (`gpu.Dockerfile`) and passes in the AMD or Intel
+  Vulkan and Mesa's drivers (the Dockerfile's `gpu` target) and passes in the AMD or Intel
   card (`--device /dev/dri`); the runner's user must be able to open
   `/dev/dri/renderD*`. The report names the card or CPU the run used.
   The job runs once per model in `QUALITY_MODELS` (a JSON list; the

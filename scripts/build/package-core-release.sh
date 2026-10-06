@@ -64,7 +64,11 @@ EOF
     # over that package's files; rpm obsoletes it, so dnf upgrades to
     # toskar, and apt gets there through the transitional yggdrasil
     # package (package_transitional).
-    printf 'overrides:\n  deb:\n    replaces: ["yggdrasil (<< %s)"]\n  rpm:\n    replaces: ["yggdrasil < %s"]\n    provides: ["yggdrasil = %s"]\ndeb:\n  breaks: ["yggdrasil (<< %s)"]\n' \
+    # GPU support (#317): the Vulkan loader and Mesa's drivers for AMD and
+    # Intel cards, vulkaninfo to check one is usable, and lspci to name it.
+    # Recommended, so apt and dnf install them by default but a server can
+    # leave them out. NVIDIA's driver is the user's to install.
+    printf 'overrides:\n  deb:\n    replaces: ["yggdrasil (<< %s)"]\n    recommends: ["libvulkan1", "mesa-vulkan-drivers", "vulkan-tools", "pciutils"]\n  rpm:\n    replaces: ["yggdrasil < %s"]\n    provides: ["yggdrasil = %s"]\n    recommends: ["vulkan-loader", "mesa-vulkan-drivers", "vulkan-tools", "pciutils"]\ndeb:\n  breaks: ["yggdrasil (<< %s)"]\n' \
       "$PKG_VERSION" "$PKG_VERSION" "$PKG_VERSION" "$PKG_VERSION" >> "$cfg"
     cat >> "$cfg" <<EOF
 maintainer: YEIXIO LLC <hello@yeix.io>
