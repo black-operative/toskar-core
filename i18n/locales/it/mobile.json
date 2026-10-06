@@ -25,22 +25,28 @@
   "connection": {
     "enterAddress": "Inserisci l'indirizzo del computer su cui è in esecuzione Toskar.",
     "couldNotReach": "Impossibile raggiungere Toskar.",
-    "unreachable": "Toskar su quel computer non è raggiungibile. Usa la stessa rete Wi-Fi e attiva l'accesso LAN per l'API su quel computer.",
-    "keyRejected": "Quella chiave API è stata rifiutata. Crea una chiave in Accesso API sul computer, poi incollala qui.",
+    "unreachable": "Toskar su quel computer non è raggiungibile. Usa la stessa rete Wi-Fi e scegli Collega un telefono su quel computer.",
+    "keyRejected": "Quella chiave API è stata rifiutata. Collegati invece con un codice dal computer, oppure crea una chiave in Accesso API.",
     "dropped": "La connessione a Toskar si è interrotta.",
     "chatFailed": "Chat non riuscita.",
     "requestFailed": "Richiesta non riuscita"
   },
   "connect": {
     "title": "Collega un computer",
-    "subtitle": "Il telefono usa il computer su cui sono già in esecuzione i tuoi modelli. Su quel computer, apri Accesso API, consenti l'API sulla rete locale e crea una chiave.",
+    "subtitle": "Il telefono usa il computer su cui sono già in esecuzione i tuoi modelli. Su quel computer, apri Computer e scegli Collega un telefono.",
     "address": "Indirizzo del computer",
     "addressPlaceholder": "192.168.1.20",
+    "code": "Codice",
+    "codePlaceholder": "Codice di 6 cifre",
+    "codeHint": "Il codice che il computer mostra in Computer → Collega un telefono. Vale una volta, per 10 minuti.",
+    "useKey": "Usa invece una chiave API",
+    "useCode": "Usa invece un codice",
     "apiKey": "Chiave API",
     "apiKeyPlaceholder": "Incolla la chiave",
     "connect": "Collega",
     "connecting": "Collegamento",
-    "notReady": "Toskar ha risposto, ma non è pronto."
+    "notReady": "Toskar ha risposto, ma non è pronto.",
+    "pairUnsupported": "Il Toskar di quel computer è troppo vecchio per collegarsi con un codice. Aggiornalo o usa una chiave API."
   },
   "discovery": {
     "onThisNetwork": "Su questa rete",
@@ -50,7 +56,8 @@
     "lookingLabel": "Ricerca di computer su questa rete",
     "none": "Nessun computer trovato. Avvia Toskar sul tuo computer e usa la stessa rete Wi-Fi, oppure inserisci il suo indirizzo.",
     "localNetworkDenied": "Toskar non ha il permesso di cercare computer sulla tua rete. Consentilo in Impostazioni > Privacy e sicurezza > Rete locale.",
-    "listFailed": "Impossibile elencare i computer su questa rete. Puoi comunque inserire un indirizzo qui sotto."
+    "listFailed": "Impossibile elencare i computer su questa rete. Puoi comunque inserire un indirizzo qui sotto.",
+    "lanOff": "Prima scegli Collega un telefono su quel computer"
   },
   "computers": {
     "title": "Computer",

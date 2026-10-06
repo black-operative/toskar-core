@@ -25,22 +25,28 @@
   "connection": {
     "enterAddress": "請輸入執行 Toskar 的電腦位址。",
     "couldNotReach": "無法連線到 Toskar。",
-    "unreachable": "無法連線到那台電腦上的 Toskar。請使用相同的 Wi-Fi 網路，並在那台電腦上開啟 API 的 LAN 存取。",
-    "keyRejected": "這把 API 金鑰被拒絕。請在那台電腦的「API 存取」中建立金鑰，然後貼到這裡。",
+    "unreachable": "無法連線到那台電腦上的 Toskar。請使用相同的 Wi-Fi 網路，並在那台電腦上選擇「連接手機」。",
+    "keyRejected": "這把 API 金鑰被拒絕。請改用那台電腦上的代碼連接，或在「API 存取」中建立金鑰。",
     "dropped": "與 Toskar 的連線已中斷。",
     "chatFailed": "聊天失敗。",
     "requestFailed": "請求失敗"
   },
   "connect": {
     "title": "連線到電腦",
-    "subtitle": "手機會使用已在執行你的模型的電腦。請在那台電腦上打開「API 存取」，允許在區域網路上使用 API，並建立一把金鑰。",
+    "subtitle": "手機會使用已在執行你的模型的電腦。請在那台電腦上打開「電腦」，然後選擇「連接手機」。",
     "address": "電腦位址",
     "addressPlaceholder": "192.168.1.20",
+    "code": "代碼",
+    "codePlaceholder": "6 位數代碼",
+    "codeHint": "那台電腦在「電腦」→「連接手機」中顯示的代碼。10 分鐘內有效，只能用一次。",
+    "useKey": "改用 API 金鑰",
+    "useCode": "改用代碼",
     "apiKey": "API 金鑰",
     "apiKeyPlaceholder": "貼上金鑰",
     "connect": "連線",
     "connecting": "正在連線",
-    "notReady": "Toskar 有回應，但尚未就緒。"
+    "notReady": "Toskar 有回應，但尚未就緒。",
+    "pairUnsupported": "那台電腦上的 Toskar 版本太舊，無法用代碼連接。請更新它，或改用 API 金鑰。"
   },
   "discovery": {
     "onThisNetwork": "在這個網路上",
@@ -50,7 +56,8 @@
     "lookingLabel": "正在這個網路上尋找電腦",
     "none": "找不到任何電腦。請在你的電腦上啟動 Toskar 並使用相同的 Wi-Fi，或輸入它的位址。",
     "localNetworkDenied": "Toskar 沒有權限在你的網路上尋找電腦。請在「設定」>「隱私權與安全性」>「區域網路」中允許。",
-    "listFailed": "無法列出這個網路上的電腦。你仍可以在下方輸入位址。"
+    "listFailed": "無法列出這個網路上的電腦。你仍可以在下方輸入位址。",
+    "lanOff": "請先在那台電腦上選擇「連接手機」"
   },
   "computers": {
     "title": "電腦",

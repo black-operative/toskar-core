@@ -25,22 +25,28 @@
   "connection": {
     "enterAddress": "Enter the address of the computer running Toskar.",
     "couldNotReach": "Could not reach Toskar.",
-    "unreachable": "Toskar on that computer is not reachable. Use the same Wi-Fi network, and turn on LAN access for the API on that computer.",
-    "keyRejected": "That API key was rejected. Create a key in API Access on the computer, then paste it here.",
+    "unreachable": "Toskar on that computer is not reachable. Use the same Wi-Fi network, and choose Connect a phone on that computer.",
+    "keyRejected": "That API key was rejected. Connect with a code from the computer instead, or create a key in API Access.",
     "dropped": "The connection to Toskar dropped.",
     "chatFailed": "Chat failed.",
     "requestFailed": "Request failed"
   },
   "connect": {
     "title": "Connect a computer",
-    "subtitle": "The phone uses the computer that already runs your models. On that computer, open API Access, allow the API on your local network, and create a key.",
+    "subtitle": "The phone uses the computer that already runs your models. On that computer, open Computers and choose Connect a phone.",
     "address": "Computer address",
     "addressPlaceholder": "192.168.1.20",
+    "code": "Code",
+    "codePlaceholder": "6-digit code",
+    "codeHint": "The code the computer shows under Computers → Connect a phone. It works once, for 10 minutes.",
+    "useKey": "Use an API key instead",
+    "useCode": "Use a code instead",
     "apiKey": "API key",
     "apiKeyPlaceholder": "Paste the key",
     "connect": "Connect",
     "connecting": "Connecting",
-    "notReady": "Toskar answered, but it is not ready."
+    "notReady": "Toskar answered, but it is not ready.",
+    "pairUnsupported": "That computer's Toskar is too old to connect with a code. Update it, or use an API key."
   },
   "discovery": {
     "onThisNetwork": "On this network",
@@ -50,7 +56,8 @@
     "lookingLabel": "Looking for computers on this network",
     "none": "No computers found. Start Toskar on your computer and use the same Wi-Fi, or enter its address.",
     "localNetworkDenied": "Toskar may not look for computers on your network. Allow it in Settings > Privacy & Security > Local Network.",
-    "listFailed": "Computers on this network could not be listed. You can still enter an address below."
+    "listFailed": "Computers on this network could not be listed. You can still enter an address below.",
+    "lanOff": "Choose Connect a phone on that computer first"
   },
   "computers": {
     "title": "Computers",

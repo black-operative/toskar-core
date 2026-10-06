@@ -25,22 +25,28 @@
   "connection": {
     "enterAddress": "请输入运行 Toskar 的电脑的地址。",
     "couldNotReach": "无法访问 Toskar。",
-    "unreachable": "无法访问那台电脑上的 Toskar。请连接同一个 Wi-Fi 网络，并在那台电脑上开启 API 的局域网访问。",
-    "keyRejected": "该 API 密钥被拒绝。请在那台电脑的“API 访问”中创建一个密钥，然后粘贴到这里。",
+    "unreachable": "无法访问那台电脑上的 Toskar。请连接同一个 Wi-Fi 网络，并在那台电脑上选择“连接手机”。",
+    "keyRejected": "该 API 密钥被拒绝。请改用那台电脑上的代码连接，或在“API 访问”中创建密钥。",
     "dropped": "与 Toskar 的连接已断开。",
     "chatFailed": "聊天失败。",
     "requestFailed": "请求失败"
   },
   "connect": {
     "title": "连接电脑",
-    "subtitle": "手机会使用已经运行你的模型的那台电脑。在那台电脑上打开“API 访问”，允许在局域网中使用 API，并创建一个密钥。",
+    "subtitle": "手机会使用已经运行你的模型的那台电脑。在那台电脑上打开“电脑”，然后选择“连接手机”。",
     "address": "电脑地址",
     "addressPlaceholder": "192.168.1.20",
+    "code": "代码",
+    "codePlaceholder": "6 位代码",
+    "codeHint": "那台电脑在“电脑”→“连接手机”中显示的代码。10 分钟内有效，只能用一次。",
+    "useKey": "改用 API 密钥",
+    "useCode": "改用代码",
     "apiKey": "API 密钥",
     "apiKeyPlaceholder": "粘贴密钥",
     "connect": "连接",
     "connecting": "正在连接",
-    "notReady": "Toskar 已响应，但尚未就绪。"
+    "notReady": "Toskar 已响应，但尚未就绪。",
+    "pairUnsupported": "那台电脑上的 Toskar 版本太旧，无法用代码连接。请更新它，或改用 API 密钥。"
   },
   "discovery": {
     "onThisNetwork": "在此网络中",
@@ -50,7 +56,8 @@
     "lookingLabel": "正在此网络中查找电脑",
     "none": "未找到电脑。请在你的电脑上启动 Toskar 并连接同一个 Wi-Fi，或输入它的地址。",
     "localNetworkDenied": "Toskar 无权在你的网络中查找电脑。请在“设置”>“隐私与安全性”>“本地网络”中允许它。",
-    "listFailed": "无法列出此网络中的电脑。你仍可以在下方输入地址。"
+    "listFailed": "无法列出此网络中的电脑。你仍可以在下方输入地址。",
+    "lanOff": "请先在那台电脑上选择“连接手机”"
   },
   "computers": {
     "title": "电脑",

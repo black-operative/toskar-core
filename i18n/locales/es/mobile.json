@@ -25,22 +25,28 @@
   "connection": {
     "enterAddress": "Ingresa la dirección de la computadora que ejecuta Toskar.",
     "couldNotReach": "No se pudo acceder a Toskar.",
-    "unreachable": "No se puede acceder a Toskar en esa computadora. Usa la misma red Wi-Fi y activa el acceso desde la LAN para la API en esa computadora.",
-    "keyRejected": "Se rechazó esa clave de API. Crea una clave en Acceso a la API en la computadora y luego pégala aquí.",
+    "unreachable": "No se puede acceder a Toskar en esa computadora. Usa la misma red Wi-Fi y elige Conectar un teléfono en esa computadora.",
+    "keyRejected": "Se rechazó esa clave de API. Conéctate con un código de la computadora, o crea una clave en Acceso a la API.",
     "dropped": "Se perdió la conexión con Toskar.",
     "chatFailed": "Falló el chat.",
     "requestFailed": "Falló la solicitud"
   },
   "connect": {
     "title": "Conectar una computadora",
-    "subtitle": "El teléfono usa la computadora que ya ejecuta tus modelos. En esa computadora, abre Acceso a la API, permite la API en tu red local y crea una clave.",
+    "subtitle": "El teléfono usa la computadora que ya ejecuta tus modelos. En esa computadora, abre Computadoras y elige Conectar un teléfono.",
     "address": "Dirección de la computadora",
     "addressPlaceholder": "192.168.1.20",
+    "code": "Código",
+    "codePlaceholder": "Código de 6 dígitos",
+    "codeHint": "El código que muestra la computadora en Computadoras → Conectar un teléfono. Sirve una vez, durante 10 minutos.",
+    "useKey": "Usar una clave de API",
+    "useCode": "Usar un código",
     "apiKey": "Clave de API",
     "apiKeyPlaceholder": "Pega la clave",
     "connect": "Conectar",
     "connecting": "Conectando",
-    "notReady": "Toskar respondió, pero no está listo."
+    "notReady": "Toskar respondió, pero no está listo.",
+    "pairUnsupported": "El Toskar de esa computadora es demasiado antiguo para conectarse con un código. Actualízalo o usa una clave de API."
   },
   "discovery": {
     "onThisNetwork": "En esta red",
@@ -50,7 +56,8 @@
     "lookingLabel": "Buscando computadoras en esta red",
     "none": "No se encontraron computadoras. Inicia Toskar en tu computadora y usa la misma red Wi-Fi, o ingresa su dirección.",
     "localNetworkDenied": "Toskar no tiene permiso para buscar computadoras en tu red. Permítelo en Configuración > Privacidad y seguridad > Red local.",
-    "listFailed": "No se pudieron listar las computadoras de esta red. Todavía puedes ingresar una dirección abajo."
+    "listFailed": "No se pudieron listar las computadoras de esta red. Todavía puedes ingresar una dirección abajo.",
+    "lanOff": "Primero elige Conectar un teléfono en esa computadora"
   },
   "computers": {
     "title": "Computadoras",

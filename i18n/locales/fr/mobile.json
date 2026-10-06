@@ -25,22 +25,28 @@
   "connection": {
     "enterAddress": "Saisissez l'adresse de l'ordinateur qui exécute Toskar.",
     "couldNotReach": "Impossible de joindre Toskar.",
-    "unreachable": "Toskar est injoignable sur cet ordinateur. Utilisez le même réseau Wi-Fi et activez l'accès LAN pour l'API sur cet ordinateur.",
-    "keyRejected": "Cette clé API a été refusée. Créez une clé dans Accès API sur l'ordinateur, puis collez-la ici.",
+    "unreachable": "Toskar est injoignable sur cet ordinateur. Utilisez le même réseau Wi-Fi et choisissez Connecter un téléphone sur cet ordinateur.",
+    "keyRejected": "Cette clé API a été refusée. Connectez-vous plutôt avec un code de l'ordinateur, ou créez une clé dans Accès API.",
     "dropped": "La connexion à Toskar a été interrompue.",
     "chatFailed": "La discussion a échoué.",
     "requestFailed": "La requête a échoué"
   },
   "connect": {
     "title": "Connecter un ordinateur",
-    "subtitle": "Le téléphone utilise l'ordinateur qui exécute déjà vos modèles. Sur cet ordinateur, ouvrez Accès API, autorisez l'API sur votre réseau local et créez une clé.",
+    "subtitle": "Le téléphone utilise l'ordinateur qui exécute déjà vos modèles. Sur cet ordinateur, ouvrez Ordinateurs et choisissez Connecter un téléphone.",
     "address": "Adresse de l'ordinateur",
     "addressPlaceholder": "192.168.1.20",
+    "code": "Code",
+    "codePlaceholder": "Code à 6 chiffres",
+    "codeHint": "Le code affiché par l'ordinateur dans Ordinateurs → Connecter un téléphone. Il sert une fois, pendant 10 minutes.",
+    "useKey": "Utiliser plutôt une clé API",
+    "useCode": "Utiliser plutôt un code",
     "apiKey": "Clé API",
     "apiKeyPlaceholder": "Collez la clé",
     "connect": "Connecter",
     "connecting": "Connexion",
-    "notReady": "Toskar a répondu, mais n'est pas prêt."
+    "notReady": "Toskar a répondu, mais n'est pas prêt.",
+    "pairUnsupported": "Le Toskar de cet ordinateur est trop ancien pour une connexion par code. Mettez-le à jour ou utilisez une clé API."
   },
   "discovery": {
     "onThisNetwork": "Sur ce réseau",
@@ -50,7 +56,8 @@
     "lookingLabel": "Recherche d'ordinateurs sur ce réseau",
     "none": "Aucun ordinateur trouvé. Lancez Toskar sur votre ordinateur et utilisez le même Wi-Fi, ou saisissez son adresse.",
     "localNetworkDenied": "Toskar n'est peut-être pas autorisé à rechercher des ordinateurs sur votre réseau. Autorisez-le dans Réglages > Confidentialité et sécurité > Réseau local.",
-    "listFailed": "Impossible de lister les ordinateurs de ce réseau. Vous pouvez toujours saisir une adresse ci-dessous."
+    "listFailed": "Impossible de lister les ordinateurs de ce réseau. Vous pouvez toujours saisir une adresse ci-dessous.",
+    "lanOff": "Choisissez d'abord Connecter un téléphone sur cet ordinateur"
   },
   "computers": {
     "title": "Ordinateurs",

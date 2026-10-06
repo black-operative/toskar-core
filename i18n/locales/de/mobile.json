@@ -25,22 +25,28 @@
   "connection": {
     "enterAddress": "Gib die Adresse des Computers ein, auf dem Toskar läuft.",
     "couldNotReach": "Toskar ist nicht erreichbar.",
-    "unreachable": "Toskar auf diesem Computer ist nicht erreichbar. Nutze dasselbe WLAN und schalte auf diesem Computer den LAN-Zugriff für die API ein.",
-    "keyRejected": "Dieser API-Schlüssel wurde abgelehnt. Erstelle auf dem Computer unter „API-Zugriff“ einen Schlüssel und füge ihn hier ein.",
+    "unreachable": "Toskar auf diesem Computer ist nicht erreichbar. Nutze dasselbe WLAN und wähle auf diesem Computer „Telefon verbinden“.",
+    "keyRejected": "Dieser API-Schlüssel wurde abgelehnt. Verbinde dich stattdessen mit einem Code vom Computer, oder erstelle einen Schlüssel unter „API-Zugriff“.",
     "dropped": "Die Verbindung zu Toskar wurde unterbrochen.",
     "chatFailed": "Chat fehlgeschlagen.",
     "requestFailed": "Anfrage fehlgeschlagen"
   },
   "connect": {
     "title": "Computer verbinden",
-    "subtitle": "Das Handy nutzt den Computer, auf dem deine Modelle bereits laufen. Öffne auf diesem Computer „API-Zugriff“, erlaube die API im lokalen Netzwerk und erstelle einen Schlüssel.",
+    "subtitle": "Das Handy nutzt den Computer, auf dem deine Modelle bereits laufen. Öffne auf diesem Computer „Computer“ und wähle „Telefon verbinden“.",
     "address": "Adresse des Computers",
     "addressPlaceholder": "192.168.1.20",
+    "code": "Code",
+    "codePlaceholder": "6-stelliger Code",
+    "codeHint": "Der Code, den der Computer unter „Computer“ → „Telefon verbinden“ zeigt. Er gilt einmal, 10 Minuten lang.",
+    "useKey": "Stattdessen einen API-Schlüssel verwenden",
+    "useCode": "Stattdessen einen Code verwenden",
     "apiKey": "API-Schlüssel",
     "apiKeyPlaceholder": "Schlüssel einfügen",
     "connect": "Verbinden",
     "connecting": "Verbindung wird hergestellt",
-    "notReady": "Toskar hat geantwortet, ist aber nicht bereit."
+    "notReady": "Toskar hat geantwortet, ist aber nicht bereit.",
+    "pairUnsupported": "Toskar auf diesem Computer ist zu alt für die Verbindung per Code. Aktualisiere es oder verwende einen API-Schlüssel."
   },
   "discovery": {
     "onThisNetwork": "In diesem Netzwerk",
@@ -50,7 +56,8 @@
     "lookingLabel": "Computer in diesem Netzwerk werden gesucht",
     "none": "Keine Computer gefunden. Starte Toskar auf deinem Computer und nutze dasselbe WLAN, oder gib seine Adresse ein.",
     "localNetworkDenied": "Toskar darf nicht nach Computern in deinem Netzwerk suchen. Erlaube es unter Einstellungen > Datenschutz & Sicherheit > Lokales Netzwerk.",
-    "listFailed": "Computer in diesem Netzwerk konnten nicht aufgelistet werden. Du kannst unten trotzdem eine Adresse eingeben."
+    "listFailed": "Computer in diesem Netzwerk konnten nicht aufgelistet werden. Du kannst unten trotzdem eine Adresse eingeben.",
+    "lanOff": "Wähle zuerst auf diesem Computer „Telefon verbinden“"
   },
   "computers": {
     "title": "Computer",
