@@ -13,6 +13,7 @@ import (
 	"github.com/yeixio/toskar-core/internal/mimir"
 	"github.com/yeixio/toskar-core/internal/muninn"
 	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/weblink"
 	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
@@ -348,6 +349,8 @@ func (t *turnTrace) tool(toolID string, args, result map[string]any) {
 		if u == "" {
 			u = str(args, "url")
 		}
+		// Sources link the page a person opens, not a machine-format query.
+		u = weblink.Readable(u)
 		if strings.EqualFold(title, "Untitled page") {
 			title = ""
 		}

@@ -10,6 +10,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/yeixio/toskar-core/internal/tools"
+	"github.com/yeixio/toskar-core/internal/weblink"
 	"github.com/yeixio/toskar-core/pkg/contracts"
 	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
@@ -186,7 +187,9 @@ func lookUp(ctx context.Context, env pluginapi.ExecutionEnvironment, profile con
 		if utf8.RuneCountInString(content) > lookupPageRunes {
 			content = string([]rune(content)[:lookupPageRunes]) + "…"
 		}
-		fmt.Fprintf(&b, "\nPage read: %s (%s)\n%s\n", strings.TrimSpace(title), link, strings.TrimSpace(content))
+		// The page a person opens, not a machine-format query (wttr.in), since
+		// the model is asked to include the most relevant link.
+		fmt.Fprintf(&b, "\nPage read: %s (%s)\n%s\n", strings.TrimSpace(title), weblink.Readable(link), strings.TrimSpace(content))
 	}
 	return b.String(), true
 }
