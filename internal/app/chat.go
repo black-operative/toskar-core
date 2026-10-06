@@ -490,6 +490,10 @@ func (a *App) RunChat(ctx context.Context, profileID, conversationID, message st
 		// The answer keeps its context reading, so the gauge shows it when the
 		// chat is opened again.
 		answerMeta := withContextUsage(env.trace.meta(), contextUsage)
+		// And where it ran, when every step ran here (#317).
+		if env.ranLocally() {
+			answerMeta = withDevice(answerMeta, a.localAcceleration(ctx, env.modelID()))
+		}
 		if conversationID != "" && full != "" {
 			saveChat, _ := a.Settings.GetBool(ctx, "save_chat_history", true)
 			msgID := ""
@@ -586,6 +590,20 @@ func withContextUsage(meta *contracts.MessageMeta, usage map[string]any) *contra
 		meta = &contracts.MessageMeta{Contract: contracts.ContractVersion}
 	}
 	meta.Context = &cu
+	return meta
+}
+
+// withDevice adds the backend and device that ran an answer to its
+// metadata, making metadata for an answer that has nothing else to keep.
+func withDevice(meta *contracts.MessageMeta, acc *pluginapi.Acceleration) *contracts.MessageMeta {
+	backend, device := accelerationLabel(acc)
+	if backend == "" {
+		return meta
+	}
+	if meta == nil {
+		meta = &contracts.MessageMeta{Contract: contracts.ContractVersion}
+	}
+	meta.Backend, meta.Device = backend, device
 	return meta
 }
 

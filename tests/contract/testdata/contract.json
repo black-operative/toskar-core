@@ -1,5 +1,5 @@
 {
-  "version": "1.7",
+  "version": "1.8",
   "types": {
     "ActivityStep": [
       "kind",
@@ -88,8 +88,10 @@
       "role"
     ],
     "MessageMeta": [
+      "backend",
       "context",
       "contract",
+      "device",
       "files",
       "notice",
       "run_id",

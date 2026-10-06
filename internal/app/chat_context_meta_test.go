@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/yeixio/toskar-core/pkg/contracts"
+	"github.com/yeixio/toskar-core/pkg/pluginapi"
 )
 
 // An answer keeps its context reading, so the gauge shows it when the chat
@@ -21,5 +22,21 @@ func TestWithContextUsage(t *testing.T) {
 	// No reading, or an empty one, adds nothing.
 	if withContextUsage(nil, nil) != nil || withContextUsage(nil, map[string]any{"limit": 8192}) != nil {
 		t.Fatal("an empty reading made metadata")
+	}
+}
+
+// An answer keeps the backend and device that ran it (#317), and an
+// unknown report leaves the metadata as it was.
+func TestWithDevice(t *testing.T) {
+	meta := withDevice(nil, &pluginapi.Acceleration{Backend: "vulkan", Devices: []string{"AMD Radeon RX 7900 XTX"}})
+	if meta == nil || meta.Backend != "vulkan" || meta.Device != "AMD Radeon RX 7900 XTX" || meta.Contract == "" {
+		t.Fatalf("meta: %+v", meta)
+	}
+	if withDevice(nil, nil) != nil {
+		t.Error("no report should make no metadata")
+	}
+	kept := &contracts.MessageMeta{Notice: "smaller model"}
+	if got := withDevice(kept, &pluginapi.Acceleration{Backend: "cpu"}); got != kept || got.Backend != "cpu" || got.Device != "" {
+		t.Errorf("cpu: %+v", got)
 	}
 }

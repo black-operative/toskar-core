@@ -413,6 +413,9 @@ export interface MessageMeta {
   setup?: SetupOffer
   /** How full the model's window was for this answer, for the context gauge (contract 1.6). */
   context?: Record<string, unknown>
+  /** The backend and device that ran the answer (#317, contract 1.8). */
+  backend?: string
+  device?: string
 }
 
 /** An offer to install a missing ability, then finish the request (Gungnir §29). */

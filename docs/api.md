@@ -653,7 +653,7 @@ When llama-server loads a model, it logs which devices it found, how many of the
 | `layers_offloaded`, `layers_total` | Layers on a GPU, of the model's total (0 when the runtime didn't say) |
 | `gpu_memory_bytes` | What the model, its cache, and its working memory take on the GPUs |
 
-The same report tags what each model produced, so a GPU reply can be told from a CPU one: `GET /performance` records and the models in a run (`GET /runs/{id}`) carry `backend` and `device` (such as `vulkan` and `AMD Radeon RX 7900 XTX`, or `cpu` and an empty device), and so does every benchmark sample. They are empty for replies recorded before this, and for steps that ran on a paired computer. `GET /runtimes` lists what the installed llama.cpp build can run on in `detection.backends`, such as `["cpu", "vulkan"]`; a CPU-only build is `["cpu"]`.
+The same report tags what each model produced, so a GPU reply can be told from a CPU one: `GET /performance` records and the models in a run (`GET /runs/{id}`) carry `backend` and `device` (such as `vulkan` and `AMD Radeon RX 7900 XTX`, or `cpu` and an empty device), and so does every benchmark sample. They are empty for replies recorded before this, and for steps that ran on a paired computer. A saved answer's message metadata carries them too (`meta.backend`, `meta.device`, contract 1.8), so a client such as the iPhone app can say whether an answer came from the GPU. `GET /runtimes` lists what the installed llama.cpp build can run on in `detection.backends`, such as `["cpu", "vulkan"]`; a CPU-only build is `["cpu"]`.
 
 `GET /health` sums it up in `acceleration`: the least accelerated loaded chat model's state, or `idle` when no model is loaded. It never changes `status`; a computer without a GPU is healthy.
 

@@ -598,6 +598,12 @@ type MessageMeta struct {
 	// client can show the context gauge when it opens the chat again
 	// (contract 1.6). Answers saved before then have none.
 	Context *ContextUsage `json:"context,omitempty"`
+	// Backend and Device ran the answer, such as vulkan and "AMD Radeon RX
+	// 7900 XTX", or cpu and "" (#317, contract 1.8), so a client such as
+	// the iPhone app can say whether it came from the GPU. Empty when not
+	// known, such as when a step ran on a paired computer.
+	Backend string `json:"backend,omitempty"`
+	Device  string `json:"device,omitempty"`
 }
 
 // ContextUsage is how a turn used the model's context window, in tokens.
