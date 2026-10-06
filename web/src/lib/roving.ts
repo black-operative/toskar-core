@@ -1,6 +1,6 @@
 import { useEffect, useRef, type KeyboardEvent } from 'react'
 
-const items = '[role="tab"], [role="radio"], [role="menuitem"]'
+const items = '[role="tab"], [role="radio"], [role="menuitem"], [role="menuitemcheckbox"]'
 
 /**
  * Arrow keys for a tab list, radio group, or menu (WAI-ARIA patterns): put it
@@ -42,7 +42,10 @@ export function rovingKeyDown(event: KeyboardEvent<HTMLElement>) {
   event.preventDefault()
   const target = list[(next + list.length) % list.length]
   target.focus()
-  if (target.getAttribute('role') !== 'menuitem') target.click()
+  // Tabs and radios are chosen as focus reaches them; menu items, checkbox
+  // ones included, wait for Enter or a click.
+  const role = target.getAttribute('role')
+  if (role === 'tab' || role === 'radio') target.click()
 }
 
 /**

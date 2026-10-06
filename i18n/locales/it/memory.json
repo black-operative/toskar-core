@@ -1,12 +1,40 @@
 {
   "page": {
     "title": "Memoria",
-    "description": "Le cose che hai chiesto a Toskar di ricordare. Appartengono a Toskar, non a un singolo modello, quindi restano tra una chat e l'altra, dopo i riavvii e i cambi di modello. Vengono usati solo i ricordi pertinenti alla domanda, e restano su questo computer. Scrivi “Ricorda che …” in qualsiasi chat per aggiungerne uno.",
+    "description": "Brevi fatti che Toskar conserva su di te e sul tuo lavoro, come le tue preferenze, i progetti e le persone che nomini. Valgono tra chat e modelli diversi e restano su questo computer.",
+    "howItWorks": "Come funziona",
+    "hideHowItWorks": "Nascondi la spiegazione",
     "useInChats": "Usa la memoria nelle chat",
+    "useInChatsHint": "Disattivata, conserva tutti i ricordi, ma le chat non li usano.",
     "off": "La memoria è disattivata. Le chat non usano ciò che è salvato qui, e non viene eliminato nulla.",
     "loading": "Caricamento…",
     "emptyTitle": "Ancora nessun ricordo",
     "emptyDescription": "Di' a Toskar le cose che vale la pena conservare, come “Ricorda che preferisco le unità metriche” o “Ricorda che questo progetto usa Go.”"
+  },
+  "intro": {
+    "title": "Come funziona la memoria",
+    "steps": {
+      "tell": {
+        "title": "Dillo una volta",
+        "body": "Di' «Ricorda che …» in qualsiasi chat, oppure aggiungi un ricordo qui."
+      },
+      "fit": {
+        "title": "Usata quando serve",
+        "body": "Prima di ogni risposta, Toskar sceglie i ricordi adatti alla domanda. Funzionano con ogni modello."
+      },
+      "control": {
+        "title": "Il controllo è tuo",
+        "body": "Modifica, metti in pausa o elimina qualsiasi ricordo. Disattiva la memoria per una chat nelle sue Opzioni, oppure qui per tutte."
+      }
+    },
+    "knowledge": "La memoria è per fatti brevi. Per documenti e dati, usa <go>Conoscenza</go>."
+  },
+  "examples": {
+    "title": "Provane uno",
+    "metric": "Preferisco le unità metriche.",
+    "short": "Rispondi in breve, con un esempio.",
+    "language": "Sto imparando l'inglese, quindi spiega le parole che potrei non conoscere.",
+    "shop": "Gestisco un piccolo negozio online."
   },
   "categories": {
     "identity": "Su di te",
@@ -39,6 +67,8 @@
     "localOnlyOn": "Solo questo computer ✓",
     "localOnlyHint": "Non inviare mai questo ricordo a un computer associato. Le chat che lo usano vengono eseguite qui.",
     "delete": "Elimina",
-    "deleteLabel": "Elimina ricordo: {{content}}"
+    "deleteLabel": "Elimina ricordo: {{content}}",
+    "more": "Altre azioni per questo ricordo",
+    "paused": "In pausa"
   }
 }

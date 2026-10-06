@@ -76,7 +76,7 @@ export function DeployStep({ view }: { view: SpecializedAIView }) {
               values={{ name: view.name, id: view.model_id }}
               components={{
                 name: <span className="text-ink" />,
-                link: <Link to="/chat?new=1" className="underline" />,
+                go: <Link to="/chat?new=1" className="underline" />,
                 id: <span className="mono-id" />,
               }}
             />

@@ -157,7 +157,7 @@
     "path": "Ruta del archivo o la carpeta",
     "indexing": "Indexando…",
     "connect": "Conectar",
-    "manage": "Administra las fuentes, edita el contenido pegado y prueba búsquedas en la página <link>Conocimiento</link>."
+    "manage": "Administra las fuentes, edita el contenido pegado y prueba búsquedas en la página <go>Conocimiento</go>."
   },
   "languages": {
     "crossNote": "Esta fuente está en {{source}}. Las preguntas en {{yours}} la encuentran por significado cuando instalas un modelo de embeddings multilingüe, como BGE-M3, desde la página Modelos; mientras tanto, por palabras coincidentes."

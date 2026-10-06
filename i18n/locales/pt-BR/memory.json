@@ -1,12 +1,40 @@
 {
   "page": {
     "title": "Memória",
-    "description": "Coisas que você pediu ao Toskar para lembrar. Elas pertencem ao Toskar, não a um modelo, então continuam valendo entre chats, reinicializações e trocas de modelo. Só as memórias relevantes para uma pergunta são usadas, e elas ficam neste computador. Diga “Lembre que …” em qualquer chat para adicionar uma.",
+    "description": "Fatos curtos que o Toskar guarda sobre você e seu trabalho, como suas preferências, projetos e as pessoas que você menciona. Eles valem entre conversas e modelos, e ficam neste computador.",
+    "howItWorks": "Como funciona",
+    "hideHowItWorks": "Ocultar como funciona",
     "useInChats": "Usar memória nos chats",
+    "useInChatsHint": "Desativada, guarda todas as memórias, mas as conversas não as usam.",
     "off": "A memória está desativada. Os chats não usam o que está salvo aqui, e nada é apagado.",
     "loading": "Carregando…",
     "emptyTitle": "Nada lembrado ainda",
     "emptyDescription": "Conte ao Toskar coisas que valem a pena guardar, como “Lembre que eu prefiro o sistema métrico” ou “Lembre que este projeto usa Go.”"
+  },
+  "intro": {
+    "title": "Como a memória funciona",
+    "steps": {
+      "tell": {
+        "title": "Diga uma vez",
+        "body": "Diga “Lembre que …” em qualquer conversa, ou adicione uma memória aqui."
+      },
+      "fit": {
+        "title": "Usada quando faz sentido",
+        "body": "Antes de cada resposta, o Toskar escolhe as memórias que combinam com a pergunta. Elas funcionam com qualquer modelo."
+      },
+      "control": {
+        "title": "Você no controle",
+        "body": "Edite, pause ou exclua qualquer memória. Desative a memória para uma conversa nas Opções dela, ou aqui para todas."
+      }
+    },
+    "knowledge": "A memória é para fatos curtos. Para documentos e dados, use <go>Conhecimento</go>."
+  },
+  "examples": {
+    "title": "Experimente uma",
+    "metric": "Prefiro unidades métricas.",
+    "short": "Responda de forma curta, com um exemplo.",
+    "language": "Estou aprendendo inglês, então explique palavras que eu talvez não conheça.",
+    "shop": "Tenho uma pequena loja on-line."
   },
   "categories": {
     "identity": "Sobre você",
@@ -39,6 +67,8 @@
     "localOnlyOn": "Somente este computador ✓",
     "localOnlyHint": "Nunca enviar esta memória para um computador pareado. Os chats que a usam são executados aqui.",
     "delete": "Apagar",
-    "deleteLabel": "Apagar memória: {{content}}"
+    "deleteLabel": "Apagar memória: {{content}}",
+    "more": "Mais ações para esta memória",
+    "paused": "Pausada"
   }
 }

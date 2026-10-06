@@ -179,7 +179,7 @@
     "installed": "Instalado",
     "memory": " · o treinamento precisa de cerca de {{size}}",
     "download": " · baixa {{size}} uma vez",
-    "notInstalled": "{{model}} não está instalado. O treinamento funciona sem ele, mas você precisa dele para testar e usar o resultado. <link>Instale-o em Modelos</link>.",
+    "notInstalled": "{{model}} não está instalado. O treinamento funciona sem ele, mas você precisa dele para testar e usar o resultado. <go>Instale-o em Modelos</go>.",
     "continue": "Continuar"
   },
   "material": {
@@ -367,7 +367,7 @@
     "switch": "Mudar para esta revisão",
     "deploy": "Implantar",
     "use": "Usar",
-    "useBody": "No Chat, escolha <name>{{name}}</name> no menu de modelos. <link>Abrir o Chat</link>. Em outros programas, use o ID de modelo <id>{{id}}</id>:",
+    "useBody": "No Chat, escolha <name>{{name}}</name> no menu de modelos. <go>Abrir o Chat</go>. Em outros programas, use o ID de modelo <id>{{id}}</id>:",
     "runsHere": "Ela é executada neste computador, onde o adaptador está armazenado. Treinar de novo cria uma nova revisão; esta continua respondendo até você implantar a nova."
   },
   "export": {

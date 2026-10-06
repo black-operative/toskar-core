@@ -179,7 +179,7 @@
     "installed": "Installé",
     "memory": " · l'entraînement nécessite environ {{size}}",
     "download": " · télécharge {{size}} une seule fois",
-    "notInstalled": "{{model}} n'est pas installé. L'entraînement fonctionne sans lui, mais vous en aurez besoin pour tester et utiliser le résultat. <link>Installez-le depuis Modèles</link>.",
+    "notInstalled": "{{model}} n'est pas installé. L'entraînement fonctionne sans lui, mais vous en aurez besoin pour tester et utiliser le résultat. <go>Installez-le depuis Modèles</go>.",
     "continue": "Continuer"
   },
   "material": {
@@ -367,7 +367,7 @@
     "switch": "Passer à cette révision",
     "deploy": "Déployer",
     "use": "L'utiliser",
-    "useBody": "Dans Discussion, choisissez <name>{{name}}</name> dans le menu des modèles. <link>Ouvrir Discussion</link>. Depuis d'autres programmes, utilisez l'identifiant de modèle <id>{{id}}</id> :",
+    "useBody": "Dans Discussion, choisissez <name>{{name}}</name> dans le menu des modèles. <go>Ouvrir Discussion</go>. Depuis d'autres programmes, utilisez l'identifiant de modèle <id>{{id}}</id> :",
     "runsHere": "Elle s'exécute sur cet ordinateur, où son adaptateur est stocké. Un réentraînement crée une nouvelle révision ; celle-ci continue de répondre jusqu'à ce que vous déployiez la nouvelle."
   },
   "export": {

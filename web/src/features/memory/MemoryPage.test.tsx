@@ -46,8 +46,33 @@ describe('MemoryPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Add' }))
     await waitFor(() => expect(api.addMemory).toHaveBeenCalledWith('I am vegetarian', undefined))
 
-    fireEvent.click(screen.getByRole('button', { name: 'Delete memory: This project uses Go' }))
+    // Delete is in each memory's menu.
+    fireEvent.click(screen.getAllByRole('button', { name: 'More actions for this memory' })[1])
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Delete memory: This project uses Go' }))
     await waitFor(() => expect(api.deleteMemory).toHaveBeenCalledWith('2'))
+  })
+})
+
+describe('MemoryPage, explained', () => {
+  it('explains memory and offers examples when nothing is remembered', async () => {
+    vi.mocked(api.listMemory).mockResolvedValue({ memories: [], categories: ['preferences', 'other'] })
+    vi.mocked(api.getSettings).mockResolvedValue({ memory_enabled: true } as SettingsView)
+    wrap(<MemoryPage />)
+    expect(await screen.findByRole('heading', { name: 'How memory works' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Knowledge' })).toHaveAttribute('href', '/knowledge')
+    fireEvent.click(screen.getByRole('button', { name: 'I prefer metric units.' }))
+    expect(screen.getByPlaceholderText('I prefer short answers with examples')).toHaveValue('I prefer metric units.')
+  })
+
+  it('turns memory off for every chat with the switch', async () => {
+    vi.mocked(api.listMemory).mockResolvedValue({ memories: [], categories: ['other'] })
+    vi.mocked(api.getSettings).mockResolvedValue({ memory_enabled: true } as SettingsView)
+    vi.mocked(api.updateSettings).mockResolvedValue({ memory_enabled: false } as SettingsView)
+    wrap(<MemoryPage />)
+    const toggle = await screen.findByRole('switch', { name: 'Use memory in chats' })
+    await waitFor(() => expect(toggle).toBeEnabled())
+    fireEvent.click(toggle)
+    await waitFor(() => expect(api.updateSettings).toHaveBeenCalledWith({ memory_enabled: false }))
   })
 })
 

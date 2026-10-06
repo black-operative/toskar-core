@@ -32,6 +32,8 @@ describe('KnowledgePicker', () => {
     const onChange = vi.fn()
     renderPicker(['a'], onChange)
     await waitFor(() => expect(screen.getByText('Inventory')).toBeInTheDocument())
+    // The link to the Knowledge page keeps its word (a <link> tag in the string dropped it).
+    expect(screen.getByRole('link', { name: 'Knowledge' })).toHaveAttribute('href', '/knowledge')
 
     fireEvent.change(screen.getByLabelText('Connect existing knowledge'), { target: { value: 'b' } })
     expect(onChange).toHaveBeenLastCalledWith(['a', 'b'])

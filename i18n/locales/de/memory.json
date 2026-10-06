@@ -1,12 +1,40 @@
 {
   "page": {
     "title": "Gedächtnis",
-    "description": "Dinge, die sich Toskar für dich merken soll. Sie gehören Toskar, nicht einem einzelnen Modell, und bleiben daher über Chats, Neustarts und Modellwechsel hinweg erhalten. Es werden nur die Erinnerungen genutzt, die zu einer Frage passen, und sie bleiben auf diesem Computer. Sag in einem beliebigen Chat „Merke dir, dass …“, um eine hinzuzufügen.",
+    "description": "Kurze Fakten, die Toskar über dich und deine Arbeit behält, etwa deine Vorlieben, Projekte und die Personen, die du erwähnst. Sie gelten über Chats und Modelle hinweg und bleiben auf diesem Computer.",
+    "howItWorks": "So funktioniert's",
+    "hideHowItWorks": "Erklärung ausblenden",
     "useInChats": "Gedächtnis in Chats nutzen",
+    "useInChatsHint": "Aus behält alle Erinnerungen, aber Chats nutzen sie nicht.",
     "off": "Das Gedächtnis ist aus. Chats nutzen nicht, was hier gespeichert ist, und nichts wird gelöscht.",
     "loading": "Wird geladen …",
     "emptyTitle": "Noch nichts gemerkt",
     "emptyDescription": "Erzähl Toskar, was es sich merken soll, etwa „Merke dir, dass ich metrische Einheiten bevorzuge“ oder „Merke dir, dass dieses Projekt Go nutzt.“"
+  },
+  "intro": {
+    "title": "So funktioniert das Gedächtnis",
+    "steps": {
+      "tell": {
+        "title": "Sag es einmal",
+        "body": "Sag in einem Chat „Merk dir, dass …“ oder füge hier eine Erinnerung hinzu."
+      },
+      "fit": {
+        "title": "Genutzt, wenn es passt",
+        "body": "Vor jeder Antwort wählt Toskar die Erinnerungen, die zur Frage passen. Sie funktionieren mit jedem Modell."
+      },
+      "control": {
+        "title": "Du behältst die Kontrolle",
+        "body": "Bearbeite, pausiere oder lösche jede Erinnerung. Schalte das Gedächtnis für einen Chat in dessen Optionen aus, oder hier für alle Chats."
+      }
+    },
+    "knowledge": "Das Gedächtnis ist für kurze Fakten. Für Dokumente und Daten nutze <go>Wissen</go>."
+  },
+  "examples": {
+    "title": "Probier eine",
+    "metric": "Ich bevorzuge metrische Einheiten.",
+    "short": "Halte Antworten kurz, mit einem Beispiel.",
+    "language": "Ich lerne Spanisch, also erkläre Wörter, die ich vielleicht nicht kenne.",
+    "shop": "Ich betreibe einen kleinen Onlineshop."
   },
   "categories": {
     "identity": "Über dich",
@@ -39,6 +67,8 @@
     "localOnlyOn": "Nur dieser Computer ✓",
     "localOnlyHint": "Diese Erinnerung nie an einen gekoppelten Computer senden. Chats, die sie nutzen, laufen hier.",
     "delete": "Löschen",
-    "deleteLabel": "Erinnerung löschen: {{content}}"
+    "deleteLabel": "Erinnerung löschen: {{content}}",
+    "more": "Weitere Aktionen für diese Erinnerung",
+    "paused": "Pausiert"
   }
 }

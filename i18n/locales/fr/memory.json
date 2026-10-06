@@ -1,12 +1,40 @@
 {
   "page": {
     "title": "Mémoire",
-    "description": "Ce que vous avez demandé à Toskar de retenir. Ces souvenirs appartiennent à Toskar, pas à un modèle en particulier : ils sont conservés d'une discussion à l'autre, après un redémarrage ou un changement de modèle. Seuls les souvenirs utiles à une question sont utilisés, et ils restent sur cet ordinateur. Dites « Souviens-toi que … » dans n'importe quelle discussion pour en ajouter un.",
+    "description": "De courts faits que Toskar garde sur vous et votre travail, comme vos préférences, vos projets et les personnes que vous mentionnez. Ils valent d'une discussion et d'un modèle à l'autre, et restent sur cet ordinateur.",
+    "howItWorks": "Comment ça marche",
+    "hideHowItWorks": "Masquer l'explication",
     "useInChats": "Utiliser la mémoire dans les discussions",
+    "useInChatsHint": "Désactivée, elle garde tous les souvenirs, mais les discussions ne s'en servent pas.",
     "off": "La mémoire est désactivée. Les discussions n'utilisent pas ce qui est enregistré ici, et rien n'est supprimé.",
     "loading": "Chargement…",
     "emptyTitle": "Aucun souvenir pour l'instant",
     "emptyDescription": "Dites à Toskar ce qui mérite d'être retenu, par exemple « Souviens-toi que je préfère les unités métriques » ou « Souviens-toi que ce projet utilise Go. »"
+  },
+  "intro": {
+    "title": "Comment fonctionne la mémoire",
+    "steps": {
+      "tell": {
+        "title": "Dites-le une fois",
+        "body": "Dites « Souviens-toi que … » dans une discussion, ou ajoutez un souvenir ici."
+      },
+      "fit": {
+        "title": "Utilisée quand elle convient",
+        "body": "Avant chaque réponse, Toskar choisit les souvenirs qui correspondent à la question. Ils fonctionnent avec tous les modèles."
+      },
+      "control": {
+        "title": "Vous gardez la main",
+        "body": "Modifiez, suspendez ou supprimez n'importe quel souvenir. Désactivez la mémoire pour une discussion dans ses Options, ou ici pour toutes."
+      }
+    },
+    "knowledge": "La mémoire sert aux faits courts. Pour les documents et les données, utilisez <go>Connaissances</go>."
+  },
+  "examples": {
+    "title": "Essayez-en un",
+    "metric": "Je préfère les unités métriques.",
+    "short": "Réponds brièvement, avec un exemple.",
+    "language": "J'apprends l'anglais, alors explique les mots que je pourrais ne pas connaître.",
+    "shop": "Je tiens une petite boutique en ligne."
   },
   "categories": {
     "identity": "À propos de vous",
@@ -39,6 +67,8 @@
     "localOnlyOn": "Cet ordinateur uniquement ✓",
     "localOnlyHint": "Ne jamais envoyer ce souvenir à un ordinateur jumelé. Les discussions qui l'utilisent s'exécutent ici.",
     "delete": "Supprimer",
-    "deleteLabel": "Supprimer le souvenir : {{content}}"
+    "deleteLabel": "Supprimer le souvenir : {{content}}",
+    "more": "Plus d'actions pour ce souvenir",
+    "paused": "En pause"
   }
 }

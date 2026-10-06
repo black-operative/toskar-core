@@ -283,7 +283,7 @@ function MissingRuntime({ name }: { name: string }) {
     <Trans
       t={t}
       i18nKey={help.key}
-      components={{ link: <a className="underline" href={help.href} target="_blank" rel="noreferrer" />, code: <code /> }}
+      components={{ go: <a className="underline" href={help.href} target="_blank" rel="noreferrer" />, code: <code /> }}
     />
   ) : (
     t('add.installGeneric', { runtime: name })

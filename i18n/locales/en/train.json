@@ -179,7 +179,7 @@
     "installed": "Installed",
     "memory": " · training needs about {{size}}",
     "download": " · downloads {{size}} once",
-    "notInstalled": "{{model}} is not installed. Training works without it, but you need it to test and use the result. <link>Install it from Models</link>.",
+    "notInstalled": "{{model}} is not installed. Training works without it, but you need it to test and use the result. <go>Install it from Models</go>.",
     "continue": "Continue"
   },
   "material": {
@@ -363,7 +363,7 @@
     "switch": "Switch to this revision",
     "deploy": "Deploy",
     "use": "Use it",
-    "useBody": "In Chat, pick <name>{{name}}</name> from the model menu. <link>Open Chat</link>. From other programs, use the model id <id>{{id}}</id>:",
+    "useBody": "In Chat, pick <name>{{name}}</name> from the model menu. <go>Open Chat</go>. From other programs, use the model id <id>{{id}}</id>:",
     "runsHere": "It runs on this computer, where its adapter is stored. Retraining creates a new revision; this one keeps answering until you deploy the new one."
   },
   "export": {

@@ -1,12 +1,40 @@
 {
   "page": {
     "title": "Memory",
-    "description": "Things you asked Toskar to remember. They belong to Toskar, not to one model, so they carry across chats, restarts, and model changes. Only the memories that fit a question are used, and they stay on this computer. Say “Remember that …” in any chat to add one.",
+    "description": "Short facts Toskar keeps about you and your work, such as your preferences, projects, and the people you mention. They carry across chats and models, and stay on this computer.",
+    "howItWorks": "How it works",
+    "hideHowItWorks": "Hide how it works",
     "useInChats": "Use memory in chats",
+    "useInChatsHint": "Off keeps every memory, but chats don't use them.",
     "off": "Memory is off. Chats do not use what is saved here, and nothing is deleted.",
     "loading": "Loading…",
     "emptyTitle": "Nothing remembered yet",
     "emptyDescription": "Tell Toskar things worth keeping, such as “Remember that I prefer metric units” or “Remember that this project uses Go.”"
+  },
+  "intro": {
+    "title": "How memory works",
+    "steps": {
+      "tell": {
+        "title": "Tell it once",
+        "body": "Say “Remember that …” in any chat, or add a memory here."
+      },
+      "fit": {
+        "title": "It's used when it fits",
+        "body": "Before each answer, Toskar picks the memories that fit the question. They work with every model."
+      },
+      "control": {
+        "title": "You stay in control",
+        "body": "Edit, pause, or delete any memory. Turn memory off for one chat in its Options, or for every chat here."
+      }
+    },
+    "knowledge": "Memory is for short facts. For documents and data, use <go>Knowledge</go>."
+  },
+  "examples": {
+    "title": "Try one",
+    "metric": "I prefer metric units.",
+    "short": "Keep answers short, with an example.",
+    "language": "I'm learning Spanish, so explain words I might not know.",
+    "shop": "I run a small online shop."
   },
   "categories": {
     "identity": "About you",
@@ -39,6 +67,8 @@
     "localOnlyOn": "This computer only ✓",
     "localOnlyHint": "Never send this memory to a paired computer. Chats that use it run here.",
     "delete": "Delete",
-    "deleteLabel": "Delete memory: {{content}}"
+    "deleteLabel": "Delete memory: {{content}}",
+    "more": "More actions for this memory",
+    "paused": "Paused"
   }
 }

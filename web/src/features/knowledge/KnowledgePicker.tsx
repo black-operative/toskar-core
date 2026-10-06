@@ -97,7 +97,7 @@ export function KnowledgePicker({
       {connect.error && <p className="text-xs text-danger">{errorText(connect.error)}</p>}
       {connect.data?.status === 'failed' && <p className="text-xs text-danger">{connect.data.error}</p>}
       <p className="text-xs text-ink-faint">
-        <Trans t={t} i18nKey="picker.manage" components={{ link: <Link to="/knowledge" className="underline" /> }} />
+        <Trans t={t} i18nKey="picker.manage" components={{ go: <Link to="/knowledge" className="underline" /> }} />
       </p>
     </div>
   )

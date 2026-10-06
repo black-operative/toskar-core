@@ -179,7 +179,7 @@
     "installed": "已安装",
     "memory": " · 训练约需 {{size}}",
     "download": " · 需一次性下载 {{size}}",
-    "notInstalled": "{{model}} 尚未安装。没有它也能训练，但测试和使用训练结果需要它。<link>从“模型”中安装</link>。",
+    "notInstalled": "{{model}} 尚未安装。没有它也能训练，但测试和使用训练结果需要它。<go>从“模型”中安装</go>。",
     "continue": "继续"
   },
   "material": {
@@ -359,7 +359,7 @@
     "switch": "切换到此修订版",
     "deploy": "部署",
     "use": "使用它",
-    "useBody": "在聊天中，从模型菜单里选择 <name>{{name}}</name>。<link>打开聊天</link>。在其他程序中，请使用模型 ID <id>{{id}}</id>：",
+    "useBody": "在聊天中，从模型菜单里选择 <name>{{name}}</name>。<go>打开聊天</go>。在其他程序中，请使用模型 ID <id>{{id}}</id>：",
     "runsHere": "它在这台电脑上运行，适配器也保存在这里。重新训练会创建新的修订版；在你部署新修订版之前，这个修订版会继续回答。"
   },
   "export": {

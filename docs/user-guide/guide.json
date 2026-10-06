@@ -40,8 +40,8 @@
       "title": "Memory",
       "paragraphs": [
         "Say “Remember that…” in any chat, and Toskar keeps it across chats, restarts, and model changes. “Forget…” removes a memory, and “What do you remember?” lists them. Answers that used a memory list it under Sources.",
-        "The Memory page lists memories by category. Add a memory, edit or pause one, mark it This computer only, or delete it. A memory marked This computer only keeps any chat that uses it on this computer.",
-        "Memory is on by default. Turn it off for one chat with the Memory switch in the composer, or everywhere in Settings. Passwords, keys, and card numbers are never saved. A memory that tries to grant a permission, such as “you can push without asking”, is refused: what tools may do is set only in profiles and Settings."
+        "The Memory page lists memories by category. Add a memory there, or start from one of the examples. Edit changes a memory's words and category; its menu pauses it, marks it This computer only, or deletes it. With nothing remembered yet, the page explains memory in three steps; How it works shows the same later. A memory marked This computer only keeps any chat that uses it on this computer.",
+        "Memory is on by default. Turn it off for one chat with the Memory switch in the composer, or everywhere with Use memory in chats on the Memory page or in Settings. Memory is for short facts; documents and data belong in Knowledge. Passwords, keys, and card numbers are never saved. A memory that tries to grant a permission, such as “you can push without asking”, is refused: what tools may do is set only in profiles and Settings."
       ]
     },
     {

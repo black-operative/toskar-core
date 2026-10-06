@@ -66,7 +66,7 @@ export function BaseModelStep({ view, onNext }: { view: SpecializedAIView; onNex
             t={t}
             i18nKey="base.notInstalled"
             values={{ model: view.base_model.display_name }}
-            components={{ link: <Link to="/models" className="underline" /> }}
+            components={{ go: <Link to="/models" className="underline" /> }}
           />
         </p>
       )}

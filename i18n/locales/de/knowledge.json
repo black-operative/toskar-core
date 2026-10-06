@@ -153,7 +153,7 @@
     "path": "Pfad zu Datei oder Ordner",
     "indexing": "Wird indiziert …",
     "connect": "Verbinden",
-    "manage": "Verwalte Quellen, bearbeite eingefügte Inhalte und teste Suchen auf der Seite <link>Wissen</link>."
+    "manage": "Verwalte Quellen, bearbeite eingefügte Inhalte und teste Suchen auf der Seite <go>Wissen</go>."
   },
   "languages": {
     "crossNote": "Diese Quelle ist auf {{source}}. Fragen auf {{yours}} finden sie nach Bedeutung, sobald ein mehrsprachiges Einbettungsmodell wie BGE-M3 unter „Modelle“ installiert ist; bis dahin über passende Wörter."

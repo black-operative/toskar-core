@@ -179,7 +179,7 @@
     "installed": "Installato",
     "memory": " · l'addestramento richiede circa {{size}}",
     "download": " · scarica {{size}} una sola volta",
-    "notInstalled": "{{model}} non è installato. L'addestramento funziona anche senza, ma ti serve per provare e usare il risultato. <link>Installalo da Modelli</link>.",
+    "notInstalled": "{{model}} non è installato. L'addestramento funziona anche senza, ma ti serve per provare e usare il risultato. <go>Installalo da Modelli</go>.",
     "continue": "Continua"
   },
   "material": {
@@ -367,7 +367,7 @@
     "switch": "Passa a questa revisione",
     "deploy": "Distribuisci",
     "use": "Usala",
-    "useBody": "In Chat, scegli <name>{{name}}</name> dal menu dei modelli. <link>Apri Chat</link>. Da altri programmi, usa l'ID del modello <id>{{id}}</id>:",
+    "useBody": "In Chat, scegli <name>{{name}}</name> dal menu dei modelli. <go>Apri Chat</go>. Da altri programmi, usa l'ID del modello <id>{{id}}</id>:",
     "runsHere": "Viene eseguita su questo computer, dove è salvato il suo adattatore. Un nuovo addestramento crea una nuova revisione; questa continua a rispondere finché non distribuisci quella nuova."
   },
   "export": {
