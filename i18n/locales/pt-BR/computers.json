@@ -1,13 +1,30 @@
 {
   "page": {
-    "title": "Sua equipe Toskar",
-    "titleAdvanced": "Seu cluster de IA",
     "subtitle": "Estes computadores trabalham juntos como um único sistema de IA. Adicione uma máquina e depois implante modelos onde eles couberem.",
+    "howItWorks": "Como adicionar um computador",
+    "hideHowItWorks": "Ocultar como adicionar um computador",
     "find": "Encontrar computadores",
     "scanning": "Procurando…",
     "looking": "Procurando computadores…",
     "emptyTitle": "Monte sua equipe de IA",
     "emptyDescription": "Instale o Toskar em outro computador da sua rede e ele aparecerá aqui automaticamente."
+  },
+  "intro": {
+    "title": "Adicione outro computador",
+    "steps": {
+      "install": {
+        "title": "Instale o Toskar nele",
+        "body": "Em um Mac, um PC com Windows ou uma máquina Linux."
+      },
+      "connect": {
+        "title": "Conecte os dois",
+        "body": "Na mesma rede, ele aparece abaixo em “{{available}}”: escolha “{{add}}” e aprove no outro computador. Para um servidor, ou um computador que você acessa por SSH, use “{{command}}”."
+      },
+      "share": {
+        "title": "Dividam o trabalho",
+        "body": "O Toskar executa cada parte de um pedido em um computador que tenha o modelo e espaço para ele. Implante modelos no novo computador abaixo."
+      }
+    }
   },
   "status": {
     "team": "Status da equipe",
@@ -83,7 +100,6 @@
     "models_many": "{{count}} modelos",
     "models_other": "{{count}} modelos",
     "availableFor": "Disponível para:",
-    "partOfTeam": "Faz parte desta equipe",
     "disk": "Disco",
     "diskFree": "{{free}} livres de {{total}}",
     "diskLow": "Pouco espaço livre para mais modelos",
@@ -104,7 +120,8 @@
     "moreActions": "Mais ações para {{name}}",
     "removeFromTeam": "Remover da equipe",
     "training": "Treinando",
-    "trainingHint": "Está treinando uma IA, então o trabalho vai para outros computadores que tenham o modelo"
+    "trainingHint": "Está treinando uma IA, então o trabalho vai para outros computadores que tenham o modelo",
+    "confirmRemove": "Remover {{name}} desta equipe? Ele deixa de receber trabalho, e adicioná-lo de novo exige uma nova aprovação."
   },
   "deploy": {
     "title": "Implantar um modelo",

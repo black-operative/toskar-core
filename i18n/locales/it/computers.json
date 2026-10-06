@@ -1,13 +1,30 @@
 {
   "page": {
-    "title": "Il tuo team Toskar",
-    "titleAdvanced": "Il tuo cluster di IA",
     "subtitle": "Questi computer lavorano insieme come un unico sistema di IA. Aggiungi una macchina, poi distribuisci i modelli dove ci stanno.",
+    "howItWorks": "Come aggiungere un computer",
+    "hideHowItWorks": "Nascondi come aggiungere un computer",
     "find": "Trova computer",
     "scanning": "Scansione…",
     "looking": "Ricerca di computer…",
     "emptyTitle": "Crea il tuo team di IA",
     "emptyDescription": "Installa Toskar su un altro computer della tua rete e comparirà qui automaticamente."
+  },
+  "intro": {
+    "title": "Aggiungi un altro computer",
+    "steps": {
+      "install": {
+        "title": "Installa Toskar lì",
+        "body": "Su un Mac, un PC Windows o una macchina Linux."
+      },
+      "connect": {
+        "title": "Collegali",
+        "body": "Sulla stessa rete compare qui sotto in «{{available}}»: scegli «{{add}}», poi approvalo sull'altro computer. Per un server, o un computer che raggiungi via SSH, usa «{{command}}»."
+      },
+      "share": {
+        "title": "Dividete il lavoro",
+        "body": "Toskar esegue ogni parte di una richiesta su un computer che ha il modello e lo spazio per eseguirlo. Distribuisci i modelli sul nuovo computer qui sotto."
+      }
+    }
   },
   "status": {
     "team": "Stato del team",
@@ -83,7 +100,6 @@
     "models_many": "{{count}} modelli",
     "models_other": "{{count}} modelli",
     "availableFor": "Disponibile per:",
-    "partOfTeam": "Fa parte di questo team",
     "disk": "Disco",
     "diskFree": "{{free}} liberi su {{total}}",
     "diskLow": "Poco spazio libero per altri modelli",
@@ -104,7 +120,8 @@
     "moreActions": "Altre azioni per {{name}}",
     "removeFromTeam": "Rimuovi dal team",
     "training": "In addestramento",
-    "trainingHint": "Sta addestrando un'IA, quindi il lavoro va ad altri computer che hanno il modello"
+    "trainingHint": "Sta addestrando un'IA, quindi il lavoro va ad altri computer che hanno il modello",
+    "confirmRemove": "Rimuovere {{name}} da questo team? Smetterà di ricevere lavoro, e per aggiungerlo di nuovo servirà una nuova approvazione."
   },
   "deploy": {
     "title": "Distribuisci un modello",

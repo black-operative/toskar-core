@@ -171,6 +171,7 @@
       "title": "Connect your computers",
       "paragraphs": [
         "Computers discovers other Toskar instances on the local network. Pairing establishes trust between computers; it is separate from enabling LAN access to the OpenAI-compatible API.",
+        "While this is the only computer, the Computers page explains how to add another in three steps; with more, How to add a computer shows the same. A computer on the same network appears under Available to add. For a server, or a computer you reach over SSH, Add by command makes a one-time command to run there. Remove from team, in a computer's menu, asks first: a removed computer needs a new approval to join again.",
         "Run on in the composer, and Run chats on in Settings, choose where chats run: Automatic lets Toskar pick an online paired computer that has the model, and This computer keeps them here. A chat that uses a memory or knowledge source marked This computer only always runs here. Each computer gives chat priority over automations, background knowledge indexing, benchmarks, and training."
       ],
       "steps": [

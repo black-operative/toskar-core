@@ -1,13 +1,30 @@
 {
   "page": {
-    "title": "Dein Toskar-Team",
-    "titleAdvanced": "Dein KI-Cluster",
     "subtitle": "Diese Computer arbeiten als ein KI-System zusammen. Füge ein Gerät hinzu und stelle Modelle dort bereit, wo sie passen.",
+    "howItWorks": "So fügst du einen Computer hinzu",
+    "hideHowItWorks": "Anleitung ausblenden",
     "find": "Computer suchen",
     "scanning": "Suche läuft …",
     "looking": "Computer werden gesucht …",
     "emptyTitle": "Stell dein KI-Team zusammen",
     "emptyDescription": "Installiere Toskar auf einem anderen Computer in deinem Netzwerk, dann erscheint er hier automatisch."
+  },
+  "intro": {
+    "title": "Einen weiteren Computer hinzufügen",
+    "steps": {
+      "install": {
+        "title": "Installiere dort Toskar",
+        "body": "Auf einem Mac, einem Windows-PC oder einem Linux-Rechner."
+      },
+      "connect": {
+        "title": "Verbinde sie",
+        "body": "Im selben Netzwerk erscheint er unten unter „{{available}}“: Wähle „{{add}}“ und bestätige auf dem anderen Computer. Für einen Server oder einen Computer, den du per SSH erreichst, nutze „{{command}}“."
+      },
+      "share": {
+        "title": "Teilt die Arbeit",
+        "body": "Toskar führt jeden Teil einer Anfrage auf einem Computer aus, der das Modell und genug Platz hat. Stelle unten Modelle auf dem neuen Computer bereit."
+      }
+    }
   },
   "status": {
     "team": "Teamstatus",
@@ -80,7 +97,6 @@
     "models_one": "{{count}} Modell",
     "models_other": "{{count}} Modelle",
     "availableFor": "Verfügbar für:",
-    "partOfTeam": "Teil dieses Teams",
     "disk": "Festplatte",
     "diskFree": "{{free}} von {{total}} frei",
     "diskLow": "Wenig Platz für weitere Modelle",
@@ -101,7 +117,8 @@
     "moreActions": "Weitere Aktionen für {{name}}",
     "removeFromTeam": "Aus Team entfernen",
     "training": "Training",
-    "trainingHint": "Trainiert eine KI, daher geht Arbeit an andere Computer, wenn sie das Modell haben"
+    "trainingHint": "Trainiert eine KI, daher geht Arbeit an andere Computer, wenn sie das Modell haben",
+    "confirmRemove": "{{name}} aus diesem Team entfernen? Er übernimmt keine Arbeit mehr, und für ein erneutes Hinzufügen ist eine neue Bestätigung nötig."
   },
   "deploy": {
     "title": "Modell bereitstellen",

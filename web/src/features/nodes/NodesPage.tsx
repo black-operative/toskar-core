@@ -11,6 +11,7 @@ import type { Model, Node, PairingSession } from '@/types/api'
 import { DeployModelsPanel } from './DeployModelsPanel'
 import { NetworkSettings } from './NetworkSettings'
 import { JoinByCommand } from './JoinByCommand'
+import { HowItWorks, stepIcons } from '@/components/ui/HowItWorks'
 import {
   availableForLabels,
   combinedMemoryBytes,
@@ -193,10 +194,6 @@ function ComputerCard({
             </p>
           )}
 
-          {kind === 'paired' || kind === 'offline' ? (
-            <p className="text-xs text-accent">{t('card.partOfTeam')}</p>
-          ) : null}
-
           {advancedMode && node.address ? (
             <p className="truncate font-mono text-[11px] text-ink-faint">{node.address}</p>
           ) : null}
@@ -256,7 +253,8 @@ function ComputerCard({
                     </div>
                     <button
                       type="button"
-                      className="btn-danger shrink-0 px-2 py-1 text-[10px]"
+                      // Plain red text: the tinted danger button is too low-contrast on this tinted row.
+                      className="inline-flex h-8 shrink-0 items-center rounded-lg px-2.5 text-xs font-semibold text-danger transition hover:bg-danger/10 disabled:opacity-50"
                       disabled={removingModelId === m.id}
                       onClick={() => onRemoveModel(m.id)}
                     >
@@ -295,7 +293,7 @@ function ComputerCard({
               />
               <button
                 type="button"
-                className="btn-secondary px-3 py-1.5 text-xs"
+                className="btn-secondary btn-sm"
                 disabled={claimBusy || !node.address || claimCode.length !== 6}
                 onClick={onApproveCode}
               >
@@ -309,7 +307,7 @@ function ComputerCard({
           <>
             <button
               type="button"
-              className="btn-primary px-3 py-1.5 text-xs"
+              className="btn-secondary btn-sm"
               onClick={() => setManageOpen((o) => !o)}
               aria-expanded={manageOpen}
             >
@@ -319,28 +317,32 @@ function ComputerCard({
               <div className="relative ms-auto">
                 <button
                   type="button"
-                  className="rounded-md px-2 py-1.5 text-xs text-ink-faint hover:bg-raised hover:text-ink"
+                  className="icon-button"
                   aria-label={t('card.moreActions', { name: node.name })}
+                  aria-haspopup="menu"
                   aria-expanded={menuOpen}
                   onClick={(e: MouseEvent) => {
                     e.stopPropagation()
                     setMenuOpen((o) => !o)
                   }}
                 >
-                  ···
+                  <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor" aria-hidden>
+                    <circle cx="3.5" cy="8" r="1.2" />
+                    <circle cx="8" cy="8" r="1.2" />
+                    <circle cx="12.5" cy="8" r="1.2" />
+                  </svg>
                 </button>
                 {menuOpen && (
-                  <div
-                    className="absolute end-0 z-20 mt-1 min-w-[10rem] rounded-xl border border-line bg-surface py-1 shadow-lg"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <div className="menu min-w-[10rem]" role="menu" onClick={(e) => e.stopPropagation()}>
                     <button
                       type="button"
-                      className="block w-full px-3 py-2 text-start text-xs text-danger hover:bg-danger/10"
+                      role="menuitem"
+                      className="menu-item menu-item-danger"
                       disabled={revokeBusy}
                       onClick={() => {
                         setMenuOpen(false)
-                        onRevoke()
+                        // Removing takes the computer out of the team; adding it back needs a new approval.
+                        if (window.confirm(t('card.confirmRemove', { name: node.name }))) onRevoke()
                       }}
                     >
                       {revokeBusy ? t('card.removing') : t('card.removeFromTeam')}
@@ -501,6 +503,9 @@ export function NodesPage() {
     [nodes],
   )
   const pairedRemotes = nodes.filter((n) => !n.is_local && n.paired)
+  // Only this computer so far: the page explains how to add another.
+  const alone = nodesQuery.isSuccess && pairedRemotes.length === 0
+  const [showIntro, setShowIntro] = useState(false)
 
   const runningByNode = useMemo(() => {
     const map = new Map<string, number>()
@@ -530,12 +535,21 @@ export function NodesPage() {
       <header className="page-header flex flex-wrap items-end justify-between gap-4">
         <div>
           <RealmKicker />
-          <h1 className="page-title">
-            {advancedMode ? t('page.titleAdvanced') : t('page.title')}
-          </h1>
+          <h1 className="page-title">{t('nav.computers', { ns: 'common' })}</h1>
           <p className="page-subtitle">{t('page.subtitle')}</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          {alone ? null : (
+            <button
+              type="button"
+              className="btn-secondary"
+              aria-expanded={showIntro}
+              aria-controls="computers-intro"
+              onClick={() => setShowIntro((v) => !v)}
+            >
+              {showIntro ? t('page.hideHowItWorks') : t('page.howItWorks')}
+            </button>
+          )}
           <button type="button" className="btn-secondary" aria-expanded={joinOpen} onClick={() => setJoinOpen((v) => !v)}>
             {t('join.open')}
           </button>
@@ -569,6 +583,28 @@ export function NodesPage() {
           )}
         </section>
       )}
+
+      {alone || showIntro ? (
+        <HowItWorks
+          id="computers-intro"
+          title={t('intro.title')}
+          tone="bg-bifrost/15 text-bifrost"
+          mascot={alone && !headerMascot}
+          steps={[
+            { icon: stepIcons.download, title: t('intro.steps.install.title'), body: t('intro.steps.install.body') },
+            {
+              icon: stepIcons.plug,
+              title: t('intro.steps.connect.title'),
+              body: t('intro.steps.connect.body', {
+                available: t('nearby.title'),
+                add: t('card.addToTeam'),
+                command: t('join.open'),
+              }),
+            },
+            { icon: stepIcons.spark, title: t('intro.steps.share.title'), body: t('intro.steps.share.body') },
+          ]}
+        />
+      ) : null}
 
       {joinOpen ? <JoinByCommand onClose={() => setJoinOpen(false)} /> : null}
 
@@ -632,7 +668,7 @@ export function NodesPage() {
                 </div>
                 <button
                   type="button"
-                  className="btn-primary px-3 py-1.5 text-xs"
+                  className="btn-primary btn-sm"
                   disabled={approveMutation.isPending}
                   onClick={() => approveMutation.mutate(offer.id)}
                 >
@@ -717,10 +753,10 @@ export function NodesPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Link to="/models" className="btn-secondary px-3 py-1.5 text-xs">
+              <Link to="/models" className="btn-secondary btn-sm">
                 {t('fleet.installModels')}
               </Link>
-              <Link to="/chat" className="btn-secondary px-3 py-1.5 text-xs">
+              <Link to="/chat" className="btn-secondary btn-sm">
                 {t('fleet.openChat')}
               </Link>
             </div>

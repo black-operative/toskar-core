@@ -1,13 +1,30 @@
 {
   "page": {
-    "title": "Votre équipe Toskar",
-    "titleAdvanced": "Votre cluster d'IA",
     "subtitle": "Ces ordinateurs fonctionnent ensemble comme un seul système d'IA. Ajoutez une machine, puis déployez les modèles là où ils tiennent.",
+    "howItWorks": "Comment ajouter un ordinateur",
+    "hideHowItWorks": "Masquer comment ajouter un ordinateur",
     "find": "Rechercher des ordinateurs",
     "scanning": "Recherche…",
     "looking": "Recherche d'ordinateurs…",
     "emptyTitle": "Constituez votre équipe d'IA",
     "emptyDescription": "Installez Toskar sur un autre ordinateur de votre réseau : il apparaîtra ici automatiquement."
+  },
+  "intro": {
+    "title": "Ajouter un autre ordinateur",
+    "steps": {
+      "install": {
+        "title": "Installez Toskar dessus",
+        "body": "Sur un Mac, un PC Windows ou une machine Linux."
+      },
+      "connect": {
+        "title": "Connectez-les",
+        "body": "Sur le même réseau, il apparaît ci-dessous dans « {{available}} » : choisissez « {{add}} », puis approuvez sur l'autre ordinateur. Pour un serveur, ou un ordinateur joint par SSH, utilisez « {{command}} »."
+      },
+      "share": {
+        "title": "Partagez le travail",
+        "body": "Toskar exécute chaque partie d'une demande sur un ordinateur qui a le modèle et la place nécessaire. Déployez des modèles sur le nouvel ordinateur ci-dessous."
+      }
+    }
   },
   "status": {
     "team": "État de l'équipe",
@@ -83,7 +100,6 @@
     "models_many": "{{count}} modèles",
     "models_other": "{{count}} modèles",
     "availableFor": "Disponible pour :",
-    "partOfTeam": "Membre de cette équipe",
     "disk": "Disque",
     "diskFree": "{{free}} libres sur {{total}}",
     "diskLow": "Espace libre insuffisant pour d'autres modèles",
@@ -104,7 +120,8 @@
     "moreActions": "Autres actions pour {{name}}",
     "removeFromTeam": "Retirer de l'équipe",
     "training": "Entraînement",
-    "trainingHint": "Entraîne une IA : le travail va à d'autres ordinateurs qui ont le modèle"
+    "trainingHint": "Entraîne une IA : le travail va à d'autres ordinateurs qui ont le modèle",
+    "confirmRemove": "Retirer {{name}} de cette équipe ? Il ne recevra plus de travail, et le rajouter demandera une nouvelle approbation."
   },
   "deploy": {
     "title": "Déployer un modèle",

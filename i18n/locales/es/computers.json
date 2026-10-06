@@ -1,13 +1,30 @@
 {
   "page": {
-    "title": "Tu equipo de Toskar",
-    "titleAdvanced": "Tu clúster de IA",
     "subtitle": "Estas computadoras trabajan juntas como un solo sistema de IA. Agrega una máquina y luego implementa modelos donde quepan.",
+    "howItWorks": "Cómo añadir un equipo",
+    "hideHowItWorks": "Ocultar cómo añadir un equipo",
     "find": "Buscar computadoras",
     "scanning": "Buscando…",
     "looking": "Buscando computadoras…",
     "emptyTitle": "Arma tu equipo de IA",
     "emptyDescription": "Instala Toskar en otra computadora de tu red y aparecerá aquí automáticamente."
+  },
+  "intro": {
+    "title": "Añade otro equipo",
+    "steps": {
+      "install": {
+        "title": "Instala Toskar allí",
+        "body": "En un Mac, un PC con Windows o una máquina Linux."
+      },
+      "connect": {
+        "title": "Conéctalos",
+        "body": "En la misma red aparece abajo en «{{available}}»: elige «{{add}}» y apruébalo en el otro equipo. Para un servidor o un equipo al que accedes por SSH, usa «{{command}}»."
+      },
+      "share": {
+        "title": "Reparte el trabajo",
+        "body": "Toskar ejecuta cada parte de una petición en un equipo que tenga el modelo y espacio para él. Despliega modelos en el nuevo equipo más abajo."
+      }
+    }
   },
   "status": {
     "team": "Estado del equipo",
@@ -83,7 +100,6 @@
     "models_many": "{{count}} modelos",
     "models_other": "{{count}} modelos",
     "availableFor": "Disponible para:",
-    "partOfTeam": "Forma parte de este equipo",
     "disk": "Disco",
     "diskFree": "{{free}} libres de {{total}}",
     "diskLow": "Poco espacio libre para más modelos",
@@ -104,7 +120,8 @@
     "moreActions": "Más acciones para {{name}}",
     "removeFromTeam": "Quitar del equipo",
     "training": "Entrenando",
-    "trainingHint": "Está entrenando una IA, así que el trabajo va a otros equipos que tengan el modelo"
+    "trainingHint": "Está entrenando una IA, así que el trabajo va a otros equipos que tengan el modelo",
+    "confirmRemove": "¿Quitar {{name}} de este equipo? Dejará de recibir trabajo y para volver a añadirlo hará falta una nueva aprobación."
   },
   "deploy": {
     "title": "Implementar un modelo",

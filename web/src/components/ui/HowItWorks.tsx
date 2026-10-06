@@ -63,4 +63,5 @@ export const stepIcons = {
   plug: 'M6 1.5v3M10 1.5v3M4 4.5h8v3a4 4 0 0 1-8 0v-3ZM8 11.5v3',
   person: 'M8 7.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3 14a5 5 0 0 1 10 0',
   chat: 'M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2Z',
+  download: 'M8 2.5v7.5M4.5 7 8 10.5 11.5 7M3 13.5h10',
 }

@@ -1,13 +1,30 @@
 {
   "page": {
-    "title": "Your Toskar team",
-    "titleAdvanced": "Your AI cluster",
     "subtitle": "These computers work together as one AI system. Add a machine, then deploy models where they fit.",
+    "howItWorks": "How to add a computer",
+    "hideHowItWorks": "Hide how to add a computer",
     "find": "Find computers",
     "scanning": "Scanning…",
     "looking": "Looking for computers…",
     "emptyTitle": "Build your AI team",
     "emptyDescription": "Install Toskar on another computer on your network and it will appear here automatically."
+  },
+  "intro": {
+    "title": "Add another computer",
+    "steps": {
+      "install": {
+        "title": "Install Toskar there",
+        "body": "On a Mac, a Windows PC, or a Linux machine."
+      },
+      "connect": {
+        "title": "Connect them",
+        "body": "On the same network it shows up below under {{available}}: choose {{add}}, then approve it on the other computer. For a server, or a computer you reach over SSH, use {{command}}."
+      },
+      "share": {
+        "title": "Share the work",
+        "body": "Toskar runs each part of a request on a computer that has the model and room for it. Deploy models to the new computer below."
+      }
+    }
   },
   "status": {
     "team": "Team status",
@@ -80,7 +97,6 @@
     "models_one": "{{count}} model",
     "models_other": "{{count}} models",
     "availableFor": "Available for:",
-    "partOfTeam": "Part of this team",
     "disk": "Disk",
     "diskFree": "{{free}} free of {{total}}",
     "diskLow": "Low free space for more models",
@@ -101,7 +117,8 @@
     "moreActions": "More actions for {{name}}",
     "removeFromTeam": "Remove from team",
     "training": "Training",
-    "trainingHint": "Training an AI, so work goes to other computers when they have the model"
+    "trainingHint": "Training an AI, so work goes to other computers when they have the model",
+    "confirmRemove": "Remove {{name}} from this team? It stops taking work, and adding it again needs a new approval."
   },
   "deploy": {
     "title": "Deploy a model",
