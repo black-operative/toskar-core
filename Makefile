@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
-COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null || echo unknown)
+NULL := $(if $(findstring /,$(SHELL)),/dev/null,NUL)
+COMMIT := $(shell git rev-parse --short HEAD 2>$(NULL) || echo unknown)
 LDFLAGS := -X github.com/yeixio/toskar-core/internal/version.Commit=$(COMMIT)
 # ".exe" for Windows
 EXE := $(shell go env GOEXE)
@@ -18,7 +19,7 @@ help: ## Show targets
 	@echo "Targets:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-# Exporte because cmd can't parse set syntax 
+# Exported here because cmd.exe cannot parse a VAR=value command prefix.
 start: export TOSKAR_WEB_UI_DIR := $(CURDIR)/web/dist
 start: ui daemon ## Build the web UI and daemon, then run it
 	@echo "Open http://127.0.0.1:7331"
