@@ -902,6 +902,11 @@ func (a *App) Start(ctx context.Context) error {
 		a.sampler.Run(ctx)
 	}()
 	a.startLive(ctx)
+	// Tasks an earlier run left pending or running can't finish now, and
+	// chats from before chat tasks were settled never left pending.
+	if n, err := a.Tasks.SettleInterrupted(ctx); err == nil && n > 0 {
+		a.Logger.Info("settled tasks left unfinished", "count", n)
+	}
 	a.notifyFromEvents(ctx)
 	a.Notifications.Start(ctx)
 	a.watchCapabilities(ctx)

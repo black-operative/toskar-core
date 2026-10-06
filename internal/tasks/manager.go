@@ -99,6 +99,34 @@ func (m *Manager) Create(ctx context.Context, profileID, conversationID, prompt 
 	return task, nil
 }
 
+// SetChatStatus records where a chat turn's task stands: running when the
+// turn starts, then completed, failed (with why), or cancelled when it was
+// stopped. A chat's task was never moved past pending before, so every
+// chat counted as active on the Performance page. It publishes no task
+// events: those raise a "task finished" notice, and a chat reply is its
+// own notice.
+func (m *Manager) SetChatStatus(ctx context.Context, taskID string, status contracts.TaskStatus, errMsg string) {
+	if status == contracts.TaskRunning || status == contracts.TaskPending {
+		_, _ = m.db.ExecContext(ctx, `UPDATE tasks SET status = ? WHERE id = ?`, status, taskID)
+		return
+	}
+	_, _ = m.db.ExecContext(ctx, `UPDATE tasks SET status = ?, error = ?, completed_at = ? WHERE id = ?`,
+		status, nullStr(errMsg), time.Now().UTC().Format(time.RFC3339Nano), taskID)
+}
+
+// SettleInterrupted ends tasks left pending or running by an earlier run of
+// the daemon, which can't finish them now, and chats from before
+// SetChatStatus, which never left pending. It reports how many it ended.
+func (m *Manager) SettleInterrupted(ctx context.Context) (int64, error) {
+	res, err := m.db.ExecContext(ctx, `UPDATE tasks SET status = ?, error = ?, completed_at = ? WHERE status IN (?, ?)`,
+		contracts.TaskFailed, "Toskar stopped before this finished.", time.Now().UTC().Format(time.RFC3339Nano),
+		contracts.TaskPending, contracts.TaskRunning)
+	if err != nil {
+		return 0, err
+	}
+	return res.RowsAffected()
+}
+
 // Get loads a task by ID.
 func (m *Manager) Get(ctx context.Context, id string) (contracts.Task, error) {
 	var t contracts.Task

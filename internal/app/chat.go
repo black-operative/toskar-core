@@ -265,6 +265,7 @@ func (a *App) RunChat(ctx context.Context, profileID, conversationID, message st
 			run.Strategy(routeReason)
 		}
 		runStatus, runErr := runlog.StatusFailed, error(nil)
+		a.Tasks.SetChatStatus(ctx, task.ID, contracts.TaskRunning, "")
 		defer func() {
 			status := runStatus
 			if ctx.Err() != nil && status != runlog.StatusCompleted {
@@ -272,6 +273,19 @@ func (a *App) RunChat(ctx context.Context, profileID, conversationID, message st
 			}
 			if err := a.RunLog.Save(context.WithoutCancel(ctx), run.Finish(status, runErr)); err != nil && a.Logger != nil {
 				a.Logger.Warn("save run", "run_id", task.ID, "error", err)
+			}
+			// The turn's task ends with it, however it ends.
+			switch status {
+			case runlog.StatusCompleted:
+				a.Tasks.SetChatStatus(context.WithoutCancel(ctx), task.ID, contracts.TaskCompleted, "")
+			case runlog.StatusStopped:
+				a.Tasks.SetChatStatus(context.WithoutCancel(ctx), task.ID, contracts.TaskCancelled, "")
+			default:
+				msg := "The reply failed."
+				if runErr != nil {
+					msg = runErr.Error()
+				}
+				a.Tasks.SetChatStatus(context.WithoutCancel(ctx), task.ID, contracts.TaskFailed, msg)
 			}
 		}()
 		// Chat comes first: automations, benchmarks, and training wait
