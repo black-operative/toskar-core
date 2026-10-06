@@ -10,6 +10,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 	"time"
@@ -871,12 +872,12 @@ func (s *Server) logMiddleware(next http.Handler) http.Handler {
 
 func spaFallback(root fs.FS, files http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		path := r.URL.Path
-		if path == "/" {
+		urlPath := r.URL.Path
+		if urlPath == "/" {
 			files.ServeHTTP(w, r)
 			return
 		}
-		cleaned := filepath.Clean(stringsTrimPrefix(path))
+		cleaned := path.Clean(stringsTrimPrefix(urlPath))
 		if cleaned == "." {
 			cleaned = "index.html"
 		}
