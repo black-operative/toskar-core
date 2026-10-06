@@ -135,6 +135,7 @@
     {
       "id": "tools",
       "path": "/tools",
+      "query": "tab=add",
       "filename": "12-tools.png",
       "headline": "Connect Your Tools",
       "readyText": "Notion"

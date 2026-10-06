@@ -1,7 +1,9 @@
 {
   "page": {
     "title": "Outils",
-    "description": "Ce que l'IA peut faire en plus de répondre : rechercher sur le web, travailler avec des fichiers et utiliser les apps et services que vous ajoutez.",
+    "description": "Ce que l'IA sait faire en plus de répondre : chercher sur le web, lire et créer des fichiers, exécuter du code et utiliser les services et applis que vous ajoutez.",
+    "howItWorks": "Comment ça marche",
+    "hideHowItWorks": "Masquer l'explication",
     "allTitle": "Tous les outils",
     "allDescription": "Chaque outil, intégré ou ajouté. Désactivez-en un ici pour l'exclure de toutes les discussions.",
     "search": "Rechercher des outils…",
@@ -18,6 +20,30 @@
     "disable": "Désactiver",
     "enable": "Activer",
     "test": "Tester l'outil"
+  },
+  "intro": {
+    "title": "Comment fonctionnent les outils",
+    "steps": {
+      "builtin": {
+        "title": "Intégrés",
+        "body": "La recherche web, les fichiers, les tableurs, l'exécution de code et plus encore sont prêts à l'emploi."
+      },
+      "add": {
+        "title": "En ajouter",
+        "body": "Connectez un service que vous utilisez, comme GitHub, ou ajoutez des applis de la galerie ou de n'importe quel serveur MCP."
+      },
+      "choose": {
+        "title": "Chaque profil choisit",
+        "body": "Un profil décide quels outils ses discussions peuvent utiliser, et tout ce qui modifie quelque chose vous demande d'abord. Désactiver un outil ici le tient à l'écart de toutes les discussions."
+      }
+    },
+    "profiles": "Choisissez les outils que les discussions d'un profil peuvent utiliser dans <go>{{page}}</go>."
+  },
+  "tabs": {
+    "label": "Sections des outils",
+    "yours": "Vos outils",
+    "add": "En ajouter",
+    "media": "Images et vidéo"
   },
   "source": {
     "builtin": "intégré",

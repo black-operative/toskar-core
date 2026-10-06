@@ -1,7 +1,9 @@
 {
   "page": {
     "title": "Tools",
-    "description": "What the AI can do besides answering: search the web, work with files, and use the apps and services you add.",
+    "description": "What the AI can do besides answering: search the web, read and make files, run code, and use the services and apps you add.",
+    "howItWorks": "How it works",
+    "hideHowItWorks": "Hide how it works",
     "allTitle": "All tools",
     "allDescription": "Every tool, built in or added. Turn one off here to keep it out of every chat.",
     "search": "Search tools…",
@@ -18,6 +20,30 @@
     "disable": "Disable",
     "enable": "Enable",
     "test": "Test tool"
+  },
+  "intro": {
+    "title": "How tools work",
+    "steps": {
+      "builtin": {
+        "title": "Built in",
+        "body": "Web search, files, spreadsheets, running code, and more are ready to use."
+      },
+      "add": {
+        "title": "Add more",
+        "body": "Connect a service you use, such as GitHub, or add apps from the gallery or any MCP server."
+      },
+      "choose": {
+        "title": "Each profile chooses",
+        "body": "A profile decides which tools its chats may use, and anything that changes things asks you first. Turning a tool off here keeps it out of every chat."
+      }
+    },
+    "profiles": "Choose which tools a profile's chats may use on <go>{{page}}</go>."
+  },
+  "tabs": {
+    "label": "Tool sections",
+    "yours": "Your tools",
+    "add": "Add more",
+    "media": "Images and video"
   },
   "source": {
     "builtin": "built in",

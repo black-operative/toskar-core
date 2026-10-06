@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+import { Link, useSearchParams } from 'react-router-dom'
 import i18n from '@/i18n'
 import { api } from '@/lib/api'
 import type { ToolRecord } from '@/types/api'
@@ -11,6 +12,12 @@ import { ToolSources } from './ToolSources'
 import { formatDateTime } from '@/i18n/format'
 import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { HowItWorks, stepIcons } from '@/components/ui/HowItWorks'
+import { rovingKeyDown } from '@/lib/roving'
+
+// The page's sections, as tabs; each is tools:tabs.<id>. ?tab=add opens Add more.
+const TABS = ['yours', 'add', 'media'] as const
+type Tab = (typeof TABS)[number]
 
 // The filters, in order; each is tools:page.filters.<id> in the catalog.
 const FILTERS = ['all', 'builtin', 'added', 'disabled'] as const
@@ -45,6 +52,11 @@ export function ToolsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [testArgs, setTestArgs] = useState('{"query":"Juneau AK weather"}')
   const [testOutput, setTestOutput] = useState('')
+  const [searchParams, setSearchParams] = useSearchParams()
+  const asked = searchParams.get('tab')
+  const tab: Tab = TABS.includes(asked as Tab) ? (asked as Tab) : 'yours'
+  const setTab = (next: Tab) => setSearchParams(next === 'yours' ? {} : { tab: next }, { replace: true })
+  const [showIntro, setShowIntro] = useState(false)
 
   const toolsQuery = useQuery({
     queryKey: ['tools'],
@@ -82,47 +94,115 @@ export function ToolsPage() {
   })
 
   return (
-    <div className="page-fill gap-4 overflow-y-auto p-4">
-      <div>
-        <RealmKicker />
-        <h1 className="font-display text-2xl font-semibold text-ink">{t('page.title')}</h1>
-        <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t('page.description')}</p>
+    <div className="page-fill gap-5 overflow-y-auto p-4 sm:p-6">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div className="min-w-0 max-w-2xl">
+          <RealmKicker />
+          <h1 className="page-title">{t('page.title')}</h1>
+          <p className="page-subtitle mt-1">{t('page.description')}</p>
+        </div>
+        <button
+          type="button"
+          className="btn-secondary"
+          aria-expanded={showIntro}
+          aria-controls="tools-intro"
+          onClick={() => setShowIntro((open) => !open)}
+        >
+          {showIntro ? t('page.hideHowItWorks') : t('page.howItWorks')}
+        </button>
       </div>
-      <ImageSetupCard />
-      <VideoSetupCard />
-      <ToolSources />
-      <ConnectedServices />
-      <div>
-        <h2 className="section-title">{t('page.allTitle')}</h2>
-        <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t('page.allDescription')}</p>
-      </div>
-      <div className="flex flex-wrap items-center gap-2">
-        <input
-          className="field min-w-[16rem] flex-1"
-          value={query}
-          placeholder={t('page.search')}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-        {FILTERS.map((item) => (
+      {showIntro ? (
+        <div className="space-y-2">
+          <HowItWorks
+            id="tools-intro"
+            title={t('intro.title')}
+            tone="bg-gungnir/15 text-gungnir"
+            steps={[
+              { icon: stepIcons.spark, title: t('intro.steps.builtin.title'), body: t('intro.steps.builtin.body') },
+              { icon: stepIcons.plug, title: t('intro.steps.add.title'), body: t('intro.steps.add.body') },
+              { icon: stepIcons.person, title: t('intro.steps.choose.title'), body: t('intro.steps.choose.body') },
+            ]}
+          />
+          <p className="px-1 text-sm text-ink-muted">
+            <Trans
+              t={t}
+              i18nKey="intro.profiles"
+              values={{ page: t('nav.profiles', { ns: 'common' }) }}
+              components={{ go: <Link to="/profiles" className="font-medium text-primary-active underline-offset-2 hover:underline" /> }}
+            />
+          </p>
+        </div>
+      ) : null}
+
+      {/* Its own size: in this scrolling column it would otherwise shrink to
+          nothing on a phone and stretch across the page on a desktop. */}
+      <div className="segmented shrink-0 self-start" role="tablist" aria-label={t('tabs.label')} onKeyDown={rovingKeyDown}>
+        {TABS.map((id) => (
           <button
-            key={item}
+            key={id}
+            id={`tools-tab-${id}`}
             type="button"
-            className={filter === item ? 'btn-primary px-3 py-1.5 text-xs' : 'btn-secondary px-3 py-1.5 text-xs'}
-            onClick={() => setFilter(item)}
+            role="tab"
+            aria-selected={tab === id}
+            aria-controls={`tools-panel-${id}`}
+            tabIndex={tab === id ? 0 : -1}
+            className="segmented-item"
+            onClick={() => setTab(id)}
           >
-            {t(`page.filters.${item}`)}
+            {t(`tabs.${id}`)}
           </button>
         ))}
       </div>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)]">
-        <ul className="space-y-2">
+
+      {tab === 'add' && (
+        <div id="tools-panel-add" role="tabpanel" aria-labelledby="tools-tab-add" className="space-y-5">
+          <ConnectedServices />
+          <ToolSources />
+        </div>
+      )}
+
+      {tab === 'media' && (
+        <div id="tools-panel-media" role="tabpanel" aria-labelledby="tools-tab-media" className="space-y-5">
+          <ImageSetupCard />
+          <VideoSetupCard />
+        </div>
+      )}
+
+      {tab === 'yours' && (
+      <div id="tools-panel-yours" role="tabpanel" aria-labelledby="tools-tab-yours" className="space-y-4">
+      <p className="max-w-2xl text-sm text-ink-muted">{t('page.allDescription')}</p>
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="search-field min-w-[16rem] flex-1 sm:max-w-sm">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+            <circle cx="7" cy="7" r="4.5" />
+            <path d="m10.5 10.5 3 3" />
+          </svg>
+          <input
+            type="search"
+            className="field"
+            value={query}
+            aria-label={t('page.search')}
+            placeholder={t('page.search')}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
+        <div className="segmented" role="group" aria-label={t('page.allTitle')}>
+          {FILTERS.map((item) => (
+            <button key={item} type="button" className="segmented-item" aria-pressed={filter === item} onClick={() => setFilter(item)}>
+              {t(`page.filters.${item}`)}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className={selected ? 'grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)]' : ''}>
+        <ul className={['grid gap-2 sm:grid-cols-2', selected ? '' : 'xl:grid-cols-3'].join(' ')}>
           {toolsQuery.isLoading && (
-            <li>
+            <li className="sm:col-span-2 xl:col-span-3">
               <Skeleton label={t('page.loading')} count={4} />
             </li>
           )}
           {toolsQuery.isError && !toolsQuery.data && (
-            <li>
+            <li className="sm:col-span-2 xl:col-span-3">
               <LoadError error={toolsQuery.error} onRetry={() => void toolsQuery.refetch()} retrying={toolsQuery.isFetching} />
             </li>
           )}
@@ -130,31 +210,30 @@ export function ToolsPage() {
             <li key={tool.id}>
               <button
                 type="button"
-                className="card w-full text-start"
+                className={['selectable flex h-full w-full flex-col', selectedId === tool.id ? 'selectable-active' : ''].join(' ')}
+                aria-pressed={selectedId === tool.id}
                 onClick={() => {
-                  setSelectedId(tool.id)
+                  setSelectedId(selectedId === tool.id ? null : tool.id)
                   setTestOutput('')
                   setTestArgs(exampleArgs(tool))
                 }}
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-medium text-ink">{tool.name}</p>
-                    <p className="mt-1 text-xs text-ink-muted">{tool.description}</p>
-                  </div>
-                  <span className={tool.enabled ? 'text-xs text-success' : 'text-xs text-ink-faint'}>
+                <span className="flex w-full items-start justify-between gap-2">
+                  <span className="selectable-title text-sm font-semibold text-ink">{tool.name}</span>
+                  <span className={['status-chip shrink-0', tool.enabled ? 'bg-success/15 text-success' : 'bg-raised text-ink-muted'].join(' ')}>
                     {tool.enabled ? t('page.enabled') : t('page.disabled')}
                   </span>
-                </div>
-                <p className="mt-2 text-xs text-ink-faint">
+                </span>
+                <span className="mt-1 line-clamp-2 text-xs text-ink-muted">{tool.description}</span>
+                <span className="mt-auto pt-2 text-[11px] text-ink-faint">
                   {tool.capability} · {sourceLabel(tool.source)}
-                </p>
+                </span>
               </button>
             </li>
           ))}
         </ul>
         {selected && (
-          <aside className="card h-fit space-y-3">
+          <aside className="card h-fit space-y-3 lg:sticky lg:top-0">
             <h2 className="font-display text-lg font-semibold text-ink">{selected.name}</h2>
             <p className="text-sm text-ink-muted">{selected.description}</p>
             <dl className="space-y-1 text-xs text-ink-muted">
@@ -173,7 +252,7 @@ export function ToolsPage() {
             <pre className="log-panel text-xs">{selected.schema}</pre>
             <button
               type="button"
-              className="btn-secondary px-3 py-1.5 text-xs"
+              className="btn-secondary btn-sm"
               disabled={toggle.isPending}
               onClick={() => toggle.mutate(selected)}
             >
@@ -184,12 +263,13 @@ export function ToolsPage() {
               <div className="space-y-2">
                 <textarea
                   className="field min-h-20 w-full font-mono text-xs"
+                  aria-label={t('page.test')}
                   value={testArgs}
                   onChange={(event) => setTestArgs(event.target.value)}
                 />
                 <button
                   type="button"
-                  className="btn-primary px-3 py-1.5 text-xs"
+                  className="btn-primary btn-sm"
                   disabled={test.isPending}
                   onClick={() => test.mutate()}
                 >
@@ -201,6 +281,8 @@ export function ToolsPage() {
           </aside>
         )}
       </div>
+      </div>
+      )}
     </div>
   )
 }

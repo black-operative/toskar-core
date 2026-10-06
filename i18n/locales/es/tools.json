@@ -1,7 +1,9 @@
 {
   "page": {
     "title": "Herramientas",
-    "description": "Lo que la IA puede hacer además de responder: buscar en la web, trabajar con archivos y usar las apps y los servicios que agregues.",
+    "description": "Lo que la IA puede hacer además de responder: buscar en la web, leer y crear archivos, ejecutar código y usar los servicios y apps que añadas.",
+    "howItWorks": "Cómo funciona",
+    "hideHowItWorks": "Ocultar cómo funciona",
     "allTitle": "Todas las herramientas",
     "allDescription": "Todas las herramientas, integradas o agregadas. Desactiva una aquí para que no esté en ningún chat.",
     "search": "Buscar herramientas…",
@@ -18,6 +20,30 @@
     "disable": "Desactivar",
     "enable": "Activar",
     "test": "Probar herramienta"
+  },
+  "intro": {
+    "title": "Cómo funcionan las herramientas",
+    "steps": {
+      "builtin": {
+        "title": "Integradas",
+        "body": "La búsqueda web, los archivos, las hojas de cálculo, la ejecución de código y más están listos para usar."
+      },
+      "add": {
+        "title": "Añadir más",
+        "body": "Conecta un servicio que uses, como GitHub, o añade apps de la galería o de cualquier servidor MCP."
+      },
+      "choose": {
+        "title": "Cada perfil elige",
+        "body": "Un perfil decide qué herramientas pueden usar sus chats, y todo lo que cambia algo te pregunta antes. Desactivar una herramienta aquí la deja fuera de todos los chats."
+      }
+    },
+    "profiles": "Elige qué herramientas pueden usar los chats de un perfil en <go>{{page}}</go>."
+  },
+  "tabs": {
+    "label": "Secciones de herramientas",
+    "yours": "Tus herramientas",
+    "add": "Añadir más",
+    "media": "Imágenes y vídeo"
   },
   "source": {
     "builtin": "integrada",

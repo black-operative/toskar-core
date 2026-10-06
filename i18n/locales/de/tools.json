@@ -1,7 +1,9 @@
 {
   "page": {
     "title": "Werkzeuge",
-    "description": "Was die KI außer Antworten noch kann: im Web suchen, mit Dateien arbeiten und die Apps und Dienste nutzen, die du hinzufügst.",
+    "description": "Was die KI neben dem Antworten kann: im Web suchen, Dateien lesen und erstellen, Code ausführen und die Dienste und Apps nutzen, die du hinzufügst.",
+    "howItWorks": "So funktioniert's",
+    "hideHowItWorks": "Erklärung ausblenden",
     "allTitle": "Alle Werkzeuge",
     "allDescription": "Jedes Werkzeug, eingebaut oder hinzugefügt. Schalte eines hier aus, um es aus allen Chats herauszuhalten.",
     "search": "Werkzeuge suchen …",
@@ -18,6 +20,30 @@
     "disable": "Deaktivieren",
     "enable": "Aktivieren",
     "test": "Werkzeug testen"
+  },
+  "intro": {
+    "title": "So funktionieren Werkzeuge",
+    "steps": {
+      "builtin": {
+        "title": "Eingebaut",
+        "body": "Websuche, Dateien, Tabellen, Code ausführen und mehr sind sofort nutzbar."
+      },
+      "add": {
+        "title": "Mehr hinzufügen",
+        "body": "Verbinde einen Dienst, den du nutzt, etwa GitHub, oder füge Apps aus der Galerie oder von einem MCP-Server hinzu."
+      },
+      "choose": {
+        "title": "Jedes Profil entscheidet",
+        "body": "Ein Profil legt fest, welche Werkzeuge seine Chats nutzen dürfen, und alles, was etwas verändert, fragt dich zuerst. Ein hier ausgeschaltetes Werkzeug bleibt aus allen Chats heraus."
+      }
+    },
+    "profiles": "Welche Werkzeuge die Chats eines Profils nutzen dürfen, wählst du unter <go>{{page}}</go>."
+  },
+  "tabs": {
+    "label": "Werkzeugbereiche",
+    "yours": "Deine Werkzeuge",
+    "add": "Mehr hinzufügen",
+    "media": "Bilder und Video"
   },
   "source": {
     "builtin": "eingebaut",

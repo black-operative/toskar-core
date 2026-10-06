@@ -1,7 +1,9 @@
 {
   "page": {
     "title": "Strumenti",
-    "description": "Cosa può fare l'IA oltre a rispondere: cercare sul web, lavorare con i file e usare le app e i servizi che aggiungi.",
+    "description": "Cosa sa fare l'IA oltre a rispondere: cercare sul web, leggere e creare file, eseguire codice e usare i servizi e le app che aggiungi.",
+    "howItWorks": "Come funziona",
+    "hideHowItWorks": "Nascondi la spiegazione",
     "allTitle": "Tutti gli strumenti",
     "allDescription": "Tutti gli strumenti, integrati o aggiunti. Disattivane uno qui per escluderlo da tutte le chat.",
     "search": "Cerca strumenti…",
@@ -18,6 +20,30 @@
     "disable": "Disattiva",
     "enable": "Attiva",
     "test": "Prova strumento"
+  },
+  "intro": {
+    "title": "Come funzionano gli strumenti",
+    "steps": {
+      "builtin": {
+        "title": "Integrati",
+        "body": "Ricerca web, file, fogli di calcolo, esecuzione di codice e altro sono pronti all'uso."
+      },
+      "add": {
+        "title": "Aggiungine altri",
+        "body": "Collega un servizio che usi, come GitHub, oppure aggiungi app dalla galleria o da qualsiasi server MCP."
+      },
+      "choose": {
+        "title": "Ogni profilo sceglie",
+        "body": "Un profilo decide quali strumenti possono usare le sue chat, e tutto ciò che modifica qualcosa ti chiede prima. Disattivare uno strumento qui lo tiene fuori da tutte le chat."
+      }
+    },
+    "profiles": "Scegli quali strumenti possono usare le chat di un profilo in <go>{{page}}</go>."
+  },
+  "tabs": {
+    "label": "Sezioni degli strumenti",
+    "yours": "I tuoi strumenti",
+    "add": "Aggiungine altri",
+    "media": "Immagini e video"
   },
   "source": {
     "builtin": "integrato",

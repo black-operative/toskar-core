@@ -1,7 +1,9 @@
 {
   "page": {
     "title": "Ferramentas",
-    "description": "O que a IA pode fazer além de responder: pesquisar na web, trabalhar com arquivos e usar os apps e serviços que você adicionar.",
+    "description": "O que a IA pode fazer além de responder: pesquisar na web, ler e criar arquivos, executar código e usar os serviços e apps que você adicionar.",
+    "howItWorks": "Como funciona",
+    "hideHowItWorks": "Ocultar como funciona",
     "allTitle": "Todas as ferramentas",
     "allDescription": "Todas as ferramentas, integradas ou adicionadas. Desative uma aqui para mantê-la fora de todos os chats.",
     "search": "Pesquisar ferramentas…",
@@ -18,6 +20,30 @@
     "disable": "Desativar",
     "enable": "Ativar",
     "test": "Testar ferramenta"
+  },
+  "intro": {
+    "title": "Como as ferramentas funcionam",
+    "steps": {
+      "builtin": {
+        "title": "Integradas",
+        "body": "Pesquisa na web, arquivos, planilhas, execução de código e mais estão prontos para usar."
+      },
+      "add": {
+        "title": "Adicionar mais",
+        "body": "Conecte um serviço que você usa, como o GitHub, ou adicione apps da galeria ou de qualquer servidor MCP."
+      },
+      "choose": {
+        "title": "Cada perfil escolhe",
+        "body": "Um perfil decide quais ferramentas as conversas dele podem usar, e tudo o que altera algo pergunta antes. Desativar uma ferramenta aqui a deixa fora de todas as conversas."
+      }
+    },
+    "profiles": "Escolha quais ferramentas as conversas de um perfil podem usar em <go>{{page}}</go>."
+  },
+  "tabs": {
+    "label": "Seções de ferramentas",
+    "yours": "Suas ferramentas",
+    "add": "Adicionar mais",
+    "media": "Imagens e vídeo"
   },
   "source": {
     "builtin": "integrada",

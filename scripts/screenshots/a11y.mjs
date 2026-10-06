@@ -27,6 +27,8 @@ const allPages = [
   '/diagnostics',
   '/profiles',
   '/tools',
+  // Connected services and tool sources, on their own tab.
+  '/tools?tab=add',
   '/api-access',
   '/settings',
 ]
