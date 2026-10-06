@@ -1314,6 +1314,19 @@
       }
     },
     {
+      "id": "memory_4",
+      "what": "A memory asked for after the fact is saved, not just promised.",
+      "platforms": [
+        "core",
+        "phone"
+      ],
+      "message": "My daughter's birthday is May 3, remember that.",
+      "expect": {
+        "answer_matches": "(?i)remember.*May 3",
+        "no_deflection": true
+      }
+    },
+    {
       "id": "deflection_is_looked_up",
       "what": "An answer that sends the person off to search is looked up and written again from the web.",
       "platforms": [
