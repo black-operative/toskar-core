@@ -104,7 +104,7 @@ function HealthRow({ row }: { row: StatusRow }) {
                   <Link
                     key={action.label}
                     to={action.to}
-                    className="btn-secondary px-3 py-1.5 text-xs"
+                    className="btn-secondary btn-sm"
                   >
                     {action.label}
                   </Link>
@@ -112,7 +112,7 @@ function HealthRow({ row }: { row: StatusRow }) {
                   <button
                     key={action.label}
                     type="button"
-                    className="btn-secondary px-3 py-1.5 text-xs"
+                    className="btn-secondary btn-sm"
                     disabled={action.busy}
                     onClick={action.onClick}
                   >
@@ -477,7 +477,7 @@ export function DiagnosticsPage() {
           {!serviceOk ? <Ratatoskr state="error" size={96} /> : null}
           <div className="min-w-0">
             <RealmKicker />
-            <h1 className="page-title">{t('page.title')}</h1>
+            <h1 className="page-title">{t('nav.diagnostics', { ns: 'common' })}</h1>
             <p className="page-subtitle">{headline}</p>
           </div>
         </div>

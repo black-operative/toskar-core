@@ -12,7 +12,7 @@ function Command({ command }: { command: string }) {
       </pre>
       <button
         type="button"
-        className="btn-secondary absolute end-2 top-2 px-2.5 py-1 text-xs"
+        className="btn-secondary btn-sm absolute end-2 top-2"
         onClick={() => void navigator.clipboard?.writeText(command).then(() => setCopied(true))}
       >
         {copied ? t('rows.gpu.copied') : t('rows.gpu.copy')}

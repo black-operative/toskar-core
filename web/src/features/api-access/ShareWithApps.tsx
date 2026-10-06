@@ -93,7 +93,7 @@ export function ShareWithApps() {
         <h2 className="section-title">{t('share.title')}</h2>
         <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t('share.description')}</p>
       </div>
-      <div role="tablist" className="flex flex-wrap gap-1.5" onKeyDown={rovingKeyDown}>
+      <div role="tablist" aria-label={t('share.title')} className="segmented flex-wrap" onKeyDown={rovingKeyDown}>
         {APPS.map((a) => (
           <button
             key={a.id}
@@ -101,7 +101,7 @@ export function ShareWithApps() {
             role="tab"
             aria-selected={app === a.id}
             tabIndex={app === a.id ? 0 : -1}
-            className={app === a.id ? 'btn-primary px-3 py-1.5 text-xs' : 'btn-secondary px-3 py-1.5 text-xs'}
+            className="segmented-item"
             onClick={() => {
               setApp(a.id)
               setCopied(false)
@@ -113,12 +113,12 @@ export function ShareWithApps() {
       </div>
       <p className="text-sm text-ink-muted">{setup.where}</p>
       <div className="relative">
-        <pre className="log-panel overflow-x-auto pe-20 text-xs" aria-label={t('share.settings', { language: setup.language })}>
+        <pre className="log-panel overflow-x-auto pe-20 text-xs" tabIndex={0} aria-label={t('share.settings', { language: setup.language })}>
           {setup.text}
         </pre>
         <button
           type="button"
-          className="btn-secondary absolute end-2 top-2 px-2.5 py-1 text-xs"
+          className="btn-secondary btn-sm absolute end-2 top-2"
           onClick={() => {
             void navigator.clipboard.writeText(setup.text).then(() => setCopied(true))
           }}

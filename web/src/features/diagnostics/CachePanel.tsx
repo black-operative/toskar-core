@@ -41,7 +41,7 @@ export function CachePanel() {
             {!c.persistent && (
               <button
                 type="button"
-                className="btn-secondary px-3 py-1 text-xs"
+                className="btn-secondary btn-sm"
                 disabled={clear.isPending || c.entries === 0}
                 onClick={() => clear.mutate(c.name)}
               >

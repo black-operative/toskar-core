@@ -23,7 +23,7 @@ export function PerformancePage() {
         <p className="page-subtitle">{t('page.subtitle')}</p>
       </header>
 
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('page.views')} onKeyDown={rovingKeyDown}>
+      <div className="segmented" role="tablist" aria-label={t('page.views')} onKeyDown={rovingKeyDown}>
         {tabs.map((option) => (
           <button
             key={option}
@@ -32,12 +32,7 @@ export function PerformancePage() {
             aria-selected={tab === option}
             tabIndex={tab === option ? 0 : -1}
             onClick={() => setTab(option)}
-            className={[
-              'rounded-lg border px-4 py-2 text-sm font-medium transition',
-              tab === option
-                ? 'border-primary bg-primary-soft text-primary-active'
-                : 'border-line bg-surface text-ink-muted hover:border-primary/40 hover:text-ink',
-            ].join(' ')}
+            className="segmented-item"
           >
             {t(`tabs.${option}`)}
           </button>

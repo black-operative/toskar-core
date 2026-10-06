@@ -297,7 +297,7 @@ export function ApiAccessPage() {
           </div>
           <button
             type="button"
-            className="btn-secondary shrink-0 px-3 py-1.5 text-xs"
+            className="btn-secondary btn-sm shrink-0"
             onClick={runTest}
             disabled={probeQuery.isFetching}
           >
@@ -407,7 +407,7 @@ export function ApiAccessPage() {
           {!showCreate && (
             <button
               type="button"
-              className="btn-primary px-3 py-1.5 text-xs"
+              className="btn-primary btn-sm"
               onClick={() => setShowCreate(true)}
             >
               {t('keys.create')}
@@ -432,7 +432,7 @@ export function ApiAccessPage() {
             <div className="flex gap-2">
               <button
                 type="button"
-                className="btn-primary px-3 py-1.5 text-xs"
+                className="btn-primary btn-sm"
                 disabled={createKeyMutation.isPending || !newKeyName.trim()}
                 onClick={() => createKeyMutation.mutate(newKeyName.trim())}
               >
@@ -440,7 +440,7 @@ export function ApiAccessPage() {
               </button>
               <button
                 type="button"
-                className="btn-secondary px-3 py-1.5 text-xs"
+                className="btn-secondary btn-sm"
                 onClick={() => {
                   setShowCreate(false)
                   setNewKeyName('')
@@ -462,7 +462,7 @@ export function ApiAccessPage() {
             </code>
             <button
               type="button"
-              className="btn-secondary mt-3 px-3 py-1.5 text-xs"
+              className="btn-secondary btn-sm mt-3"
               onClick={() => void copyText('secret', revealedSecret)}
             >
               {copiedField === 'secret' ? t('keys.copiedBang') : t('keys.copySecret')}
@@ -494,7 +494,7 @@ export function ApiAccessPage() {
                   {revealedKeyId === key.id && revealedSecret ? (
                     <button
                       type="button"
-                      className="btn-secondary px-3 py-1.5 text-xs"
+                      className="btn-secondary btn-sm"
                       onClick={() => void copyText(`key-${key.id}`, revealedSecret)}
                     >
                       {copiedField === `key-${key.id}` ? t('keys.copiedBang') : t('keys.copy')}
@@ -502,7 +502,7 @@ export function ApiAccessPage() {
                   ) : null}
                   <button
                     type="button"
-                    className="btn-secondary px-3 py-1.5 text-xs"
+                    className="btn-secondary btn-sm"
                     disabled={rotateKeyMutation.isPending}
                     onClick={() => {
                       if (window.confirm(t('keys.confirmRotate', { name: key.name }))) {
@@ -514,7 +514,7 @@ export function ApiAccessPage() {
                   </button>
                   <button
                     type="button"
-                    className="btn-secondary px-3 py-1.5 text-xs"
+                    className="btn-danger btn-sm"
                     disabled={deleteKeyMutation.isPending}
                     onClick={() => {
                       if (window.confirm(t('keys.confirmRevoke', { name: key.name }))) {
@@ -583,7 +583,7 @@ export function ApiAccessPage() {
                 />
                 <button
                   type="button"
-                  className="btn-secondary px-3 py-1.5 text-xs"
+                  className="btn-secondary"
                   disabled={createKeyMutation.isPending || !dialogKeyName.trim()}
                   onClick={() => createKeyMutation.mutate(dialogKeyName.trim())}
                 >
@@ -604,7 +604,7 @@ export function ApiAccessPage() {
             <div className="mt-5 flex justify-end gap-2">
               <button
                 type="button"
-                className="btn-secondary px-3 py-1.5 text-xs"
+                className="btn-secondary"
                 data-autofocus
                 onClick={() => setLanConfirmOpen(false)}
                 disabled={updateSettingsMutation.isPending}
@@ -613,7 +613,7 @@ export function ApiAccessPage() {
               </button>
               <button
                 type="button"
-                className="btn-primary px-3 py-1.5 text-xs"
+                className="btn-primary"
                 disabled={
                   updateSettingsMutation.isPending || activeKeys.length === 0 || !browserHasKey
                 }
@@ -644,7 +644,7 @@ function CopyField({
       <code className="field min-w-0 flex-1 truncate py-2 font-mono text-xs text-ink">
         {value}
       </code>
-      <button type="button" className="btn-secondary shrink-0 px-3 py-1.5 text-xs" onClick={onCopy}>
+      <button type="button" className="btn-secondary btn-sm shrink-0" onClick={onCopy}>
         {copied ? t('service.copied') : t('service.copyUrl')}
       </button>
     </div>
