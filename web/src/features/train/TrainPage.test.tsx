@@ -25,9 +25,11 @@ describe('TrainPage', () => {
       </QueryClientProvider>,
     )
     await waitFor(() => expect(screen.getByText('Nothing built yet.')).toBeInTheDocument())
+    // One button: with nothing open, the header doesn't repeat the introduction's.
     const buttons = screen.getAllByRole('button', { name: 'Try an example' })
-    expect(buttons).toHaveLength(2)
-    fireEvent.click(buttons[1])
+    expect(buttons).toHaveLength(1)
+    expect(screen.getByRole('heading', { level: 1, name: 'Train' })).toBeInTheDocument()
+    fireEvent.click(buttons[0])
     await waitFor(() => expect(api.createExampleAI).toHaveBeenCalledTimes(1))
   })
 })

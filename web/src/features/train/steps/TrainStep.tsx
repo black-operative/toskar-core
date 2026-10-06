@@ -25,7 +25,7 @@ export function TrainStep({ view, onNext }: { view: SpecializedAIView; onNext: (
     <div className="space-y-4">
       <JobCard job={job} now={now} />
       {job.state === 'complete' && (
-        <button type="button" className="btn-primary px-3 py-1.5 text-sm" onClick={onNext}>
+        <button type="button" className="btn-primary" onClick={onNext}>
           {t('train.compare')}
         </button>
       )}
@@ -76,7 +76,7 @@ function JobCard({ job, now }: { job: TrainingJob; now: number }) {
           </p>
         </div>
         {!terminal && (
-          <button type="button" className="btn-secondary px-3 py-1.5 text-xs" disabled={cancel.isPending} onClick={() => cancel.mutate()}>
+          <button type="button" className="btn-secondary btn-sm" disabled={cancel.isPending} onClick={() => cancel.mutate()}>
             {cancel.isPending ? t('train.cancelling') : t('train.cancel')}
           </button>
         )}
@@ -125,7 +125,14 @@ function JobCard({ job, now }: { job: TrainingJob; now: number }) {
               <span className="tabular-nums">{t('train.step', { iter: p.iter ?? 0, iters: p.iters })}</span>
             ) : null}
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-raised" role="progressbar" aria-valuenow={jobPercent(job)} aria-valuemin={0} aria-valuemax={100}>
+          <div
+            className="h-2 overflow-hidden rounded-full bg-raised"
+            role="progressbar"
+            aria-label={p.detail || stateLabel(job.state)}
+            aria-valuenow={jobPercent(job)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
             <div
               className="h-full bg-primary transition-[width] duration-500"
               style={{ width: `${downloading ? Math.round(((p.download_bytes ?? 0) / (p.download_total ?? 1)) * 100) : jobPercent(job)}%` }}

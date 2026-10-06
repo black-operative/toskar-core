@@ -99,7 +99,7 @@ export function PlanStep({ view, onStarted }: { view: SpecializedAIView; onStart
         </div>
       )}
       {start.error && <p className="text-sm text-danger">{errorText(start.error)}</p>}
-      <button type="button" className="btn-primary px-4 py-2 text-sm" disabled={!p?.ready || start.isPending} onClick={() => start.mutate(undefined)}>
+      <button type="button" className="btn-primary" disabled={!p?.ready || start.isPending} onClick={() => start.mutate(undefined)}>
         {start.isPending ? t('plan.starting') : t('plan.train', { revision: p?.next_revision ?? 1 })}
       </button>
     </div>
@@ -126,7 +126,7 @@ function FitRow({
         <span className={['status-chip', fitTone(fit)].join(' ')}>{fitLabel(fit.label)}</span>
         {chosen && <span className="status-chip bg-norn/15 text-norn">{t('plan.nornPicked')}</span>}
         {!chosen && fit.eligible && (
-          <button type="button" className="btn-secondary ms-auto px-2 py-0.5 text-xs" disabled={!canStart} onClick={onStart}>
+          <button type="button" className="btn-secondary btn-sm ms-auto" disabled={!canStart} onClick={onStart}>
             {t('plan.trainHere')}
           </button>
         )}
@@ -220,11 +220,11 @@ function AdvancedSettings({ view, planned }: { view: SpecializedAIView; planned?
         </div>
         {save.error && <p className="text-danger">{errorText(save.error)}</p>}
         <div className="flex gap-2">
-          <button type="button" className="btn-secondary px-3 py-1 text-xs" disabled={save.isPending} onClick={() => save.mutate(false)}>
+          <button type="button" className="btn-secondary btn-sm" disabled={save.isPending} onClick={() => save.mutate(false)}>
             {t('plan.saveAdvanced')}
           </button>
           {view.advanced && (
-            <button type="button" className="btn-secondary px-3 py-1 text-xs" disabled={save.isPending} onClick={() => { setDraft({}); save.mutate(true) }}>
+            <button type="button" className="btn-secondary btn-sm" disabled={save.isPending} onClick={() => { setDraft({}); save.mutate(true) }}>
               {t('plan.usePreset')}
             </button>
           )}

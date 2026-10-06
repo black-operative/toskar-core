@@ -57,7 +57,7 @@ export function ExamplesStep({ view, onNext }: { view: SpecializedAIView; onNext
         )}
         <div className="flex gap-1.5">
           {(['all', 'flagged', 'excluded'] as const).map((f) => (
-            <button key={f} type="button" className={filter === f ? 'btn-primary px-3 py-1 text-xs' : 'btn-secondary px-3 py-1 text-xs'} onClick={() => setFilter(f)}>
+            <button key={f} type="button" className={filter === f ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'} onClick={() => setFilter(f)}>
               {t(`examples.filters.${f}`)}
             </button>
           ))}
@@ -76,14 +76,14 @@ export function ExamplesStep({ view, onNext }: { view: SpecializedAIView; onNext
           ))}
         </ul>
         {list.length > shown && (
-          <button type="button" className="btn-secondary px-3 py-1 text-xs" onClick={() => setShown(shown + PAGE)}>
+          <button type="button" className="btn-secondary btn-sm" onClick={() => setShown(shown + PAGE)}>
             {t('examples.showMore', { count: list.length - shown })}
           </button>
         )}
         {(update.error || remove.error) && <p className="text-sm text-danger">{errorText(update.error ?? remove.error)}</p>}
       </div>
       <AddExample aiID={view.id} onAdded={refresh} />
-      <button type="button" className="btn-primary px-3 py-1.5 text-sm" disabled={stats.usable < 10} onClick={onNext}>
+      <button type="button" className="btn-primary" disabled={stats.usable < 10} onClick={onNext}>
         {t('examples.continue')}
       </button>
     </div>
@@ -135,7 +135,7 @@ function ExampleRow({
           <>
             <button
               type="button"
-              className="btn-primary px-2 py-1 text-xs"
+              className="btn-primary btn-sm"
               disabled={busy}
               onClick={() => {
                 const msgs = [...example.messages]
@@ -148,19 +148,19 @@ function ExampleRow({
             >
               {t('examples.save')}
             </button>
-            <button type="button" className="btn-secondary px-2 py-1 text-xs" onClick={() => setEditing(false)}>
+            <button type="button" className="btn-secondary btn-sm" onClick={() => setEditing(false)}>
               {t('examples.cancel')}
             </button>
           </>
         ) : (
-          <button type="button" className="btn-secondary px-2 py-1 text-xs" onClick={() => setEditing(true)}>
+          <button type="button" className="btn-secondary btn-sm" onClick={() => setEditing(true)}>
             {t('examples.editAnswer')}
           </button>
         )}
-        <button type="button" className="btn-secondary px-2 py-1 text-xs" disabled={busy} onClick={onToggle}>
+        <button type="button" className="btn-secondary btn-sm" disabled={busy} onClick={onToggle}>
           {example.excluded ? t('examples.include') : t('examples.exclude')}
         </button>
-        <button type="button" className="btn-secondary px-2 py-1 text-xs" disabled={busy} onClick={onDelete}>
+        <button type="button" className="btn-secondary btn-sm" disabled={busy} onClick={onDelete}>
           {t('examples.delete')}
         </button>
       </div>
@@ -191,7 +191,7 @@ function AddExample({ aiID, onAdded }: { aiID: string; onAdded: () => void }) {
       <input className="field w-full" value={question} onChange={(e) => setQuestion(e.target.value)} placeholder={t('examples.questionPlaceholder')} aria-label={t('examples.question')} />
       <textarea className="field min-h-20 w-full" value={answer} onChange={(e) => setAnswer(e.target.value)} placeholder={t('examples.answerPlaceholder')} aria-label={t('examples.answer')} />
       {add.error && <p className="text-sm text-danger">{errorText(add.error)}</p>}
-      <button type="button" className="btn-secondary px-3 py-1.5 text-sm" disabled={!question.trim() || !answer.trim() || add.isPending} onClick={() => add.mutate()}>
+      <button type="button" className="btn-secondary" disabled={!question.trim() || !answer.trim() || add.isPending} onClick={() => add.mutate()}>
         {t('examples.add')}
       </button>
     </div>

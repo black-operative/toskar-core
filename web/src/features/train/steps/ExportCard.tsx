@@ -43,7 +43,7 @@ export function ExportCard({ view }: { view: SpecializedAIView }) {
       {st?.state === 'ready' && (
         <div className="flex flex-wrap items-center gap-2 text-sm">
           <a
-            className="btn-primary px-3 py-1 text-xs"
+            className="btn-primary btn-sm"
             href={api.exportFileUrl(view.id, revision)}
             download={st.filename}
             aria-disabled={save.isPending}
@@ -57,18 +57,18 @@ export function ExportCard({ view }: { view: SpecializedAIView }) {
           </a>
           <span className="text-xs text-ink-muted">{formatBytes(st.size_bytes)}</span>
           {save.data && <span className="text-xs text-ink-muted">{t('export.savedTo', { path: save.data })}</span>}
-          <button type="button" className="btn-secondary px-3 py-1 text-xs" disabled={remove.isPending} onClick={() => remove.mutate()}>
+          <button type="button" className="btn-secondary btn-sm" disabled={remove.isPending} onClick={() => remove.mutate()}>
             {t('export.deleteFile')}
           </button>
         </div>
       )}
       {(st?.state === 'none' || st?.state === 'failed') && (
-        <button type="button" className="btn-secondary px-3 py-1 text-xs" disabled={start.isPending} onClick={() => start.mutate()}>
+        <button type="button" className="btn-secondary btn-sm" disabled={start.isPending} onClick={() => start.mutate()}>
           {st.state === 'failed' ? t('export.tryAgain') : t('export.export')}
         </button>
       )}
       {st?.state === 'exporting' && (
-        <button type="button" className="btn-secondary px-3 py-1 text-xs" disabled={remove.isPending} onClick={() => remove.mutate()}>
+        <button type="button" className="btn-secondary btn-sm" disabled={remove.isPending} onClick={() => remove.mutate()}>
           {t('export.cancel')}
         </button>
       )}

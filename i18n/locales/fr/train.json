@@ -98,7 +98,6 @@
     "deploy": "Déployer"
   },
   "page": {
-    "title": "Entraînez votre propre IA",
     "description": "Créez un petit assistant spécialisé dans une tâche. Montrez-lui comment répondre avec des exemples, et connectez les informations dont il a besoin. Inutile de savoir comment on entraîne un modèle.",
     "settingUpExample": "Préparation de l'exemple…",
     "tryExample": "Essayer un exemple",

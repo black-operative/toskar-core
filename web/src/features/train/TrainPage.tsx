@@ -63,19 +63,22 @@ export function TrainPage() {
   )
 
   return (
-    <div className="page-fill gap-4 overflow-y-auto p-4">
+    <div className="page-fill gap-5 overflow-y-auto p-4 sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
+        <div className="min-w-0 max-w-2xl">
           <RealmKicker />
-          <h1 className="font-display text-2xl font-semibold text-ink">{t('page.title')}</h1>
-          <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t('page.description')}</p>
+          <h1 className="page-title">{t('nav.train', { ns: 'common' })}</h1>
+          <p className="page-subtitle mt-1">{t('page.description')}</p>
         </div>
-        <div className="flex gap-2">
-          {exampleButton('btn-secondary px-3 py-1.5 text-xs')}
-          <button type="button" className="btn-primary px-3 py-1.5 text-xs" onClick={() => { select(null); setCreating(true) }}>
-            {t('page.build')}
-          </button>
-        </div>
+        {/* With nothing open, the introduction below offers the same two buttons. */}
+        {selectedID && !creating ? (
+          <div className="flex flex-wrap gap-2">
+            {exampleButton('btn-secondary')}
+            <button type="button" className="btn-primary" onClick={() => { select(null); setCreating(true) }}>
+              {t('page.build')}
+            </button>
+          </div>
+        ) : null}
       </div>
       {example.error && <p className="text-sm text-danger">{errorText(example.error)}</p>}
 
@@ -116,10 +119,10 @@ export function TrainPage() {
                 description={t('page.emptyDescription')}
                 action={
                   <div className="flex flex-wrap items-center gap-2">
-                    <button type="button" className="btn-primary px-3 py-1.5 text-sm" onClick={() => setCreating(true)}>
+                    <button type="button" className="btn-primary" onClick={() => setCreating(true)}>
                       {t('page.build')}
                     </button>
-                    {exampleButton('btn-secondary px-3 py-1.5 text-sm')}
+                    {exampleButton('btn-secondary')}
                     <span className="text-xs text-ink-faint">{t('page.exampleHint')}</span>
                   </div>
                 }
@@ -138,12 +141,11 @@ function AIListItem({ ai, active, onSelect }: { ai: SpecializedAI; active: boole
   return (
     <button
       type="button"
-      className={['selectable w-full text-start', active ? 'shadow-[inset_0_0_0_1.5px_rgb(var(--rgb-primary))]' : '']
-        .filter(Boolean)
-        .join(' ')}
+      className={['selectable w-full text-start', active ? 'selectable-active' : ''].filter(Boolean).join(' ')}
+      aria-pressed={active}
       onClick={onSelect}
     >
-      <p className="font-medium text-ink">
+      <p className="selectable-title font-semibold text-ink">
         {ai.name}
         {ai.example && <span className="status-chip ms-2 bg-info/15 text-info">{t('page.exampleBadge')}</span>}
       </p>
@@ -189,10 +191,10 @@ function NewAIForm({ onCancel, onCreated }: { onCancel: () => void; onCreated: (
       </label>
       {create.error && <p className="text-sm text-danger">{errorText(create.error)}</p>}
       <div className="flex gap-2">
-        <button type="submit" className="btn-primary px-3 py-1.5 text-sm" disabled={!name.trim() || create.isPending}>
+        <button type="submit" className="btn-primary" disabled={!name.trim() || create.isPending}>
           {create.isPending ? t('page.creating') : t('page.continue')}
         </button>
-        <button type="button" className="btn-secondary px-3 py-1.5 text-sm" onClick={onCancel}>
+        <button type="button" className="btn-secondary" onClick={onCancel}>
           {t('page.cancel')}
         </button>
       </div>

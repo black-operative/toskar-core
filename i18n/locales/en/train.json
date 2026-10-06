@@ -98,7 +98,6 @@
     "deploy": "Deploy"
   },
   "page": {
-    "title": "Train your own AI",
     "description": "Build a small assistant that is good at one job. Show it how to respond with examples, and connect the information it needs. You do not need to know how models are trained.",
     "settingUpExample": "Setting up the example…",
     "tryExample": "Try an example",

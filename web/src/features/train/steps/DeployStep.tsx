@@ -51,11 +51,11 @@ export function DeployStep({ view }: { view: SpecializedAIView }) {
                 {!r.evaluated ? (
                   <span className="text-xs text-ink-faint">{t('deploy.compareFirst')}</span>
                 ) : deployed ? (
-                  <button type="button" className="btn-secondary px-3 py-1 text-xs" disabled={undeploy.isPending} onClick={() => undeploy.mutate()}>
+                  <button type="button" className="btn-secondary btn-sm" disabled={undeploy.isPending} onClick={() => undeploy.mutate()}>
                     {t('deploy.undeploy')}
                   </button>
                 ) : (
-                  <button type="button" className="btn-primary px-3 py-1 text-xs" disabled={deploy.isPending} onClick={() => deploy.mutate(r.revision)}>
+                  <button type="button" className="btn-primary btn-sm" disabled={deploy.isPending} onClick={() => deploy.mutate(r.revision)}>
                     {view.deployed_revision ? t('deploy.switch') : t('deploy.deploy')}
                   </button>
                 )}
@@ -81,7 +81,8 @@ export function DeployStep({ view }: { view: SpecializedAIView }) {
               }}
             />
           </p>
-          <pre className="log-panel overflow-x-auto text-xs">{`curl http://127.0.0.1:7331/v1/chat/completions \\
+          {/* Focusable, so the command can be scrolled sideways from the keyboard. */}
+          <pre className="log-panel overflow-x-auto text-xs" tabIndex={0}>{`curl http://127.0.0.1:7331/v1/chat/completions \\
   -H 'Content-Type: application/json' \\
   -d '{"model": "${view.model_id}", "messages": [{"role": "user", "content": "Hello"}]}'`}</pre>
           <p className="text-xs text-ink-faint">{t('deploy.runsHere')}</p>

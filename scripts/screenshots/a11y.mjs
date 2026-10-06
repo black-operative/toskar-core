@@ -20,6 +20,8 @@ const allPages = [
   '/automations',
   '/models',
   '/train',
+  // A specialized AI open, with a training run in progress.
+  '/train?ai=ai-trail',
   '/knowledge',
   '/memory',
   '/nodes',

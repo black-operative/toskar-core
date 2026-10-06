@@ -98,7 +98,6 @@
     "deploy": "Implementar"
   },
   "page": {
-    "title": "Entrena tu propia IA",
     "description": "Crea un asistente pequeño que sea bueno en una tarea. Muéstrale cómo responder con ejemplos y conecta la información que necesita. No necesitas saber cómo se entrenan los modelos.",
     "settingUpExample": "Preparando el ejemplo…",
     "tryExample": "Probar un ejemplo",

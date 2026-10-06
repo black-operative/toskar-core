@@ -98,7 +98,6 @@
     "deploy": "Distribuisci"
   },
   "page": {
-    "title": "Addestra la tua IA",
     "description": "Crea un piccolo assistente bravo in un solo compito. Mostragli come rispondere con degli esempi e collega le informazioni di cui ha bisogno. Non serve sapere come si addestrano i modelli.",
     "settingUpExample": "Preparazione dell'esempio…",
     "tryExample": "Prova un esempio",

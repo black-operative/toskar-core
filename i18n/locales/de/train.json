@@ -98,7 +98,6 @@
     "deploy": "Bereitstellen"
   },
   "page": {
-    "title": "Trainiere deine eigene KI",
     "description": "Baue einen kleinen Assistenten, der eine Aufgabe gut beherrscht. Zeig ihm mit Beispielen, wie er antworten soll, und verbinde die Informationen, die er braucht. Du musst nicht wissen, wie Modelle trainiert werden.",
     "settingUpExample": "Beispiel wird eingerichtet …",
     "tryExample": "Beispiel ausprobieren",

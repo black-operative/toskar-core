@@ -98,7 +98,6 @@
     "deploy": "部署"
   },
   "page": {
-    "title": "訓練你自己的 AI",
     "description": "打造一個擅長特定工作的小型助理。用範例示範它該如何回應，並連接它需要的資訊。你不需要了解模型是如何訓練的。",
     "settingUpExample": "正在設定範例…",
     "tryExample": "試用範例",

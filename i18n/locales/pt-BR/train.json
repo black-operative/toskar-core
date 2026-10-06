@@ -98,7 +98,6 @@
     "deploy": "Implantar"
   },
   "page": {
-    "title": "Treine sua própria IA",
     "description": "Crie um pequeno assistente que seja bom em uma tarefa. Mostre como ele deve responder com exemplos e conecte as informações de que ele precisa. Você não precisa saber como os modelos são treinados.",
     "settingUpExample": "Preparando o exemplo…",
     "tryExample": "Experimentar um exemplo",

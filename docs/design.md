@@ -36,7 +36,7 @@ Every text token meets **4.5:1** (WCAG AA) on every surface it is used on, the s
 | `accent` | `#C6A15B` | `#695023` | Recommendations, "best" badges |
 | `success` | `#5FBF8F` | `#1F5E48` | Ready, done |
 | `warning` | `#D8A657` | `#6E4E1D` | Needs attention |
-| `danger` | `#D96868` | `#913232` | Errors, destructive actions |
+| `danger` | `#E47C7C` | `#913232` | Errors, destructive actions |
 | `info` | `#6FA8DC` | `#325778` | Neutral notices |
 
 In light, these also pass 4.5:1 on their own 15–20% tint, because status chips use them that way (`bg-success/15 text-success`).

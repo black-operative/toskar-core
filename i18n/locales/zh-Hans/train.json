@@ -98,7 +98,6 @@
     "deploy": "部署"
   },
   "page": {
-    "title": "训练你自己的 AI",
     "description": "打造一个擅长某项工作的小助手。用示例告诉它该如何回应，并连接它需要的信息。你不需要了解模型是如何训练的。",
     "settingUpExample": "正在设置示例…",
     "tryExample": "试试示例",

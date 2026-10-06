@@ -48,7 +48,7 @@ export function DescribeStep({ view, onNext, onDeleted }: { view: SpecializedAIV
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
-          className="btn-primary px-3 py-1.5 text-sm"
+          className="btn-primary"
           disabled={!name.trim() || save.isPending}
           onClick={() => (dirty ? save.mutate(undefined, { onSuccess: onNext }) : onNext())}
         >
@@ -56,7 +56,7 @@ export function DescribeStep({ view, onNext, onDeleted }: { view: SpecializedAIV
         </button>
         <button
           type="button"
-          className="btn-danger ms-auto px-3 py-1.5 text-sm"
+          className="btn-danger ms-auto"
           disabled={remove.isPending}
           onClick={() => {
             if (window.confirm(t('describe.confirmDelete', { name: view.name }))) {

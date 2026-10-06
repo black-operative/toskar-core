@@ -59,14 +59,14 @@ export function TestStep({ view, onNext }: { view: SpecializedAIView; onNext: ()
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
-            className="btn-primary px-3 py-1.5 text-sm"
+            className="btn-primary"
             disabled={!prompts.trim() || run.isPending || latest?.status === 'running'}
             onClick={() => run.mutate()}
           >
             {latest?.status === 'running' ? t('test.comparing') : runs.length ? t('test.again') : t('test.run')}
           </button>
           {prompts !== savedPrompts && (
-            <button type="button" className="btn-secondary px-3 py-1.5 text-sm" disabled={savePrompts.isPending} onClick={() => savePrompts.mutate()}>
+            <button type="button" className="btn-secondary" disabled={savePrompts.isPending} onClick={() => savePrompts.mutate()}>
               {t('test.save')}
             </button>
           )}
@@ -106,7 +106,7 @@ export function TestStep({ view, onNext }: { view: SpecializedAIView; onNext: ()
         </div>
       )}
       {evaluated && (
-        <button type="button" className="btn-primary px-3 py-1.5 text-sm" onClick={onNext}>
+        <button type="button" className="btn-primary" onClick={onNext}>
           {t('test.continue')}
         </button>
       )}

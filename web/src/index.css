@@ -120,7 +120,8 @@
   --rgb-accent-soft: 48 40 24;
   --rgb-success: 95 191 143;
   --rgb-warning: 216 166 87;
-  --rgb-danger: 217 104 104;
+  /* #E47C7C: 4.5:1 on every surface and on its own 10–15% tint, as danger chips use it. */
+  --rgb-danger: 228 124 124;
   --rgb-info: 111 168 220;
   --color-ygg: #4fd1c5;
   --color-bifrost: #5bb8d4;

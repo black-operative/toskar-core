@@ -71,7 +71,7 @@ export function BaseModelStep({ view, onNext }: { view: SpecializedAIView; onNex
         </p>
       )}
       {choose.error && <p className="text-sm text-danger">{errorText(choose.error)}</p>}
-      <button type="button" className="btn-primary px-3 py-1.5 text-sm" disabled={!view.base_model_id} onClick={onNext}>
+      <button type="button" className="btn-primary" disabled={!view.base_model_id} onClick={onNext}>
         {t('base.continue')}
       </button>
     </div>

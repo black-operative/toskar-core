@@ -29,10 +29,10 @@ export function MaterialStep({ view, onNext }: { view: SpecializedAIView; onNext
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="section-title">{t('material.add')}</h3>
           <div className="flex gap-1.5">
-            <button type="button" className={mode === 'file' ? 'btn-primary px-3 py-1 text-xs' : 'btn-secondary px-3 py-1 text-xs'} onClick={() => setMode('file')}>
+            <button type="button" className={mode === 'file' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'} onClick={() => setMode('file')}>
               {t('material.filePaste')}
             </button>
-            <button type="button" className={mode === 'chats' ? 'btn-primary px-3 py-1 text-xs' : 'btn-secondary px-3 py-1 text-xs'} onClick={() => setMode('chats')}>
+            <button type="button" className={mode === 'chats' ? 'btn-primary btn-sm' : 'btn-secondary btn-sm'} onClick={() => setMode('chats')}>
               {t('material.chats')}
             </button>
           </div>
@@ -41,7 +41,7 @@ export function MaterialStep({ view, onNext }: { view: SpecializedAIView; onNext
         <SampleFiles open={Boolean(view.example)} />
       </div>
       <MaterialList view={view} />
-      <button type="button" className="btn-primary px-3 py-1.5 text-sm" disabled={view.materials.length === 0} onClick={onNext}>
+      <button type="button" className="btn-primary" disabled={view.materials.length === 0} onClick={onNext}>
         {t('material.continue')}
       </button>
     </div>
@@ -108,7 +108,7 @@ function AddFile({ aiID }: { aiID: string }) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <label className="btn-secondary cursor-pointer px-3 py-1.5 text-xs">
+        <label className="btn-secondary btn-sm cursor-pointer">
           {t('material.chooseFile')}
           <input type="file" accept={UPLOAD_ACCEPT} className="sr-only" onChange={(e) => e.target.files?.[0] && void readFile(e.target.files[0])} />
         </label>
@@ -177,7 +177,7 @@ function AddFile({ aiID }: { aiID: string }) {
       {add.error && <p className="text-sm text-danger">{errorText(add.error)}</p>}
       <button
         type="button"
-        className="btn-primary px-3 py-1.5 text-sm"
+        className="btn-primary"
         disabled={(!text.trim() && !binary) || !preview || Boolean(preview.error) || add.isPending}
         onClick={() => add.mutate()}
       >
@@ -219,7 +219,7 @@ function AddChats({ aiID }: { aiID: string }) {
         ))}
       </ul>
       {add.error && <p className="text-sm text-danger">{errorText(add.error)}</p>}
-      <button type="button" className="btn-primary px-3 py-1.5 text-sm" disabled={picked.length === 0 || add.isPending} onClick={() => add.mutate()}>
+      <button type="button" className="btn-primary" disabled={picked.length === 0 || add.isPending} onClick={() => add.mutate()}>
         {picked.length ? t('material.addChats', { count: picked.length }) : t('material.addChatsNone')}
       </button>
     </div>
@@ -257,7 +257,7 @@ function MaterialList({ view }: { view: SpecializedAIView }) {
             </div>
             <button
               type="button"
-              className="btn-secondary px-2 py-1 text-xs"
+              className="btn-secondary btn-sm"
               disabled={remove.isPending}
               onClick={() => {
                 if (window.confirm(t('material.confirmRemove', { name: m.name }))) remove.mutate(m)
