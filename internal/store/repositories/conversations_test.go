@@ -95,3 +95,40 @@ func TestMessageMetaRoundTrip(t *testing.T) {
 		t.Fatalf("messages = %+v", msgs)
 	}
 }
+
+// Messages come back in the order they were added, even when their stored
+// timestamps would sort the other way as text.
+func TestListMessagesKeepsInsertionOrder(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatalf("open: %v", err)
+	}
+	defer db.Close()
+	repo := repositories.NewConversationRepo(db.SQL)
+	ctx := context.Background()
+	conv, err := repo.Create(ctx, "Order", "", "")
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	for _, m := range []struct{ id, role, at string }{
+		{"a", "user", "2026-10-05T12:00:05.12Z"},
+		{"b", "assistant", "2026-10-05T12:00:05.123Z"},
+		{"c", "user", "2026-10-05T12:00:06Z"},
+		{"d", "assistant", "2026-10-05T12:00:06Z"},
+	} {
+		if _, err := db.SQL.ExecContext(ctx, `INSERT INTO messages (id, conversation_id, role, content, created_at) VALUES (?, ?, ?, '', ?)`, m.id, conv.ID, m.role, m.at); err != nil {
+			t.Fatalf("insert: %v", err)
+		}
+	}
+	msgs, err := repo.ListMessages(ctx, conv.ID)
+	if err != nil {
+		t.Fatalf("list: %v", err)
+	}
+	var got string
+	for _, m := range msgs {
+		got += m.ID
+	}
+	if got != "abcd" {
+		t.Fatalf("order %q, want abcd", got)
+	}
+}

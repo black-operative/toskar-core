@@ -171,10 +171,14 @@ func (r *ConversationRepo) DeleteAll(ctx context.Context) error {
 	return err
 }
 
+// ListMessages returns a conversation's messages in the order they were
+// added. created_at can't order them: RFC3339Nano drops trailing zeros, so
+// "05.12Z" sorts after "05.123Z" as text, and back-to-back messages can share
+// a timestamp. AddMessageWithMeta is the only writer, so rowid is the order.
 func (r *ConversationRepo) ListMessages(ctx context.Context, conversationID string) ([]contracts.Message, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, conversation_id, role, content, COALESCE(meta_json, ''), created_at
-		FROM messages WHERE conversation_id = ? ORDER BY created_at ASC`, conversationID)
+		FROM messages WHERE conversation_id = ? ORDER BY rowid ASC`, conversationID)
 	if err != nil {
 		return nil, err
 	}
