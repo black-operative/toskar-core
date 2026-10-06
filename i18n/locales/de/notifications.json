@@ -157,6 +157,8 @@
     "automationOutOfMemory": "Diesem Computer ist der Speicher für das Modell ausgegangen.",
     "automationPausedMemory_one": "Pausiert, nachdem {{count}}-mal in Folge der Speicher ausgegangen ist. Wähle ein kleineres Modell für diese Automation oder beende andere Aufgaben und setze sie dann fort.",
     "automationPausedMemory_other": "Pausiert, nachdem {{count}}-mal in Folge der Speicher ausgegangen ist. Wähle ein kleineres Modell für diese Automation oder beende andere Aufgaben und setze sie dann fort.",
+    "automationPausedFailures_one": "Pausiert, nachdem sie {{count}}-mal in Folge fehlgeschlagen ist. Prüfe den Grund oben, behebe ihn und setze sie dann fort.",
+    "automationPausedFailures_other": "Pausiert, nachdem sie {{count}}-mal in Folge fehlgeschlagen ist. Prüfe den Grund oben, behebe ihn und setze sie dann fort.",
     "automationPrice": "Der Preis beträgt {{price}}.",
     "automationAvailable": "Es ist verfügbar.",
     "automationUnavailable": "Es ist nicht verfügbar.",

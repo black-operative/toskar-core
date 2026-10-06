@@ -153,6 +153,7 @@
     "automationFailedInARow_other": "無法執行（連續失敗 {{count}} 次）：",
     "automationOutOfMemory": "這台電腦執行該模型時記憶體不足。",
     "automationPausedMemory_other": "連續 {{count}} 次記憶體不足，已暫停。請為這個自動化選擇較小的模型，或關閉其他工作，然後繼續執行。",
+    "automationPausedFailures_other": "連續失敗 {{count}} 次，已暫停。請查看上面的原因並解決，然後繼續執行。",
     "automationPrice": "價格為 {{price}}。",
     "automationAvailable": "目前可用。",
     "automationUnavailable": "目前無法使用。",

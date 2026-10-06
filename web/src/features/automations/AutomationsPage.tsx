@@ -283,7 +283,9 @@ export function AutomationsPage() {
             <Detail
               detail={detail}
               models={models}
-              running={runNow.isPending}
+              // Run now answers once the run starts (#204); it's running
+              // until its history says it ended.
+              running={runNow.isPending || (detail.history ?? []).some((run) => run.status === 'running' || run.status === 'claimed')}
               runError={runNow.error instanceof Error ? runNow.error.message : ''}
               onRun={() => runNow.mutate(detail.id)}
               onToggle={() => pause.mutate(detail)}

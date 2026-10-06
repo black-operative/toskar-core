@@ -26,6 +26,9 @@ const automationsUsage = `usage: toskarctl automations <list|get|create|update|d
 Times: daily and weekly use HH:MM. once uses RFC3339. interval uses Go durations such as 6h.
 The daemon address is TOSKAR_URL, or 127.0.0.1:7331. A remote daemon uses TOSKAR_API_KEY.`
 
+// runPoll is how often `run` checks whether the run has finished.
+var runPoll = time.Second
+
 func automationsCommand(args []string, out io.Writer) error {
 	base := strings.TrimRight(config.Env("URL"), "/")
 	if base == "" {
@@ -106,6 +109,20 @@ func runAutomations(args []string, client daemonClient, out io.Writer) error {
 		var run automations.Run
 		if err := client.call(http.MethodPost, "/automations/"+id+"/run", map[string]any{}, &run); err != nil {
 			return err
+		}
+		// The daemon answers once the run has started (#204); wait for how
+		// it ends, as before.
+		for run.Status == automations.RunClaimed || run.Status == automations.RunRunning {
+			time.Sleep(runPoll)
+			var detail automations.Detail
+			if err := client.call(http.MethodGet, "/automations/"+id, nil, &detail); err != nil {
+				return err
+			}
+			for _, h := range detail.History {
+				if h.ID == run.ID {
+					run = h
+				}
+			}
 		}
 		return writeJSON(out, run)
 	case "pause", "resume":

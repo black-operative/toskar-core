@@ -94,10 +94,16 @@ func TestAutomationHTTP(t *testing.T) {
 		t.Fatal("resume left the automation paused")
 	}
 
+	// Run now answers once the run has started; the result follows (#204).
 	var run automations.Run
 	sendJSON(t, ts.Client(), http.MethodPost, ts.URL+"/api/v1/automations/"+created.ID+"/run", nil, &run)
-	if run.Status != automations.RunSucceeded || run.Result != "price is 12" {
+	if run.Status != automations.RunRunning {
 		t.Fatalf("run = %+v", run)
+	}
+	runner.Wait()
+	getJSON(t, ts.Client(), ts.URL+"/api/v1/automations/"+created.ID, &detail)
+	if len(detail.History) != 1 || detail.History[0].Status != automations.RunSucceeded || detail.History[0].Result != "price is 12" {
+		t.Fatalf("history = %+v", detail.History)
 	}
 	if exec.count() != 1 {
 		t.Fatalf("executions = %d", exec.count())

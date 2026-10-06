@@ -157,6 +157,8 @@
     "automationOutOfMemory": "This computer ran out of memory for the model.",
     "automationPausedMemory_one": "Paused after running out of memory {{count}} time in a row. Choose a smaller model for this automation, or close other work, then resume it.",
     "automationPausedMemory_other": "Paused after running out of memory {{count}} times in a row. Choose a smaller model for this automation, or close other work, then resume it.",
+    "automationPausedFailures_one": "Paused after failing {{count}} time in a row. Check the reason above, fix it, then resume it.",
+    "automationPausedFailures_other": "Paused after failing {{count}} times in a row. Check the reason above, fix it, then resume it.",
     "automationPrice": "Price is {{price}}.",
     "automationAvailable": "It is available.",
     "automationUnavailable": "It is not available.",

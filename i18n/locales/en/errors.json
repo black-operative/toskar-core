@@ -147,5 +147,7 @@
   "PAIRING_THROTTLED": "Too many tries. Wait a few minutes, then try again.",
   "PAIRING_WRONG_CODE": "That isn't the code the computer shows. Check it and try again.",
   "LAN_ACCESS_OFF": "Local network access is off on this computer, so it only answers apps on it.",
-  "LAN_ACCESS_FAILED": "Local network access couldn't be turned on."
+  "LAN_ACCESS_FAILED": "Local network access couldn't be turned on.",
+  "AUTOMATION_RUNNING": "This automation is already running. Its result will appear here when it finishes.",
+  "AUTOMATION_TIMEOUT": "The run took longer than {{minutes}} minutes and was stopped. Try a faster model or a shorter prompt."
 }

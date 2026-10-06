@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 
@@ -115,7 +116,9 @@ func (s *Server) handleRunAutomation(w http.ResponseWriter, r *http.Request) {
 		writeAutomationErr(w, err)
 		return
 	}
-	writeJSON(w, http.StatusOK, run)
+	// The run has started and goes on without this request; its progress
+	// and result arrive as automation events (#204).
+	writeJSON(w, http.StatusAccepted, run)
 }
 
 func (s *Server) handlePauseAutomation(w http.ResponseWriter, r *http.Request) {
@@ -142,6 +145,8 @@ func (s *Server) handlePauseOrResume(w http.ResponseWriter, r *http.Request, fn 
 func writeAutomationErr(w http.ResponseWriter, err error) {
 	msg := err.Error()
 	switch {
+	case errors.Is(err, automations.ErrRunning):
+		writeErrFrom(w, http.StatusConflict, "AUTOMATION_RUNNING", err)
 	case strings.Contains(msg, "not found"):
 		writeErr(w, http.StatusNotFound, "NOT_FOUND", msg, nil)
 	case strings.Contains(msg, "already has a run"):

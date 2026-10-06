@@ -153,6 +153,7 @@
     "automationFailedInARow_other": "실행하지 못했어요({{count}}번 연속 실패):",
     "automationOutOfMemory": "이 컴퓨터에서 모델에 필요한 메모리가 부족했어요.",
     "automationPausedMemory_other": "{{count}}번 연속으로 메모리가 부족해서 일시 정지했어요. 이 자동화에 더 작은 모델을 선택하거나 다른 작업을 닫은 다음 재개하세요.",
+    "automationPausedFailures_other": "{{count}}번 연속으로 실패해서 일시 정지했어요. 위의 이유를 확인해 해결한 다음 재개하세요.",
     "automationPrice": "가격: {{price}}",
     "automationAvailable": "이용할 수 있어요.",
     "automationUnavailable": "이용할 수 없어요.",

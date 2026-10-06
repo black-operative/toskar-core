@@ -153,6 +153,7 @@
     "automationFailedInARow_other": "无法运行（连续失败 {{count}} 次）：",
     "automationOutOfMemory": "这台电脑运行该模型时内存不足。",
     "automationPausedMemory_other": "连续 {{count}} 次内存不足，已暂停。请为此自动化选择一个更小的模型，或关闭其他任务，然后继续运行。",
+    "automationPausedFailures_other": "连续失败 {{count}} 次，已暂停。请查看上面的原因并解决，然后继续运行。",
     "automationPrice": "价格为 {{price}}。",
     "automationAvailable": "目前可用。",
     "automationUnavailable": "目前不可用。",

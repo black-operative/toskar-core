@@ -40,6 +40,8 @@ func (e automationExecutor) Execute(ctx context.Context, automation automations.
 		status = runlog.StatusStopped
 	case err != nil:
 		status, runErr = runlog.StatusFailed, codedError(err)
+		// The runner retries by the error's code, not its English (#204).
+		err = runErr
 	}
 	if e.app != nil && e.app.RunLog != nil {
 		if saveErr := e.app.RunLog.Save(context.WithoutCancel(ctx), run.Finish(status, runErr)); saveErr != nil && e.app.Logger != nil {

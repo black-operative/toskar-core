@@ -108,6 +108,8 @@ func TestYggctlAutomations(t *testing.T) {
 		t.Fatal("resume left the automation paused")
 	}
 
+	// run waits for the run the daemon started to finish.
+	runPoll = 10 * time.Millisecond
 	var ran bytes.Buffer
 	if err := runAutomations([]string{"run", automation.ID}, client, &ran); err != nil {
 		t.Fatal(err)

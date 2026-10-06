@@ -5,17 +5,34 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"sync"
 	"time"
 
 	"github.com/yeixio/toskar-core/internal/events"
 	"github.com/yeixio/toskar-core/internal/locale"
 	modelhealth "github.com/yeixio/toskar-core/internal/models/health"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 const (
 	defaultInterval = 30 * time.Second
 	defaultLease    = 15 * time.Minute
+	// defaultWorkers due automations run at once. More would only queue for
+	// the same models; one slow run no longer holds up the rest (#204).
+	defaultWorkers = 2
+	// defaultRunTimeout stops a run that never finishes (#204).
+	defaultRunTimeout = 20 * time.Minute
 )
+
+// ErrRunning means the automation already has a run in progress.
+var ErrRunning = contracts.NewError("AUTOMATION_RUNNING", nil, errors.New("this automation is already running"))
+
+// timedOut is a run stopped by its time limit. It isn't retried: a run that
+// took the whole limit would most likely take it again.
+func timedOut(limit time.Duration) error {
+	minutes := int(limit.Minutes())
+	return contracts.Errorf("AUTOMATION_TIMEOUT", map[string]any{"minutes": minutes}, "the run took longer than %d minutes and was stopped", minutes)
+}
 
 // Store is the persistence the daemon loop needs. *repositories.AutomationRepo satisfies it.
 type Store interface {
@@ -50,17 +67,37 @@ type Runner struct {
 	Interval time.Duration
 	Lease    time.Duration
 	Now      func() time.Time
-	// Pause turns an automation off. Runs that keep running out of memory
-	// are paused instead of failing on every schedule (spec §60).
+	// Pause turns an automation off. Runs that keep failing are paused
+	// instead of failing on every schedule (spec §60, #204).
 	Pause func(ctx context.Context, id string) error
+	// Workers is how many automations run at once; RunTimeout stops a run
+	// that takes longer. Zero uses the defaults.
+	Workers    int
+	RunTimeout time.Duration
+
+	mu       sync.Mutex
+	inflight map[string]bool
+	sem      chan struct{}
+	base     context.Context
+	wg       sync.WaitGroup
 }
 
-// oomPauseAfter is how many out-of-memory failures in a row pause an automation.
-const oomPauseAfter = 2
+const (
+	// oomPauseAfter out-of-memory failures in a row pause an automation;
+	// pauseAfter failures of any other kind do.
+	oomPauseAfter = 2
+	pauseAfter    = 3
+)
 
-// Start ticks until ctx is cancelled. The first tick runs immediately.
+// Start ticks until ctx is cancelled. The first tick runs immediately. A
+// tick starts the due runs and returns, so a slow run doesn't delay the
+// next tick; runs still going when ctx ends are stopped and waited for.
 func (r *Runner) Start(ctx context.Context) {
-	if err := r.Tick(ctx); err != nil && r.Logger != nil {
+	r.mu.Lock()
+	r.base = ctx
+	r.mu.Unlock()
+	defer r.wg.Wait()
+	if err := r.tick(ctx, false); err != nil && r.Logger != nil {
 		r.Logger.Warn("automation tick failed", "error", err)
 	}
 	interval := r.Interval
@@ -74,15 +111,24 @@ func (r *Runner) Start(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			if err := r.Tick(ctx); err != nil && r.Logger != nil {
+			if err := r.tick(ctx, false); err != nil && r.Logger != nil {
 				r.Logger.Warn("automation tick failed", "error", err)
 			}
 		}
 	}
 }
 
-// Tick refreshes schedules, runs due automations, and fails leases left behind by a crash.
+// Tick refreshes schedules, runs due automations, and fails leases left
+// behind by a crash. It returns when the runs it started have finished.
 func (r *Runner) Tick(ctx context.Context) error {
+	return r.tick(ctx, true)
+}
+
+// Wait returns when every run started so far has finished, such as one
+// Run now started.
+func (r *Runner) Wait() { r.wg.Wait() }
+
+func (r *Runner) tick(ctx context.Context, wait bool) error {
 	if r.Store == nil {
 		return errors.New("automation store is required")
 	}
@@ -97,14 +143,40 @@ func (r *Runner) Tick(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	var errs []error
+	var (
+		errs   []error
+		errsMu sync.Mutex
+		mine   sync.WaitGroup
+	)
 	for _, automation := range due {
-		if automation.NextRunAt == nil {
+		// One still running from an earlier tick, or from Run now, is
+		// left to finish.
+		if automation.NextRunAt == nil || !r.begin(automation.ID) {
 			continue
 		}
-		if err := r.runOne(ctx, automation); err != nil {
-			errs = append(errs, err)
-		}
+		mine.Add(1)
+		r.wg.Add(1)
+		go func(automation Automation) {
+			defer r.wg.Done()
+			defer mine.Done()
+			defer r.end(automation.ID)
+			if !r.acquire(ctx) {
+				return
+			}
+			defer r.release()
+			if err := r.runOne(ctx, automation); err != nil {
+				if wait {
+					errsMu.Lock()
+					errs = append(errs, err)
+					errsMu.Unlock()
+				} else if r.Logger != nil && ctx.Err() == nil {
+					r.Logger.Warn("automation run failed", "automation", automation.Name, "error", err)
+				}
+			}
+		}(automation)
+	}
+	if wait {
+		mine.Wait()
 	}
 	abandoned, err := r.Store.AbandonExpired(ctx, r.now())
 	if err != nil {
@@ -115,8 +187,11 @@ func (r *Runner) Tick(ctx context.Context) error {
 	return errors.Join(errs...)
 }
 
-// RunNow executes one occurrence immediately. A paused automation stays paused afterward.
-// When the scheduled occurrence is already due, that occurrence is the one that runs.
+// RunNow starts one occurrence immediately and returns its run as soon as
+// it is claimed; the run goes on without the request, so closing the page
+// can't stop it, and its progress arrives as automation events (#204). A
+// paused automation stays paused afterward. When the scheduled occurrence
+// is already due, that occurrence is the one that runs.
 func (r *Runner) RunNow(ctx context.Context, id string) (Run, error) {
 	if r.Store == nil || r.Exec == nil {
 		return Run{}, errors.New("automation runner is not configured")
@@ -125,45 +200,74 @@ func (r *Runner) RunNow(ctx context.Context, id string) (Run, error) {
 	if err != nil {
 		return Run{}, err
 	}
+	if !r.begin(id) {
+		return Run{}, ErrRunning
+	}
 	now := r.now().UTC().Truncate(time.Second)
 	occurrence := now
 	if automation.NextRunAt != nil && !automation.NextRunAt.After(now) {
 		occurrence = automation.NextRunAt.UTC().Truncate(time.Second)
 	}
-	if err := r.execute(ctx, automation, occurrence, true); err != nil {
+	run, ok, err := r.claim(ctx, automation, occurrence)
+	if err == nil && !ok {
+		err = fmt.Errorf("automation %q already has a run at %s", automation.ID, occurrence.UTC().Format(time.RFC3339))
+	}
+	if err != nil {
+		r.end(id)
 		return Run{}, err
 	}
-	return r.Store.RunFor(ctx, id, occurrence)
+	r.wg.Add(1)
+	go func() {
+		defer r.wg.Done()
+		defer r.end(id)
+		if err := r.finish(r.background(), automation, run); err != nil && r.Logger != nil {
+			r.Logger.Warn("automation run failed", "automation", automation.Name, "error", err)
+		}
+	}()
+	return run, nil
 }
 
 func (r *Runner) runOne(ctx context.Context, automation Automation) error {
 	if automation.NextRunAt == nil {
 		return nil
 	}
-	return r.execute(ctx, automation, *automation.NextRunAt, false)
+	run, ok, err := r.claim(ctx, automation, *automation.NextRunAt)
+	if err != nil || !ok {
+		return err
+	}
+	return r.finish(ctx, automation, run)
 }
 
-func (r *Runner) execute(ctx context.Context, automation Automation, occurrence time.Time, manual bool) error {
-	now := r.now()
-	run, ok, err := r.Store.Claim(ctx, automation.ID, occurrence, now, r.lease())
-	if err != nil {
-		return err
+// claim takes the occurrence and marks its run running. ok is false when
+// another run already has it.
+func (r *Runner) claim(ctx context.Context, automation Automation, occurrence time.Time) (Run, bool, error) {
+	run, ok, err := r.Store.Claim(ctx, automation.ID, occurrence, r.now(), r.lease())
+	if err != nil || !ok {
+		return Run{}, ok, err
 	}
-	if !ok {
-		if manual {
-			return fmt.Errorf("automation %q already has a run at %s", automation.ID, occurrence.UTC().Format(time.RFC3339))
-		}
-		return nil
+	started := r.now()
+	if err := r.Store.MarkRunning(ctx, run.ID, started, r.lease()); err != nil {
+		return Run{}, false, err
 	}
-	if err := r.Store.MarkRunning(ctx, run.ID, r.now(), r.lease()); err != nil {
-		return err
-	}
-	execCtx, cancel := context.WithCancel(ctx)
-	defer cancel()
-	go r.keepLease(execCtx, run.ID)
+	run.Status, run.StartedAt = RunRunning, &started
+	return run, true, nil
+}
+
+// finish runs a claimed occurrence within its time limit and records how it
+// ended.
+func (r *Runner) finish(ctx context.Context, automation Automation, run Run) error {
+	leaseCtx, stopLease := context.WithCancel(ctx)
+	defer stopLease()
+	go r.keepLease(leaseCtx, run.ID)
 
 	r.publish(events.AutomationStarted, automation, run, Execution{}, nil, false)
+	limit := r.runTimeout()
+	execCtx, cancel := context.WithTimeout(ctx, limit)
 	result, execErr := r.Exec.Execute(execCtx, automation)
+	if errors.Is(execCtx.Err(), context.DeadlineExceeded) && ctx.Err() == nil {
+		execErr = timedOut(limit)
+	}
+	cancel()
 	finished := r.now()
 	if execErr != nil {
 		if ctx.Err() != nil {
@@ -184,17 +288,35 @@ func (r *Runner) execute(ctx context.Context, automation Automation, occurrence 
 			return err
 		}
 		message := locale.Literal(execErr.Error())
-		if modelhealth.OutOfMemory(execErr.Error()) {
+		code, params := contracts.ErrorCode(execErr)
+		if key := "errors:" + code; code != "" && locale.T(locale.Source, key, nil) != key {
+			// The reason in the App language, for a code the catalog has.
+			values := map[string]any{"detail": execErr.Error()}
+			for k, v := range params {
+				values[k] = v
+			}
+			message = locale.Key(key, values)
+		}
+		oom := code == "OUT_OF_MEMORY" || modelhealth.OutOfMemory(execErr.Error())
+		limit := pauseAfter
+		if oom {
 			message = locale.Key("notifications:notices.automationOutOfMemory", nil)
-			if updated.ConsecutiveFailures >= oomPauseAfter && r.Pause != nil && updated.Enabled {
-				if err := r.Pause(ctx, automation.ID); err != nil {
-					if r.Logger != nil {
-						r.Logger.Warn("pause automation after memory failures", "automation", automation.Name, "error", err)
-					}
-				} else {
-					updated.Enabled = false
-					message = locale.Key("notifications:notices.automationPausedMemory", map[string]any{"count": updated.ConsecutiveFailures})
+			limit = oomPauseAfter
+		}
+		// One that keeps failing, for any reason, is paused instead of
+		// failing on every schedule (#204).
+		if updated.ConsecutiveFailures >= limit && r.Pause != nil && updated.Enabled {
+			if err := r.Pause(ctx, automation.ID); err != nil {
+				if r.Logger != nil {
+					r.Logger.Warn("pause automation after failures", "automation", automation.Name, "error", err)
 				}
+			} else {
+				updated.Enabled = false
+				key := "notifications:notices.automationPausedFailures"
+				if oom {
+					key = "notifications:notices.automationPausedMemory"
+				}
+				message = locale.Key(key, map[string]any{"count": updated.ConsecutiveFailures})
 			}
 		}
 		sent, notifyErr := r.notifyRepeated(ctx, updated, run, message)
@@ -331,6 +453,71 @@ func (r *Runner) publish(eventType string, automation Automation, run Run, resul
 		payload["skipped"] = result.Skipped
 	}
 	r.Bus.Publish(events.New(eventType, payload))
+}
+
+// begin marks an automation as running; false when it already is.
+func (r *Runner) begin(id string) bool {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if r.inflight == nil {
+		r.inflight = map[string]bool{}
+	}
+	if r.inflight[id] {
+		return false
+	}
+	r.inflight[id] = true
+	return true
+}
+
+func (r *Runner) end(id string) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	delete(r.inflight, id)
+}
+
+// acquire waits for a worker; false when ctx ends first.
+func (r *Runner) acquire(ctx context.Context) bool {
+	r.mu.Lock()
+	if r.sem == nil {
+		n := r.Workers
+		if n <= 0 {
+			n = defaultWorkers
+		}
+		r.sem = make(chan struct{}, n)
+	}
+	sem := r.sem
+	r.mu.Unlock()
+	select {
+	case sem <- struct{}{}:
+		return true
+	case <-ctx.Done():
+		return false
+	}
+}
+
+func (r *Runner) release() {
+	r.mu.Lock()
+	sem := r.sem
+	r.mu.Unlock()
+	<-sem
+}
+
+// background is the context a run started by Run now goes on in: the
+// runner's own, which ends with the daemon, never the request's.
+func (r *Runner) background() context.Context {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if r.base != nil {
+		return r.base
+	}
+	return context.Background()
+}
+
+func (r *Runner) runTimeout() time.Duration {
+	if r.RunTimeout <= 0 {
+		return defaultRunTimeout
+	}
+	return r.RunTimeout
 }
 
 func (r *Runner) now() time.Time {

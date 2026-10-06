@@ -3,6 +3,8 @@ package automations
 import (
 	"strings"
 	"time"
+
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 const (
@@ -30,12 +32,44 @@ func RetryDelay(attempt int) time.Duration {
 	}
 }
 
+// Error codes whose failures may pass on their own, and ones that won't
+// (#204). A code decides before the error's English text does, so a
+// message in another language, or reworded, is classified the same.
+var (
+	transientCodes = map[string]bool{
+		"CONNECTION_LOST":    true,
+		"COMPUTER_OFFLINE":   true,
+		"MODEL_BUSY":         true,
+		"SUPPORT_MODEL_BUSY": true,
+		"RUNTIME_ERROR":      true,
+	}
+	permanentCodes = map[string]bool{
+		"OUT_OF_MEMORY":         true,
+		"MODEL_UNHEALTHY":       true,
+		"MODEL_NOT_INSTALLED":   true,
+		"NO_MODEL_INSTALLED":    true,
+		"NO_MODEL_ASSIGNED":     true,
+		"RUNTIME_NOT_INSTALLED": true,
+		"CONTEXT_TOO_LONG":      true,
+		"AUTOMATION_TIMEOUT":    true,
+	}
+)
+
 // ClassifyFailure retries timeouts and connection drops.
 // A model that cannot start, an out-of-memory failure, or a tool failure stays failed.
 // Anything else stays failed as well, so an unknown error cannot retry without a bound that was chosen for it.
+// The error's code decides first; its text only when it has no code this knows.
 func ClassifyFailure(err error) FailureClass {
 	if err == nil {
 		return FailurePermanent
+	}
+	if code, _ := contracts.ErrorCode(err); code != "" {
+		switch {
+		case permanentCodes[code]:
+			return FailurePermanent
+		case transientCodes[code]:
+			return FailureTransient
+		}
 	}
 	msg := strings.ToLower(err.Error())
 	if permanentFailure(msg) {

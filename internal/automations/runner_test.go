@@ -306,7 +306,16 @@ func TestRunNowWhilePausedKeepsTheSchedule(t *testing.T) {
 		Now:   func() time.Time { return now },
 		Lease: time.Hour,
 	}
-	run, err := runner.RunNow(ctx, created.ID)
+	started, err := runner.RunNow(ctx, created.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Run now answers as soon as the run is claimed; it finishes after.
+	if started.Status != automations.RunRunning {
+		t.Fatalf("started = %+v", started)
+	}
+	runner.Wait()
+	run, err := repo.RunFor(ctx, created.ID, started.OccurrenceAt)
 	if err != nil {
 		t.Fatal(err)
 	}

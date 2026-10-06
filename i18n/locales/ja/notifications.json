@@ -153,6 +153,7 @@
     "automationFailedInARow_other": "実行できませんでした（{{count}}回連続で失敗）：",
     "automationOutOfMemory": "このコンピュータでモデルのメモリが不足しました。",
     "automationPausedMemory_other": "{{count}}回連続でメモリが不足したため、一時停止しました。この自動化でより小さいモデルを選ぶか、他の処理を終了してから再開してください。",
+    "automationPausedFailures_other": "{{count}}回連続で失敗したため、一時停止しました。上の理由を確認して解決してから、再開してください。",
     "automationPrice": "価格は{{price}}です。",
     "automationAvailable": "利用可能です。",
     "automationUnavailable": "利用できません。",

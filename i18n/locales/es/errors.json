@@ -147,5 +147,7 @@
   "PAIRING_THROTTLED": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
   "PAIRING_WRONG_CODE": "Ese no es el código que muestra el ordenador. Revísalo y vuelve a intentarlo.",
   "LAN_ACCESS_OFF": "El acceso desde la red local está desactivado en esta computadora, así que solo responde a las apps de ella.",
-  "LAN_ACCESS_FAILED": "No se pudo activar el acceso desde la red local."
+  "LAN_ACCESS_FAILED": "No se pudo activar el acceso desde la red local.",
+  "AUTOMATION_RUNNING": "Esta automatización ya se está ejecutando. Su resultado aparecerá aquí cuando termine.",
+  "AUTOMATION_TIMEOUT": "La ejecución tardó más de {{minutes}} minutos y se detuvo. Prueba un modelo más rápido o una instrucción más corta."
 }
