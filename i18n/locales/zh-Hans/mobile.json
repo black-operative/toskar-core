@@ -259,7 +259,9 @@
       "wantsToRunSummary": "{{tool}} 想要运行：{{summary}}",
       "deny": "拒绝",
       "allowOnce": "允许一次"
-    }
+    },
+    "ranOnGPU": "GPU",
+    "ranOnCPU": "CPU"
   },
   "effort": {
     "title": "投入程度",

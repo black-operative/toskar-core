@@ -270,7 +270,9 @@
       "deny": "Deny",
       "allowOnce": "Allow once"
     },
-    "phoneAutoHint": "Picks the best model on this iPhone for each message"
+    "phoneAutoHint": "Picks the best model on this iPhone for each message",
+    "ranOnGPU": "GPU",
+    "ranOnCPU": "CPU"
   },
   "effort": {
     "title": "Effort",

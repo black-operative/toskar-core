@@ -259,7 +259,9 @@
       "wantsToRunSummary": "{{tool}} quiere ejecutarse: {{summary}}",
       "deny": "Denegar",
       "allowOnce": "Permitir una vez"
-    }
+    },
+    "ranOnGPU": "GPU",
+    "ranOnCPU": "CPU"
   },
   "effort": {
     "title": "Esfuerzo",

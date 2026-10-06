@@ -259,7 +259,9 @@
       "wantsToRunSummary": "{{tool}}이(가) 실행하려고 해요: {{summary}}",
       "deny": "거부",
       "allowOnce": "한 번 허용"
-    }
+    },
+    "ranOnGPU": "GPU",
+    "ranOnCPU": "CPU"
   },
   "effort": {
     "title": "노력 수준",

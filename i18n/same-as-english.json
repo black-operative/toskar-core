@@ -14,6 +14,8 @@
     "diagnostics:providers.gpu",
     "diagnostics:rows.api.label",
     "knowledge:remote.url",
+    "mobile:chat.ranOnCPU",
+    "mobile:chat.ranOnGPU",
     "mobile:chat.speed",
     "mobile:discovery.version",
     "mobile:tools.git.commit",
