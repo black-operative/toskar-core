@@ -129,6 +129,42 @@ func (d realDriver) hardware(t *testing.T) string {
 	return fmt.Sprintf("%s (%.0f GB)", best.Model, float64(best.DedicatedVRAM)/(1<<30))
 }
 
+// ranOn says how the model the cases used ran, from its acceleration
+// report: "on the GPU (Vulkan, 29 of 29 layers)", "partly on the GPU
+// (…)", or "on the CPU"; "" when the daemon doesn't say.
+func (d realDriver) ranOn(t *testing.T) string {
+	t.Helper()
+	var running []contracts.RunningModelView
+	if _, err := d.request(http.MethodGet, "/api/v1/models/running", nil, &running, t.Logf); err != nil {
+		return ""
+	}
+	var acc *contracts.Acceleration
+	for _, r := range running {
+		if r.Mode != "" || r.Acceleration == nil {
+			continue
+		}
+		if acc == nil || r.ModelID == d.model {
+			acc = r.Acceleration
+		}
+	}
+	if acc == nil {
+		return ""
+	}
+	backend := map[string]string{"metal": "Metal", "vulkan": "Vulkan", "cuda": "CUDA", "rocm": "ROCm", "sycl": "SYCL"}[acc.Backend]
+	layers := ""
+	if acc.LayersTotal > 0 {
+		layers = fmt.Sprintf(", %d of %d layers", acc.LayersOffloaded, acc.LayersTotal)
+	}
+	switch acc.State {
+	case contracts.AccelerationGPU:
+		return "on the GPU (" + backend + layers + ")"
+	case contracts.AccelerationPartial:
+		return "partly on the GPU (" + backend + layers + ")"
+	default:
+		return "on the CPU"
+	}
+}
+
 // version says which build of the daemon the run tested, for the report.
 func (d realDriver) version(t *testing.T) string {
 	t.Helper()

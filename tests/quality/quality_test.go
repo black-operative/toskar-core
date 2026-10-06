@@ -235,6 +235,13 @@ func TestQualitySet(t *testing.T) {
 	t.Logf("quality: %d of %d cases passed (%.0f%%) with the %s model", passed, len(report), rate*100, d.Name())
 	if path := config.Env("QUALITY_REPORT"); path != "" {
 		md := markdownReport(d.Name(), report, rate, minPass(d.Name()))
+		// How the model ran, from the daemon's report once the cases have
+		// loaded it (#317): on the GPU with its layers, or on the CPU.
+		if real, ok := d.(realDriver); ok && build != "" {
+			if ran := real.ranOn(t); ran != "" {
+				build += "; the model ran " + ran
+			}
+		}
 		if build != "" {
 			md = strings.Replace(md, "\n\n", "\n\nTested Toskar "+build+".\n\n", 1)
 		}

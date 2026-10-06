@@ -64,3 +64,17 @@ func TestRealDriverStopsWithoutARuntime(t *testing.T) {
 		t.Fatalf("stopped = %q", d.Stopped())
 	}
 }
+
+// The report says how the model ran, from the daemon's acceleration report.
+func TestRanOnNamesTheBackend(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte(`[{"model_id":"embed","mode":"embedding","acceleration":{"state":"cpu","backend":"cpu","layers_offloaded":0,"layers_total":0}},
+{"model_id":"qwen2.5-32b-q4","acceleration":{"state":"gpu","backend":"vulkan","layers_offloaded":65,"layers_total":65}}]`))
+	}))
+	defer srv.Close()
+	d := newRealDriver(srv.URL)
+	d.model = "qwen2.5-32b-q4"
+	if got := d.ranOn(t); got != "on the GPU (Vulkan, 65 of 65 layers)" {
+		t.Errorf("ranOn = %q", got)
+	}
+}
