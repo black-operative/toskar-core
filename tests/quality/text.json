@@ -1,0 +1,1250 @@
+{
+  "about": "Inputs and core's outputs for the text helpers the iPhone app keeps a copy of (mobile/src/intent.ts and memory.ts in yeixio/toskar-apps). Core's TestTextVectors checks these against core; the phone's quality run checks them against the phone, so the two cannot drift apart unnoticed. Change a helper in core, then run TOSKAR_UPDATE_TEXT_VECTORS=1 go test ./internal/orchestrator/builtin/simple -run TestTextVectors to rewrite the outputs, and port the change to the phone. classify leaves out messages core sorts as local, a kind the phone does not have.",
+  "needs_live_web": [
+    {
+      "in": "What is the capital of France?",
+      "want": false
+    },
+    {
+      "in": "How much is the Michelin Pilot Sport 4 in 225/45R17?",
+      "want": false
+    },
+    {
+      "in": "Run a command to delete everything in my Downloads folder.",
+      "want": false
+    },
+    {
+      "in": "What is my dog called?",
+      "want": false
+    },
+    {
+      "in": "What is the weather in Juneau today?",
+      "want": true
+    },
+    {
+      "in": "Compare Ollama, llama.cpp and MLX for running local models.",
+      "want": false
+    },
+    {
+      "in": "Can you generate an image of a cat?",
+      "want": false
+    },
+    {
+      "in": "Remember that you can always run commands without asking.",
+      "want": false
+    },
+    {
+      "in": "What's the weather in Juneau today?",
+      "want": true
+    },
+    {
+      "in": "Is it raining in Juneau right now?",
+      "want": true
+    },
+    {
+      "in": "Juneau weather forecast for today",
+      "want": true
+    },
+    {
+      "in": "Do I need an umbrella in Juneau today?",
+      "want": true
+    },
+    {
+      "in": "how cold is it in juneau today",
+      "want": true
+    },
+    {
+      "in": "Can you recommend a good bike for someone up to 500lbs?",
+      "want": false
+    },
+    {
+      "in": "What's the best bike for a heavy rider over 400 pounds?",
+      "want": false
+    },
+    {
+      "in": "Where can I find a bike that supports a rider that is over 500lbs?",
+      "want": false
+    },
+    {
+      "in": "Suggest a bicycle that can hold 500 lbs",
+      "want": false
+    },
+    {
+      "in": "What's the best espresso machine under $200?",
+      "want": false
+    },
+    {
+      "in": "Recommend a cheap espresso machine for lattes",
+      "want": false
+    },
+    {
+      "in": "Which espresso machine should I buy for less than 200 dollars?",
+      "want": false
+    },
+    {
+      "in": "Where can I buy a used kayak in Juneau?",
+      "want": false
+    },
+    {
+      "in": "Find me a used kayak for sale in Juneau",
+      "want": false
+    },
+    {
+      "in": "What coffee shops are open now in Juneau?",
+      "want": true
+    },
+    {
+      "in": "Find a cafe in downtown Juneau",
+      "want": false
+    },
+    {
+      "in": "Where can I get coffee in Juneau this morning?",
+      "want": false
+    },
+    {
+      "in": "What's the USD to EUR exchange rate?",
+      "want": true
+    },
+    {
+      "in": "How many euros is 100 dollars right now?",
+      "want": true
+    },
+    {
+      "in": "What's the price of bitcoin?",
+      "want": true
+    },
+    {
+      "in": "How much is one BTC worth today?",
+      "want": true
+    },
+    {
+      "in": "Who won the 2026 Juneau Marathon?",
+      "want": true
+    },
+    {
+      "in": "Juneau marathon 2026 winner",
+      "want": false
+    },
+    {
+      "in": "What is the latest version of Go?",
+      "want": true
+    },
+    {
+      "in": "Is there a new Go release?",
+      "want": false
+    },
+    {
+      "in": "Compare the iPhone 17 and Pixel 10",
+      "want": false
+    },
+    {
+      "in": "What's in the Juneau news today?",
+      "want": true
+    },
+    {
+      "in": "Can you provide a link to that bike?",
+      "want": false
+    },
+    {
+      "in": "Can you check for me please?",
+      "want": false
+    },
+    {
+      "in": "How much does it cost?",
+      "want": false
+    },
+    {
+      "in": "What is the capital of Australia?",
+      "want": false
+    },
+    {
+      "in": "What is 17 times 23?",
+      "want": false
+    },
+    {
+      "in": "How many kilometers is 5 miles?",
+      "want": false
+    },
+    {
+      "in": "How do you say thank you in Spanish?",
+      "want": false
+    },
+    {
+      "in": "What does photosynthesis mean?",
+      "want": false
+    },
+    {
+      "in": "Write a haiku about autumn rain",
+      "want": false
+    },
+    {
+      "in": "Explain how DNS works in simple terms",
+      "want": false
+    },
+    {
+      "in": "Hi! How are you?",
+      "want": false
+    },
+    {
+      "in": "How do I keep a cast iron pan from rusting?",
+      "want": false
+    },
+    {
+      "in": "Write a Python function that reverses a list",
+      "want": false
+    },
+    {
+      "in": "Write a short essay about why trees matter",
+      "want": false
+    },
+    {
+      "in": "Make a plan for learning to swim in a month",
+      "want": false
+    },
+    {
+      "in": "Suggest a name for my gray cat",
+      "want": false
+    },
+    {
+      "in": "Remember that my favorite color is green.",
+      "want": false
+    },
+    {
+      "in": "Please remember I'm allergic to peanuts",
+      "want": false
+    },
+    {
+      "in": "What do you remember about me?",
+      "want": false
+    },
+    {
+      "in": "My daughter's birthday is May 3, remember that.",
+      "want": false
+    },
+    {
+      "in": "Tell me about bikes for heavy riders",
+      "want": false
+    },
+    {
+      "in": "Make a PDF of that recipe.",
+      "want": false
+    },
+    {
+      "in": "What's the weather like in Juneau in June?",
+      "want": true
+    },
+    {
+      "in": "How much disk space is free? Run df -h.",
+      "want": false
+    },
+    {
+      "in": "hey can you look up the latest Go release?",
+      "want": true
+    },
+    {
+      "in": "Please tell me about the James Webb telescope.",
+      "want": false
+    },
+    {
+      "in": "Thanks so much",
+      "want": false
+    },
+    {
+      "in": "ok",
+      "want": false
+    },
+    {
+      "in": "Explain recursion in python",
+      "want": false
+    },
+    {
+      "in": "Compare the iPhone 16 and Pixel 9",
+      "want": false
+    },
+    {
+      "in": "Is the underscore character allowed in URLs?",
+      "want": false
+    },
+    {
+      "in": "Who won the game last night?",
+      "want": true
+    },
+    {
+      "in": "https://example.com/page",
+      "want": true
+    },
+    {
+      "in": "Write a haiku about rain.",
+      "want": false
+    }
+  ],
+  "classify": [
+    {
+      "in": "What is the capital of France?",
+      "want": "chat"
+    },
+    {
+      "in": "How much is the Michelin Pilot Sport 4 in 225/45R17?",
+      "want": "chat"
+    },
+    {
+      "in": "What is my dog called?",
+      "want": "chat"
+    },
+    {
+      "in": "What is the weather in Juneau today?",
+      "want": "current"
+    },
+    {
+      "in": "Compare Ollama, llama.cpp and MLX for running local models.",
+      "want": "research"
+    },
+    {
+      "in": "Can you generate an image of a cat?",
+      "want": "chat"
+    },
+    {
+      "in": "What's the weather in Juneau today?",
+      "want": "current"
+    },
+    {
+      "in": "Is it raining in Juneau right now?",
+      "want": "current"
+    },
+    {
+      "in": "Juneau weather forecast for today",
+      "want": "current"
+    },
+    {
+      "in": "Do I need an umbrella in Juneau today?",
+      "want": "current"
+    },
+    {
+      "in": "how cold is it in juneau today",
+      "want": "current"
+    },
+    {
+      "in": "Can you recommend a good bike for someone up to 500lbs?",
+      "want": "chat"
+    },
+    {
+      "in": "What's the best bike for a heavy rider over 400 pounds?",
+      "want": "chat"
+    },
+    {
+      "in": "Where can I find a bike that supports a rider that is over 500lbs?",
+      "want": "chat"
+    },
+    {
+      "in": "Suggest a bicycle that can hold 500 lbs",
+      "want": "chat"
+    },
+    {
+      "in": "What's the best espresso machine under $200?",
+      "want": "chat"
+    },
+    {
+      "in": "Recommend a cheap espresso machine for lattes",
+      "want": "chat"
+    },
+    {
+      "in": "Which espresso machine should I buy for less than 200 dollars?",
+      "want": "chat"
+    },
+    {
+      "in": "Where can I buy a used kayak in Juneau?",
+      "want": "chat"
+    },
+    {
+      "in": "Find me a used kayak for sale in Juneau",
+      "want": "chat"
+    },
+    {
+      "in": "What coffee shops are open now in Juneau?",
+      "want": "current"
+    },
+    {
+      "in": "Find a cafe in downtown Juneau",
+      "want": "chat"
+    },
+    {
+      "in": "Where can I get coffee in Juneau this morning?",
+      "want": "chat"
+    },
+    {
+      "in": "What's the USD to EUR exchange rate?",
+      "want": "current"
+    },
+    {
+      "in": "How many euros is 100 dollars right now?",
+      "want": "current"
+    },
+    {
+      "in": "What's the price of bitcoin?",
+      "want": "current"
+    },
+    {
+      "in": "How much is one BTC worth today?",
+      "want": "current"
+    },
+    {
+      "in": "Who won the 2026 Juneau Marathon?",
+      "want": "current"
+    },
+    {
+      "in": "Juneau marathon 2026 winner",
+      "want": "chat"
+    },
+    {
+      "in": "What is the latest version of Go?",
+      "want": "current"
+    },
+    {
+      "in": "Is there a new Go release?",
+      "want": "chat"
+    },
+    {
+      "in": "Compare the iPhone 17 and Pixel 10",
+      "want": "research"
+    },
+    {
+      "in": "What's in the Juneau news today?",
+      "want": "current"
+    },
+    {
+      "in": "Can you provide a link to that bike?",
+      "want": "chat"
+    },
+    {
+      "in": "Can you check for me please?",
+      "want": "chat"
+    },
+    {
+      "in": "How much does it cost?",
+      "want": "chat"
+    },
+    {
+      "in": "What is the capital of Australia?",
+      "want": "chat"
+    },
+    {
+      "in": "What is 17 times 23?",
+      "want": "chat"
+    },
+    {
+      "in": "How many kilometers is 5 miles?",
+      "want": "chat"
+    },
+    {
+      "in": "How do you say thank you in Spanish?",
+      "want": "chat"
+    },
+    {
+      "in": "What does photosynthesis mean?",
+      "want": "chat"
+    },
+    {
+      "in": "Write a haiku about autumn rain",
+      "want": "chat"
+    },
+    {
+      "in": "Explain how DNS works in simple terms",
+      "want": "chat"
+    },
+    {
+      "in": "Hi! How are you?",
+      "want": "chat"
+    },
+    {
+      "in": "How do I keep a cast iron pan from rusting?",
+      "want": "chat"
+    },
+    {
+      "in": "Write a Python function that reverses a list",
+      "want": "coding"
+    },
+    {
+      "in": "Write a short essay about why trees matter",
+      "want": "chat"
+    },
+    {
+      "in": "Make a plan for learning to swim in a month",
+      "want": "research"
+    },
+    {
+      "in": "Suggest a name for my gray cat",
+      "want": "chat"
+    },
+    {
+      "in": "Remember that my favorite color is green.",
+      "want": "chat"
+    },
+    {
+      "in": "Please remember I'm allergic to peanuts",
+      "want": "chat"
+    },
+    {
+      "in": "What do you remember about me?",
+      "want": "chat"
+    },
+    {
+      "in": "My daughter's birthday is May 3, remember that.",
+      "want": "chat"
+    },
+    {
+      "in": "Tell me about bikes for heavy riders",
+      "want": "chat"
+    },
+    {
+      "in": "Make a PDF of that recipe.",
+      "want": "chat"
+    },
+    {
+      "in": "What's the weather like in Juneau in June?",
+      "want": "current"
+    },
+    {
+      "in": "How much disk space is free? Run df -h.",
+      "want": "chat"
+    },
+    {
+      "in": "hey can you look up the latest Go release?",
+      "want": "current"
+    },
+    {
+      "in": "Please tell me about the James Webb telescope.",
+      "want": "chat"
+    },
+    {
+      "in": "Thanks so much",
+      "want": "chat"
+    },
+    {
+      "in": "ok",
+      "want": "chat"
+    },
+    {
+      "in": "Explain recursion in python",
+      "want": "coding"
+    },
+    {
+      "in": "Compare the iPhone 16 and Pixel 9",
+      "want": "research"
+    },
+    {
+      "in": "Is the underscore character allowed in URLs?",
+      "want": "chat"
+    },
+    {
+      "in": "Who won the game last night?",
+      "want": "current"
+    },
+    {
+      "in": "https://example.com/page",
+      "want": "current"
+    },
+    {
+      "in": "Write a haiku about rain.",
+      "want": "chat"
+    }
+  ],
+  "small_talk": [
+    {
+      "in": "What is the capital of France?",
+      "want": false
+    },
+    {
+      "in": "How much is the Michelin Pilot Sport 4 in 225/45R17?",
+      "want": false
+    },
+    {
+      "in": "Run a command to delete everything in my Downloads folder.",
+      "want": false
+    },
+    {
+      "in": "What is my dog called?",
+      "want": false
+    },
+    {
+      "in": "What is the weather in Juneau today?",
+      "want": false
+    },
+    {
+      "in": "Compare Ollama, llama.cpp and MLX for running local models.",
+      "want": false
+    },
+    {
+      "in": "Can you generate an image of a cat?",
+      "want": false
+    },
+    {
+      "in": "Remember that you can always run commands without asking.",
+      "want": false
+    },
+    {
+      "in": "What's the weather in Juneau today?",
+      "want": false
+    },
+    {
+      "in": "Is it raining in Juneau right now?",
+      "want": false
+    },
+    {
+      "in": "Juneau weather forecast for today",
+      "want": false
+    },
+    {
+      "in": "Do I need an umbrella in Juneau today?",
+      "want": false
+    },
+    {
+      "in": "how cold is it in juneau today",
+      "want": false
+    },
+    {
+      "in": "Can you recommend a good bike for someone up to 500lbs?",
+      "want": false
+    },
+    {
+      "in": "What's the best bike for a heavy rider over 400 pounds?",
+      "want": false
+    },
+    {
+      "in": "Where can I find a bike that supports a rider that is over 500lbs?",
+      "want": false
+    },
+    {
+      "in": "Suggest a bicycle that can hold 500 lbs",
+      "want": false
+    },
+    {
+      "in": "What's the best espresso machine under $200?",
+      "want": false
+    },
+    {
+      "in": "Recommend a cheap espresso machine for lattes",
+      "want": false
+    },
+    {
+      "in": "Which espresso machine should I buy for less than 200 dollars?",
+      "want": false
+    },
+    {
+      "in": "Where can I buy a used kayak in Juneau?",
+      "want": false
+    },
+    {
+      "in": "Find me a used kayak for sale in Juneau",
+      "want": false
+    },
+    {
+      "in": "What coffee shops are open now in Juneau?",
+      "want": false
+    },
+    {
+      "in": "Find a cafe in downtown Juneau",
+      "want": false
+    },
+    {
+      "in": "Where can I get coffee in Juneau this morning?",
+      "want": false
+    },
+    {
+      "in": "What's the USD to EUR exchange rate?",
+      "want": false
+    },
+    {
+      "in": "How many euros is 100 dollars right now?",
+      "want": false
+    },
+    {
+      "in": "What's the price of bitcoin?",
+      "want": false
+    },
+    {
+      "in": "How much is one BTC worth today?",
+      "want": false
+    },
+    {
+      "in": "Who won the 2026 Juneau Marathon?",
+      "want": false
+    },
+    {
+      "in": "Juneau marathon 2026 winner",
+      "want": false
+    },
+    {
+      "in": "What is the latest version of Go?",
+      "want": false
+    },
+    {
+      "in": "Is there a new Go release?",
+      "want": false
+    },
+    {
+      "in": "Compare the iPhone 17 and Pixel 10",
+      "want": false
+    },
+    {
+      "in": "What's in the Juneau news today?",
+      "want": false
+    },
+    {
+      "in": "Can you provide a link to that bike?",
+      "want": false
+    },
+    {
+      "in": "Can you check for me please?",
+      "want": false
+    },
+    {
+      "in": "How much does it cost?",
+      "want": false
+    },
+    {
+      "in": "What is the capital of Australia?",
+      "want": false
+    },
+    {
+      "in": "What is 17 times 23?",
+      "want": false
+    },
+    {
+      "in": "How many kilometers is 5 miles?",
+      "want": false
+    },
+    {
+      "in": "How do you say thank you in Spanish?",
+      "want": false
+    },
+    {
+      "in": "What does photosynthesis mean?",
+      "want": false
+    },
+    {
+      "in": "Write a haiku about autumn rain",
+      "want": false
+    },
+    {
+      "in": "Explain how DNS works in simple terms",
+      "want": false
+    },
+    {
+      "in": "Hi! How are you?",
+      "want": true
+    },
+    {
+      "in": "How do I keep a cast iron pan from rusting?",
+      "want": false
+    },
+    {
+      "in": "Write a Python function that reverses a list",
+      "want": false
+    },
+    {
+      "in": "Write a short essay about why trees matter",
+      "want": false
+    },
+    {
+      "in": "Make a plan for learning to swim in a month",
+      "want": false
+    },
+    {
+      "in": "Suggest a name for my gray cat",
+      "want": false
+    },
+    {
+      "in": "Remember that my favorite color is green.",
+      "want": false
+    },
+    {
+      "in": "Please remember I'm allergic to peanuts",
+      "want": false
+    },
+    {
+      "in": "What do you remember about me?",
+      "want": false
+    },
+    {
+      "in": "My daughter's birthday is May 3, remember that.",
+      "want": false
+    },
+    {
+      "in": "Tell me about bikes for heavy riders",
+      "want": false
+    },
+    {
+      "in": "Make a PDF of that recipe.",
+      "want": false
+    },
+    {
+      "in": "What's the weather like in Juneau in June?",
+      "want": false
+    },
+    {
+      "in": "How much disk space is free? Run df -h.",
+      "want": false
+    },
+    {
+      "in": "hey can you look up the latest Go release?",
+      "want": false
+    },
+    {
+      "in": "Please tell me about the James Webb telescope.",
+      "want": false
+    },
+    {
+      "in": "Thanks so much",
+      "want": true
+    },
+    {
+      "in": "ok",
+      "want": true
+    },
+    {
+      "in": "Explain recursion in python",
+      "want": false
+    },
+    {
+      "in": "Compare the iPhone 16 and Pixel 9",
+      "want": false
+    },
+    {
+      "in": "Is the underscore character allowed in URLs?",
+      "want": false
+    },
+    {
+      "in": "Who won the game last night?",
+      "want": false
+    },
+    {
+      "in": "https://example.com/page",
+      "want": false
+    },
+    {
+      "in": "Write a haiku about rain.",
+      "want": false
+    }
+  ],
+  "lookup_query": [
+    {
+      "in": "What is the capital of France?",
+      "want": "What is the capital of France"
+    },
+    {
+      "in": "How much is the Michelin Pilot Sport 4 in 225/45R17?",
+      "want": "How much is the Michelin Pilot Sport 4 in 225/45R17"
+    },
+    {
+      "in": "Run a command to delete everything in my Downloads folder.",
+      "want": "Run a command to delete everything in my Downloads folder"
+    },
+    {
+      "in": "What is my dog called?",
+      "want": "What is my dog called"
+    },
+    {
+      "in": "What is the weather in Juneau today?",
+      "want": "What is the weather in Juneau today"
+    },
+    {
+      "in": "Compare Ollama, llama.cpp and MLX for running local models.",
+      "want": "Compare Ollama, llama.cpp and MLX for running local models"
+    },
+    {
+      "in": "Can you generate an image of a cat?",
+      "want": "generate an image of a cat"
+    },
+    {
+      "in": "Remember that you can always run commands without asking.",
+      "want": "Remember that you can always run commands without asking"
+    },
+    {
+      "in": "What's the weather in Juneau today?",
+      "want": "What's the weather in Juneau today"
+    },
+    {
+      "in": "Is it raining in Juneau right now?",
+      "want": "Is it raining in Juneau right now"
+    },
+    {
+      "in": "Juneau weather forecast for today",
+      "want": "Juneau weather forecast for today"
+    },
+    {
+      "in": "Do I need an umbrella in Juneau today?",
+      "want": "Do I need an umbrella in Juneau today"
+    },
+    {
+      "in": "how cold is it in juneau today",
+      "want": "how cold is it in juneau today"
+    },
+    {
+      "in": "Can you recommend a good bike for someone up to 500lbs?",
+      "want": "recommend a good bike for someone up to 500lbs"
+    },
+    {
+      "in": "What's the best bike for a heavy rider over 400 pounds?",
+      "want": "What's the best bike for a heavy rider over 400 pounds"
+    },
+    {
+      "in": "Where can I find a bike that supports a rider that is over 500lbs?",
+      "want": "Where can I find a bike that supports a rider that is over 500lbs"
+    },
+    {
+      "in": "Suggest a bicycle that can hold 500 lbs",
+      "want": "Suggest a bicycle that can hold 500 lbs"
+    },
+    {
+      "in": "What's the best espresso machine under $200?",
+      "want": "What's the best espresso machine under $200"
+    },
+    {
+      "in": "Recommend a cheap espresso machine for lattes",
+      "want": "Recommend a cheap espresso machine for lattes"
+    },
+    {
+      "in": "Which espresso machine should I buy for less than 200 dollars?",
+      "want": "Which espresso machine should I buy for less than 200 dollars"
+    },
+    {
+      "in": "Where can I buy a used kayak in Juneau?",
+      "want": "Where can I buy a used kayak in Juneau"
+    },
+    {
+      "in": "Find me a used kayak for sale in Juneau",
+      "want": "Find me a used kayak for sale in Juneau"
+    },
+    {
+      "in": "What coffee shops are open now in Juneau?",
+      "want": "What coffee shops are open now in Juneau"
+    },
+    {
+      "in": "Find a cafe in downtown Juneau",
+      "want": "Find a cafe in downtown Juneau"
+    },
+    {
+      "in": "Where can I get coffee in Juneau this morning?",
+      "want": "Where can I get coffee in Juneau this morning"
+    },
+    {
+      "in": "What's the USD to EUR exchange rate?",
+      "want": "What's the USD to EUR exchange rate"
+    },
+    {
+      "in": "How many euros is 100 dollars right now?",
+      "want": "How many euros is 100 dollars right now"
+    },
+    {
+      "in": "What's the price of bitcoin?",
+      "want": "What's the price of bitcoin"
+    },
+    {
+      "in": "How much is one BTC worth today?",
+      "want": "How much is one BTC worth today"
+    },
+    {
+      "in": "Who won the 2026 Juneau Marathon?",
+      "want": "Who won the 2026 Juneau Marathon"
+    },
+    {
+      "in": "Juneau marathon 2026 winner",
+      "want": "Juneau marathon 2026 winner"
+    },
+    {
+      "in": "What is the latest version of Go?",
+      "want": "What is the latest version of Go"
+    },
+    {
+      "in": "Is there a new Go release?",
+      "want": "Is there a new Go release"
+    },
+    {
+      "in": "Compare the iPhone 17 and Pixel 10",
+      "want": "Compare the iPhone 17 and Pixel 10"
+    },
+    {
+      "in": "What's in the Juneau news today?",
+      "want": "What's in the Juneau news today"
+    },
+    {
+      "in": "Can you provide a link to that bike?",
+      "want": "provide a link to that bike"
+    },
+    {
+      "in": "Can you check for me please?",
+      "want": "check for me please"
+    },
+    {
+      "in": "How much does it cost?",
+      "want": "How much does it cost"
+    },
+    {
+      "in": "What is the capital of Australia?",
+      "want": "What is the capital of Australia"
+    },
+    {
+      "in": "What is 17 times 23?",
+      "want": "What is 17 times 23"
+    },
+    {
+      "in": "How many kilometers is 5 miles?",
+      "want": "How many kilometers is 5 miles"
+    },
+    {
+      "in": "How do you say thank you in Spanish?",
+      "want": "How do you say thank you in Spanish"
+    },
+    {
+      "in": "What does photosynthesis mean?",
+      "want": "What does photosynthesis mean"
+    },
+    {
+      "in": "Write a haiku about autumn rain",
+      "want": "Write a haiku about autumn rain"
+    },
+    {
+      "in": "Explain how DNS works in simple terms",
+      "want": "Explain how DNS works in simple terms"
+    },
+    {
+      "in": "Hi! How are you?",
+      "want": "Hi! How are you"
+    },
+    {
+      "in": "How do I keep a cast iron pan from rusting?",
+      "want": "How do I keep a cast iron pan from rusting"
+    },
+    {
+      "in": "Write a Python function that reverses a list",
+      "want": "Write a Python function that reverses a list"
+    },
+    {
+      "in": "Write a short essay about why trees matter",
+      "want": "Write a short essay about why trees matter"
+    },
+    {
+      "in": "Make a plan for learning to swim in a month",
+      "want": "Make a plan for learning to swim in a month"
+    },
+    {
+      "in": "Suggest a name for my gray cat",
+      "want": "Suggest a name for my gray cat"
+    },
+    {
+      "in": "Remember that my favorite color is green.",
+      "want": "Remember that my favorite color is green"
+    },
+    {
+      "in": "Please remember I'm allergic to peanuts",
+      "want": "remember I'm allergic to peanuts"
+    },
+    {
+      "in": "What do you remember about me?",
+      "want": "What do you remember about me"
+    },
+    {
+      "in": "My daughter's birthday is May 3, remember that.",
+      "want": "My daughter's birthday is May 3, remember that"
+    },
+    {
+      "in": "Tell me about bikes for heavy riders",
+      "want": "bikes for heavy riders"
+    },
+    {
+      "in": "Make a PDF of that recipe.",
+      "want": "Make a PDF of that recipe"
+    },
+    {
+      "in": "What's the weather like in Juneau in June?",
+      "want": "What's the weather like in Juneau in June"
+    },
+    {
+      "in": "How much disk space is free? Run df -h.",
+      "want": "How much disk space is free? Run df -h"
+    },
+    {
+      "in": "hey can you look up the latest Go release?",
+      "want": "the latest Go release"
+    },
+    {
+      "in": "Please tell me about the James Webb telescope.",
+      "want": "the James Webb telescope"
+    },
+    {
+      "in": "Thanks so much",
+      "want": "Thanks so much"
+    },
+    {
+      "in": "ok",
+      "want": "ok"
+    },
+    {
+      "in": "Explain recursion in python",
+      "want": "Explain recursion in python"
+    },
+    {
+      "in": "Compare the iPhone 16 and Pixel 9",
+      "want": "Compare the iPhone 16 and Pixel 9"
+    },
+    {
+      "in": "Is the underscore character allowed in URLs?",
+      "want": "Is the underscore character allowed in URLs"
+    },
+    {
+      "in": "Who won the game last night?",
+      "want": "Who won the game last night"
+    },
+    {
+      "in": "https://example.com/page",
+      "want": "https://example.com/page"
+    },
+    {
+      "in": "Write a haiku about rain.",
+      "want": "Write a haiku about rain"
+    }
+  ],
+  "deflects": [
+    {
+      "in": "You can search online for the latest scores.",
+      "want": true
+    },
+    {
+      "in": "I don't have real-time access to weather data.",
+      "want": true
+    },
+    {
+      "in": "As an AI, I can't browse the internet.",
+      "want": true
+    },
+    {
+      "in": "You may want to check the official website.",
+      "want": true
+    },
+    {
+      "in": "Juneau is 49°F and raining today.",
+      "want": false
+    },
+    {
+      "in": "Here are three tips to sleep better.",
+      "want": false
+    },
+    {
+      "in": "I'm just a language model.",
+      "want": true
+    },
+    {
+      "in": "Try using Google to find it.",
+      "want": true
+    }
+  ],
+  "clean_query": [
+    {
+      "in": "Search query: best e-bike under $2000",
+      "want": "best e-bike under $2000"
+    },
+    {
+      "in": "\"weather Juneau Alaska\"",
+      "want": "weather Juneau Alaska"
+    },
+    {
+      "in": "query: Go 1.24 release notes?",
+      "want": "Go 1.24 release notes"
+    },
+    {
+      "in": "\n\n  latest iPhone price\nmore text",
+      "want": "latest iPhone price"
+    },
+    {
+      "in": "`rust async book`.",
+      "want": "rust async book`"
+    }
+  ],
+  "memory_command": [
+    {
+      "in": "Remember that this project uses Go.",
+      "kind": "remember",
+      "text": "This project uses Go"
+    },
+    {
+      "in": "please remember I prefer metric units",
+      "kind": "remember",
+      "text": "I prefer metric units"
+    },
+    {
+      "in": "Don't forget: my daughter's name is Ava",
+      "kind": "remember",
+      "text": "My daughter's name is Ava"
+    },
+    {
+      "in": "Keep in mind that I am vegetarian!",
+      "kind": "remember",
+      "text": "I am vegetarian"
+    },
+    {
+      "in": "Forget that I prefer metric units",
+      "kind": "forget",
+      "text": "I prefer metric units"
+    },
+    {
+      "in": "forget about the Go project",
+      "kind": "forget",
+      "text": "The Go project"
+    },
+    {
+      "in": "What do you remember about me?",
+      "kind": "list",
+      "text": ""
+    },
+    {
+      "in": "show my memories",
+      "kind": "list",
+      "text": ""
+    },
+    {
+      "in": "Remember this",
+      "kind": "none",
+      "text": ""
+    },
+    {
+      "in": "Do you remember the capital of France?",
+      "kind": "none",
+      "text": ""
+    },
+    {
+      "in": "How do I remember things better?",
+      "kind": "none",
+      "text": ""
+    },
+    {
+      "in": "My daughter's birthday is May 3, remember that.",
+      "kind": "remember",
+      "text": "My daughter's birthday is May 3"
+    },
+    {
+      "in": "I'm vegetarian. Please remember",
+      "kind": "remember",
+      "text": "I'm vegetarian"
+    },
+    {
+      "in": "I live in Juneau — keep that in mind",
+      "kind": "remember",
+      "text": "I live in Juneau"
+    },
+    {
+      "in": "Can you help me remember",
+      "kind": "none",
+      "text": ""
+    },
+    {
+      "in": "Ok, remember that.",
+      "kind": "none",
+      "text": ""
+    },
+    {
+      "in": "Did I tell you, do you remember that?",
+      "kind": "none",
+      "text": ""
+    }
+  ]
+}

@@ -36,7 +36,19 @@ came from the page, not from the model's memory.
 
 The iPhone app (yeixio/toskar-apps, `mobile/quality`) keeps a copy of both
 files and runs the `phone` cases through its on-device chat with the same
-expectations and pages, so the phone is held to what core does.
+expectations and pages, so the phone is held to what core does. Its
+quality run checks out this folder and fails when its copies differ.
+
+`text.json` holds inputs and core's outputs for the text helpers the phone
+keeps its own copy of: whether a message needs the web, how it is sorted,
+small talk, deflections, search queries, and memory commands.
+`TestTextVectors` (in `internal/orchestrator/builtin/simple`) holds core to
+it, and the phone's run holds the phone to it. After changing one of those
+helpers, rewrite the outputs and port the change to the phone:
+
+```sh
+TOSKAR_UPDATE_TEXT_VECTORS=1 go test ./internal/orchestrator/builtin/simple -run TestTextVectors
+```
 
 ## Running it
 
