@@ -18,6 +18,14 @@ func TestAdvertisedTXTSaysWhereTheAPIIs(t *testing.T) {
 	if !slices.Contains(advertisedTXT(cfg, false), "pairing=false") {
 		t.Error("pairing=false missing")
 	}
+	// Whether the API answers on the network, for the phone (#216).
+	if !slices.Contains(txt, "api_lan=false") {
+		t.Errorf("a loopback API should say api_lan=false: %v", txt)
+	}
+	cfg.APIHost = "0.0.0.0"
+	if !slices.Contains(advertisedTXT(cfg, true), "api_lan=true") {
+		t.Error("a network API should say api_lan=true")
+	}
 	// Discovery reads the record back the same way.
 	if got := parseTXT(txt)["api_port"]; got != "8080" {
 		t.Errorf("parsed api_port %q", got)

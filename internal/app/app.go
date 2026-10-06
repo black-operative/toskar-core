@@ -1276,6 +1276,8 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 
 	var discoveryTouched bool
 	var discoveryEnabled bool
+	lanBefore := a.Config.Get()
+	lanTouched := false
 	if v, ok := patch["lan_api_enabled"].(bool); ok && v {
 		keys, err := a.APIKeys.List(ctx)
 		if err != nil {
@@ -1290,6 +1292,7 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 			c.NodeName = v
 		}
 		if v, ok := patch["lan_api_enabled"].(bool); ok {
+			lanTouched = true
 			c.LANAPIEnabled = v
 			if v {
 				c.APIHost = "0.0.0.0"
@@ -1313,6 +1316,20 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 	})
 	if err != nil {
 		return err
+	}
+	// Network access applies now: the API moves to its new address, without
+	// a restart (#216). If it can't, the setting goes back.
+	if lanTouched && a.API != nil && a.API.Addr() != "" {
+		if err := a.API.Rebind(a.Config.Get().APIAddr()); err != nil {
+			_ = a.Config.Update(func(c *config.Config) {
+				c.LANAPIEnabled, c.APIHost = lanBefore.LANAPIEnabled, lanBefore.APIHost
+			})
+			return fmt.Errorf("change local network access: %w", err)
+		}
+		if !discoveryTouched {
+			// The discovery record says whether the API answers on the network.
+			a.restartAdvertiser()
+		}
 	}
 	if v, ok := patch["node_name"].(string); ok && v != "" {
 		if discoveryTouched && a.Nodes != nil {

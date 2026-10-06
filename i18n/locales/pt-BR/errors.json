@@ -145,5 +145,6 @@
   "PAIRING_NOT_LOCAL": "Um celular só pode se conectar pela rede do computador.",
   "PAIRING_NOT_STARTED": "Esse computador não está mostrando um código. Escolha Conectar um celular nele primeiro.",
   "PAIRING_THROTTLED": "Tentativas demais. Espere alguns minutos e tente de novo.",
-  "PAIRING_WRONG_CODE": "Esse não é o código que o computador mostra. Confira e tente de novo."
+  "PAIRING_WRONG_CODE": "Esse não é o código que o computador mostra. Confira e tente de novo.",
+  "LAN_ACCESS_OFF": "O acesso pela rede local está desativado neste computador, então ele só responde aos apps dele."
 }

@@ -394,7 +394,7 @@ export function ApiAccessPage() {
         )}
 
         {lanEnabled && (
-          <p className="text-xs text-ink-faint">{t('lan.restart')}</p>
+          <p className="text-xs text-ink-faint">{t('lan.notes')}</p>
         )}
       </section>
 

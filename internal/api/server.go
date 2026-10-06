@@ -9,9 +9,11 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	"net/netip"
 	"os"
 	"path/filepath"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -144,6 +146,14 @@ type Server struct {
 	deps   Dependencies
 	router *mux.Router
 	http   *http.Server
+
+	// listen is the API's socket, replaced by Rebind; conns are the open
+	// connections, so turning network access off can close other devices'.
+	listenMu sync.Mutex
+	listen   net.Listener
+	replaced map[net.Listener]bool
+	conns    map[net.Conn]bool
+	closed   chan struct{}
 
 	knowledge       KnowledgeService
 	memory          *muninn.Store
@@ -308,19 +318,114 @@ func (s *Server) Handler() http.Handler {
 	return s.router
 }
 
-// ListenAndServe starts the server on addr.
+// ListenAndServe starts the server on addr, and serves until Shutdown. A
+// Rebind swaps the socket without returning.
 func (s *Server) ListenAndServe(addr string) error {
+	s.listenMu.Lock()
 	s.http = &http.Server{
 		Addr:              addr,
 		Handler:           s.router,
 		ReadHeaderTimeout: 10 * time.Second,
+		ConnState:         s.trackConn,
 	}
+	s.replaced, s.conns, s.closed = map[net.Listener]bool{}, map[net.Conn]bool{}, make(chan struct{})
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
+		s.listenMu.Unlock()
 		return err
 	}
+	s.listen = ln
+	s.listenMu.Unlock()
 	s.deps.Logger.Info("api listening", "addr", ln.Addr().String())
-	return s.http.Serve(ln)
+	return s.serve(ln)
+}
+
+// serve serves ln. When Rebind replaced it, it waits for Shutdown instead
+// of returning, since the server goes on, on the new socket.
+func (s *Server) serve(ln net.Listener) error {
+	err := s.http.Serve(ln)
+	s.listenMu.Lock()
+	replaced := s.replaced[ln]
+	delete(s.replaced, ln)
+	closed := s.closed
+	s.listenMu.Unlock()
+	if replaced && !errors.Is(err, http.ErrServerClosed) {
+		<-closed
+		return http.ErrServerClosed
+	}
+	return err
+}
+
+// Rebind moves the API to addr without a restart (#216), such as when
+// local network access is turned on or off. The old socket is closed first,
+// since a wildcard and a loopback socket on one port can't both be open on
+// every system; if addr can't be bound, the old address is bound again.
+// Moving to a loopback address closes connections from other devices.
+func (s *Server) Rebind(addr string) error {
+	s.listenMu.Lock()
+	defer s.listenMu.Unlock()
+	if s.http == nil || s.listen == nil {
+		return fmt.Errorf("the API isn't listening yet")
+	}
+	old := s.listen
+	if old.Addr().String() == addr {
+		return nil
+	}
+	oldAddr := old.Addr().String()
+	s.replaced[old] = true
+	_ = old.Close()
+	ln, err := net.Listen("tcp", addr)
+	if err != nil {
+		back, backErr := net.Listen("tcp", oldAddr)
+		if backErr != nil {
+			return fmt.Errorf("listen on %s: %w; and %s again: %v", addr, err, oldAddr, backErr)
+		}
+		s.listen = back
+		go func() { _ = s.serve(back) }()
+		return fmt.Errorf("listen on %s: %w", addr, err)
+	}
+	s.listen = ln
+	go func() { _ = s.serve(ln) }()
+	if loopbackAddr(addr) {
+		for c := range s.conns {
+			if !loopbackAddr(c.RemoteAddr().String()) {
+				_ = c.Close()
+			}
+		}
+	}
+	s.deps.Logger.Info("api listening", "addr", ln.Addr().String())
+	return nil
+}
+
+// Addr is where the API listens now, or "" before it starts.
+func (s *Server) Addr() string {
+	s.listenMu.Lock()
+	defer s.listenMu.Unlock()
+	if s.listen == nil {
+		return ""
+	}
+	return s.listen.Addr().String()
+}
+
+func (s *Server) trackConn(c net.Conn, state http.ConnState) {
+	s.listenMu.Lock()
+	defer s.listenMu.Unlock()
+	switch state {
+	case http.StateNew:
+		s.conns[c] = true
+	case http.StateClosed, http.StateHijacked:
+		delete(s.conns, c)
+	}
+}
+
+// loopbackAddr reports a host:port on loopback.
+func loopbackAddr(hostport string) bool {
+	host, _, err := net.SplitHostPort(hostport)
+	if err != nil {
+		host = hostport
+	}
+	addr, err := netip.ParseAddr(host)
+	return err == nil && addr.Unmap().IsLoopback()
 }
 
 // BindAutomations attaches the scheduler routes after the runner is constructed.
@@ -338,15 +443,36 @@ func (s *Server) BindAutomations(d Dependencies) {
 
 // Shutdown gracefully stops the server.
 func (s *Server) Shutdown(ctx context.Context) error {
-	if s.http == nil {
+	s.listenMu.Lock()
+	srv, closed := s.http, s.closed
+	if closed != nil {
+		select {
+		case <-closed:
+		default:
+			close(closed)
+		}
+	}
+	s.listenMu.Unlock()
+	if srv == nil {
 		return nil
 	}
-	return s.http.Shutdown(ctx)
+	return srv.Shutdown(ctx)
 }
 
 func (s *Server) controlAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if s.deps.Config == nil || !config.ListensBeyondLoopback(s.deps.Config.Get().APIHost) || auth.FromThisComputer(r) {
+		if s.deps.Config == nil || auth.FromThisComputer(r) {
+			next.ServeHTTP(w, r)
+			return
+		}
+		if !config.ListensBeyondLoopback(s.deps.Config.Get().APIHost) {
+			// Bound to loopback, so nothing needs a key, but a device's
+			// connection from before network access was turned off is
+			// refused; Rebind closes those too.
+			if !loopbackAddr(r.RemoteAddr) {
+				writeErr(w, http.StatusForbidden, "LAN_ACCESS_OFF", "local network access is off on this computer", nil)
+				return
+			}
 			next.ServeHTTP(w, r)
 			return
 		}

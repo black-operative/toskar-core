@@ -145,5 +145,6 @@
   "PAIRING_NOT_LOCAL": "手機只能從電腦所在的網路連接。",
   "PAIRING_NOT_STARTED": "那台電腦沒有顯示代碼。請先在那台電腦上選擇「連接手機」。",
   "PAIRING_THROTTLED": "嘗試次數過多。請等幾分鐘後再試。",
-  "PAIRING_WRONG_CODE": "這不是電腦上顯示的代碼。請檢查後再試。"
+  "PAIRING_WRONG_CODE": "這不是電腦上顯示的代碼。請檢查後再試。",
+  "LAN_ACCESS_OFF": "這台電腦已關閉本地網路存取，因此只回應這台電腦上的應用程式。"
 }

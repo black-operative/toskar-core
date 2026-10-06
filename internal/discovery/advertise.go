@@ -34,7 +34,9 @@ func StartAdvertise(cfg config.Config, pairingEnabled bool) (*Advertiser, error)
 // advertisedTXT is the service's TXT record. The service's own port is
 // Bifrost's, for computers pairing with each other; api_port says where the
 // API is, for apps that find Yggdrasil on the network, such as the iPhone
-// app.
+// app, and api_lan whether it answers there or only on this computer, so
+// the app can say to turn on Connect a phone instead of "unreachable"
+// (#216).
 func advertisedTXT(cfg config.Config, pairingEnabled bool) []string {
 	return []string{
 		"node_id=" + cfg.NodeID,
@@ -42,6 +44,7 @@ func advertisedTXT(cfg config.Config, pairingEnabled bool) []string {
 		"version=" + version.Version,
 		"pairing=" + strconv.FormatBool(pairingEnabled),
 		"api_port=" + strconv.Itoa(cfg.APIPort),
+		"api_lan=" + strconv.FormatBool(config.ListensBeyondLoopback(cfg.APIHost)),
 	}
 }
 

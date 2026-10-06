@@ -145,5 +145,6 @@
   "PAIRING_NOT_LOCAL": "A phone can connect only from the computer's own network.",
   "PAIRING_NOT_STARTED": "That computer isn't showing a code. Choose Connect a phone on it first.",
   "PAIRING_THROTTLED": "Too many tries. Wait a few minutes, then try again.",
-  "PAIRING_WRONG_CODE": "That isn't the code the computer shows. Check it and try again."
+  "PAIRING_WRONG_CODE": "That isn't the code the computer shows. Check it and try again.",
+  "LAN_ACCESS_OFF": "Local network access is off on this computer, so it only answers apps on it."
 }

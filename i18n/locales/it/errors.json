@@ -145,5 +145,6 @@
   "PAIRING_NOT_LOCAL": "Un telefono può collegarsi solo dalla rete del computer.",
   "PAIRING_NOT_STARTED": "Quel computer non mostra alcun codice. Scegli prima Collega un telefono su di esso.",
   "PAIRING_THROTTLED": "Troppi tentativi. Attendi qualche minuto, poi riprova.",
-  "PAIRING_WRONG_CODE": "Non è il codice mostrato dal computer. Controllalo e riprova."
+  "PAIRING_WRONG_CODE": "Non è il codice mostrato dal computer. Controllalo e riprova.",
+  "LAN_ACCESS_OFF": "L'accesso dalla rete locale è disattivato su questo computer, quindi risponde solo alle app su di esso."
 }
