@@ -51,7 +51,7 @@ jobs:
           if [ -f "$RUNNER_TEMP/quality-report.md" ]; then
             head -c 60000 "$RUNNER_TEMP/quality-report.md" >> "$GITHUB_STEP_SUMMARY"
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: quality-report-core
@@ -162,7 +162,7 @@ jobs:
           if [ -f .quality/report.md ]; then
             head -c 60000 .quality/report.md >> "$GITHUB_STEP_SUMMARY"
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: quality-report-real-models-${{ matrix.model }}
