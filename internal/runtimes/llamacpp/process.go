@@ -129,6 +129,10 @@ func (r *Runtime) StartModel(ctx context.Context, cfg pluginapi.ModelStartConfig
 
 	cmd := exec.Command(det.Path, args...)
 	cmd.Dir = filepath.Dir(det.Path)
+	// Builds from late 2026 log the devices, offloaded layers, and GPU
+	// buffers only at trace verbosity, and readAcceleration needs them. An
+	// environment variable, unlike a flag, is ignored by older builds.
+	cmd.Env = append(os.Environ(), "LLAMA_ARG_LOG_VERBOSITY=4")
 	cmd.Stdout = logFile
 	cmd.Stderr = logFile
 	configureLlamaProcess(cmd)

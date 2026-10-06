@@ -14,16 +14,20 @@ import (
 // answers: the devices it found, the layers it offloaded, and the buffers it
 // allocated on each device. These are the lines, across the Metal, Vulkan,
 // CUDA, and ROCm builds and the older (llm_load_tensors) and newer
-// (load_tensors) wording.
+// (load_tensors) wording. Builds from late 2026 start each line with a
+// timestamp and a level ("0.03.244.681 I load_tensors: …") and print these
+// only at trace verbosity, which StartModel asks for.
 var (
 	// "llama_model_load_from_file_impl: using device Vulkan0 (AMD Radeon RX
-	// 7900 XTX (RADV NAVI31)) - 24560 MiB free"
+	// 7900 XTX (RADV NAVI31)) - 24560 MiB free"; newer builds add the
+	// device's id: "using device MTL0 (Apple M5 Pro) (unknown id) - …".
 	usingDeviceRe = regexp.MustCompile(`using device ([A-Za-z_]+?)\d* \((.+)\) - \d+ MiB free`)
+	deviceIDRe    = regexp.MustCompile(`\) \([^()]*\bid\b[^()]*$`)
 	// "ggml_vulkan: 0 = AMD Radeon RX 7900 XTX (RADV NAVI31) (radv) | uma: 0 | ..."
 	vulkanDeviceRe = regexp.MustCompile(`ggml_vulkan: \d+ = (.+?) \([^()]*\) \|`)
 	// "ggml_cuda_init: found 1 ROCm devices:" then "  Device 0: NVIDIA GeForce RTX 4090, compute capability 8.9, VMM: yes"
 	cudaInitRe   = regexp.MustCompile(`ggml_cuda_init: found \d+ (CUDA|ROCm) devices`)
-	cudaDeviceRe = regexp.MustCompile(`^\s*Device \d+: ([^,]+),`)
+	cudaDeviceRe = regexp.MustCompile(`(?:^|\s)Device \d+: ([^,]+),`)
 	// "ggml_metal_init: found device: Apple M2 Pro", or newer "GPU name:   Apple M2 Pro"
 	metalDeviceRe = regexp.MustCompile(`ggml_metal_\w+: (?:found device: |GPU name:\s+)(.+)$`)
 	// "load_tensors: offloaded 29/29 layers to GPU"
@@ -32,7 +36,7 @@ var (
 	// and compute buffers. CPU, CPU_Mapped, and CPU_REPACK buffers are in
 	// system memory, and so are Vulkan_Host and CUDA_Host (pinned for
 	// copies), so they don't count as GPU memory.
-	bufferRe = regexp.MustCompile(`^\S+:\s+(\S+)\s+(?:model|KV|compute|output) buffer size =\s+([\d.]+) MiB`)
+	bufferRe = regexp.MustCompile(`\w+:\s+(\S+)\s+(?:model|KV|compute|output) buffer size =\s+([\d.]+) MiB`)
 )
 
 // parseAcceleration reads where llama-server put the model from its log. It
@@ -68,7 +72,7 @@ func parseAcceleration(log string) *pluginapi.Acceleration {
 		case usingDeviceRe.MatchString(line):
 			m := usingDeviceRe.FindStringSubmatch(line)
 			setBackend(backendOf(m[1], cudaKind))
-			add(&used, m[2])
+			add(&used, deviceIDRe.ReplaceAllString(m[2], ""))
 			known = true
 		case vulkanDeviceRe.MatchString(line):
 			setBackend("vulkan")

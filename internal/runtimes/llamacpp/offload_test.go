@@ -39,6 +39,12 @@ func TestParseAcceleration(t *testing.T) {
 			Backend: "vulkan", Devices: []string{"AMD Radeon RX 6600 (RADV NAVI23)"},
 			LayersOffloaded: 40, LayersTotal: 65, GPUMemoryBytes: mb(7101.25),
 		}},
+		// llama.cpp b11433 (October 2026) on an Apple M5 Pro, at trace
+		// verbosity: timestamps, and "(unknown id)" after the device.
+		{"metal-b11433.log", &pluginapi.Acceleration{
+			Backend: "metal", Devices: []string{"Apple M5 Pro"},
+			LayersOffloaded: 17, LayersTotal: 17, GPUMemoryBytes: mb(762.81) + mb(4096) + mb(413.45),
+		}},
 		{"cpu.log", &pluginapi.Acceleration{Backend: "cpu"}},
 		{"vulkan-no-offload.log", &pluginapi.Acceleration{Backend: "cpu", LayersTotal: 29}},
 		{"before-load.log", nil},
