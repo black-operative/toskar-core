@@ -367,7 +367,9 @@
     "button": "Ler em voz alta",
     "hint": "Ler esta resposta em voz alta neste computador",
     "busy": "Lendo em voz alta… (na primeira vez, uma voz é baixada)",
-    "failed": "Não foi possível ler em voz alta."
+    "failed": "Não foi possível ler em voz alta.",
+    "stop": "Parar",
+    "systemHint": "Ler esta resposta em voz alta com as vozes deste dispositivo"
   },
   "context": {
     "usage": "Uso do contexto",

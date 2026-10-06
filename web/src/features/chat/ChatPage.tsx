@@ -29,7 +29,8 @@ import { ChatHistoryDrawer, useCanPinChatHistory } from './ChatHistoryDrawer'
 import { AnswerDetails } from './AnswerDetails'
 import { FileChip, PendingFileChip, type PendingFile } from './FileChips'
 import { MemoryToggle } from './MemoryToggle'
-import { ReadAloudButton } from './ReadAloud'
+import { ReadAloudButton, SystemReadAloudButton } from './ReadAloud'
+import { hasSystemSpeech } from './speakableText'
 import { SetupOfferCard } from './SetupOffer'
 import { ChatErrorCard } from './ChatErrorCard'
 import { ChatMarkdown } from './ChatMarkdown'
@@ -341,6 +342,8 @@ export function ChatPage() {
   // Read aloud runs on this computer, where speech can be installed.
   const speechTool = toolsQuery.data?.find((t) => t.id === 'speech.synthesize')
   const canReadAloud = !!speechTool && speechTool.health !== 'unavailable'
+  // Where it can't, such as the Mac App Store app, the device's own voices read instead.
+  const systemReadAloud = !!toolsQuery.data && !canReadAloud && hasSystemSpeech()
 
   const messagesQuery = useQuery({
     queryKey: ['messages', selectedId],
@@ -1711,6 +1714,10 @@ export function ChatPage() {
                         {canReadAloud ? (
                           <div className="mt-2">
                             <ReadAloudButton text={text} conversationId={message.conversation_id} />
+                          </div>
+                        ) : systemReadAloud ? (
+                          <div className="mt-2">
+                            <SystemReadAloudButton text={text} />
                           </div>
                         ) : null}
                       </>

@@ -22,6 +22,7 @@ import (
 
 	"github.com/yeixio/toskar-core/internal/pyenv"
 	"github.com/yeixio/toskar-core/internal/remotetools"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 //go:embed transcribe.py
@@ -122,7 +123,9 @@ func (e *Engine) run(ctx context.Context, script []byte, cfg map[string]any, fil
 		return fmt.Errorf("speech is not included in this copy of Toskar: %w", err)
 	}
 	if err != nil {
-		return fmt.Errorf("speech could not be installed: %w", err)
+		// The app shows its own plain message for the code; the detail stays
+		// in the API's message, not in the chat (#279).
+		return contracts.Errorf("SPEECH_SETUP_FAILED", nil, "speech could not be installed: %w", err)
 	}
 	if err := os.MkdirAll(filepath.Join(e.Dir, "jobs"), 0o700); err != nil {
 		return err

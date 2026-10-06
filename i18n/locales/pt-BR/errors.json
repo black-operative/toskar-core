@@ -122,6 +122,7 @@
   "SETTINGS_UPDATE_FAILED": "Não foi possível atualizar as configurações.",
   "SETUP_REFUSED": "{{detail}}",
   "SPEECH_FAILED": "{{detail}}",
+  "SPEECH_SETUP_FAILED": "Não foi possível configurar a leitura em voz alta neste computador. O diagnóstico mostra o que está faltando.",
   "SPEECH_NO_VOICE": "Ainda não há uma voz para ler em voz alta em {{language}}.",
   "SPEECH_UNAVAILABLE": "{{detail}}",
   "SSE_UNSUPPORTED": "O streaming não é compatível aqui.",

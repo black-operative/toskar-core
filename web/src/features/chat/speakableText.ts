@@ -23,3 +23,8 @@ export function speakableText(markdown: string): string {
   }
   return text
 }
+
+/** Whether this browser or app can speak with the device's own voices. */
+export function hasSystemSpeech(): boolean {
+  return typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window
+}

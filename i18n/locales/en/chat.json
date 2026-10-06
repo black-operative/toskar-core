@@ -362,7 +362,9 @@
     "button": "Read aloud",
     "hint": "Read this answer aloud on this computer",
     "busy": "Reading aloud… (the first time downloads a voice)",
-    "failed": "It could not be read aloud."
+    "failed": "It could not be read aloud.",
+    "stop": "Stop",
+    "systemHint": "Read this answer aloud with this device's voices"
   },
   "context": {
     "usage": "Context usage",

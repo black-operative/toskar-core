@@ -267,13 +267,37 @@ func TestOutdatedBundledEnvironmentIsNotUsed(t *testing.T) {
 
 func TestSandboxDetection(t *testing.T) {
 	t.Setenv("APP_SANDBOX_CONTAINER_ID", "")
+	t.Setenv("TOSKAR_SANDBOXED", "")
 	t.Setenv("YGGDRASIL_SANDBOXED", "")
+	t.Setenv("HOME", t.TempDir())
 	if Sandboxed() {
 		t.Fatal("sandboxed without the variables")
 	}
 	t.Setenv("APP_SANDBOX_CONTAINER_ID", "io.yeix.yggdrasil")
 	if !Sandboxed() || !New(t.TempDir()).Sandboxed {
 		t.Fatal("macOS sandbox not detected")
+	}
+}
+
+// The daemon the Mac App Store app starts may not see
+// APP_SANDBOX_CONTAINER_ID, so a folder in an app container counts (#279).
+func TestContainerPathDetection(t *testing.T) {
+	for path, want := range map[string]bool{
+		"/Users/sam/Library/Containers/com.yeix.yggdrasil/Data":                                                    true,
+		"/Users/sam/Library/Containers/com.yeix.yggdrasil/Data/Library/Application Support/Yggdrasil":              true,
+		"/Users/sam/Library/Containers/com.yeix.yggdrasil/Data/Library/Application Support/Toskar/runtimes/python": true,
+		"/Users/sam/Library/Application Support/Toskar":                                                            false,
+		"/Users/sam/Library/Containers":                                                                            false,
+		"/Users/sam/Library/Containers/com.yeix.yggdrasil":                                                         false,
+		"/Users/sam/Containers/x/Data":                                                                             false,
+		"":                                                                                                         false,
+	} {
+		if got := inContainer("darwin", path); got != want {
+			t.Errorf("inContainer(%q) = %v, want %v", path, got, want)
+		}
+	}
+	if inContainer("linux", "/home/sam/Library/Containers/x/Data") {
+		t.Error("a container path only means the sandbox on macOS")
 	}
 }
 

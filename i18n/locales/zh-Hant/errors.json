@@ -122,6 +122,7 @@
   "SETTINGS_UPDATE_FAILED": "無法更新設定。",
   "SETUP_REFUSED": "{{detail}}",
   "SPEECH_FAILED": "{{detail}}",
+  "SPEECH_SETUP_FAILED": "無法在這台電腦上設定朗讀。診斷會顯示缺少什麼。",
   "SPEECH_NO_VOICE": "目前還沒有可朗讀{{language}}的語音。",
   "SPEECH_UNAVAILABLE": "{{detail}}",
   "SSE_UNSUPPORTED": "這裡不支援串流。",

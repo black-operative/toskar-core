@@ -30,11 +30,12 @@ On a Mac App Store build, the sandbox cannot `fork` a binary downloaded into the
 
 Training (MLX on Apple Silicon, PyTorch on NVIDIA GPUs) and text recognition for scanned PDFs run in Python environments. The daemon normally installs them under `runtimes/python` on first use: it downloads `uv`, a private Python, and pinned packages. A sandboxed app cannot run any of that.
 
-The daemon knows it is sandboxed when macOS sets `APP_SANDBOX_CONTAINER_ID`. `TOSKAR_SANDBOXED=1` simulates this for testing. When sandboxed:
+The daemon knows it is sandboxed when macOS sets `APP_SANDBOX_CONTAINER_ID`, or when its home folder or data folder is inside an app container (`~/Library/Containers/<bundle id>/Data`). The app's daemon doesn't always see the variable, so the folder check covers it. `TOSKAR_SANDBOXED=1` simulates this for testing. When sandboxed:
 
 - **No downloads:** it never downloads or installs a Python environment.
 - **Bundled environments are used:** a current environment found in a `python` folder beside the daemon executable is used instead.
 - **Training without a bundle:** the trainer is reported as unavailable on this computer, with the reason, in `GET /training/backends`, the training plan, and the capabilities a paired computer sees. Norn chooses an eligible paired computer running Toskar Core instead, and a paired computer that is sandboxed refuses runs it cannot do.
+- **Read aloud without a bundle:** speech is reported as unavailable, and the app reads answers with the device's own voices instead.
 - **Scanned PDFs without a bundle:** a scanned PDF fails with "text recognition is not included in this copy of Toskar". PDFs with a text layer are read as usual.
 
 To bundle an environment, run `toskar -python-envs`. It prints each environment as JSON: `name`, `python` version, `requirements`, `install_args`, `no_deps`, and `marker`. For each one you want to ship:

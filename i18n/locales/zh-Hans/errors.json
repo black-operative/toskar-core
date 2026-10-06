@@ -122,6 +122,7 @@
   "SETTINGS_UPDATE_FAILED": "无法更新设置。",
   "SETUP_REFUSED": "{{detail}}",
   "SPEECH_FAILED": "{{detail}}",
+  "SPEECH_SETUP_FAILED": "无法在此电脑上设置朗读。诊断会显示缺少什么。",
   "SPEECH_NO_VOICE": "暂时还没有可朗读{{language}}的语音。",
   "SPEECH_UNAVAILABLE": "{{detail}}",
   "SSE_UNSUPPORTED": "此处不支持流式传输。",

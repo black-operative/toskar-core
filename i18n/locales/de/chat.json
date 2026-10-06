@@ -362,7 +362,9 @@
     "button": "Vorlesen",
     "hint": "Diese Antwort auf diesem Computer vorlesen",
     "busy": "Wird vorgelesen … (beim ersten Mal wird eine Stimme geladen)",
-    "failed": "Konnte nicht vorgelesen werden."
+    "failed": "Konnte nicht vorgelesen werden.",
+    "stop": "Stopp",
+    "systemHint": "Diese Antwort mit den Stimmen dieses Geräts vorlesen"
   },
   "context": {
     "usage": "Kontextnutzung",

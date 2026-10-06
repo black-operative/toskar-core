@@ -367,7 +367,9 @@
     "button": "Leggi ad alta voce",
     "hint": "Leggi questa risposta ad alta voce su questo computer",
     "busy": "Lettura ad alta voce… (la prima volta viene scaricata una voce)",
-    "failed": "Impossibile leggerla ad alta voce."
+    "failed": "Impossibile leggerla ad alta voce.",
+    "stop": "Interrompi",
+    "systemHint": "Leggi ad alta voce questa risposta con le voci di questo dispositivo"
   },
   "context": {
     "usage": "Uso del contesto",

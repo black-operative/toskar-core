@@ -2,6 +2,7 @@ package speech
 
 import (
 	"context"
+	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -159,5 +160,21 @@ func TestProvidersSayTheirLanguages(t *testing.T) {
 	sy := e.provider("speech.synthesize", "Piper")
 	if sy.AutoDetect || !sy.Speaks("de") || sy.Speaks("ja") {
 		t.Errorf("synthesize languages = %v", sy.Languages)
+	}
+}
+
+type failingEnv struct{ fakeEnv }
+
+func (failingEnv) Ensure(context.Context, pyenv.Spec, pyenv.Progress) (string, error) {
+	return "", errors.New("create Python environment: fork/exec /Users/sam/Library/Containers/x/Data/uv: operation not permitted")
+}
+
+// A failed install carries a code the app shows as a plain message, never
+// the path and Go error chain (#279).
+func TestFailedInstallHasAPlainCode(t *testing.T) {
+	e := &Engine{Python: failingEnv{}, Dir: t.TempDir()}
+	_, _, err := e.Synthesize(context.Background(), "Hello", "")
+	if code, _ := contracts.ErrorCode(err); code != "SPEECH_SETUP_FAILED" {
+		t.Fatalf("code = %q (%v), want SPEECH_SETUP_FAILED", code, err)
 	}
 }

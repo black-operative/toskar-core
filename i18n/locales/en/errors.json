@@ -122,6 +122,7 @@
   "SETTINGS_UPDATE_FAILED": "Couldn't update settings.",
   "SETUP_REFUSED": "{{detail}}",
   "SPEECH_FAILED": "{{detail}}",
+  "SPEECH_SETUP_FAILED": "Read aloud couldn't be set up on this computer. Diagnostics shows what's missing.",
   "SPEECH_NO_VOICE": "There is no voice to read {{language}} aloud yet.",
   "SPEECH_UNAVAILABLE": "{{detail}}",
   "SSE_UNSUPPORTED": "Streaming isn't supported here.",

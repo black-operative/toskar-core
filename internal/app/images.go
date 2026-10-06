@@ -7,7 +7,6 @@ import (
 
 	"github.com/yeixio/toskar-core/internal/config"
 	"github.com/yeixio/toskar-core/internal/imagegen"
-	"github.com/yeixio/toskar-core/internal/pyenv"
 )
 
 // newImageSetup keeps stable-diffusion.cpp with the runtimes and image
@@ -42,7 +41,7 @@ func (a *App) newSDSetup(cfg config.Config, folder string, catalog func() []imag
 			}
 			return int64(inv.Disk.AvailableBytes), nil
 		},
-		Sandboxed: pyenv.Sandboxed(),
+		Sandboxed: a.python.Sandboxed,
 		// "Can you make images?" and setup offers read the inventory.
 		Changed: a.invalidateCapabilities,
 	}

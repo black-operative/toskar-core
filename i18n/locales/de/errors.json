@@ -122,6 +122,7 @@
   "SETTINGS_UPDATE_FAILED": "Einstellungen konnten nicht geändert werden.",
   "SETUP_REFUSED": "{{detail}}",
   "SPEECH_FAILED": "{{detail}}",
+  "SPEECH_SETUP_FAILED": "Vorlesen konnte auf diesem Computer nicht eingerichtet werden. Die Diagnose zeigt, was fehlt.",
   "SPEECH_NO_VOICE": "Es gibt noch keine Stimme, die {{language}} vorlesen kann.",
   "SPEECH_UNAVAILABLE": "{{detail}}",
   "SSE_UNSUPPORTED": "Streaming wird hier nicht unterstützt.",

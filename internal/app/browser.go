@@ -7,7 +7,6 @@ import (
 	"github.com/yeixio/toskar-core/internal/browser"
 	"github.com/yeixio/toskar-core/internal/config"
 	"github.com/yeixio/toskar-core/internal/egress"
-	"github.com/yeixio/toskar-core/internal/pyenv"
 )
 
 // registerBrowser adds web pages in an isolated browser (Gungnir §26): each
@@ -18,7 +17,7 @@ func (a *App) registerBrowser(cfg config.Config) {
 	a.browser = &browser.Manager{
 		WorkDir:   filepath.Join(cfg.DataDir, "browser"),
 		Guard:     &browser.Guard{},
-		Sandboxed: pyenv.Sandboxed(),
+		Sandboxed: a.python.Sandboxed,
 		Opened: func(ctx context.Context, host, url string) {
 			if a.Egress != nil {
 				a.Egress.Add(ctx, egress.WebPage, host, url)

@@ -73,10 +73,35 @@ type Progress func(step, detail string)
 var ErrSandboxed = contracts.NewError("SANDBOXED", nil, errors.New("this copy of Toskar runs in the macOS App Sandbox, which cannot run a Python environment it downloads"))
 
 // Sandboxed reports whether the daemon runs in the macOS App Sandbox. macOS
-// sets APP_SANDBOX_CONTAINER_ID in every sandboxed process;
-// TOSKAR_SANDBOXED=1 simulates it for testing.
+// sets APP_SANDBOX_CONTAINER_ID in a sandboxed app, but the daemon the app
+// starts doesn't always see it (#279), so a home folder inside an app
+// container counts too. TOSKAR_SANDBOXED=1 simulates it for testing.
 func Sandboxed() bool {
-	return os.Getenv("APP_SANDBOX_CONTAINER_ID") != "" || config.Env("SANDBOXED") == "1"
+	if os.Getenv("APP_SANDBOX_CONTAINER_ID") != "" || config.Env("SANDBOXED") == "1" {
+		return true
+	}
+	home, _ := os.UserHomeDir()
+	return InContainer(home)
+}
+
+// InContainer reports whether path is inside a macOS app container,
+// ~/Library/Containers/<bundle id>/Data, where a sandboxed app keeps its
+// files.
+func InContainer(path string) bool {
+	return inContainer(runtime.GOOS, path)
+}
+
+func inContainer(goos, path string) bool {
+	if goos != "darwin" || path == "" {
+		return false
+	}
+	parts := strings.Split(filepath.ToSlash(filepath.Clean(path)), "/")
+	for i := 0; i+3 < len(parts); i++ {
+		if parts[i] == "Library" && parts[i+1] == "Containers" && parts[i+2] != "" && parts[i+3] == "Data" {
+			return true
+		}
+	}
+	return false
 }
 
 // Manager owns the uv binary and the environments under Root.
@@ -97,12 +122,12 @@ type Manager struct {
 
 // New returns a manager rooted at dir (normally <runtimes>/python). It uses
 // environments bundled in a "python" folder beside the daemon, and does not
-// install any when the daemon is sandboxed.
+// install any when the daemon is sandboxed, or dir is in an app container.
 func New(dir string) *Manager {
 	return &Manager{
 		Root:        dir,
 		Bundled:     bundledDir(),
-		Sandboxed:   Sandboxed(),
+		Sandboxed:   Sandboxed() || InContainer(dir),
 		ReleaseBase: "https://github.com/astral-sh/uv/releases/download/" + UVVersion,
 		HTTP:        http.DefaultClient,
 	}

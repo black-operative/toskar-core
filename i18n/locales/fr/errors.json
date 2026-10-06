@@ -122,6 +122,7 @@
   "SETTINGS_UPDATE_FAILED": "Impossible de mettre à jour les paramètres.",
   "SETUP_REFUSED": "{{detail}}",
   "SPEECH_FAILED": "{{detail}}",
+  "SPEECH_SETUP_FAILED": "La lecture à voix haute n'a pas pu être configurée sur cet ordinateur. Le diagnostic indique ce qui manque.",
   "SPEECH_NO_VOICE": "Il n'y a pas encore de voix pour lire à voix haute en {{language}}.",
   "SPEECH_UNAVAILABLE": "{{detail}}",
   "SSE_UNSUPPORTED": "La diffusion en continu n'est pas prise en charge ici.",
