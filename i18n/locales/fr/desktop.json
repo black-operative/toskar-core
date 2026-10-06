@@ -21,6 +21,13 @@
     "title": "Une autre copie de Toskar est en cours d'exécution",
     "message": "{{other}} est déjà en cours d'exécution sur cet ordinateur à l'adresse dont cette app a besoin ({{address}}), donc cette app ne peut pas démarrer son propre service. L'autre a ses propres modèles, conversations et réglages.\n\nQuittez-la puis rouvrez cette app, ou utilisez l'autre pour le moment.",
     "quit": "Quitter",
-    "useOther": "Utiliser l'autre"
+    "useOther": "Utiliser l'autre",
+    "messageProcess": "{{other}} est déjà en cours d'exécution sur cet ordinateur à l'adresse dont cette app a besoin ({{address}}), donc cette app ne peut pas démarrer le sien. Ce n'est pas le service de cette app : c'est le processus {{pid}}, {{command}}.\n\nL'arrêter et démarrer le service de cette app ?",
+    "stopAndStart": "L'arrêter et démarrer Toskar",
+    "programTitle": "Un autre programme utilise l'adresse de Toskar",
+    "program": "Le processus {{pid}}, {{command}}, utilise l'adresse dont Toskar a besoin ({{address}}), donc Toskar ne peut pas démarrer.\n\nQuittez ce programme, puis rouvrez Toskar.",
+    "programUnknown": "Un autre programme utilise l'adresse dont Toskar a besoin ({{address}}), donc Toskar ne peut pas démarrer.\n\nQuittez le programme qui l'utilise, puis rouvrez Toskar.",
+    "stopFailed": "Toskar n'a pas pu arrêter le processus {{pid}}. Quittez-le vous-même, puis rouvrez Toskar.",
+    "startFailed": "Toskar a arrêté l'autre service, mais le sien n'a pas démarré. Rouvrez Toskar."
   }
 }

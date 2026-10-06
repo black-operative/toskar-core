@@ -21,6 +21,13 @@
     "title": "다른 Toskar가 실행 중입니다",
     "message": "{{other}}이(가) 이 앱에 필요한 주소({{address}})로 이 컴퓨터에서 이미 실행 중이라 이 앱의 서비스를 시작할 수 없습니다. 다른 쪽에는 별도의 모델, 채팅, 설정이 있습니다.\n\n그쪽을 종료하고 이 앱을 다시 열거나, 지금은 다른 쪽을 사용하세요.",
     "quit": "종료",
-    "useOther": "다른 쪽 사용"
+    "useOther": "다른 쪽 사용",
+    "messageProcess": "{{other}}이(가) 이 앱에 필요한 주소({{address}})에서 이미 이 컴퓨터에서 실행 중이어서 이 앱이 자체 서비스를 시작할 수 없습니다. 이 앱의 서비스가 아니라 프로세스 {{pid}}, {{command}}입니다.\n\n이를 중지하고 이 앱의 서비스를 시작할까요?",
+    "stopAndStart": "중지하고 Toskar 시작",
+    "programTitle": "다른 프로그램이 Toskar의 주소를 사용하고 있습니다",
+    "program": "프로세스 {{pid}}, {{command}}이(가) Toskar에 필요한 주소({{address}})를 사용하고 있어 Toskar를 시작할 수 없습니다.\n\n그 프로그램을 종료한 다음 Toskar를 다시 여세요.",
+    "programUnknown": "다른 프로그램이 Toskar에 필요한 주소({{address}})를 사용하고 있어 Toskar를 시작할 수 없습니다.\n\n그 주소를 사용하는 프로그램을 종료한 다음 Toskar를 다시 여세요.",
+    "stopFailed": "Toskar가 프로세스 {{pid}}을(를) 중지하지 못했습니다. 직접 종료한 다음 Toskar를 다시 여세요.",
+    "startFailed": "Toskar가 다른 서비스를 중지했지만 자체 서비스가 시작되지 않았습니다. Toskar를 다시 여세요."
   }
 }

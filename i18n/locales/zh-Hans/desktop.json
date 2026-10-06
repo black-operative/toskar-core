@@ -21,6 +21,13 @@
     "title": "另一个 Toskar 正在运行",
     "message": "{{other}} 已在这台电脑上运行，并占用了本应用所需的地址（{{address}}），因此本应用无法启动自己的服务。另一个有自己的模型、聊天和设置。\n\n请退出它后重新打开本应用，或暂时使用另一个。",
     "quit": "退出",
-    "useOther": "使用另一个"
+    "useOther": "使用另一个",
+    "messageProcess": "{{other}} 已在此电脑上使用此应用所需的地址（{{address}}）运行，因此此应用无法启动自己的服务。它不是此应用的服务，而是进程 {{pid}}（{{command}}）。\n\n要停止它并启动此应用自己的服务吗？",
+    "stopAndStart": "停止它并启动 Toskar",
+    "programTitle": "另一个程序正在使用 Toskar 的地址",
+    "program": "进程 {{pid}}（{{command}}）正在使用 Toskar 所需的地址（{{address}}），因此 Toskar 无法启动。\n\n请退出该程序，然后重新打开 Toskar。",
+    "programUnknown": "另一个程序正在使用 Toskar 所需的地址（{{address}}），因此 Toskar 无法启动。\n\n请退出正在使用它的程序，然后重新打开 Toskar。",
+    "stopFailed": "Toskar 无法停止进程 {{pid}}。请自行退出它，然后重新打开 Toskar。",
+    "startFailed": "Toskar 已停止另一个服务，但自己的服务没有启动。请重新打开 Toskar。"
   }
 }

@@ -21,6 +21,13 @@
     "title": "另一個 Toskar 正在執行",
     "message": "{{other}} 已在這台電腦上執行，並佔用了本 App 所需的位址（{{address}}），因此本 App 無法啟動自己的服務。另一個有自己的模型、聊天和設定。\n\n請結束它後重新開啟本 App，或暫時使用另一個。",
     "quit": "結束",
-    "useOther": "使用另一個"
+    "useOther": "使用另一個",
+    "messageProcess": "{{other}} 已在這台電腦上使用此 App 所需的位址（{{address}}）執行，因此此 App 無法啟動自己的服務。它不是此 App 的服務，而是程序 {{pid}}（{{command}}）。\n\n要停止它並啟動此 App 自己的服務嗎？",
+    "stopAndStart": "停止它並啟動 Toskar",
+    "programTitle": "另一個程式正在使用 Toskar 的位址",
+    "program": "程序 {{pid}}（{{command}}）正在使用 Toskar 所需的位址（{{address}}），因此 Toskar 無法啟動。\n\n請結束該程式，然後重新開啟 Toskar。",
+    "programUnknown": "另一個程式正在使用 Toskar 所需的位址（{{address}}），因此 Toskar 無法啟動。\n\n請結束正在使用它的程式，然後重新開啟 Toskar。",
+    "stopFailed": "Toskar 無法停止程序 {{pid}}。請自行結束它，然後重新開啟 Toskar。",
+    "startFailed": "Toskar 已停止另一個服務，但自己的服務沒有啟動。請重新開啟 Toskar。"
   }
 }

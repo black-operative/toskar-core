@@ -21,6 +21,13 @@
     "title": "Eine andere Toskar-Instanz läuft bereits",
     "message": "{{other}} läuft bereits auf diesem Computer unter der Adresse, die diese App braucht ({{address}}), deshalb kann diese App ihren eigenen Dienst nicht starten. Die andere Instanz hat eigene Modelle, Chats und Einstellungen.\n\nBeende sie und öffne diese App erneut, oder nutze vorerst die andere.",
     "quit": "Beenden",
-    "useOther": "Die andere nutzen"
+    "useOther": "Die andere nutzen",
+    "messageProcess": "{{other}} läuft bereits auf diesem Computer unter der Adresse, die diese App braucht ({{address}}), deshalb kann diese App ihren eigenen Dienst nicht starten. Es ist nicht der Dienst dieser App, sondern Prozess {{pid}}, {{command}}.\n\nDiesen beenden und den eigenen Dienst dieser App starten?",
+    "stopAndStart": "Beenden und Toskar starten",
+    "programTitle": "Ein anderes Programm nutzt die Adresse von Toskar",
+    "program": "Prozess {{pid}}, {{command}}, nutzt die Adresse, die Toskar braucht ({{address}}), deshalb kann Toskar nicht starten.\n\nBeende dieses Programm und öffne Toskar dann erneut.",
+    "programUnknown": "Ein anderes Programm nutzt die Adresse, die Toskar braucht ({{address}}), deshalb kann Toskar nicht starten.\n\nBeende das Programm, das sie nutzt, und öffne Toskar dann erneut.",
+    "stopFailed": "Toskar konnte Prozess {{pid}} nicht beenden. Beende ihn selbst und öffne Toskar dann erneut.",
+    "startFailed": "Toskar hat den anderen Dienst beendet, aber der eigene ist nicht gestartet. Öffne Toskar erneut."
   }
 }

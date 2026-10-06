@@ -21,6 +21,13 @@
     "title": "Another copy of Toskar is running",
     "message": "{{other}} is already running on this computer at the address this app needs ({{address}}), so this app can't start its own. The other one has its own models, chats, and settings.\n\nQuit it and open this app again, or use the other one for now.",
     "quit": "Quit",
-    "useOther": "Use the other one"
+    "useOther": "Use the other one",
+    "messageProcess": "{{other}} is already running on this computer at the address this app needs ({{address}}), so this app can't start its own. It isn't this app's service: it's process {{pid}}, {{command}}.\n\nStop it and start this app's own service?",
+    "stopAndStart": "Stop it and start Toskar",
+    "programTitle": "Another program is using Toskar's address",
+    "program": "Process {{pid}}, {{command}}, is using the address Toskar needs ({{address}}), so Toskar can't start.\n\nQuit that program, then open Toskar again.",
+    "programUnknown": "Another program is using the address Toskar needs ({{address}}), so Toskar can't start.\n\nQuit the program using it, then open Toskar again.",
+    "stopFailed": "Toskar couldn't stop process {{pid}}. Quit it yourself, then open Toskar again.",
+    "startFailed": "Toskar stopped the other service, but its own didn't start. Open Toskar again."
   }
 }

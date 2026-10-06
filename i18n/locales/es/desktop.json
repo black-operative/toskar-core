@@ -21,6 +21,13 @@
     "title": "Ya hay otra copia de Toskar en ejecución",
     "message": "{{other}} ya se está ejecutando en esta computadora en la dirección que necesita esta app ({{address}}), así que esta app no puede iniciar su propio servicio. La otra tiene sus propios modelos, chats y ajustes.\n\nCiérrala y vuelve a abrir esta app, o usa la otra por ahora.",
     "quit": "Salir",
-    "useOther": "Usar la otra"
+    "useOther": "Usar la otra",
+    "messageProcess": "{{other}} ya se está ejecutando en este ordenador en la dirección que necesita esta app ({{address}}), así que esta app no puede iniciar el suyo. No es el servicio de esta app: es el proceso {{pid}}, {{command}}.\n\n¿Detenerlo e iniciar el servicio propio de esta app?",
+    "stopAndStart": "Detenerlo e iniciar Toskar",
+    "programTitle": "Otro programa está usando la dirección de Toskar",
+    "program": "El proceso {{pid}}, {{command}}, está usando la dirección que necesita Toskar ({{address}}), así que Toskar no puede iniciarse.\n\nCierra ese programa y vuelve a abrir Toskar.",
+    "programUnknown": "Otro programa está usando la dirección que necesita Toskar ({{address}}), así que Toskar no puede iniciarse.\n\nCierra el programa que la usa y vuelve a abrir Toskar.",
+    "stopFailed": "Toskar no pudo detener el proceso {{pid}}. Ciérralo tú y vuelve a abrir Toskar.",
+    "startFailed": "Toskar detuvo el otro servicio, pero el suyo no se inició. Vuelve a abrir Toskar."
   }
 }
