@@ -1,8 +1,10 @@
 {
   "page": {
     "title": "Automationen",
-    "description": "Automationen laufen im Hintergrund, auch wenn dieses Fenster geschlossen ist. Plane eine wiederkehrende Aufgabe oder lass dich von Toskar benachrichtigen, wenn sich etwas ändert.",
+    "description": "Aufgaben, die Toskars KI nach Plan für dich erledigt, etwa ein Nachrichtenüberblick am Morgen oder eine Preisbeobachtung. Sie laufen im Hintergrund, auch wenn dieses Fenster geschlossen ist.",
     "new": "Neue Automation",
+    "howItWorks": "So funktioniert's",
+    "hideHowItWorks": "Erklärung ausblenden",
     "search": "Suchen",
     "searchLabel": "Automationen durchsuchen",
     "filters": {
@@ -19,6 +21,52 @@
     "saveFailed": "Die Automation konnte nicht gespeichert werden.",
     "confirmDelete": "„{{name}}“ löschen? Der Verlauf wird ebenfalls entfernt.",
     "selectHint": "Wähle eine Automation, um ihren Verlauf zu sehen, oder erstelle eine."
+  },
+  "intro": {
+    "title": "Lass Toskar arbeiten, während du weg bist",
+    "steps": {
+      "when": {
+        "title": "Sag, wann",
+        "body": "Jeden Morgen, jeden Freitag, alle paar Stunden oder nur einmal."
+      },
+      "what": {
+        "title": "Sag, was zu tun ist",
+        "body": "Toskars KI erledigt es selbstständig: liest eine Seite, fasst Nachrichten zusammen, prüft einen Preis. Sie kann das Web und die Werkzeuge nutzen, die du erlaubst."
+      },
+      "tell": {
+        "title": "Wähle, wann du Bescheid bekommst",
+        "body": "Jedes Mal, nur bei Änderungen oder wenn eine Bedingung erfüllt ist. Jedes Ergebnis bleibt im Verlauf."
+      }
+    }
+  },
+  "ideas": {
+    "title": "Ideen für den Anfang",
+    "use": "Verwenden",
+    "news": {
+      "title": "Nachrichten am Morgen",
+      "body": "Jeden Morgen eine kurze Zusammenfassung der Technik-Nachrichten.",
+      "request": "Täglich um 7:30 Uhr die wichtigsten Technik-Nachrichten des Tages zusammenfassen."
+    },
+    "price": {
+      "title": "Preisbeobachtung",
+      "body": "Erfahre, wenn etwas, das du willst, unter deinen Preis fällt.",
+      "request": "Jeden Morgen um 8:00 Uhr: Prüfe dieses Produkt und sag mir, ob der Preis unter 500 € liegt."
+    },
+    "stock": {
+      "title": "Wieder lieferbar",
+      "body": "Erfahre sofort, wenn ein ausverkaufter Artikel wieder erhältlich ist.",
+      "request": "Alle 6 Stunden prüfen, ob dieser Artikel wieder auf Lager ist."
+    },
+    "releases": {
+      "title": "Wöchentliche Release-Notes",
+      "body": "Was sich in deiner Software geändert hat, jeden Freitag.",
+      "request": "Jeden Freitag um 9 Uhr die Release-Notes dieser Software zusammenfassen."
+    },
+    "page": {
+      "title": "Seite beobachten",
+      "body": "Nur Bescheid bekommen, wenn sich eine Seite ändert.",
+      "request": "Täglich um 18 Uhr diese Seite prüfen, nur bei Änderungen."
+    }
   },
   "detail": {
     "schedule": "Zeitplan",
@@ -146,11 +194,17 @@
     "editTitle": "Automation bearbeiten",
     "newTitle": "Neue Automation",
     "intro": "Sag Toskar, was es tun soll.",
+    "stepDescribe": "Beschreibe es",
     "describe": "Beschreibe, was du möchtest",
     "describePlaceholder": "Jeden Morgen um 8:00 Uhr: Prüfe dieses Produkt und sag mir, ob der Preis unter 500 € liegt.",
-    "setUp": "Automation einrichten",
+    "describeHint": "Sag, wann es läuft und was zu tun ist. Toskar füllt die Details unten aus, und du kannst alles ändern.",
+    "setUp": "Details ausfüllen",
+    "ideas": "Oder starte mit einer Idee",
+    "ideaHint": "Passe die Worte an, etwa mit einem Link statt „diese Seite“, und wähle dann erneut „Details ausfüllen“.",
+    "stepDetails": "Prüfe die Details",
     "name": "Name",
     "task": "Aufgabe",
+    "taskHint": "Was Toskar bei jedem Lauf tut.",
     "schedule": "Zeitplan",
     "repeats": "Wiederholung",
     "kinds": {
@@ -203,6 +257,7 @@
     "testCouldNotRun": "Der Test konnte nicht ausgeführt werden.",
     "testingShort": "Wird getestet …",
     "testRun": "Testlauf",
+    "testHint": "Führt es jetzt einmal aus, ohne zu speichern, damit du siehst, was du bekommst.",
     "saving": "Wird gespeichert …",
     "saveChanges": "Änderungen speichern",
     "create": "Automation erstellen",
@@ -216,6 +271,12 @@
     },
     "when": "Wann",
     "time": "Uhrzeit",
-    "day": "Tag"
+    "day": "Tag",
+    "recap": {
+      "title": "Zusammenfassung",
+      "when": "Wann",
+      "does": "Was es tut",
+      "tells": "Wann du Bescheid bekommst"
+    }
   }
 }

@@ -1,8 +1,10 @@
 {
   "page": {
     "title": "Automations",
-    "description": "Automations run in the background, even when this window is closed. Schedule a recurring task, or have Toskar tell you when something changes.",
+    "description": "Tasks Toskar's AI does for you on a schedule, such as a morning news brief or a price watch. They run in the background, even when this window is closed.",
     "new": "New automation",
+    "howItWorks": "How it works",
+    "hideHowItWorks": "Hide how it works",
     "search": "Search",
     "searchLabel": "Search automations",
     "filters": {
@@ -19,6 +21,52 @@
     "saveFailed": "Could not save the automation.",
     "confirmDelete": "Delete “{{name}}”? Its history is removed too.",
     "selectHint": "Select an automation to see its history, or create one."
+  },
+  "intro": {
+    "title": "Put Toskar to work while you're away",
+    "steps": {
+      "when": {
+        "title": "Say when",
+        "body": "Every morning, every Friday, every few hours, or just once."
+      },
+      "what": {
+        "title": "Say what to do",
+        "body": "Toskar's AI does it on its own: reads a page, sums up the news, checks a price. It can use the web and the tools you allow."
+      },
+      "tell": {
+        "title": "Choose when you hear",
+        "body": "Every time, only when something changes, or when a condition is met. Every result is kept in its history."
+      }
+    }
+  },
+  "ideas": {
+    "title": "Ideas to start from",
+    "use": "Use this",
+    "news": {
+      "title": "Morning news brief",
+      "body": "A short summary of the day's tech news, every morning.",
+      "request": "Every morning at 7:30 AM, summarize today's top technology news."
+    },
+    "price": {
+      "title": "Price watch",
+      "body": "Hear when something you want drops below your price.",
+      "request": "Every morning at 8:00 AM, check this product and tell me if the price is below $500."
+    },
+    "stock": {
+      "title": "Back in stock",
+      "body": "Hear as soon as a sold-out item can be bought again.",
+      "request": "Every 6 hours, check whether this item is back in stock and tell me when it becomes available."
+    },
+    "releases": {
+      "title": "Weekly release notes",
+      "body": "What changed in software you use, every Friday.",
+      "request": "Every Friday at 9:00 AM, check for new releases of this software and summarize what changed."
+    },
+    "page": {
+      "title": "Page watch",
+      "body": "Hear only when a page you care about changes.",
+      "request": "Every day at 6:00 PM, check this page and notify me only when it changes."
+    }
   },
   "detail": {
     "schedule": "Schedule",
@@ -146,11 +194,17 @@
     "editTitle": "Edit automation",
     "newTitle": "New automation",
     "intro": "Tell Toskar what you want it to do.",
+    "stepDescribe": "Describe it",
     "describe": "Describe what you want",
     "describePlaceholder": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.",
-    "setUp": "Set up automation",
+    "describeHint": "Say when it runs and what to do. Toskar fills in the details below, and you can change any of them.",
+    "setUp": "Fill in the details",
+    "ideas": "Or start from an idea",
+    "ideaHint": "Edit the words to fit, such as a link in place of “this page”, then choose Fill in the details again.",
+    "stepDetails": "Check the details",
     "name": "Name",
     "task": "Task",
+    "taskHint": "What Toskar does each time it runs.",
     "schedule": "Schedule",
     "repeats": "Repeats",
     "kinds": {
@@ -203,6 +257,7 @@
     "testCouldNotRun": "The test could not run.",
     "testingShort": "Testing…",
     "testRun": "Test run",
+    "testHint": "Runs it once now without saving, so you can see what you'd get.",
     "saving": "Saving…",
     "saveChanges": "Save changes",
     "create": "Create automation",
@@ -216,6 +271,12 @@
     },
     "when": "When",
     "time": "Time",
-    "day": "Day"
+    "day": "Day",
+    "recap": {
+      "title": "Summary",
+      "when": "When",
+      "does": "What it does",
+      "tells": "When you hear"
+    }
   }
 }

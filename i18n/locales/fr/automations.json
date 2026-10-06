@@ -1,8 +1,10 @@
 {
   "page": {
     "title": "Automatisations",
-    "description": "Les automatisations s'exécutent en arrière-plan, même quand cette fenêtre est fermée. Planifiez une tâche récurrente, ou laissez Toskar vous prévenir quand quelque chose change.",
+    "description": "Des tâches que l'IA de Toskar fait pour vous selon un horaire, comme un point sur l'actualité le matin ou la surveillance d'un prix. Elles s'exécutent en arrière-plan, même quand cette fenêtre est fermée.",
     "new": "Nouvelle automatisation",
+    "howItWorks": "Comment ça marche",
+    "hideHowItWorks": "Masquer l'explication",
     "search": "Rechercher",
     "searchLabel": "Rechercher des automatisations",
     "filters": {
@@ -19,6 +21,52 @@
     "saveFailed": "Impossible d'enregistrer l'automatisation.",
     "confirmDelete": "Supprimer « {{name}} » ? Son historique sera également supprimé.",
     "selectHint": "Sélectionnez une automatisation pour voir son historique, ou créez-en une."
+  },
+  "intro": {
+    "title": "Faites travailler Toskar pendant votre absence",
+    "steps": {
+      "when": {
+        "title": "Dites quand",
+        "body": "Chaque matin, chaque vendredi, toutes les quelques heures, ou une seule fois."
+      },
+      "what": {
+        "title": "Dites quoi faire",
+        "body": "L'IA de Toskar s'en charge seule : elle lit une page, résume l'actualité, vérifie un prix. Elle peut utiliser le web et les outils que vous autorisez."
+      },
+      "tell": {
+        "title": "Choisissez quand être prévenu",
+        "body": "À chaque fois, seulement quand quelque chose change, ou quand une condition est remplie. Chaque résultat est gardé dans son historique."
+      }
+    }
+  },
+  "ideas": {
+    "title": "Des idées pour commencer",
+    "use": "Utiliser",
+    "news": {
+      "title": "Actualités du matin",
+      "body": "Un court résumé de l'actualité tech, chaque matin.",
+      "request": "Chaque matin à 7 h 30, résume les principales actualités tech du jour."
+    },
+    "price": {
+      "title": "Surveiller un prix",
+      "body": "Soyez prévenu quand un article voulu passe sous votre prix.",
+      "request": "Chaque matin à 8 h, vérifie ce produit et dis-moi si le prix est inférieur à 500 €."
+    },
+    "stock": {
+      "title": "De retour en stock",
+      "body": "Soyez prévenu dès qu'un article épuisé est de nouveau disponible.",
+      "request": "Toutes les 6 heures, vérifie si cet article est de nouveau en stock."
+    },
+    "releases": {
+      "title": "Nouveautés de la semaine",
+      "body": "Ce qui a changé dans les logiciels que vous utilisez, chaque vendredi.",
+      "request": "Tous les vendredis à 9 h, résume les nouveautés de ce logiciel."
+    },
+    "page": {
+      "title": "Surveiller une page",
+      "body": "Soyez prévenu seulement quand une page qui compte pour vous change.",
+      "request": "Tous les jours à 18h, vérifie cette page et préviens-moi quand ça change."
+    }
   },
   "detail": {
     "schedule": "Planification",
@@ -146,11 +194,17 @@
     "editTitle": "Modifier l'automatisation",
     "newTitle": "Nouvelle automatisation",
     "intro": "Dites à Toskar ce que vous voulez qu'il fasse.",
+    "stepDescribe": "Décrivez-la",
     "describe": "Décrivez ce que vous voulez",
     "describePlaceholder": "Chaque matin à 8 h, vérifie ce produit et dis-moi si le prix est inférieur à 500 €.",
-    "setUp": "Configurer l'automatisation",
+    "describeHint": "Dites quand elle s'exécute et quoi faire. Toskar remplit les détails ci-dessous, et vous pouvez tout modifier.",
+    "setUp": "Remplir les détails",
+    "ideas": "Ou partez d'une idée",
+    "ideaHint": "Adaptez les mots, par exemple avec un lien à la place de « cette page », puis choisissez à nouveau Remplir les détails.",
+    "stepDetails": "Vérifiez les détails",
     "name": "Nom",
     "task": "Tâche",
+    "taskHint": "Ce que fait Toskar à chaque exécution.",
     "schedule": "Planification",
     "repeats": "Répétition",
     "kinds": {
@@ -203,6 +257,7 @@
     "testCouldNotRun": "Le test n'a pas pu s'exécuter.",
     "testingShort": "Test…",
     "testRun": "Exécution de test",
+    "testHint": "L'exécute une fois maintenant sans l'enregistrer, pour voir ce que vous recevriez.",
     "saving": "Enregistrement…",
     "saveChanges": "Enregistrer les modifications",
     "create": "Créer l'automatisation",
@@ -216,6 +271,12 @@
     },
     "when": "Quand",
     "time": "Heure",
-    "day": "Jour"
+    "day": "Jour",
+    "recap": {
+      "title": "Résumé",
+      "when": "Quand",
+      "does": "Ce qu'elle fait",
+      "tells": "Quand vous êtes prévenu"
+    }
   }
 }

@@ -261,7 +261,8 @@
     @apply shrink-0 whitespace-nowrap rounded-md px-3.5 py-1.5 text-sm font-medium text-ink-muted transition duration-150 hover:text-ink;
   }
 
-  .segmented-item[aria-selected='true'] {
+  .segmented-item[aria-selected='true'],
+  .segmented-item[aria-pressed='true'] {
     @apply bg-surface text-ink;
     box-shadow: var(--shadow-panel), inset 0 0 0 1px rgb(var(--rgb-line) / 0.6);
   }

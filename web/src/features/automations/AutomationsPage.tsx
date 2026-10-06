@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import i18n from '@/i18n'
-import { EmptyState } from '@/components/ui/EmptyState'
 import { api, ApiError } from '@/lib/api'
 import { subscribeEvents } from '@/lib/events'
 import { readScreenshotLaunch } from '@/lib/screenshotMode'
@@ -14,6 +13,7 @@ import { notificationLabel, resultProse, scheduleLabel, visibleTask } from './pa
 import { RealmKicker } from '@/components/ui/Realm'
 import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { AutomationsIntro, IdeaGallery } from './Intro'
 
 const screenshotSentence =
   'Every morning at 8:00 AM, check this product and tell me if the price is below $500.'
@@ -28,6 +28,9 @@ export function AutomationsPage() {
   const [formError, setFormError] = useState('')
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<'all' | 'active' | 'paused' | 'attention'>('all')
+  // A request to start the form from: an idea someone chose.
+  const [seed, setSeed] = useState('')
+  const [showIntro, setShowIntro] = useState(false)
 
   const listQuery = useQuery({
     queryKey: ['automations'],
@@ -66,6 +69,17 @@ export function AutomationsPage() {
   const profiles = profilesQuery.data ?? []
   const tools = toolsQuery.data ?? []
   const models = modelsQuery.data ?? []
+  const hasAutomations = (listQuery.data ?? []).length > 0
+  // With none yet, the page explains automations and offers ideas instead of an empty list.
+  const empty = !listQuery.isLoading && !listQuery.isError && !hasAutomations
+
+  function startNew(request = '') {
+    setSeed(request)
+    setCreating(true)
+    setEditing(false)
+    setSelectedID(null)
+    setFormError('')
+  }
 
   useEffect(() => {
     if (!readScreenshotLaunch()?.enabled) return
@@ -125,59 +139,84 @@ export function AutomationsPage() {
   })
 
   return (
-    <div className="page-fill gap-4 overflow-y-auto p-4">
+    <div className="page-fill gap-5 overflow-y-auto p-4 sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
+        <div className="min-w-0 max-w-2xl">
           <RealmKicker />
-          <h1 className="font-display text-2xl font-semibold text-ink">{t('page.title')}</h1>
-          <p className="mt-1 max-w-2xl text-sm text-ink-muted">{t('page.description')}</p>
+          <h1 className="page-title">{t('page.title')}</h1>
+          <p className="page-subtitle mt-1">{t('page.description')}</p>
         </div>
-        <button
-          type="button"
-          className="btn-primary px-3 py-1.5 text-xs"
-          onClick={() => {
-            setCreating(true)
-            setEditing(false)
-            setSelectedID(null)
-            setFormError('')
-          }}
-        >
-          {t('page.new')}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          {hasAutomations ? (
+            <button
+              type="button"
+              className="btn-secondary"
+              aria-expanded={showIntro}
+              aria-controls="automations-intro"
+              onClick={() => setShowIntro((open) => !open)}
+            >
+              {showIntro ? t('page.hideHowItWorks') : t('page.howItWorks')}
+            </button>
+          ) : null}
+          <button type="button" className="btn-primary" onClick={() => startNew()}>
+            {t('page.new')}
+          </button>
+        </div>
       </div>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,32rem)]">
-        <section className="space-y-3">
+
+      {hasAutomations && showIntro ? (
+        <div id="automations-intro" className="space-y-5">
+          <AutomationsIntro />
+          <IdeaGallery onUse={startNew} />
+        </div>
+      ) : null}
+
+      {empty && !creating ? (
+        <div className="space-y-6">
+          <AutomationsIntro mascot />
+          <IdeaGallery onUse={startNew} />
+        </div>
+      ) : (
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,34rem)]">
+        <section className="min-w-0 space-y-3">
+          {empty ? (
+            <IdeaGallery onUse={startNew} compact />
+          ) : (
           <div className="flex flex-wrap items-center gap-2">
-            <input
-              className="field min-w-40 flex-1"
-              value={query}
-              placeholder={t('page.search')}
-              aria-label={t('page.searchLabel')}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-            {(['all', 'active', 'paused', 'attention'] as const).map((key) => (
-              <button
-                key={key}
-                type="button"
-                className={filter === key ? 'btn-primary px-3 py-1.5 text-xs' : 'btn-secondary px-3 py-1.5 text-xs'}
-                onClick={() => setFilter(key)}
-              >
-                {t(`page.filters.${key}`)}
-              </button>
-            ))}
+            <label className="search-field min-w-40 flex-1">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+                <circle cx="7" cy="7" r="4.5" />
+                <path d="m10.5 10.5 3 3" />
+              </svg>
+              <input
+                type="search"
+                className="field"
+                value={query}
+                placeholder={t('page.search')}
+                aria-label={t('page.searchLabel')}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </label>
+            <div className="segmented" role="group" aria-label={t('page.searchLabel')}>
+              {(['all', 'active', 'paused', 'attention'] as const).map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  className="segmented-item"
+                  aria-pressed={filter === key}
+                  onClick={() => setFilter(key)}
+                >
+                  {t(`page.filters.${key}`)}
+                </button>
+              ))}
+            </div>
           </div>
+          )}
           {listQuery.isLoading && <Skeleton label={t('page.loading')} />}
           {listQuery.isError && !listQuery.data && (
             <LoadError error={listQuery.error} onRetry={() => void listQuery.refetch()} retrying={listQuery.isFetching} />
           )}
-          {!listQuery.isLoading && !listQuery.isError && (listQuery.data ?? []).length === 0 && !creating && (
-            <EmptyState
-              mascot="idle"
-              title={t('page.emptyTitle')}
-              description={t('page.emptyDescription')}
-            />
-          )}
-          {!listQuery.isLoading && (listQuery.data ?? []).length > 0 && items.length === 0 && (
+          {hasAutomations && items.length === 0 && (
             <p className="text-sm text-ink-muted">{t('page.noMatches')}</p>
           )}
           <ul className="space-y-2">
@@ -185,10 +224,8 @@ export function AutomationsPage() {
               <li key={item.id}>
                 <button
                   type="button"
-                  className={[
-                    'selectable w-full',
-                    selectedID === item.id ? 'shadow-[inset_0_0_0_1.5px_rgb(var(--rgb-primary))]' : '',
-                  ].filter(Boolean).join(' ')}
+                  className={['selectable w-full', selectedID === item.id ? 'selectable-active' : ''].filter(Boolean).join(' ')}
+                  aria-pressed={selectedID === item.id}
                   onClick={() => {
                     setSelectedID(item.id)
                     setCreating(false)
@@ -197,17 +234,19 @@ export function AutomationsPage() {
                   }}
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-medium text-ink">{item.name}</p>
+                    <p className="selectable-title font-semibold text-ink">{item.name}</p>
                     <StatusPill item={item} />
                   </div>
-                  <p className="mt-1 text-xs text-ink-muted">{scheduleLabel(item.schedule)}</p>
+                  <p className="mt-1 text-sm text-ink-muted">{scheduleLabel(item.schedule)}</p>
+                  {resultProse(item.last_result) && (
+                    <p className="mt-2 line-clamp-2 text-sm text-ink">{resultProse(item.last_result)}</p>
+                  )}
                   <p className="mt-2 text-xs text-ink-faint">
                     {t('page.lastNext', {
                       last: compactWhen(item.last_run_at, item.schedule.time_zone),
                       next: compactWhen(item.next_run_at, item.schedule.time_zone),
                     })}
                   </p>
-                  {resultProse(item.last_result) && <p className="mt-2 line-clamp-2 text-sm text-ink-muted">{resultProse(item.last_result)}</p>}
                 </button>
               </li>
             ))}
@@ -216,7 +255,7 @@ export function AutomationsPage() {
         <aside>
           {creating || editing ? (
             <AutomationForm
-              key={editing ? selectedID ?? 'edit' : 'new'}
+              key={editing ? selectedID ?? 'edit' : `new-${seed}`}
               profiles={profiles}
               models={models}
               tools={tools}
@@ -224,11 +263,16 @@ export function AutomationsPage() {
               seedDescription={
                 creating && new URLSearchParams(window.location.search).get('compose') === '1'
                   ? screenshotSentence
-                  : ''
+                  : creating
+                    ? seed
+                    : ''
               }
+              fromIdea={creating && Boolean(seed)}
+              showIdeas={!empty}
               pending={save.isPending}
               error={formError}
               onCancel={() => {
+                setSeed('')
                 setCreating(false)
                 setEditing(false)
                 setFormError('')
@@ -254,10 +298,11 @@ export function AutomationsPage() {
               }}
             />
           ) : (
-            <div className="card text-sm text-ink-muted">{t('page.selectHint')}</div>
+            <div className="card-outline text-sm text-ink-muted">{t('page.selectHint')}</div>
           )}
         </aside>
       </div>
+      )}
     </div>
   )
 }
@@ -292,16 +337,16 @@ function Detail({
         </div>
         <div className="mt-4 space-y-3 text-sm">
           <div>
-            <p className="text-xs tracking-wide text-ink-faint">{t('detail.schedule')}</p>
+            <p className="label-caps">{t('detail.schedule')}</p>
             <p className="text-ink">{scheduleLabel(detail.schedule)}</p>
             <p className="text-ink-muted">{t('detail.next', { when: compactWhen(detail.next_run_at, zone) })}</p>
           </div>
           <div>
-            <p className="text-xs tracking-wide text-ink-faint">{t('detail.task')}</p>
+            <p className="label-caps">{t('detail.task')}</p>
             <p className="whitespace-pre-wrap text-ink">{visibleTask(detail.prompt)}</p>
           </div>
           <div>
-            <p className="text-xs tracking-wide text-ink-faint">{t('detail.notification')}</p>
+            <p className="label-caps">{t('detail.notification')}</p>
             <p className="text-ink">{notificationLabel(detail.notification)}</p>
             <p className="text-ink-muted">{detail.notification.mode === 'none' ? t('detail.storedHere') : t('detail.onThisComputer')}</p>
           </div>
@@ -309,22 +354,22 @@ function Detail({
         {detail.last_error && <p className="mt-3 text-sm text-danger">{detail.last_error}</p>}
       </div>
       <div className="flex flex-wrap gap-2">
-        <button type="button" className="btn-primary px-3 py-1.5 text-xs" disabled={running} onClick={onRun}>
+        <button type="button" className="btn-primary btn-sm" disabled={running} onClick={onRun}>
           {running ? t('detail.running') : t('detail.runNow')}
         </button>
-        <button type="button" className="btn-secondary px-3 py-1.5 text-xs" onClick={onToggle}>
+        <button type="button" className="btn-secondary btn-sm" onClick={onToggle}>
           {detail.enabled ? t('detail.pause') : t('detail.resume')}
         </button>
-        <button type="button" className="btn-secondary px-3 py-1.5 text-xs" onClick={onEdit}>
+        <button type="button" className="btn-secondary btn-sm" onClick={onEdit}>
           {t('detail.edit')}
         </button>
-        <button type="button" className="btn-danger px-3 py-1.5 text-xs" onClick={onDelete}>
+        <button type="button" className="btn-danger btn-sm" onClick={onDelete}>
           {t('detail.delete')}
         </button>
       </div>
       {runError && <p className="text-sm text-danger">{runError}</p>}
       <div>
-        <h3 className="text-sm font-medium text-ink">{t('detail.history')}</h3>
+        <h3 className="label-caps">{t('detail.history')}</h3>
         {detail.history.length === 0 ? (
           <p className="mt-2 text-sm text-ink-muted">{t('detail.notRunYet')}</p>
         ) : (
@@ -397,8 +442,13 @@ function StatusPill({ item }: { item: Pick<Automation, 'enabled' | 'last_status'
   const label = !item.enabled ? t('pill.paused') : failed ? t('pill.failed') : t('pill.enabled')
   const mark = !item.enabled ? 'Ⅱ' : failed ? '!' : '●'
   return (
-    <span className={failed ? 'text-xs text-danger' : item.enabled ? 'text-xs text-success' : 'text-xs text-ink-faint'}>
-      {mark} {label}
+    <span
+      className={[
+        'status-chip shrink-0',
+        failed ? 'bg-danger/15 text-danger' : item.enabled ? 'bg-success/15 text-success' : 'bg-raised text-ink-muted',
+      ].join(' ')}
+    >
+      <span aria-hidden>{mark}</span> {label}
     </span>
   )
 }

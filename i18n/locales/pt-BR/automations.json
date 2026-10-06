@@ -1,8 +1,10 @@
 {
   "page": {
     "title": "Automações",
-    "description": "As automações são executadas em segundo plano, mesmo com esta janela fechada. Agende uma tarefa recorrente ou peça ao Toskar para avisar quando algo mudar.",
+    "description": "Tarefas que a IA do Toskar faz por você em um horário, como um resumo das notícias pela manhã ou o acompanhamento de um preço. Elas rodam em segundo plano, mesmo com esta janela fechada.",
     "new": "Nova automação",
+    "howItWorks": "Como funciona",
+    "hideHowItWorks": "Ocultar como funciona",
     "search": "Pesquisar",
     "searchLabel": "Pesquisar automações",
     "filters": {
@@ -19,6 +21,52 @@
     "saveFailed": "Não foi possível salvar a automação.",
     "confirmDelete": "Apagar “{{name}}”? O histórico também será removido.",
     "selectHint": "Selecione uma automação para ver o histórico dela ou crie uma."
+  },
+  "intro": {
+    "title": "Coloque o Toskar para trabalhar enquanto você está fora",
+    "steps": {
+      "when": {
+        "title": "Diga quando",
+        "body": "Toda manhã, toda sexta-feira, a cada poucas horas ou só uma vez."
+      },
+      "what": {
+        "title": "Diga o que fazer",
+        "body": "A IA do Toskar faz sozinha: lê uma página, resume as notícias, confere um preço. Ela pode usar a web e as ferramentas que você permitir."
+      },
+      "tell": {
+        "title": "Escolha quando ser avisado",
+        "body": "Toda vez, só quando algo mudar ou quando uma condição for atendida. Cada resultado fica no histórico."
+      }
+    }
+  },
+  "ideas": {
+    "title": "Ideias para começar",
+    "use": "Usar esta",
+    "news": {
+      "title": "Notícias da manhã",
+      "body": "Um resumo curto das notícias de tecnologia, toda manhã.",
+      "request": "Todas as manhãs às 7h30, resuma as principais notícias de tecnologia do dia."
+    },
+    "price": {
+      "title": "Acompanhar preço",
+      "body": "Saiba quando algo que você quer ficar abaixo do seu preço.",
+      "request": "Todas as manhãs às 8h, verifique este produto e me avise se o preço ficar abaixo de R$ 2.500."
+    },
+    "stock": {
+      "title": "De volta ao estoque",
+      "body": "Saiba assim que um item esgotado puder ser comprado de novo.",
+      "request": "A cada 6 horas, veja se este item está em estoque."
+    },
+    "releases": {
+      "title": "Novidades da semana",
+      "body": "O que mudou nos programas que você usa, toda sexta-feira.",
+      "request": "Toda sexta-feira às 9h, resuma as novidades deste software."
+    },
+    "page": {
+      "title": "Acompanhar página",
+      "body": "Saiba só quando uma página que importa para você mudar.",
+      "request": "Todos os dias às 18h, verifique esta página e me avise só quando mudar."
+    }
   },
   "detail": {
     "schedule": "Agendamento",
@@ -146,11 +194,17 @@
     "editTitle": "Editar automação",
     "newTitle": "Nova automação",
     "intro": "Diga ao Toskar o que você quer que ele faça.",
+    "stepDescribe": "Descreva",
     "describe": "Descreva o que você quer",
     "describePlaceholder": "Todas as manhãs às 8h, verifique este produto e me avise se o preço ficar abaixo de R$ 2.500.",
-    "setUp": "Configurar automação",
+    "describeHint": "Diga quando ela roda e o que fazer. O Toskar preenche os detalhes abaixo, e você pode mudar qualquer um.",
+    "setUp": "Preencher os detalhes",
+    "ideas": "Ou comece com uma ideia",
+    "ideaHint": "Ajuste as palavras, por exemplo com um link no lugar de “esta página”, e escolha Preencher os detalhes de novo.",
+    "stepDetails": "Confira os detalhes",
     "name": "Nome",
     "task": "Tarefa",
+    "taskHint": "O que o Toskar faz cada vez que ela roda.",
     "schedule": "Agendamento",
     "repeats": "Repetição",
     "kinds": {
@@ -203,6 +257,7 @@
     "testCouldNotRun": "Não foi possível executar o teste.",
     "testingShort": "Testando…",
     "testRun": "Executar teste",
+    "testHint": "Roda uma vez agora sem salvar, para você ver o que receberia.",
     "saving": "Salvando…",
     "saveChanges": "Salvar alterações",
     "create": "Criar automação",
@@ -216,6 +271,12 @@
     },
     "when": "Quando",
     "time": "Horário",
-    "day": "Dia"
+    "day": "Dia",
+    "recap": {
+      "title": "Resumo",
+      "when": "Quando",
+      "does": "O que faz",
+      "tells": "Quando você é avisado"
+    }
   }
 }

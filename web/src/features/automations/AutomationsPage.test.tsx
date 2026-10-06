@@ -119,13 +119,37 @@ describe('AutomationsPage', () => {
     await waitFor(() => expect(api.pauseAutomation).toHaveBeenCalledWith('auto-1'))
   })
 
+  it('explains automations and starts one from an idea when there are none', async () => {
+    vi.mocked(api.listAutomations).mockResolvedValue([])
+    renderPage()
+    expect(await screen.findByRole('heading', { name: /Put Toskar to work/ })).toBeInTheDocument()
+    expect(screen.getByText('Say when')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Back in stock/ }))
+    // The form opens filled in from the idea, ready to adjust.
+    expect(await screen.findByDisplayValue('Stock check')).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'Describe what you want' })).toHaveValue(
+      'Every 6 hours, check whether this item is back in stock and tell me when it becomes available.',
+    )
+    expect(screen.getByText('Notify when it becomes available', { selector: 'dd' })).toBeInTheDocument()
+    expect(screen.getByText(/link in place of/)).toBeInTheDocument()
+  })
+
+  it('shows how automations work on request when there are some', async () => {
+    renderPage()
+    const toggle = await screen.findByRole('button', { name: 'How it works' })
+    expect(screen.queryByText('Say when')).not.toBeInTheDocument()
+    fireEvent.click(toggle)
+    expect(screen.getByText('Say when')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Hide how it works' })).toHaveAttribute('aria-expanded', 'true')
+  })
+
   it('fills a structured task from a description and saves it', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
     fireEvent.change(screen.getByPlaceholderText(/Every morning at 8:00 AM/), {
       target: { value: 'Every morning at 8:00 AM, check this product and tell me if the price is below $500.' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Set up automation' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
     expect(screen.getByDisplayValue('Price below $500')).toBeInTheDocument()
     expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
@@ -146,7 +170,7 @@ describe('AutomationsPage', () => {
     fireEvent.change(screen.getByPlaceholderText(/Every morning at 8:00 AM/), {
       target: { value: 'Every morning at 8:00 AM, check this product and tell me if the price is below $500.' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Set up automation' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
     expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
     const language = screen.getByRole('combobox', { name: 'Results in' })
     expect([...language.querySelectorAll('option')].slice(0, 3).map((o) => o.textContent)).toEqual([
@@ -184,7 +208,7 @@ describe('AutomationsPage', () => {
     fireEvent.change(screen.getByPlaceholderText(/Every morning at 8:00 AM/), {
       target: { value: 'Every morning at 8:00 AM, check this product and tell me if the price is below $500.' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Set up automation' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
     fireEvent.click(screen.getByRole('checkbox', { name: /Write files/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
     await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())

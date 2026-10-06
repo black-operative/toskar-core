@@ -20,6 +20,7 @@ import {
   visibleTask,
   weekdayName,
 } from './parseRequest'
+import { IDEAS } from './ideas'
 
 // The notify choices, in order; each is automations:form.notifyChoices.<mode> in the catalog.
 const NOTIFY_CHOICES: AutomationInput['notification']['mode'][] = ['condition', 'change', 'always', 'failure', 'none']
@@ -33,16 +34,21 @@ interface AutomationFormProps {
   tools: ToolRecord[]
   initial?: Automation | null
   seedDescription?: string
+  /** The form was started from an idea, so say how to make it your own. */
+  fromIdea?: boolean
+  /** Offer the ideas as shortcuts; off when the page already shows them. */
+  showIdeas?: boolean
   pending: boolean
   error?: string
   onCancel: () => void
   onSubmit: (input: AutomationInput) => void
 }
 
-export function AutomationForm({ profiles, models, tools, initial, seedDescription = '', pending, error, onCancel, onSubmit }: AutomationFormProps) {
+export function AutomationForm({ profiles, models, tools, initial, seedDescription = '', fromIdea = false, showIdeas = true, pending, error, onCancel, onSubmit }: AutomationFormProps) {
   const { t } = useTranslation('automations')
   const advanced = useUIStore((state) => state.advancedMode) && new URLSearchParams(window.location.search).get('simple') !== '1'
   const advancedRef = useRef<HTMLDetailsElement>(null)
+  const describeRef = useRef<HTMLTextAreaElement>(null)
   const zone = initial?.schedule.time_zone || localTimeZone()
   const [description, setDescription] = useState('')
   const [notes, setNotes] = useState<string[]>([])
@@ -100,15 +106,21 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
     if (advancedRef.current) advancedRef.current.open = advanced
   }, [advanced])
 
+  // A new automation starts at its first step; on a phone the form sits below
+  // the list, so this also brings it into view.
+  useEffect(() => {
+    if (!initial) describeRef.current?.focus()
+  }, [initial])
+
   // Tools a scheduled run may use are approved here, because nobody is
   // watching to answer later (spec §59). Tools that change things are listed
   // apart, so approving one is a deliberate choice.
   const lookTools = tools.filter((tool) => tool.enabled && tool.risk !== 'write')
   const changeTools = tools.filter((tool) => tool.enabled && tool.risk === 'write')
 
-  function applyDescription() {
+  function applyDescription(text = description) {
     try {
-      const parsed = parseAutomationRequest(description, new Date(), schedule.time_zone || zone)
+      const parsed = parseAutomationRequest(text, new Date(), schedule.time_zone || zone)
       setName(parsed.name)
       setTask(visibleTask(parsed.prompt))
       setSchedule(parsed.schedule)
@@ -176,39 +188,76 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       }}
     >
       <div>
-        <h2 className="font-display text-lg font-semibold text-ink">{initial ? t('form.editTitle') : t('form.newTitle')}</h2>
+        <h2 className="section-title">{initial ? t('form.editTitle') : t('form.newTitle')}</h2>
         <p className="mt-1 text-sm text-ink-muted">{t('form.intro')}</p>
       </div>
-      <label className="block space-y-1 text-sm">
-        <span className="text-ink-muted">{t('form.describe')}</span>
-        <textarea
-          className="field min-h-24 w-full"
-          value={description}
-          placeholder={t('form.describePlaceholder')}
-          onChange={(event) => setDescription(event.target.value)}
-        />
-      </label>
-      <button type="button" className="btn-secondary px-3 py-1.5 text-xs" onClick={applyDescription}>
-        {t('form.setUp')}
-      </button>
-      {parseError && <p className="text-sm text-danger">{parseError}</p>}
-      {notes.map((note) => (
-        <p key={note} className="text-sm text-ink-muted">
-          {note}
+
+      {/* Step 1: say it in words; Toskar fills in step 2 from them. */}
+      <div className="space-y-2.5 rounded-lg bg-raised/40 p-3">
+        <StepHeading number={1}>{t('form.stepDescribe')}</StepHeading>
+        <label className="block space-y-1 text-sm">
+          <span className="sr-only">{t('form.describe')}</span>
+          <textarea
+            ref={describeRef}
+            className="field min-h-24 w-full"
+            value={description}
+            placeholder={t('form.describePlaceholder')}
+            aria-describedby="automation-describe-hint"
+            onChange={(event) => setDescription(event.target.value)}
+          />
+        </label>
+        <p id="automation-describe-hint" className="text-xs leading-relaxed text-ink-muted">
+          {fromIdea ? t('form.ideaHint') : t('form.describeHint')}
         </p>
-      ))}
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" className="btn-secondary btn-sm" disabled={!description.trim()} onClick={() => applyDescription()}>
+            {t('form.setUp')}
+          </button>
+        </div>
+        {parseError && <p className="text-sm text-danger">{parseError}</p>}
+        {notes.map((note) => (
+          <p key={note} className="text-sm text-ink-muted">
+            {note}
+          </p>
+        ))}
+        {initial || !showIdeas ? null : (
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            <span className="text-xs text-ink-faint">{t('form.ideas')}</span>
+            {IDEAS.map(({ id }) => (
+              <button
+                key={id}
+                type="button"
+                className="chat-suggestion"
+                onClick={() => {
+                  const request = t(`ideas.${id}.request`)
+                  setDescription(request)
+                  applyDescription(request)
+                }}
+              >
+                {t(`ideas.${id}.title`)}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <StepHeading number={2}>{t('form.stepDetails')}</StepHeading>
       <label className="block space-y-1 text-sm">
         <span className="text-ink-muted">{t('form.name')}</span>
         <input className="field w-full" value={name} onChange={(event) => setName(event.target.value)} required />
       </label>
       <label className="block space-y-1 text-sm">
         <span className="text-ink-muted">{t('form.task')}</span>
-        <textarea className="field min-h-28 w-full" value={task} onChange={(event) => setTask(event.target.value)} required />
+        <textarea
+          className="field min-h-28 w-full"
+          value={task}
+          aria-describedby="automation-task-hint"
+          onChange={(event) => setTask(event.target.value)}
+          required
+        />
+        <span id="automation-task-hint" className="block text-xs text-ink-faint">{t('form.taskHint')}</span>
       </label>
-      <div>
-        <p className="text-sm text-ink-muted">{t('form.schedule')}</p>
-        <p className="mt-1 text-sm text-ink">{summary}</p>
-      </div>
+      <p className="text-sm text-ink-muted">{t('form.schedule')}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block space-y-1 text-sm">
           <span className="text-ink-muted">{t('form.repeats')}</span>
@@ -276,7 +325,6 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
           )}
         </div>
       )}
-      <p className="text-sm text-ink">{notificationLabel(previewNotification(mode, conditionKind, op, value, currency))}</p>
       {installed.length === 0 && <p className="text-sm text-danger">{t('form.installModel')}</p>}
       <details ref={advancedRef} className="space-y-3">
         <summary className="cursor-pointer text-sm text-ink-muted">{t('form.advanced')}</summary>
@@ -379,6 +427,18 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
           )}
         </fieldset>
       </details>
+      {/* What will happen, in plain words, before it is created. */}
+      <section className="rounded-lg border border-line/70 p-3" aria-labelledby="automation-recap">
+        <h3 id="automation-recap" className="label-caps">{t('form.recap.title')}</h3>
+        <dl className="mt-2 grid gap-x-4 gap-y-1.5 text-sm sm:grid-cols-[auto_1fr]">
+          <dt className="text-ink-muted">{t('form.recap.when')}</dt>
+          <dd className="text-ink">{summary}</dd>
+          <dt className="text-ink-muted">{t('form.recap.does')}</dt>
+          <dd className="line-clamp-3 whitespace-pre-wrap text-ink">{task.trim() || '—'}</dd>
+          <dt className="text-ink-muted">{t('form.recap.tells')}</dt>
+          <dd className="text-ink">{notificationLabel(previewNotification(mode, conditionKind, op, value, currency))}</dd>
+        </dl>
+      </section>
       {previewError && <p className="text-sm text-danger">{previewError}</p>}
       {preview && (
         <div className="rounded-lg bg-raised/50 p-3 text-sm">
@@ -389,18 +449,38 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       )}
       {testing && !preview && <p className="text-sm text-ink-muted">{t('form.testing')}</p>}
       {error && <p className="text-sm text-danger">{error}</p>}
-      <div className="flex flex-wrap gap-2">
-        <button type="button" className="btn-secondary px-3 py-1.5 text-xs" disabled={testing || pending || !modelID || !task.trim()} onClick={() => void testDraft()}>
-          {testing ? t('form.testingShort') : t('form.testRun')}
-        </button>
-        <button type="submit" className="btn-primary px-3 py-1.5 text-xs" disabled={pending || testing || profiles.length === 0 || !modelID || !task.trim()}>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="submit" className="btn-primary" disabled={pending || testing || profiles.length === 0 || !modelID || !task.trim()}>
           {pending ? t('form.saving') : initial ? t('form.saveChanges') : t('form.create')}
         </button>
-        <button type="button" className="btn-secondary px-3 py-1.5 text-xs" onClick={onCancel}>
+        <button
+          type="button"
+          className="btn-secondary"
+          disabled={testing || pending || !modelID || !task.trim()}
+          title={t('form.testHint')}
+          aria-describedby="automation-test-hint"
+          onClick={() => void testDraft()}
+        >
+          {testing ? t('form.testingShort') : t('form.testRun')}
+        </button>
+        <button type="button" className="ms-auto px-2 py-2 text-sm font-medium text-ink-muted hover:text-ink" onClick={onCancel}>
           {t('form.cancel')}
         </button>
       </div>
+      <p id="automation-test-hint" className="text-xs text-ink-faint">{t('form.testHint')}</p>
     </form>
+  )
+}
+
+/** A numbered step of the form. */
+function StepHeading({ number, children }: { number: number; children: string }) {
+  return (
+    <h3 className="flex items-center gap-2 text-sm font-semibold text-ink">
+      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-soft text-[11px] text-primary-active" aria-hidden>
+        {number}
+      </span>
+      {children}
+    </h3>
   )
 }
 
@@ -415,7 +495,7 @@ function ScheduleFields({
   if (schedule.kind === 'interval') {
     const { amount, unit } = splitInterval(schedule.every_seconds ?? 6 * 3600)
     return (
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-3">
         <label className="block space-y-1 text-sm">
           <span className="text-ink-muted">{t('form.every')}</span>
           <input
@@ -459,7 +539,7 @@ function ScheduleFields({
     )
   }
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-3">
       <label className="block space-y-1 text-sm">
         <span className="text-ink-muted">{t('form.time')}</span>
         <input

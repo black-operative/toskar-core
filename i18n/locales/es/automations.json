@@ -1,8 +1,10 @@
 {
   "page": {
     "title": "Automatizaciones",
-    "description": "Las automatizaciones se ejecutan en segundo plano, incluso con esta ventana cerrada. Programa una tarea recurrente o haz que Toskar te avise cuando algo cambie.",
+    "description": "Tareas que la IA de Toskar hace por ti según un horario, como un resumen de noticias por la mañana o vigilar un precio. Se ejecutan en segundo plano, incluso con esta ventana cerrada.",
     "new": "Nueva automatización",
+    "howItWorks": "Cómo funciona",
+    "hideHowItWorks": "Ocultar cómo funciona",
     "search": "Buscar",
     "searchLabel": "Buscar automatizaciones",
     "filters": {
@@ -19,6 +21,52 @@
     "saveFailed": "No se pudo guardar la automatización.",
     "confirmDelete": "¿Eliminar “{{name}}”? También se elimina su historial.",
     "selectHint": "Selecciona una automatización para ver su historial, o crea una."
+  },
+  "intro": {
+    "title": "Pon a Toskar a trabajar mientras no estás",
+    "steps": {
+      "when": {
+        "title": "Di cuándo",
+        "body": "Cada mañana, cada viernes, cada pocas horas o solo una vez."
+      },
+      "what": {
+        "title": "Di qué hacer",
+        "body": "La IA de Toskar lo hace sola: lee una página, resume las noticias, revisa un precio. Puede usar la web y las herramientas que permitas."
+      },
+      "tell": {
+        "title": "Elige cuándo te avisa",
+        "body": "Cada vez, solo cuando algo cambia o cuando se cumple una condición. Cada resultado queda en su historial."
+      }
+    }
+  },
+  "ideas": {
+    "title": "Ideas para empezar",
+    "use": "Usar esta",
+    "news": {
+      "title": "Noticias de la mañana",
+      "body": "Un resumen breve de las noticias de tecnología, cada mañana.",
+      "request": "Cada mañana a las 7:30, resume las noticias de tecnología más importantes del día."
+    },
+    "price": {
+      "title": "Vigilar un precio",
+      "body": "Entérate cuando algo que quieres baje de tu precio.",
+      "request": "Cada mañana a las 8:00, revisa este producto y avísame si el precio baja de 500 €."
+    },
+    "stock": {
+      "title": "De nuevo disponible",
+      "body": "Entérate en cuanto un artículo agotado se pueda comprar otra vez.",
+      "request": "Cada 6 horas, comprueba si este artículo vuelve a estar disponible."
+    },
+    "releases": {
+      "title": "Novedades de la semana",
+      "body": "Qué cambió en el software que usas, cada viernes.",
+      "request": "Todos los viernes a las 9:00, revisa las novedades de este programa y resume los cambios."
+    },
+    "page": {
+      "title": "Vigilar una página",
+      "body": "Entérate solo cuando cambie una página que te importa.",
+      "request": "Cada día a las 18:00, revisa esta página y avísame solo si hay cambios."
+    }
   },
   "detail": {
     "schedule": "Programación",
@@ -146,11 +194,17 @@
     "editTitle": "Editar automatización",
     "newTitle": "Nueva automatización",
     "intro": "Dile a Toskar qué quieres que haga.",
+    "stepDescribe": "Descríbela",
     "describe": "Describe lo que quieres",
     "describePlaceholder": "Cada mañana a las 8:00, revisa este producto y avísame si el precio baja de 500 €.",
-    "setUp": "Configurar la automatización",
+    "describeHint": "Di cuándo se ejecuta y qué debe hacer. Toskar completa los detalles de abajo, y puedes cambiar cualquiera.",
+    "setUp": "Completar los detalles",
+    "ideas": "O empieza con una idea",
+    "ideaHint": "Ajusta las palabras, por ejemplo con un enlace en lugar de «esta página», y vuelve a elegir Completar los detalles.",
+    "stepDetails": "Revisa los detalles",
     "name": "Nombre",
     "task": "Tarea",
+    "taskHint": "Lo que Toskar hace cada vez que se ejecuta.",
     "schedule": "Programación",
     "repeats": "Se repite",
     "kinds": {
@@ -203,6 +257,7 @@
     "testCouldNotRun": "No se pudo ejecutar la prueba.",
     "testingShort": "Probando…",
     "testRun": "Ejecución de prueba",
+    "testHint": "La ejecuta una vez ahora sin guardarla, para que veas lo que recibirías.",
     "saving": "Guardando…",
     "saveChanges": "Guardar cambios",
     "create": "Crear automatización",
@@ -216,6 +271,12 @@
     },
     "when": "Cuándo",
     "time": "Hora",
-    "day": "Día"
+    "day": "Día",
+    "recap": {
+      "title": "Resumen",
+      "when": "Cuándo",
+      "does": "Qué hace",
+      "tells": "Cuándo te avisa"
+    }
   }
 }
