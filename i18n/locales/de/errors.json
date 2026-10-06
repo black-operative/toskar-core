@@ -70,6 +70,7 @@
   "MEMORY_LOOKS_SECRET": "Das sieht nach einem Passwort, Schlüssel oder Token aus, daher hat Toskar es nicht gespeichert.",
   "MEMORY_NOT_FOUND": "Diese Erinnerung wurde entfernt.",
   "MESSAGES_LIST_FAILED": "{{detail}}",
+  "GPU_SETUP_FAILED": "Die GPU-Einrichtung dieses Computers konnte nicht geprüft werden.",
   "LIVE_FIGURES_FAILED": "Die CPU-, Speicher- und GPU-Werte dieses Computers konnten nicht gelesen werden.",
   "MODELS_LIST_FAILED": "Modelle konnten nicht aufgelistet werden.",
   "MODEL_BUSY": "{{detail}}",

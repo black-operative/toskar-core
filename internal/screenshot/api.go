@@ -105,6 +105,8 @@ func screenshotGET(path string) (string, bool) {
 	case path == "/api/v1/capabilities":
 		return screenshotCapabilities, true
 	// The daemon's memory over a quiet day, for the Diagnostics page.
+	case path == "/api/v1/diagnostics/gpu":
+		return `{"gpu":"Apple M4 Pro","problems":[]}`, true
 	case path == "/api/v1/diagnostics/runtime":
 		return screenshotRuntimeHistory(), true
 	// Setup status is an object, never a list: the Tools page reads its models.

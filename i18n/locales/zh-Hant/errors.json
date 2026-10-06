@@ -70,6 +70,7 @@
   "MEMORY_LOOKS_SECRET": "這看起來像是密碼、金鑰或權杖，所以 Toskar 沒有儲存。",
   "MEMORY_NOT_FOUND": "這則記憶已被移除。",
   "MESSAGES_LIST_FAILED": "{{detail}}",
+  "GPU_SETUP_FAILED": "無法檢查這台電腦的 GPU 設定。",
   "LIVE_FIGURES_FAILED": "無法讀取這台電腦的 CPU、記憶體和 GPU 資料。",
   "MODELS_LIST_FAILED": "無法列出模型。",
   "MODEL_BUSY": "{{detail}}",

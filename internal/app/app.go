@@ -510,6 +510,7 @@ func New(opts Options) (*App, error) {
 			return a.exportDiagnostics(ctx, includeConversations)
 		},
 		LiveFigures: a.liveAll,
+		GPUSetup:    a.gpuSetup,
 		RuntimeHistory: func() diagnostics.RuntimeHistory {
 			if a.sampler == nil {
 				return diagnostics.RuntimeHistory{Now: diagnostics.Sample()}

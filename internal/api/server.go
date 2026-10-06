@@ -125,10 +125,13 @@ type Dependencies struct {
 	// LiveFigures are this computer's and each paired computer's live CPU,
 	// memory, and GPU figures (#317).
 	LiveFigures func(ctx context.Context) ([]contracts.LiveFigures, error)
-	ListLogs    func(ctx context.Context) ([]logs.Entry, error)
-	GetLog      func(ctx context.Context, name string, tailBytes int64) (logs.Content, error)
-	Version     func() contracts.VersionResponse
-	WebRoot     fs.FS
+	// GPUSetup is what stands between this computer's GPU and Toskar using
+	// it, with fixes (#317).
+	GPUSetup func(ctx context.Context) (contracts.GPUSetup, error)
+	ListLogs func(ctx context.Context) ([]logs.Entry, error)
+	GetLog   func(ctx context.Context, name string, tailBytes int64) (logs.Content, error)
+	Version  func() contracts.VersionResponse
+	WebRoot  fs.FS
 }
 
 // Server is the control-plane HTTP server.
@@ -252,6 +255,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/benchmarks/{id}/cancel", s.handleCancelBenchmark).Methods(http.MethodPost)
 	api.HandleFunc("/diagnostics", s.handleDiagnostics).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
 	api.HandleFunc("/diagnostics/runtime", s.handleRuntimeHistory).Methods(http.MethodGet, http.MethodOptions)
+	api.HandleFunc("/diagnostics/gpu", s.handleGPUSetup).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/logs", s.handleListLogs).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/logs/{name}", s.handleGetLog).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/conversations", s.handleListConversations).Methods(http.MethodGet, http.MethodOptions)

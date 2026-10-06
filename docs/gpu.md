@@ -15,7 +15,7 @@ Each running model has a status on **Models › Running** and on the **Performan
 
 Select the status to see the device, how many of the model's layers are on the GPU, and the GPU memory it uses. Toskar reads all of this from llama.cpp's own report when it loads the model, so it shows what happened, not what the hardware could do.
 
-**Diagnostics** has a **GPU acceleration** row with the same states. `GET /api/v1/health` gives the same summary in `acceleration`, and `GET /api/v1/models/running` gives the details for each model (see [the API](api.md#gpu-acceleration)).
+**Diagnostics** has a **GPU acceleration** row with the same states. When something this computer needs for its GPU is missing, such as the Vulkan drivers, NVIDIA's driver, or permission to use the card, the row lists each piece with the command that fixes it here, ready to copy. `GET /api/v1/health` gives the same summary in `acceleration`, and `GET /api/v1/models/running` gives the details for each model (see [the API](api.md#gpu-acceleration)).
 
 The **Performance** overview also shows each computer's live CPU and memory, and each GPU's use, video memory, temperature, and power, with the last hour as a line. **Activity** marks each reply GPU or CPU.
 

@@ -86,7 +86,19 @@
       "cpu": "未使用 GPU",
       "cpu_expected": "僅 CPU（沒有 GPU）",
       "idle": "未載入模型",
-      "openModels": "查看執行中的模型"
+      "openModels": "查看執行中的模型",
+      "setupNeeded": "需要設定 GPU",
+      "copy": "複製",
+      "copied": "已複製",
+      "download": "下載驅動程式",
+      "problems": {
+        "vulkan_loader_missing": "尚未安裝 Vulkan，Toskar 需要它才能使用顯示卡。請在終端機中執行以下指令，然後重新啟動 Toskar：",
+        "vulkan_driver_missing": "Vulkan 找不到顯示卡，可能缺少顯示卡的 Vulkan 驅動程式。請在終端機中執行以下指令，然後重新啟動 Toskar：",
+        "render_access_denied": "Toskar 沒有使用顯示卡的權限。請把它的使用者加入 render 群組：",
+        "nvidia_driver_missing": "這張 NVIDIA 顯示卡需要 NVIDIA 驅動程式。請安裝後重新啟動電腦：",
+        "windows_driver_missing": "這張顯示卡需要製造商的驅動程式，其中包含 Toskar 使用的元件。請安裝後重新啟動 Toskar。",
+        "cpu_build": "安裝的 llama.cpp 只能在 CPU 上執行。請停止模型，然後結束並重新開啟 Toskar，以取得 GPU 版本。"
+      }
     }
   },
   "env": {

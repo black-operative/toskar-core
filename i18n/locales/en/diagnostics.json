@@ -94,7 +94,19 @@
       "cpu": "Not using the GPU",
       "cpu_expected": "CPU only (no GPU)",
       "idle": "No model loaded",
-      "openModels": "See running models"
+      "openModels": "See running models",
+      "setupNeeded": "GPU setup needed",
+      "copy": "Copy",
+      "copied": "Copied",
+      "download": "Download the driver",
+      "problems": {
+        "vulkan_loader_missing": "Vulkan isn't installed, and Toskar needs it to use the graphics card. Run this in a terminal, then restart Toskar:",
+        "vulkan_driver_missing": "Vulkan can't see the graphics card, so its Vulkan driver is probably missing. Run this in a terminal, then restart Toskar:",
+        "render_access_denied": "Toskar isn't allowed to use the graphics card. Add its user to the render group:",
+        "nvidia_driver_missing": "This NVIDIA card needs NVIDIA's driver. Install it, then restart the computer:",
+        "windows_driver_missing": "This graphics card needs its maker's driver, which brings what Toskar uses. Install it, then restart Toskar.",
+        "cpu_build": "The installed llama.cpp runs on the CPU only. Stop your models, then quit and reopen Toskar to get the GPU build."
+      }
     }
   },
   "env": {

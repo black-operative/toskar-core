@@ -99,6 +99,7 @@ import type {
   FileRef,
   StopChatResponse,
   LiveFigures,
+  GPUSetup,
 } from '@/types/api'
 import type { Upload } from '@/lib/upload'
 
@@ -1109,6 +1110,8 @@ export const api = {
   getRuntimeHistory: () => request<RuntimeHistory>('/api/v1/diagnostics/runtime'),
   /** Each computer's live CPU, memory, and GPU figures, this one first (#317). */
   getLiveFigures: () => request<LiveFigures[]>('/api/v1/performance/live'),
+  /** What this computer still needs for Toskar to use its GPU (#317). */
+  getGPUSetup: () => request<GPUSetup>('/api/v1/diagnostics/gpu'),
 
   exportDiagnostics: (includeConversations = false) =>
     request<DiagnosticsExportResult>('/api/v1/diagnostics', {

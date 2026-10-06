@@ -661,6 +661,21 @@ func (s *Server) handleLiveFigures(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, figures)
 }
 
+// handleGPUSetup reports what this computer still needs for Toskar to use
+// its GPU, and how to fix each piece, for Diagnostics (#317).
+func (s *Server) handleGPUSetup(w http.ResponseWriter, r *http.Request) {
+	if s.deps.GPUSetup == nil {
+		writeJSON(w, http.StatusOK, contracts.GPUSetup{Problems: []contracts.GPUProblem{}})
+		return
+	}
+	setup, err := s.deps.GPUSetup(r.Context())
+	if err != nil {
+		writeErrFrom(w, http.StatusInternalServerError, "GPU_SETUP_FAILED", err)
+		return
+	}
+	writeJSON(w, http.StatusOK, setup)
+}
+
 // handleRuntimeHistory reports the daemon's memory and goroutines now and
 // over the last day, for the Diagnostics page (#231).
 func (s *Server) handleRuntimeHistory(w http.ResponseWriter, r *http.Request) {

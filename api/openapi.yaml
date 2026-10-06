@@ -203,6 +203,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SettingsView"
+  /api/v1/diagnostics/gpu:
+    get:
+      summary: What this computer still needs for Toskar to use its GPU
+      description: >-
+        The graphics card found and each missing piece, most basic first, with a fix written for this
+        computer: the Vulkan loader or drivers, permission to open the card's render device, NVIDIA's
+        driver, a Windows card's driver, or the CPU-only llama.cpp build. No problems when the GPU is
+        ready, when there is no GPU, and on macOS.
+      operationId: getGPUSetup
+      responses:
+        "200":
+          description: GPU setup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GPUSetup"
   /api/v1/performance/live:
     get:
       summary: Live CPU, memory, and GPU figures for this and paired computers
@@ -4894,6 +4910,20 @@ components:
         mode: {type: string, enum: [embedding, reranking]}
         acceleration:
           $ref: "#/components/schemas/Acceleration"
+    GPUSetup:
+      type: object
+      properties:
+        gpu: {type: string, description: The card found; absent when there is none}
+        problems:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                enum: [vulkan_loader_missing, vulkan_driver_missing, render_access_denied, nvidia_driver_missing, windows_driver_missing, cpu_build]
+              command: {type: string, description: "A terminal command that fixes it on this computer"}
+              url: {type: string, description: Where to get what's missing}
     LiveFigures:
       type: object
       properties:

@@ -106,6 +106,7 @@ Control-plane routes are under `/api/v1`. The OpenAI-compatible routes are under
 | POST | `/models/install-from-url` | Install a GGUF from a URL |
 | DELETE | `/models/{id}` | Remove an installed model |
 | POST | `/models/{id}/start`, `/models/{id}/stop` | Load or unload a model |
+| GET | `/diagnostics/gpu` | What this computer still needs for Toskar to use its GPU: each missing piece (`vulkan_loader_missing`, `vulkan_driver_missing`, `render_access_denied`, `nvidia_driver_missing`, `windows_driver_missing`, `cpu_build`) with a fix `command` written for this computer, or a `url` |
 | GET | `/performance/live` | Live CPU, memory, and GPU figures for this and paired computers: now, the last hour, and per-minute averages for the day (see [GPU acceleration](#gpu-acceleration)) |
 | GET | `/models/running` | Loaded models, with `mode` (`embedding` or `reranking` for supporting models), `speed_tok_per_sec` from their latest replies, and `acceleration`: where each runs (see [GPU acceleration](#gpu-acceleration)) |
 | GET, PUT, DELETE | `/models/{id}/rating` | This person's 1–5 star rating of a model, and exactly what sharing it would send. See [Community ratings](#community-ratings). |

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import i18n from '@/i18n'
@@ -16,6 +16,7 @@ import { CachePanel } from './CachePanel'
 import { Ratatoskr } from '@/components/ui/Ratatoskr'
 import { formatRelativeTime } from '@/i18n/format'
 import { MemoryPanel } from './MemoryPanel'
+import { GPUSetupList } from './GPUSetupList'
 
 function kindLabel(kind: string, advanced: boolean): string {
   const known = kind === 'daemon' || kind === 'runtime'
@@ -54,6 +55,8 @@ type StatusRow = {
   tone: RowTone
   detail: string
   message?: string
+  /** More than a message, such as the GPU setup steps with their commands. */
+  extra?: ReactNode
   actions?: StatusAction[]
 }
 
@@ -93,6 +96,7 @@ function HealthRow({ row }: { row: StatusRow }) {
           {row.message && (
             <p className="mt-1.5 text-sm text-ink-muted">{row.message}</p>
           )}
+          {row.extra ? <div className="mt-2">{row.extra}</div> : null}
           {row.actions && row.actions.length > 0 && (
             <div className="mt-2.5 flex flex-wrap gap-2">
               {row.actions.map((action) =>
@@ -183,6 +187,12 @@ export function DiagnosticsPage() {
     queryKey: ['settings'],
     queryFn: () => api.getSettings(),
     retry: false,
+  })
+  const gpuSetupQuery = useQuery({
+    queryKey: ['gpu-setup'],
+    queryFn: () => api.getGPUSetup(),
+    retry: false,
+    refetchInterval: 60_000,
   })
   const runtimesQuery = useQuery({
     queryKey: ['runtimes'],
@@ -291,20 +301,24 @@ export function DiagnosticsPage() {
     // Where this computer's loaded models run (#317): amber when a model is
     // only partly on the GPU, or a GPU sits unused; the reason comes from
     // the model in that state.
+    // and what this computer still needs for its GPU, each with its fix.
     const accel = healthQuery.data?.acceleration
-    if (serviceOk && accel) {
+    const gpuProblems = Array.isArray(gpuSetupQuery.data?.problems) ? gpuSetupQuery.data.problems : []
+    if (serviceOk && (accel || gpuProblems.length > 0)) {
       const localId = nodes.find((n) => n.is_local)?.id
       const reason = running.find(
         (r) => (!localId || r.node_id === localId) && r.acceleration?.state === accel,
       )?.acceleration?.reason
-      const needsLook = accel === 'partial' || accel === 'cpu'
+      const modelsOff = accel === 'partial' || accel === 'cpu'
       out.push({
         id: 'gpu',
         label: t('rows.gpu.label'),
-        tone: needsLook ? 'warn' : 'ok',
-        detail: t(`rows.gpu.${accel}`),
-        message: needsLook && reason ? i18n.t(`common:acceleration.reason.${reason}`) : undefined,
-        actions: needsLook ? [{ kind: 'link', label: t('rows.gpu.openModels'), to: '/models' }] : undefined,
+        tone: modelsOff || gpuProblems.length > 0 ? 'warn' : 'ok',
+        detail: gpuProblems.length > 0 ? t('rows.gpu.setupNeeded') : t(`rows.gpu.${accel}`),
+        // The setup steps say what to do; without them, the model's reason does.
+        message: gpuProblems.length === 0 && modelsOff && reason ? i18n.t(`common:acceleration.reason.${reason}`) : undefined,
+        extra: gpuProblems.length > 0 ? <GPUSetupList problems={gpuProblems} /> : undefined,
+        actions: modelsOff ? [{ kind: 'link', label: t('rows.gpu.openModels'), to: '/models' }] : undefined,
       })
     }
 
@@ -395,6 +409,7 @@ export function DiagnosticsPage() {
     nodes,
     running,
     healthQuery.data?.acceleration,
+    gpuSetupQuery.data,
     runtimeInstalled,
     hasModel,
     diskAvail,

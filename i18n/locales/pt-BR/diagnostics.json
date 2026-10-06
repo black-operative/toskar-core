@@ -102,7 +102,19 @@
       "cpu": "A GPU não está sendo usada",
       "cpu_expected": "Só CPU (sem GPU)",
       "idle": "Nenhum modelo carregado",
-      "openModels": "Ver modelos em execução"
+      "openModels": "Ver modelos em execução",
+      "setupNeeded": "É preciso configurar a GPU",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "download": "Baixar o driver",
+      "problems": {
+        "vulkan_loader_missing": "O Vulkan não está instalado, e o Toskar precisa dele para usar a placa de vídeo. Rode isto num terminal e depois reinicie o Toskar:",
+        "vulkan_driver_missing": "O Vulkan não enxerga a placa de vídeo, então provavelmente falta o driver Vulkan dela. Rode isto num terminal e depois reinicie o Toskar:",
+        "render_access_denied": "O Toskar não tem permissão para usar a placa de vídeo. Adicione o usuário dele ao grupo render:",
+        "nvidia_driver_missing": "Esta placa NVIDIA precisa do driver da NVIDIA. Instale-o e depois reinicie o computador:",
+        "windows_driver_missing": "Esta placa de vídeo precisa do driver do fabricante, que traz o que o Toskar usa. Instale-o e depois reinicie o Toskar.",
+        "cpu_build": "O llama.cpp instalado só roda na CPU. Pare seus modelos, depois feche e abra o Toskar de novo para receber a versão para GPU."
+      }
     }
   },
   "env": {

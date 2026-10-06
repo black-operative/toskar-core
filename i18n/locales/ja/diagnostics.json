@@ -86,7 +86,19 @@
       "cpu": "GPUを使っていません",
       "cpu_expected": "CPUのみ（GPUなし）",
       "idle": "モデルは読み込まれていません",
-      "openModels": "実行中のモデルを見る"
+      "openModels": "実行中のモデルを見る",
+      "setupNeeded": "GPUの設定が必要",
+      "copy": "コピー",
+      "copied": "コピーしました",
+      "download": "ドライバーをダウンロード",
+      "problems": {
+        "vulkan_loader_missing": "Vulkanが入っていません。Toskarがグラフィックカードを使うには必要です。ターミナルで次を実行してから、Toskarを再起動してください:",
+        "vulkan_driver_missing": "Vulkanからグラフィックカードが見えないため、Vulkanドライバーが入っていないようです。ターミナルで次を実行してから、Toskarを再起動してください:",
+        "render_access_denied": "Toskarにグラフィックカードを使う権限がありません。ユーザーをrenderグループに追加してください:",
+        "nvidia_driver_missing": "このNVIDIAカードにはNVIDIAのドライバーが必要です。インストールしてから、コンピュータを再起動してください:",
+        "windows_driver_missing": "このグラフィックカードには、Toskarが使うものが含まれるメーカーのドライバーが必要です。インストールしてから、Toskarを再起動してください。",
+        "cpu_build": "インストールされているllama.cppはCPU専用です。モデルを停止し、Toskarを終了してから開き直すと、GPU版が入ります。"
+      }
     }
   },
   "env": {

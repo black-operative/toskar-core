@@ -343,6 +343,44 @@ type Acceleration struct {
 	GPUMemoryBytes uint64 `json:"gpu_memory_bytes,omitempty"`
 }
 
+// GPU setup problems, from GET /api/v1/diagnostics/gpu (#317).
+const (
+	// GPUProblemVulkanLoader: the Vulkan loader (libvulkan) isn't installed.
+	GPUProblemVulkanLoader = "vulkan_loader_missing"
+	// GPUProblemVulkanDriver: Vulkan is installed but finds no GPU, such as
+	// without Mesa's Vulkan drivers.
+	GPUProblemVulkanDriver = "vulkan_driver_missing"
+	// GPUProblemRenderAccess: Toskar may not open the card's render device.
+	GPUProblemRenderAccess = "render_access_denied"
+	// GPUProblemNVIDIADriver: an NVIDIA card without NVIDIA's driver.
+	GPUProblemNVIDIADriver = "nvidia_driver_missing"
+	// GPUProblemWindowsDriver: a Windows graphics card without its maker's
+	// driver, so without Vulkan.
+	GPUProblemWindowsDriver = "windows_driver_missing"
+	// GPUProblemCPUBuild: the CPU-only llama.cpp is installed where the GPU
+	// build would run.
+	GPUProblemCPUBuild = "cpu_build"
+)
+
+// GPUSetup is what stands between this computer's graphics card and
+// Toskar using it: nothing when the GPU is ready or there is none.
+type GPUSetup struct {
+	// GPU names the card found, or is empty when there is none.
+	GPU      string       `json:"gpu,omitempty"`
+	Problems []GPUProblem `json:"problems"`
+}
+
+// GPUProblem is one missing piece and how to fix it on this computer.
+type GPUProblem struct {
+	// Code is a GPUProblem* constant.
+	Code string `json:"code"`
+	// Command fixes it in a terminal, written for this computer (its
+	// package manager, its user), when a command can.
+	Command string `json:"command,omitempty"`
+	// URL is where to get what's missing, such as a driver download.
+	URL string `json:"url,omitempty"`
+}
+
 // LiveFigures are a computer's live CPU, memory, and GPU figures, now and
 // over the last hour and day (#317).
 type LiveFigures struct {

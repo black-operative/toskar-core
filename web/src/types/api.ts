@@ -174,6 +174,25 @@ export interface RunningModelView {
   acceleration?: Acceleration
 }
 
+/** What this computer still needs for Toskar to use its GPU (#317). */
+export interface GPUSetup {
+  gpu?: string
+  problems: GPUProblem[]
+}
+
+export interface GPUProblem {
+  code:
+    | 'vulkan_loader_missing'
+    | 'vulkan_driver_missing'
+    | 'render_access_denied'
+    | 'nvidia_driver_missing'
+    | 'windows_driver_missing'
+    | 'cpu_build'
+  /** A terminal command that fixes it on this computer. */
+  command?: string
+  url?: string
+}
+
 /** A computer's live CPU, memory, and GPU figures (#317). */
 export interface LiveFigures {
   node_id: string

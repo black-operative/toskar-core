@@ -86,7 +86,19 @@
       "cpu": "GPU를 사용하지 않음",
       "cpu_expected": "CPU만 사용(GPU 없음)",
       "idle": "로드된 모델 없음",
-      "openModels": "실행 중인 모델 보기"
+      "openModels": "실행 중인 모델 보기",
+      "setupNeeded": "GPU 설정 필요",
+      "copy": "복사",
+      "copied": "복사됨",
+      "download": "드라이버 다운로드",
+      "problems": {
+        "vulkan_loader_missing": "Vulkan이 설치되어 있지 않아요. Toskar가 그래픽 카드를 쓰려면 필요해요. 터미널에서 다음을 실행한 뒤 Toskar를 다시 시작하세요:",
+        "vulkan_driver_missing": "Vulkan이 그래픽 카드를 찾지 못해요. Vulkan 드라이버가 없는 것 같아요. 터미널에서 다음을 실행한 뒤 Toskar를 다시 시작하세요:",
+        "render_access_denied": "Toskar에 그래픽 카드를 사용할 권한이 없어요. 사용자를 render 그룹에 추가하세요:",
+        "nvidia_driver_missing": "이 NVIDIA 카드에는 NVIDIA 드라이버가 필요해요. 설치한 뒤 컴퓨터를 다시 시작하세요:",
+        "windows_driver_missing": "이 그래픽 카드에는 Toskar가 쓰는 기능이 들어 있는 제조사 드라이버가 필요해요. 설치한 뒤 Toskar를 다시 시작하세요.",
+        "cpu_build": "설치된 llama.cpp는 CPU에서만 실행돼요. 모델을 멈추고 Toskar를 종료했다가 다시 열면 GPU 버전을 받을 수 있어요."
+      }
     }
   },
   "env": {
