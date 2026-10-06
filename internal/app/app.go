@@ -614,6 +614,8 @@ func New(opts Options) (*App, error) {
 		RotateAPIKey:         apiKeyMgr.Rotate,
 		SetAPIKeyPermissions: apiKeyMgr.SetPermissions,
 		VerifyAPIKey:         apiKeyMgr.Verify,
+		Devices:              &auth.DevicePairer{CreateKey: apiKeyMgr.CreateDevice},
+		PhoneAddress:         a.phoneAddress,
 		StopChat:             a.StopChat,
 		Chat: func(w http.ResponseWriter, r *http.Request, conversationID, profileID, modelID, message string, stream bool, execution string) error {
 			return a.HandleHTTPChat(w, r, conversationID, profileID, modelID, message, stream, execution)

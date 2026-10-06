@@ -138,5 +138,12 @@
   "TRAINING_CANCELLED": "訓練已取消。",
   "UNAUTHORIZED": "這個 Toskar 需要 API 金鑰。",
   "UNREADABLE_FILE": "Toskar 無法讀取 {{name}}：{{cause}}",
-  "UNSUPPORTED_FILE": "Toskar 目前還無法讀取 {{name}}。請附加文件、試算表、PDF、程式碼檔案、音訊，或 PNG、JPEG 圖片。"
+  "UNSUPPORTED_FILE": "Toskar 目前還無法讀取 {{name}}。請附加文件、試算表、PDF、程式碼檔案、音訊，或 PNG、JPEG 圖片。",
+  "DEVICE_NOT_ALLOWED": "手機的金鑰無法執行此操作。請使用 API 存取中的金鑰。",
+  "PAIRING_EXPIRED": "此代碼已過期。請在電腦上再次選擇「連接手機」。",
+  "PAIRING_FAILED": "無法連接手機。",
+  "PAIRING_NOT_LOCAL": "手機只能從電腦所在的網路連接。",
+  "PAIRING_NOT_STARTED": "那台電腦沒有顯示代碼。請先在那台電腦上選擇「連接手機」。",
+  "PAIRING_THROTTLED": "嘗試次數過多。請等幾分鐘後再試。",
+  "PAIRING_WRONG_CODE": "這不是電腦上顯示的代碼。請檢查後再試。"
 }

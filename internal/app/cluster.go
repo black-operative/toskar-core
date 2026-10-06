@@ -98,6 +98,20 @@ func (a *App) bifrostAdvertiseAddr() string {
 	return net.JoinHostPort(host, strconv.Itoa(cfg.InternalPort))
 }
 
+// phoneAddress is where a phone on the local network reaches the API, and
+// whether it can yet: not while the API answers only on this computer (#216).
+func (a *App) phoneAddress() (string, bool) {
+	cfg := a.Config.Get()
+	host := cfg.AdvertiseHost
+	if host == "" {
+		host = firstNonLoopbackIPv4()
+	}
+	if host == "" {
+		return "", false
+	}
+	return net.JoinHostPort(host, strconv.Itoa(cfg.APIPort)), config.ListensBeyondLoopback(cfg.APIHost)
+}
+
 func firstNonLoopbackIPv4() string {
 	ifaces, err := net.Interfaces()
 	if err != nil {

@@ -36,10 +36,25 @@ type APIKeyRecord struct {
 	Revoked   bool       `json:"revoked"`
 	// Permissions is what the key may ask of the assistant (§62).
 	Permissions APIKeyPermissions `json:"permissions"`
+	// Kind is empty for a key made in API Access, or KindDevice for one a
+	// phone got by pairing (#216), which reaches only what the phone uses.
+	Kind string `json:"kind,omitempty"`
 }
+
+// KindDevice is a key a phone got by pairing.
+const KindDevice = "device"
 
 // Create generates a new API key; secret returned once.
 func (m *APIKeyManager) Create(ctx context.Context, name string) (record APIKeyRecord, secret string, err error) {
+	return m.create(ctx, name, "")
+}
+
+// CreateDevice generates a key for a paired phone; secret returned once.
+func (m *APIKeyManager) CreateDevice(ctx context.Context, name string) (APIKeyRecord, string, error) {
+	return m.create(ctx, name, KindDevice)
+}
+
+func (m *APIKeyManager) create(ctx context.Context, name, kind string) (record APIKeyRecord, secret string, err error) {
 	if name == "" {
 		name = "default"
 	}
@@ -56,12 +71,12 @@ func (m *APIKeyManager) Create(ctx context.Context, name string) (record APIKeyR
 	prefix := secret[:12]
 	now := time.Now().UTC()
 	_, err = m.db.ExecContext(ctx, `
-		INSERT INTO api_keys (id, name, key_prefix, key_hash, created_at)
-		VALUES (?, ?, ?, ?, ?)`, id, name, prefix, string(hash), now.Format(time.RFC3339Nano))
+		INSERT INTO api_keys (id, name, key_prefix, key_hash, created_at, kind)
+		VALUES (?, ?, ?, ?, ?, ?)`, id, name, prefix, string(hash), now.Format(time.RFC3339Nano), kind)
 	if err != nil {
 		return record, "", err
 	}
-	return APIKeyRecord{ID: id, Name: name, Prefix: prefix, CreatedAt: now, Permissions: DefaultAPIKeyPermissions()}, secret, nil
+	return APIKeyRecord{ID: id, Name: name, Prefix: prefix, CreatedAt: now, Permissions: DefaultAPIKeyPermissions(), Kind: kind}, secret, nil
 }
 
 // Adopt hashes a caller-supplied key when that key is not already valid.
@@ -103,12 +118,12 @@ func (m *APIKeyManager) Verify(ctx context.Context, secret string) (APIKeyRecord
 	}
 	prefix := secret[:12]
 	row := m.db.QueryRowContext(ctx, `
-		SELECT id, name, key_prefix, key_hash, created_at, revoked_at, last_used_at, permissions
+		SELECT id, name, key_prefix, key_hash, created_at, revoked_at, last_used_at, permissions, kind
 		FROM api_keys WHERE key_prefix = ? AND revoked_at IS NULL`, prefix)
 	var rec APIKeyRecord
 	var hash, created string
 	var revoked, lastUsed, perms sql.NullString
-	if err := row.Scan(&rec.ID, &rec.Name, &rec.Prefix, &hash, &created, &revoked, &lastUsed, &perms); err != nil {
+	if err := row.Scan(&rec.ID, &rec.Name, &rec.Prefix, &hash, &created, &revoked, &lastUsed, &perms, &rec.Kind); err != nil {
 		return APIKeyRecord{}, fmt.Errorf("invalid api key")
 	}
 	rec.Permissions = parsePermissions(perms)
@@ -127,7 +142,7 @@ func (m *APIKeyManager) Verify(ctx context.Context, secret string) (APIKeyRecord
 // List returns non-revoked keys (metadata only).
 func (m *APIKeyManager) List(ctx context.Context) ([]APIKeyRecord, error) {
 	rows, err := m.db.QueryContext(ctx, `
-		SELECT id, name, key_prefix, created_at, revoked_at, last_used_at, permissions
+		SELECT id, name, key_prefix, created_at, revoked_at, last_used_at, permissions, kind
 		FROM api_keys ORDER BY created_at DESC`)
 	if err != nil {
 		return nil, err
@@ -138,7 +153,7 @@ func (m *APIKeyManager) List(ctx context.Context) ([]APIKeyRecord, error) {
 		var rec APIKeyRecord
 		var created string
 		var revoked, lastUsed, perms sql.NullString
-		if err := rows.Scan(&rec.ID, &rec.Name, &rec.Prefix, &created, &revoked, &lastUsed, &perms); err != nil {
+		if err := rows.Scan(&rec.ID, &rec.Name, &rec.Prefix, &created, &revoked, &lastUsed, &perms, &rec.Kind); err != nil {
 			return nil, err
 		}
 		rec.Permissions = parsePermissions(perms)
@@ -175,16 +190,17 @@ func (m *APIKeyManager) Revoke(ctx context.Context, id string) error {
 
 // Rotate revokes old key and creates a new one with same name.
 func (m *APIKeyManager) Rotate(ctx context.Context, id string) (APIKeyRecord, string, error) {
-	var name string
+	var name, kind string
 	var perms sql.NullString
-	err := m.db.QueryRowContext(ctx, `SELECT name, permissions FROM api_keys WHERE id = ?`, id).Scan(&name, &perms)
+	err := m.db.QueryRowContext(ctx, `SELECT name, permissions, kind FROM api_keys WHERE id = ?`, id).Scan(&name, &perms, &kind)
 	if err != nil {
 		return APIKeyRecord{}, "", fmt.Errorf("api key %q not found", id)
 	}
 	if err := m.Revoke(ctx, id); err != nil {
 		return APIKeyRecord{}, "", err
 	}
-	rec, secret, err := m.Create(ctx, name)
+	// A phone's key stays a phone's key.
+	rec, secret, err := m.create(ctx, name, kind)
 	if err != nil {
 		return rec, secret, err
 	}

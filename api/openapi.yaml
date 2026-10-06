@@ -963,6 +963,55 @@ paths:
           description: The key, with its permissions
         "400":
           description: Invalid permissions or unknown key
+  /api/v1/devices/pairing:
+    post:
+      summary: Show a 6-digit code a phone connects with, replacing any other
+      operationId: startDevicePairing
+      responses:
+        "201":
+          description: The code, when it expires, this computer's address, and whether a phone can reach it yet
+    get:
+      summary: Whether a phone has connected with the code shown
+      operationId: getDevicePairing
+      responses:
+        "200":
+          description: The state (waiting, connected, expired, or cancelled) and the phone's key record, without the code
+    delete:
+      summary: Stop showing the code
+      operationId: cancelDevicePairing
+      responses:
+        "204":
+          description: Stopped
+  /api/v1/devices/pair:
+    post:
+      summary: A phone exchanges the code for its own key (no key needed; local network only)
+      operationId: pairDevice
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code:
+                  type: string
+                  example: "123456"
+                device_name:
+                  type: string
+                  example: Sam's iPhone
+      responses:
+        "201":
+          description: The phone's key (api_key, shown once) and its record, with kind device
+        "401":
+          description: PAIRING_WRONG_CODE
+        "403":
+          description: PAIRING_NOT_LOCAL
+        "410":
+          description: PAIRING_NOT_STARTED or PAIRING_EXPIRED
+        "429":
+          description: PAIRING_THROTTLED
   /api/v1/egress:
     get:
       summary: What left this computer, newest first

@@ -10,6 +10,32 @@ The web UI calls this setting local network access. Turning it on stores `api_ho
 
 Create a key from the web UI or `POST /api/v1/api-keys`. The response includes the secret once. The database stores a bcrypt hash and a prefix. The plaintext key is not written to disk. Revoke with `DELETE /api/v1/api-keys/{id}` and rotate with `POST /api/v1/api-keys/{id}/rotate`. Do not put the key in a URL or query string. Those requests are rejected.
 
+### Connecting a phone
+
+A phone gets its own key with a 6-digit code instead of a copied secret:
+
+1. **The computer shows a code.** Its own UI calls `POST /api/v1/devices/pairing`, which returns `code`, `expires_at` (10 minutes on), `address` (where a phone reaches this computer, such as `192.168.1.20:7331`), and `reachable` (false while the API answers only on this computer). A new code replaces the last one. `GET /api/v1/devices/pairing` returns the same without the code, plus `state` (`waiting`, `connected`, `expired`, or `cancelled`) and `device`, the key a phone connected with. `DELETE` stops showing the code.
+2. **The phone sends it.** `POST /api/v1/devices/pair` with `{"code": "123456", "device_name": "Sam's iPhone"}` needs no key. It answers `201` with `api_key`, shown once, and `key`, its record, named after the phone, with `kind` `device`.
+
+Rules for the exchange:
+- **Local network only:** the exchange answers only from this computer's network (private, link-local, and 100.64/10 addresses). A request through a proxy (`Forwarded`, `X-Forwarded-For`, `X-Real-IP`) is refused with `PAIRING_NOT_LOCAL`.
+- **Single use:** a code works once.
+- **Wrong codes:** five wrong codes cancel it (`PAIRING_WRONG_CODE`, then `PAIRING_NOT_STARTED`).
+- **Too many tries:** an address gets ten tries in ten minutes (`PAIRING_THROTTLED`, `429`).
+- **Expiry:** an expired code returns `PAIRING_EXPIRED` (`410`).
+
+Only the code's hash is kept, in memory, so restarting the daemon ends it.
+
+A phone's key reaches only what the phone uses:
+- chat and Stop;
+- conversations and their messages, including renaming and deleting them;
+- live events;
+- answering a tool's question;
+- the chat's files;
+- read-only lists: health, version, settings, profiles, models, running models, and computers.
+
+Anything else returns `403` `DEVICE_NOT_ALLOWED`. It appears in `GET /api-keys` with `kind` `device`, keeps that kind when rotated, and is revoked like any other key. Over plain HTTP the code and the key can be read by others on the same network, as any key can.
+
 `TOSKAR_API_KEY`, when set, is hashed at startup if that secret is not already valid. The Docker image binds `0.0.0.0` and will not start until that variable is set or a key is already in the data directory. The cluster compose file sets a local test key for that reason.
 
 A bearer token on plain HTTP does not encrypt traffic. It stops anonymous use of a trusted LAN. TLS or mTLS for remote access is not implemented.
@@ -229,6 +255,8 @@ Uploads send `text`, or `content_base64` for binary files such as `.xlsx` and `.
 | DELETE | `/api-keys/{id}` | Revoke a key |
 | POST | `/api-keys/{id}/rotate` | Replace a key's secret; its permissions are kept |
 | PUT | `/api-keys/{id}/permissions` | Set what requests with the key may use |
+| POST, GET, DELETE | `/devices/pairing` | Show a code a phone connects with, see whether one has, or stop ([Connecting a phone](#connecting-a-phone)) |
+| POST | `/devices/pair` | A phone exchanges the code for its own key; no key needed, local network only |
 | GET, POST | `/benchmarks` | Benchmark runs, or start one |
 | GET | `/benchmarks/workloads` | The workloads a benchmark can run |
 | GET | `/benchmarks/{id}` | One benchmark. `POST /benchmarks/{id}/cancel` stops it. |

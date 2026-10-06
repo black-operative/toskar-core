@@ -138,5 +138,12 @@
   "TRAINING_CANCELLED": "Se canceló el entrenamiento.",
   "UNAUTHORIZED": "Este Toskar necesita una clave de API.",
   "UNREADABLE_FILE": "Toskar no puede leer {{name}}: {{cause}}",
-  "UNSUPPORTED_FILE": "Toskar todavía no puede leer {{name}}. Adjunta un documento, una hoja de cálculo, un PDF, un archivo de código, audio o una imagen PNG o JPEG."
+  "UNSUPPORTED_FILE": "Toskar todavía no puede leer {{name}}. Adjunta un documento, una hoja de cálculo, un PDF, un archivo de código, audio o una imagen PNG o JPEG.",
+  "DEVICE_NOT_ALLOWED": "La clave de un teléfono no puede hacer esto. Usa una clave de Acceso a la API.",
+  "PAIRING_EXPIRED": "Ese código ha caducado. Vuelve a elegir Conectar un teléfono en el ordenador.",
+  "PAIRING_FAILED": "No se pudo conectar el teléfono.",
+  "PAIRING_NOT_LOCAL": "Un teléfono solo puede conectarse desde la red del ordenador.",
+  "PAIRING_NOT_STARTED": "Ese ordenador no muestra ningún código. Elige primero Conectar un teléfono en él.",
+  "PAIRING_THROTTLED": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+  "PAIRING_WRONG_CODE": "Ese no es el código que muestra el ordenador. Revísalo y vuelve a intentarlo."
 }

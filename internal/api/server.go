@@ -81,34 +81,39 @@ type Dependencies struct {
 	ListMessages          func(ctx context.Context, conversationID string) ([]contracts.Message, error)
 	Chat                  func(w http.ResponseWriter, r *http.Request, conversationID, profileID, modelID, message string, stream bool, execution string) error
 	// StopChat stops a conversation's running turn and reports whether one was running.
-	StopChat               func(conversationID string) bool
-	ListTasks              func(ctx context.Context) ([]contracts.Task, error)
-	CreateTask             func(ctx context.Context, profileID, conversationID, prompt string) (contracts.Task, error)
-	GetTask                func(ctx context.Context, id string) (contracts.Task, error)
-	RunTask                func(ctx context.Context, id string) error
-	ListAutomations        func(ctx context.Context) ([]automations.Automation, error)
-	CreateAutomation       func(ctx context.Context, in automations.CreateInput) (automations.Automation, error)
-	GetAutomation          func(ctx context.Context, id string) (automations.Detail, error)
-	UpdateAutomation       func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
-	DeleteAutomation       func(ctx context.Context, id string) error
-	RunAutomation          func(ctx context.Context, id string) (automations.Run, error)
-	PreviewAutomation      func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
-	PauseAutomation        func(ctx context.Context, id string) (automations.Automation, error)
-	ResumeAutomation       func(ctx context.Context, id string) (automations.Automation, error)
-	DecideTool             func(requestID string, allow, allowSession bool) error
-	ListTools              func(ctx context.Context) (any, error)
-	DescribeTool           func(ctx context.Context, id string) (any, error)
-	ListToolRuns           func(ctx context.Context, toolID, conversationID string, limit int) (any, error)
-	SetToolEnabled         func(ctx context.Context, id string, enabled bool) error
-	TestTool               func(ctx context.Context, id string, args map[string]any) (map[string]any, error)
-	ToolActivity           func() any
-	ToolProviders          func(ctx context.Context) any
-	ListAPIKeys            func(ctx context.Context) ([]auth.APIKeyRecord, error)
-	CreateAPIKey           func(ctx context.Context, name string) (auth.APIKeyRecord, string, error)
-	RevokeAPIKey           func(ctx context.Context, id string) error
-	RotateAPIKey           func(ctx context.Context, id string) (auth.APIKeyRecord, string, error)
-	SetAPIKeyPermissions   func(ctx context.Context, id string, p auth.APIKeyPermissions) (auth.APIKeyRecord, error)
-	VerifyAPIKey           func(ctx context.Context, secret string) (auth.APIKeyRecord, error)
+	StopChat             func(conversationID string) bool
+	ListTasks            func(ctx context.Context) ([]contracts.Task, error)
+	CreateTask           func(ctx context.Context, profileID, conversationID, prompt string) (contracts.Task, error)
+	GetTask              func(ctx context.Context, id string) (contracts.Task, error)
+	RunTask              func(ctx context.Context, id string) error
+	ListAutomations      func(ctx context.Context) ([]automations.Automation, error)
+	CreateAutomation     func(ctx context.Context, in automations.CreateInput) (automations.Automation, error)
+	GetAutomation        func(ctx context.Context, id string) (automations.Detail, error)
+	UpdateAutomation     func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
+	DeleteAutomation     func(ctx context.Context, id string) error
+	RunAutomation        func(ctx context.Context, id string) (automations.Run, error)
+	PreviewAutomation    func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
+	PauseAutomation      func(ctx context.Context, id string) (automations.Automation, error)
+	ResumeAutomation     func(ctx context.Context, id string) (automations.Automation, error)
+	DecideTool           func(requestID string, allow, allowSession bool) error
+	ListTools            func(ctx context.Context) (any, error)
+	DescribeTool         func(ctx context.Context, id string) (any, error)
+	ListToolRuns         func(ctx context.Context, toolID, conversationID string, limit int) (any, error)
+	SetToolEnabled       func(ctx context.Context, id string, enabled bool) error
+	TestTool             func(ctx context.Context, id string, args map[string]any) (map[string]any, error)
+	ToolActivity         func() any
+	ToolProviders        func(ctx context.Context) any
+	ListAPIKeys          func(ctx context.Context) ([]auth.APIKeyRecord, error)
+	CreateAPIKey         func(ctx context.Context, name string) (auth.APIKeyRecord, string, error)
+	RevokeAPIKey         func(ctx context.Context, id string) error
+	RotateAPIKey         func(ctx context.Context, id string) (auth.APIKeyRecord, string, error)
+	SetAPIKeyPermissions func(ctx context.Context, id string, p auth.APIKeyPermissions) (auth.APIKeyRecord, error)
+	VerifyAPIKey         func(ctx context.Context, secret string) (auth.APIKeyRecord, error)
+	// Devices makes the codes a phone connects with (#216).
+	Devices *auth.DevicePairer
+	// PhoneAddress is where a phone reaches this computer, and whether it
+	// can yet: false while the API answers only on this computer.
+	PhoneAddress           func() (address string, reachable bool)
 	GetSettings            func(ctx context.Context) (contracts.SettingsView, error)
 	UpdateSettings         func(ctx context.Context, patch map[string]any) (contracts.SettingsView, error)
 	ResetApp               func(ctx context.Context, deleteModels bool) (contracts.SettingsView, error)
@@ -266,6 +271,7 @@ func (s *Server) routes() {
 	s.knowledgeRoutes(api)
 	s.memoryRoutes(api)
 	s.artifactRoutes(api)
+	s.deviceRoutes(api)
 	s.notificationRoutes(api)
 	s.connectorRoutes(api)
 	s.mcpRoutes(api)
@@ -344,6 +350,13 @@ func (s *Server) controlAuthMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
+		route := routeTemplate(r)
+		// A phone connecting has no key yet; the code is its proof, and the
+		// handler answers only on the local network (#216).
+		if r.Method == http.MethodPost && route == "/api/v1"+pairDeviceRoute {
+			next.ServeHTTP(w, r)
+			return
+		}
 		token, err := auth.BearerToken(r)
 		if err != nil {
 			if errors.Is(err, auth.ErrAPIKeyInURL) {
@@ -357,12 +370,29 @@ func (s *Server) controlAuthMiddleware(next http.Handler) http.Handler {
 			writeErr(w, http.StatusUnauthorized, "UNAUTHORIZED", "authorization required", nil)
 			return
 		}
-		if _, err := s.deps.VerifyAPIKey(r.Context(), token); err != nil {
+		rec, err := s.deps.VerifyAPIKey(r.Context(), token)
+		if err != nil {
 			writeErr(w, http.StatusUnauthorized, "UNAUTHORIZED", "invalid api key", nil)
+			return
+		}
+		// A phone's key reaches only what the phone uses.
+		if rec.Kind == auth.KindDevice && !auth.DeviceMayReach(r.Method, route) {
+			writeErr(w, http.StatusForbidden, "DEVICE_NOT_ALLOWED", "a phone's key can't do this; use a key from API Access", nil)
 			return
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+// routeTemplate is the matched route's path template, such as
+// /api/v1/conversations/{id}, or the request path when none matched.
+func routeTemplate(r *http.Request) string {
+	if route := mux.CurrentRoute(r); route != nil {
+		if tpl, err := route.GetPathTemplate(); err == nil {
+			return tpl
+		}
+	}
+	return r.URL.Path
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
