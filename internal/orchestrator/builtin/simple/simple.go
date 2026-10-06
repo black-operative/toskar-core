@@ -183,6 +183,9 @@ func (o *Orchestrator) Run(
 				lookedUp = true
 			}
 		}
+		if climateQuestion(task.Prompt) {
+			instructions += "\n" + climateGuidance
+		}
 		// evidence is what the answer may draw figures from, for the check.
 		evidence := reference
 		toolPrompt := tools.PromptFor(profile)
@@ -301,9 +304,9 @@ func (o *Orchestrator) Run(
 					"tool_id":  parsed.Call.ID,
 					"format":   parsed.Format,
 				})
-				if parsed.Text != "" {
-					ch <- pluginapi.OrchestrationEvent{Type: "agent.message", Role: role, NodeID: nodeID, Content: parsed.Text}
-				}
+				// Text written before the call ("Let me find that for you") is
+				// not part of the answer; the tool's own step says what's
+				// happening (#280).
 				result, err := env.ExecuteTool(ctx, parsed.Call.ID, parsed.Call.Args)
 				if err == nil {
 					if def, ok := tools.Lookup(parsed.Call.ID); ok && def.Risk != tools.RiskRead {

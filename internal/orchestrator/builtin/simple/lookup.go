@@ -194,6 +194,9 @@ func lookUp(ctx context.Context, env pluginapi.ExecutionEnvironment, profile con
 // lookupGuidance tells the model how to use what was looked up.
 const lookupGuidance = "Toskar already searched the web for this question; the results are in the reference material. Answer from them directly: state the facts and include the most relevant link. Do not mention the search, the results, or reference material. If they do not answer the question, say so."
 
+// climateGuidance is for a weather question about a time of year (#280).
+const climateGuidance = "This question is about the usual weather at a time of year, not today's. Answer with typical figures for that time, such as average highs and lows and how often it rains, from the reference material, and say they are typical. Never give today's reading or a current forecast as the answer. If a word could be a month or part of a place name, such as \"June, Alaska\" (Juneau), say which you took it to be."
+
 // withoutWeb removes web tools for a turn whose lookup is already done, so a
 // small model answers instead of searching again.
 func withoutWeb(profile contracts.AIProfile) contracts.AIProfile {

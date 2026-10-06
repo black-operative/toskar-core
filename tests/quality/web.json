@@ -2,6 +2,26 @@
   "about": "Web pages the quality set reads instead of the live web, so every run sees the same pages. A search gets the results of the first site whose `match` matches the query; a page is found by the longest URL prefix in any site's `pages`. Facts here are fixtures for the tests, not current information. The iPhone app's quality run serves the same pages.",
   "sites": [
     {
+      "topic": "weather by month",
+      "match": "(?i)\\b(january|february|march|april|may|june|july|august|september|october|november|december|average|usually|typical|climate)\\b.*\\b(weather|temperature)|\\b(weather|temperature)\\b.*\\b(january|february|march|april|may|june|july|august|september|october|november|december|average|usually|typical|climate)\\b",
+      "results": [
+        {
+          "title": "Juneau, AK Monthly Weather | weather.com",
+          "url": "https://weather.com/weather/monthly/l/Juneau+AK",
+          "snippet": "Juneau monthly averages: highs, lows, and rain by month."
+        },
+        {
+          "title": "Juneau weather in June: what to expect",
+          "url": "https://www.travel-example.com/juneau-weather-june",
+          "snippet": "June in Juneau: mild, often cloudy, with highs around 61°F."
+        }
+      ],
+      "pages": {
+        "https://weather.com/weather/monthly/": "Juneau, AK monthly weather averages. June: average high 61°F, average low 47°F, about 15 days with rain, mostly cloudy. July: average high 64°F, average low 51°F.",
+        "https://www.travel-example.com/": "Juneau in June is mild: midday temperatures are usually in the high 50s to low 60s °F, skies are often cloudy, and light rain is common. Pack a rain jacket."
+      }
+    },
+    {
       "topic": "weather",
       "match": "(?i)weather|forecast|rain|umbrella|temperature|how (cold|warm|hot)",
       "results": [

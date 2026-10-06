@@ -81,7 +81,12 @@ type Expect struct {
 	ApprovalFor    []string `json:"approval_for"`
 	NotRun         []string `json:"not_run"`
 	PromptContains []string `json:"prompt_contains"`
-	AnswerMatches  string   `json:"answer_matches"`
+	// PromptLacks are texts the model must never be sent (stub only), such
+	// as a page that doesn't answer the question.
+	PromptLacks   []string `json:"prompt_lacks"`
+	AnswerMatches string   `json:"answer_matches"`
+	// AnswerLacks fails an answer that matches it, with either model.
+	AnswerLacks string `json:"answer_lacks"`
 	// AnswerRealOnly checks AnswerMatches only against a real model; the
 	// stub's scripted answer proves nothing.
 	AnswerRealOnly bool `json:"answer_real_only"`
@@ -379,10 +384,18 @@ func check(driver string, c Case, r Result, deflection *regexp.Regexp) []string 
 				fail("the model never saw %q", want)
 			}
 		}
+		for _, unwanted := range x.PromptLacks {
+			if promptHas(r.Prompts, unwanted) {
+				fail("the model was sent %q", unwanted)
+			}
+		}
 	}
 	if x.NoFalseClaims && huginn.ClaimsAction(r.Answer) && len(r.toolIDs("tool.started")) == 0 &&
 		(r.Meta == nil || !strings.Contains(strings.ToLower(r.Meta.Notice), "nothing was changed")) {
 		fail("answer claims a change that never happened, with no notice: %q", r.Answer)
+	}
+	if x.AnswerLacks != "" && regexp.MustCompile(x.AnswerLacks).MatchString(r.Answer) {
+		fail("answer %q matches %q", r.Answer, x.AnswerLacks)
 	}
 	if x.AnswerMatches != "" && (driver != "stub" || !x.AnswerRealOnly) {
 		if !regexp.MustCompile(x.AnswerMatches).MatchString(r.Answer) {

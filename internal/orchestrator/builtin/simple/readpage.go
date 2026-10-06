@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/yeixio/toskar-core/internal/tools"
@@ -125,9 +126,32 @@ func livePageURLs(prompt string, args map[string]any, result map[string]any) []s
 	return urls
 }
 
+// climateRe matches a question about the usual weather at a time of year:
+// a month, a season, "usually", "on average". nowRe matches one about now.
+var (
+	climateRe = regexp.MustCompile(`(?i)\b(january|february|march|april|in may|during may|june|july|august|september|october|november|december|spring|summer|autumn|in (the )?fall|winter|usually|typically|typical|on average|average|normally|in general|climate|best time)\b`)
+	nowRe     = regexp.MustCompile(`(?i)\b(now|today|tonight|tomorrow|currently|current|this (morning|afternoon|evening|week|weekend)|next (few days|week))\b`)
+)
+
+// weatherQuestion reports a question about the weather.
+func weatherQuestion(prompt string) bool {
+	lower := strings.ToLower(prompt)
+	return strings.Contains(lower, "weather") || strings.Contains(lower, "forecast") || strings.Contains(lower, "temperature")
+}
+
+// climateQuestion reports a weather question about a time of year rather
+// than now, such as "the weather in Juneau in June". Today's reading doesn't
+// answer it; the climate pages do (#280).
+func climateQuestion(prompt string) bool {
+	return weatherQuestion(prompt) && climateRe.MatchString(prompt) && !nowRe.MatchString(prompt)
+}
+
 func weatherObservationURL(prompt string, args map[string]any) string {
 	lower := strings.ToLower(prompt)
 	if !strings.Contains(lower, "weather") && !strings.Contains(lower, "forecast") {
+		return ""
+	}
+	if climateQuestion(prompt) {
 		return ""
 	}
 	query, _ := args["query"].(string)
@@ -146,7 +170,8 @@ func weatherPlace(value string) string {
 		"weather": true, "forecast": true, "current": true, "today": true, "the": true,
 		"for": true, "in": true, "show": true, "me": true, "what": true, "is": true,
 		"whats": true, "what's": true, "can": true, "you": true, "please": true,
-		"a": true, "right": true, "now": true, "my": true,
+		"a": true, "right": true, "now": true, "my": true, "like": true, "be": true,
+		"will": true, "it": true, "going": true, "gonna": true, "outside": true, "to": true,
 	}
 	var kept []string
 	for _, word := range strings.Fields(strings.ToLower(value)) {
@@ -178,6 +203,8 @@ func orderedSearchURLs(prompt string, result map[string]any) []string {
 	if !strings.Contains(lower, "weather") && !strings.Contains(lower, "forecast") {
 		return urls
 	}
+	// A forecast or today's reading doesn't answer a question about a month.
+	climate := climateQuestion(prompt)
 	var preferred, rest []string
 	for _, rawURL := range urls {
 		host := pageHost(rawURL)
@@ -186,6 +213,9 @@ func orderedSearchURLs(prompt string, result map[string]any) []string {
 			continue
 		}
 		rest = append(rest, rawURL)
+	}
+	if climate {
+		return append(rest, preferred...)
 	}
 	return append(preferred, rest...)
 }

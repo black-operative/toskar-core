@@ -1391,6 +1391,62 @@
           "content": "Banana bread: mash 3 ripe bananas, fold in 2 cups of flour, and bake at 350 °F for an hour."
         }
       ]
+    },
+    {
+      "id": "weather_in_a_month",
+      "what": "A question about the weather in a month is answered from the climate pages, not today's reading (#280).",
+      "platforms": [
+        "core",
+        "phone"
+      ],
+      "setup": {
+        "tools": {
+          "internet.search": "allow",
+          "internet.open": "allow"
+        }
+      },
+      "message": "What's the weather like in Juneau in June?",
+      "stub": [
+        "Juneau in June usually has highs around 61°F and lows near 47°F, often cloudy with some rain (https://weather.com/weather/monthly/l/Juneau+AK)."
+      ],
+      "expect": {
+        "sources": [
+          "web"
+        ],
+        "prompt_contains": [
+          "average high 61"
+        ],
+        "prompt_lacks": [
+          "+48°F"
+        ],
+        "answer_matches": "(?i)\\b(5[0-9]|6[0-9])\\b",
+        "answer_lacks": "\\+\\d+ ?°",
+        "no_deflection": true
+      }
+    },
+    {
+      "id": "text_before_a_tool_call_is_not_shown",
+      "what": "What the model writes before calling a tool (\"Let me check that for you\") is not part of the answer (#280).",
+      "stub_only": true,
+      "setup": {
+        "tools": {
+          "terminal": "ask"
+        }
+      },
+      "message": "How much disk space is free? Run df -h.",
+      "stub": [
+        "Let me check that for you.\n{\"tool_call\":{\"id\":\"terminal\",\"args\":{\"command\":\"df -h\"}}}",
+        "I didn't run the command, because you didn't approve it."
+      ],
+      "expect": {
+        "approval_for": [
+          "terminal"
+        ],
+        "not_run": [
+          "terminal"
+        ],
+        "answer_lacks": "(?i)let me check"
+      }
     }
   ]
 }
