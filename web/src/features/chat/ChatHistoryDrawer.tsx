@@ -164,44 +164,52 @@ export function ChatHistoryDrawer({
       aria-modal={overlay ? true : undefined}
       aria-label={t('history.label')}
     >
-      <div className="flex shrink-0 items-center gap-2 border-b border-line/40 px-3 py-3">
-        <h2 className="flex-1 font-display text-base font-semibold text-ink">{t('history.title')}</h2>
+      {/* The same height and border as the chat's header, so the two line up. */}
+      <div className="chat-header ps-4">
+        <h2 className="flex-1 font-display text-[15px] font-semibold text-ink">{t('history.title')}</h2>
         {canPinDrawer && (
           <button
             type="button"
-            className={[
-              'rounded-md px-2 py-1 text-xs transition',
-              drawerPinned
-                ? 'bg-primary-soft text-primary-active'
-                : 'text-ink-faint hover:bg-raised hover:text-ink',
-            ].join(' ')}
+            className={['chat-header-button px-0', drawerPinned ? 'bg-primary-soft text-primary-active' : ''].join(' ')}
             title={drawerPinned ? t('history.unpinSidebar') : t('history.pinSidebar')}
+            aria-label={drawerPinned ? t('history.unpinSidebar') : t('history.pinSidebar')}
             aria-pressed={drawerPinned}
             onClick={onToggleDrawerPinned}
           >
-            {drawerPinned ? t('history.pinned') : t('history.pin')}
+            {/* A panel docked to the side, filled in while it is. */}
+            <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round" aria-hidden>
+              <rect x="2" y="2.5" width="12" height="11" rx="2" />
+              <path d="M6.5 2.5v11" />
+              {drawerPinned ? <path d="M2.7 3.2h3.8v9.6H2.7z" fill="currentColor" stroke="none" /> : null}
+            </svg>
           </button>
         )}
         <button
           type="button"
-          className="rounded-md px-2 py-1 text-sm text-ink-faint hover:bg-raised hover:text-ink"
+          className="chat-header-button px-0"
           title={t('history.close')}
           aria-label={t('history.close')}
           onClick={onClose}
         >
-          ×
+          <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+            <path d="m4 4 8 8M12 4l-8 8" />
+          </svg>
         </button>
       </div>
 
       <div className="shrink-0 px-3 pt-3">
-        <label className="block">
+        <label className="relative block">
           <span className="sr-only">{t('history.search')}</span>
+          <svg viewBox="0 0 16 16" className="pointer-events-none absolute start-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-faint" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+            <circle cx="7" cy="7" r="4.5" />
+            <path d="m10.5 10.5 3 3" />
+          </svg>
           <input
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t('history.searchPlaceholder')}
-            className="field w-full py-2 text-sm"
+            className="field w-full py-1.5 ps-8 pe-3 text-sm"
             data-autofocus={overlay ? true : undefined}
           />
         </label>
@@ -230,7 +238,7 @@ export function ChatHistoryDrawer({
 
         {grouped.map((group) => (
           <div key={group.label} className="mb-4">
-            <p className="mb-1 px-2 text-[11px] font-medium uppercase tracking-wide text-ink-faint">
+            <p className="label-caps mb-1 px-2.5">
               {t(`history.groups.${group.label}`)}
             </p>
             <ul className="space-y-0.5">
@@ -265,15 +273,15 @@ export function ChatHistoryDrawer({
                             isPinned && !isSelected ? 'text-ink' : '',
                           ].join(' ')}
                         >
-                          <span className="flex min-w-0 items-start gap-1.5">
+                          <span className="flex min-w-0 items-center gap-1.5">
                             {isPinned ? (
                               <span
-                                className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                                className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
                                 aria-hidden
                                 title={t('history.pinned')}
                               />
                             ) : null}
-                            <span className="line-clamp-2 min-w-0">
+                            <span className="min-w-0 truncate">
                               {conversation.title || t('history.untitled')}
                             </span>
                           </span>
@@ -282,7 +290,7 @@ export function ChatHistoryDrawer({
                           <button
                             type="button"
                             className={[
-                              'rounded px-1.5 py-0.5 text-xs text-ink-faint hover:bg-raised hover:text-ink',
+                              'inline-flex h-7 w-7 items-center justify-center rounded-md text-ink-faint transition hover:bg-raised hover:text-ink',
                               isSelected || menuOpenId === conversation.id
                                 ? 'opacity-100'
                                 : 'opacity-0 group-hover:opacity-100 focus:opacity-100',
@@ -296,11 +304,15 @@ export function ChatHistoryDrawer({
                               )
                             }}
                           >
-                            ···
+                            <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor" aria-hidden>
+                              <circle cx="3.5" cy="8" r="1.2" />
+                              <circle cx="8" cy="8" r="1.2" />
+                              <circle cx="12.5" cy="8" r="1.2" />
+                            </svg>
                           </button>
                           {menuOpenId === conversation.id && (
                             <div
-                              className="absolute end-0 top-full z-40 mt-1 min-w-[8.5rem] rounded-lg border border-line bg-surface py-1 shadow-panel"
+                              className="absolute end-0 top-full z-40 mt-1 min-w-[9rem] rounded-xl border border-line/70 bg-surface p-1 shadow-panel"
                               ref={menuRef}
                               role="menu"
                               onKeyDown={rovingKeyDown}
@@ -309,7 +321,7 @@ export function ChatHistoryDrawer({
                               <button
                                 type="button"
                                 role="menuitem"
-                                className="block w-full px-3 py-1.5 text-start text-sm text-ink hover:bg-raised"
+                                className="block w-full rounded-lg px-3 py-1.5 text-start text-sm text-ink hover:bg-raised"
                                 onClick={(e) => {
                                   setMenuOpenId(null)
                                   onRename(conversation)
@@ -321,7 +333,7 @@ export function ChatHistoryDrawer({
                               <button
                                 type="button"
                                 role="menuitem"
-                                className="block w-full px-3 py-1.5 text-start text-sm text-ink hover:bg-raised"
+                                className="block w-full rounded-lg px-3 py-1.5 text-start text-sm text-ink hover:bg-raised"
                                 onClick={(e) => {
                                   setMenuOpenId(null)
                                   onTogglePin(conversation.id)
@@ -333,7 +345,7 @@ export function ChatHistoryDrawer({
                               <button
                                 type="button"
                                 role="menuitem"
-                                className="block w-full px-3 py-1.5 text-start text-sm text-danger hover:bg-danger/10"
+                                className="block w-full rounded-lg px-3 py-1.5 text-start text-sm text-danger hover:bg-danger/10"
                                 onClick={(e) => {
                                   setMenuOpenId(null)
                                   onDelete(conversation, e)
@@ -361,7 +373,7 @@ export function ChatHistoryDrawer({
       <>
         <button
           type="button"
-          className="absolute inset-0 z-20 bg-ink/25 animate-fade"
+          className="absolute inset-0 z-20 scrim animate-fade"
           aria-label={t('history.close')}
           onClick={onClose}
         />

@@ -163,7 +163,7 @@ function RateModelDialog({ modelId, modelName, onClose }: { modelId: string; mod
   const shares = rating?.shares
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center" role="presentation" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center scrim p-4 sm:items-center" role="presentation" onClick={onClose}>
       <div
         ref={dialogRef}
         className="card max-h-[90vh] w-full max-w-lg space-y-4 overflow-y-auto shadow-panel"

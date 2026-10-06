@@ -11,9 +11,9 @@ import { formatBytes } from '@/lib/format'
 
 const rowColor: Record<string, string> = {
   instructions: 'bg-ink-faint',
-  tools: 'bg-violet-400',
+  tools: 'bg-norn',
   conversation: 'bg-primary',
-  toolResults: 'bg-amber-400',
+  toolResults: 'bg-mimir',
 }
 
 export function ContextUsageButton({
@@ -123,34 +123,45 @@ export function ContextUsageButton({
   )
 }
 
+/**
+ * A meter, open at the bottom so it never reads as a radio button: the track
+ * sweeps 270°, and the fill follows it as the chat uses the model's window.
+ */
 function ContextRing({ percent, full }: { percent: number; full: boolean }) {
   const size = 18
   const stroke = 2
   const radius = (size - stroke) / 2
   const circ = 2 * Math.PI * radius
+  const sweep = circ * 0.75
   const shown = Math.max(0, Math.min(percent, 100))
-  const dash = (shown / 100) * circ
+  const dash = (shown / 100) * sweep
+  const c = size / 2
+  // Start at the lower left (135°) and run clockwise to the lower right.
+  const turn = `rotate(135 ${c} ${c})`
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
       <circle
-        cx={size / 2}
-        cy={size / 2}
+        cx={c}
+        cy={c}
         r={radius}
         fill="none"
-        className="stroke-line"
+        className="stroke-ink-faint/45"
         strokeWidth={stroke}
+        strokeLinecap="round"
+        strokeDasharray={`${sweep} ${circ}`}
+        transform={turn}
       />
       {shown > 0 ? (
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={c}
+          cy={c}
           r={radius}
           fill="none"
-          className={full ? 'stroke-danger' : 'stroke-primary'}
+          className={full ? 'stroke-danger' : shown >= 85 ? 'stroke-warning' : 'stroke-primary'}
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={`${dash} ${circ}`}
-          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          transform={turn}
         />
       ) : null}
     </svg>

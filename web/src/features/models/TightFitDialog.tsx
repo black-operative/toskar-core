@@ -14,7 +14,7 @@ export function TightFitDialog({
   const ref = useDialog(true, onCancel)
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center"
+      className="fixed inset-0 z-50 flex items-end justify-center scrim p-4 sm:items-center"
       role="presentation"
       onClick={onCancel}
     >

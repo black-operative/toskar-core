@@ -69,6 +69,7 @@ Headings go in order: one `h1` per page, then `h2` for sections and cards direct
 - **Section gap:** `--spacing-section`, 1.5rem.
 - **Radius:** `rounded-lg` for controls, `rounded-xl` for cards and panels (`--radius-panel`), `rounded-full` for avatars and dots.
 - **Shadow:** `var(--shadow-panel)` for cards and popovers. No other shadows.
+- **Scrim:** `.scrim` (`--scrim`) behind every modal dialog and drawer. It dims in both themes; never use `bg-ink/…`, which lightens the page in dark.
 - **Touch targets:** at least 24×24px everywhere, and 44×44px for the phone-width menu button and other primary touch controls.
 
 ## Components

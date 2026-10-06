@@ -51,7 +51,7 @@ export function AppLayout() {
     <div className="app-shell">
       <Sidebar ref={drawerRef} open={menuOpen} />
       {menuOpen ? (
-        <div className="fixed inset-0 z-30 bg-black/40 md:hidden" aria-hidden onClick={() => setMenuOpen(false)} />
+        <div className="fixed inset-0 z-30 scrim md:hidden" aria-hidden onClick={() => setMenuOpen(false)} />
       ) : null}
       <main inert={menuOpen} className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <div className="flex items-center gap-2 border-b border-line/60 bg-sidebar px-2 py-1.5 md:hidden">

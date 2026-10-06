@@ -1934,7 +1934,7 @@ export function ChatPage() {
       {pendingDelete && (
         <div
           ref={deleteDialogRef}
-          className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center"
+          className="fixed inset-0 z-50 flex items-end justify-center scrim p-4 sm:items-center"
           role="dialog"
           aria-modal="true"
           aria-labelledby="delete-chat-title"
@@ -1977,7 +1977,7 @@ export function ChatPage() {
       {pendingTool && (
         <div
           ref={toolDialogRef}
-          className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-4 sm:items-center"
+          className="fixed inset-0 z-50 flex items-end justify-center scrim p-4 sm:items-center"
           role="dialog"
           aria-modal="true"
           aria-labelledby="tool-permission-title"

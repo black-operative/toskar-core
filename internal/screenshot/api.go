@@ -72,7 +72,7 @@ func screenshotGET(path string) (string, bool) {
 	case path == "/api/v1/settings":
 		return screenshotSettings, true
 	case path == "/api/v1/conversations":
-		return screenshotConversations, true
+		return screenshotConversations(), true
 	case strings.HasPrefix(path, "/api/v1/conversations/") && strings.HasSuffix(path, "/messages"):
 		return screenshotMessages, true
 	case path == "/api/v1/api-keys":
@@ -323,14 +323,28 @@ const screenshotSettings = `{
   "launch_at_login": false
 }`
 
-const screenshotConversations = `[{
-  "id": "conv-local",
-  "title": "Plan a weekend trail loop",
-  "profile_id": "general-assistant",
-  "model_id": "gemma-4-e4b",
-  "created_at": "2026-09-24T15:00:00Z",
-  "updated_at": "2026-09-24T15:04:00Z"
-}]`
+// screenshotConversations is the chat history: the open chat from today and
+// a few older ones, dated relative to the capture so they fall into the
+// Today, Yesterday, Previous 7 days and Previous 30 days groups.
+func screenshotConversations() string {
+	now := time.Now().UTC()
+	ago := func(d time.Duration) string { return now.Add(-d).Format(time.RFC3339) }
+	return strings.NewReplacer(
+		"{{now}}", ago(4*time.Minute),
+		"{{earlier}}", ago(3*time.Hour),
+		"{{yesterday}}", ago(26*time.Hour),
+		"{{days}}", ago(4*24*time.Hour),
+		"{{weeks}}", ago(15*24*time.Hour),
+	).Replace(screenshotConversationsTemplate)
+}
+
+const screenshotConversationsTemplate = `[
+  {"id": "conv-local", "title": "Plan a weekend trail loop", "profile_id": "general-assistant", "model_id": "gemma-4-e4b", "created_at": "{{now}}", "updated_at": "{{now}}"},
+  {"id": "conv-budget", "title": "Sort out the monthly budget spreadsheet", "profile_id": "general-assistant", "model_id": "gemma-4-e4b", "created_at": "{{earlier}}", "updated_at": "{{earlier}}"},
+  {"id": "conv-code", "title": "Why does the build fail on Linux only?", "profile_id": "programming", "model_id": "gemma-4-e4b", "created_at": "{{yesterday}}", "updated_at": "{{yesterday}}"},
+  {"id": "conv-letter", "title": "Letter to the landlord about the heating", "profile_id": "general-assistant", "model_id": "gemma-4-e4b", "created_at": "{{days}}", "updated_at": "{{days}}"},
+  {"id": "conv-research", "title": "Compare three heat pumps for a small house", "profile_id": "research", "model_id": "gemma-4-e4b", "created_at": "{{weeks}}", "updated_at": "{{weeks}}"}
+]`
 
 const screenshotMessages = `[
   {
@@ -363,7 +377,8 @@ const screenshotMessages = `[
       "sources": [
         {"kind": "knowledge", "title": "Ridge and creek loop", "source": "Trail notes", "snippet": "Creek trail: 2.8 mi, gentle grade, rejoins the car park."},
         {"kind": "memory", "title": "Hiking", "snippet": "Likes to start hikes before 9 am."}
-      ]
+      ],
+      "context": {"prompt_tokens": 3140, "limit": 8192, "instructions": 920, "tools": 1180, "conversation": 760, "tool_results": 280}
     },
     "created_at": "2026-09-24T15:03:30Z"
   }

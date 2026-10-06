@@ -557,7 +557,7 @@ export function ApiAccessPage() {
       {lanConfirmOpen && (
         <div
           ref={lanDialogRef}
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4"
+          className="fixed inset-0 z-40 flex items-center justify-center scrim p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="lan-confirm-title"
