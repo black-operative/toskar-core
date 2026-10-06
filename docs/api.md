@@ -210,6 +210,7 @@ Uploads send `text`, or `content_base64` for binary files such as `.xlsx` and `.
 | POST | `/automations/preview` | Run an automation once without saving it |
 | GET, PATCH, DELETE | `/automations/{id}` | An automation with its history, change it, or delete it |
 | POST | `/automations/{id}/run`, `/pause`, `/resume` | Run now, pause, or resume |
+| GET | `/automations/{id}/runs` | Older runs, a page at a time (`before`, `limit`) |
 | GET | `/notifications` | The notification center: `{"notifications": [...], "unread": n}`. `?unread=1` lists unread ones; `?category=` lists one category. |
 | GET | `/notifications/{id}` | One notification with each channel's delivery |
 | GET, POST | `/notifications/destinations` | Email and webhook destinations; creating a webhook returns its signing `secret` once |
@@ -360,6 +361,8 @@ An automation's `notification.mode` is `condition`, `change`, `always`, `failure
 - **Time limit:** each run has 20 minutes. One that takes longer is stopped, fails with `AUTOMATION_TIMEOUT`, and isn't retried.
 - **Run now:** `POST /automations/{id}/run` answers `202` with the run as soon as it has started (`status` `running`). The run goes on without the request, so closing the page doesn't stop it. Its progress and result arrive as `automation.started`, then `automation.completed` or `automation.failed`, and in the automation's `history`. Running one that is already running answers `409` `AUTOMATION_RUNNING`. `toskarctl automations run` waits for the result.
 - **Retries:** a failed run is retried by its error code when it has one, such as `CONNECTION_LOST` or `COMPUTER_OFFLINE`, and never for `OUT_OF_MEMORY`, `NO_MODEL_INSTALLED`, or `AUTOMATION_TIMEOUT`. The error's text decides only for errors without a known code.
+- **History:** `GET /automations/{id}` includes the newest 20 runs in `history`, and `history_more` when there are older ones. `GET /automations/{id}/runs?before=<run id>&limit=` pages them, newest first: `{runs, more}`, up to 100 runs a page.
+- **Preview:** `POST /automations/preview` runs the draft in its `response_language`, with "today" in its schedule's time zone, as the saved automation will.
 - **Pausing:** an automation that fails three times in a row, for any reason, is paused, and its notification says why in the App language. Running out of memory pauses it after two.
 
 Notifications come from Gjallarhorn. Each one is stored first and then delivered to its channels. A notification has `category` (`automation`, `approval`, `model`, `training`, `health`, or `system`), `severity` (`info`, `success`, `warning`, or `error`), `title`, `body`, and a `link` back to its source in the app, such as `/automations?id=…`. Each channel's attempt is recorded in `deliveries`. A delivery is `delivered`, `failed`, or `suppressed`; for example, desktop notices are suppressed when `notify_task_finish` is off. A repeat with the same source within 10 minutes is counted on the first notification (`repeat_count`) and marks it unread again. The `notification.created` event carries `id`, `category`, `severity`, `title`, `body`, `message`, and `link`. Finished and failed automations post to the desktop too.

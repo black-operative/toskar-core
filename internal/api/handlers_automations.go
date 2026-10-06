@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gorilla/mux"
@@ -56,6 +57,22 @@ func (s *Server) handleGetAutomation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, detail)
+}
+
+// handleListAutomationRuns pages an automation's runs, newest first: before
+// is the last run of the page already shown (#204).
+func (s *Server) handleListAutomationRuns(w http.ResponseWriter, r *http.Request) {
+	if s.deps.ListAutomationRuns == nil {
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Automations are not available.", nil)
+		return
+	}
+	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
+	page, err := s.deps.ListAutomationRuns(r.Context(), mux.Vars(r)["id"], r.URL.Query().Get("before"), limit)
+	if err != nil {
+		writeAutomationErr(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, page)
 }
 
 func (s *Server) handleUpdateAutomation(w http.ResponseWriter, r *http.Request) {

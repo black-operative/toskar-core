@@ -91,6 +91,7 @@ type Dependencies struct {
 	ListAutomations      func(ctx context.Context) ([]automations.Automation, error)
 	CreateAutomation     func(ctx context.Context, in automations.CreateInput) (automations.Automation, error)
 	GetAutomation        func(ctx context.Context, id string) (automations.Detail, error)
+	ListAutomationRuns   func(ctx context.Context, id, before string, limit int) (automations.RunsPage, error)
 	UpdateAutomation     func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
 	DeleteAutomation     func(ctx context.Context, id string) error
 	RunAutomation        func(ctx context.Context, id string) (automations.Run, error)
@@ -236,6 +237,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/automations/{id}/pause", s.handlePauseAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}/resume", s.handleResumeAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}", s.handleGetAutomation).Methods(http.MethodGet, http.MethodOptions)
+	api.HandleFunc("/automations/{id}/runs", s.handleListAutomationRuns).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/automations/{id}", s.handleUpdateAutomation).Methods(http.MethodPatch)
 	api.HandleFunc("/automations/{id}", s.handleDeleteAutomation).Methods(http.MethodDelete)
 	api.HandleFunc("/tools", s.handleListTools).Methods(http.MethodGet, http.MethodOptions)
@@ -435,6 +437,7 @@ func (s *Server) BindAutomations(d Dependencies) {
 	s.deps.ListAutomations = d.ListAutomations
 	s.deps.CreateAutomation = d.CreateAutomation
 	s.deps.GetAutomation = d.GetAutomation
+	s.deps.ListAutomationRuns = d.ListAutomationRuns
 	s.deps.UpdateAutomation = d.UpdateAutomation
 	s.deps.DeleteAutomation = d.DeleteAutomation
 	s.deps.RunAutomation = d.RunAutomation

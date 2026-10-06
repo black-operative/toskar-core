@@ -33,11 +33,27 @@ type Run struct {
 	CreatedAt        time.Time  `json:"created_at"`
 }
 
-// Detail is an automation and its run history, newest occurrence first.
+// Detail is an automation and its newest runs, newest occurrence first.
 type Detail struct {
 	Automation
 	History []Run `json:"history"`
+	// HistoryMore says older runs exist; GET /automations/{id}/runs pages them.
+	HistoryMore bool `json:"history_more"`
 }
+
+// RunsPage is one page of an automation's runs, newest first.
+type RunsPage struct {
+	Runs []Run `json:"runs"`
+	// More says older runs exist; ask again with before set to the last run's id.
+	More bool `json:"more"`
+}
+
+const (
+	// HistoryPage runs come with an automation, and by default in a page.
+	HistoryPage = 20
+	// MaxHistoryPage is the most a page may ask for.
+	MaxHistoryPage = 100
+)
 
 // Execution is the outcome of running a scheduled prompt.
 type Execution struct {

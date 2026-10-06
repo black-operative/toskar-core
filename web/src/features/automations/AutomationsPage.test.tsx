@@ -23,6 +23,7 @@ vi.mock('@/lib/api', async () => {
       resumeAutomation: vi.fn(),
       deleteAutomation: vi.fn(),
       runAutomation: vi.fn(),
+      listAutomationRuns: vi.fn(),
     },
   }
 })
@@ -117,6 +118,20 @@ describe('AutomationsPage', () => {
     expect(screen.getByText('Notified')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Pause' }))
     await waitFor(() => expect(api.pauseAutomation).toHaveBeenCalledWith('auto-1'))
+  })
+
+  it('loads older runs a page at a time', async () => {
+    vi.mocked(api.getAutomation).mockResolvedValue({ ...detail, history_more: true })
+    vi.mocked(api.listAutomationRuns).mockResolvedValue({
+      runs: [{ ...detail.history[0], id: 'run-0', occurrence_at: '2026-09-27T08:00:00Z', result: 'price is $510', notification_sent: false }],
+      more: false,
+    })
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: /Price below \$500/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Show older runs' }))
+    await waitFor(() => expect(api.listAutomationRuns).toHaveBeenCalledWith('auto-1', 'run-1'))
+    expect(await screen.findByText('price is $510')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Show older runs' })).not.toBeInTheDocument()
   })
 
   it('explains automations and starts one from an idea when there are none', async () => {

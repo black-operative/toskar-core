@@ -4133,6 +4133,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /api/v1/automations/{id}/runs:
+    get:
+      summary: A page of an automation's runs, newest first
+      operationId: listAutomationRuns
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: before
+          in: query
+          description: The id of the last run already shown; the page starts after it
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Runs per page, 1 to 100 (default 20)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "{runs, more}: more says older runs exist"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "404":
+          description: No such automation or run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/automations/{id}/run:
     post:
       summary: Run an automation now

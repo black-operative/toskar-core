@@ -82,7 +82,9 @@
     "edit": "편집",
     "delete": "삭제",
     "history": "기록",
-    "notRunYet": "이 자동화는 아직 실행되지 않았어요."
+    "notRunYet": "이 자동화는 아직 실행되지 않았어요.",
+    "olderRuns": "이전 실행 보기",
+    "loadingOlder": "불러오는 중…"
   },
   "run": {
     "details": "세부 정보",

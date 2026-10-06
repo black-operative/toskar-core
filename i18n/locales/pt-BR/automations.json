@@ -82,7 +82,9 @@
     "edit": "Editar",
     "delete": "Apagar",
     "history": "Histórico",
-    "notRunYet": "Esta automação ainda não foi executada."
+    "notRunYet": "Esta automação ainda não foi executada.",
+    "olderRuns": "Mostrar execuções anteriores",
+    "loadingOlder": "Carregando…"
   },
   "run": {
     "details": "Detalhes",

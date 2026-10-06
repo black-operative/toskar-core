@@ -82,7 +82,9 @@
     "edit": "編輯",
     "delete": "刪除",
     "history": "歷史紀錄",
-    "notRunYet": "這項自動化尚未執行過。"
+    "notRunYet": "這項自動化尚未執行過。",
+    "olderRuns": "顯示更早的執行",
+    "loadingOlder": "正在載入…"
   },
   "run": {
     "details": "詳細資訊",

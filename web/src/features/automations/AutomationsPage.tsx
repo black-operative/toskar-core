@@ -330,6 +330,16 @@ function Detail({
 }) {
   const { t } = useTranslation('automations')
   const zone = detail.schedule.time_zone
+  // Older runs come a page at a time (#204); a new automation starts over.
+  const [older, setOlder] = useState<{ id: string; runs: AutomationRun[]; more: boolean }>({ id: detail.id, runs: [], more: false })
+  const pages = older.id === detail.id ? older : { id: detail.id, runs: [], more: false }
+  const shown = new Set(detail.history.map((run) => run.id))
+  const history = [...detail.history, ...pages.runs.filter((run) => !shown.has(run.id))]
+  const more = pages.runs.length > 0 ? pages.more : Boolean(detail.history_more)
+  const loadOlder = useMutation({
+    mutationFn: () => api.listAutomationRuns(detail.id, history[history.length - 1].id),
+    onSuccess: (page) => setOlder({ id: detail.id, runs: [...pages.runs, ...(page?.runs ?? [])], more: Boolean(page?.more) }),
+  })
   return (
     <div className="card space-y-4">
       <div>
@@ -372,23 +382,28 @@ function Detail({
       {runError && <p className="text-sm text-danger">{runError}</p>}
       <div>
         <h3 className="label-caps">{t('detail.history')}</h3>
-        {detail.history.length === 0 ? (
+        {history.length === 0 ? (
           <p className="mt-2 text-sm text-ink-muted">{t('detail.notRunYet')}</p>
         ) : (
           <ul className="mt-2 space-y-3">
-            {detail.history.map((run, index) => (
+            {history.map((run, index) => (
               <HistoryRow
                 key={run.id}
                 run={run}
                 zone={zone}
                 notification={detail.notification}
-                previous={detail.history.slice(index + 1).find((item) => item.status === 'succeeded')?.result}
-                previousNotified={detail.history.slice(index + 1).find((item) => item.status === 'succeeded')?.notification_sent ?? false}
+                previous={history.slice(index + 1).find((item) => item.status === 'succeeded')?.result}
+                previousNotified={history.slice(index + 1).find((item) => item.status === 'succeeded')?.notification_sent ?? false}
                 models={models}
               />
             ))}
           </ul>
         )}
+        {more ? (
+          <button type="button" className="btn-secondary btn-sm mt-3" disabled={loadOlder.isPending} onClick={() => loadOlder.mutate()}>
+            {loadOlder.isPending ? t('detail.loadingOlder') : t('detail.olderRuns')}
+          </button>
+        ) : null}
       </div>
     </div>
   )

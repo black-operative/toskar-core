@@ -32,7 +32,8 @@ func TestAutomationHTTP(t *testing.T) {
 		CreateAutomation: func(ctx context.Context, in automations.CreateInput) (automations.Automation, error) {
 			return repo.Create(ctx, in, now)
 		},
-		GetAutomation: repo.History,
+		GetAutomation:      repo.History,
+		ListAutomationRuns: repo.RunsPage,
 		UpdateAutomation: func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error) {
 			return repo.Update(ctx, id, patch, now)
 		},
@@ -104,6 +105,11 @@ func TestAutomationHTTP(t *testing.T) {
 	getJSON(t, ts.Client(), ts.URL+"/api/v1/automations/"+created.ID, &detail)
 	if len(detail.History) != 1 || detail.History[0].Status != automations.RunSucceeded || detail.History[0].Result != "price is 12" {
 		t.Fatalf("history = %+v", detail.History)
+	}
+	var page automations.RunsPage
+	getJSON(t, ts.Client(), ts.URL+"/api/v1/automations/"+created.ID+"/runs?limit=5", &page)
+	if len(page.Runs) != 1 || page.More || page.Runs[0].ID != run.ID {
+		t.Fatalf("runs page = %+v", page)
 	}
 	if exec.count() != 1 {
 		t.Fatalf("executions = %d", exec.count())

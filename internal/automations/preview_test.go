@@ -64,3 +64,29 @@ func TestPreviewRequiresAModel(t *testing.T) {
 		t.Fatal("expected missing model to fail")
 	}
 }
+
+type seenExec struct{ got automations.Automation }
+
+func (e *seenExec) Execute(_ context.Context, a automations.Automation) (automations.Execution, error) {
+	e.got = a
+	return automations.Execution{Text: "Der Preis ist 420 $."}, nil
+}
+
+// A preview runs as the saved automation will: in its response language,
+// with its schedule's time zone (#204).
+func TestPreviewKeepsTheResponseLanguage(t *testing.T) {
+	exec := &seenExec{}
+	_, err := (&automations.Runner{Exec: exec}).Preview(context.Background(), automations.CreateInput{
+		Prompt:           "Check the price",
+		ModelID:          "gemma-4-e4b",
+		ResponseLanguage: "de",
+		Schedule:         automations.Schedule{Kind: automations.KindDaily, TimeZone: "Europe/Berlin", Hour: 8},
+		Notification:     automations.Notification{Mode: automations.NotifyAlways},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if exec.got.ResponseLanguage != "de" || exec.got.Schedule.TimeZone != "Europe/Berlin" {
+		t.Fatalf("preview ran %+v", exec.got)
+	}
+}

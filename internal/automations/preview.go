@@ -47,6 +47,10 @@ func (r *Runner) Preview(ctx context.Context, in CreateInput) (Preview, error) {
 		ModelID:      strings.TrimSpace(in.ModelID),
 		Tools:        in.Tools,
 		Notification: in.Notification,
+		// The preview answers as the saved automation will: in its response
+		// language, with "today" in its schedule's time zone (#204).
+		ResponseLanguage: strings.TrimSpace(in.ResponseLanguage),
+		Schedule:         in.Schedule,
 	}
 	result, execErr := r.Exec.Execute(ctx, draft)
 	decision := Decide(draft.Notification, result.Text, nil, false)

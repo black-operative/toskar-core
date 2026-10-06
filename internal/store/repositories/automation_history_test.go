@@ -154,3 +154,67 @@ func TestAutomationHistory(t *testing.T) {
 		t.Fatalf("list latest = %s %q", morning.LastStatus, morning.LastResult)
 	}
 }
+
+// An automation comes with its newest 20 runs, and older ones come a page
+// at a time (#204).
+func TestAutomationHistoryPages(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	repo := repositories.NewAutomationRepo(db.SQL)
+	ctx := context.Background()
+	start := time.Date(2026, 9, 1, 8, 0, 0, 0, time.UTC)
+	created, err := repo.Create(ctx, automations.CreateInput{
+		ModelID: "model-a", Name: "Hourly", Prompt: "Check",
+		Schedule: automations.Schedule{Kind: automations.KindDaily, TimeZone: "UTC", Hour: 8},
+	}, start.Add(-time.Hour))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := 0; i < 25; i++ {
+		at := start.Add(time.Duration(i) * time.Hour)
+		run, ok, err := repo.Claim(ctx, created.ID, at, at, time.Hour)
+		if err != nil || !ok {
+			t.Fatalf("claim %d: %v %v", i, ok, err)
+		}
+		if err := repo.CompleteRun(ctx, run.ID, automations.Execution{Text: "ok"}, at.Add(time.Second)); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	detail, err := repo.History(ctx, created.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(detail.History) != automations.HistoryPage || !detail.HistoryMore {
+		t.Fatalf("first page: %d runs, more=%v", len(detail.History), detail.HistoryMore)
+	}
+	if !detail.History[0].OccurrenceAt.Equal(start.Add(24 * time.Hour)) {
+		t.Fatalf("newest = %s", detail.History[0].OccurrenceAt)
+	}
+
+	rest, err := repo.RunsPage(ctx, created.ID, detail.History[len(detail.History)-1].ID, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(rest.Runs) != 5 || rest.More || !rest.Runs[4].OccurrenceAt.Equal(start) {
+		t.Fatalf("second page: %d runs, more=%v", len(rest.Runs), rest.More)
+	}
+	seen := map[string]bool{}
+	for _, run := range append(detail.History, rest.Runs...) {
+		if seen[run.ID] {
+			t.Fatalf("run %s on two pages", run.ID)
+		}
+		seen[run.ID] = true
+	}
+
+	small, err := repo.RunsPage(ctx, created.ID, "", 3)
+	if err != nil || len(small.Runs) != 3 || !small.More {
+		t.Fatalf("limit 3: %+v %v", small, err)
+	}
+	if _, err := repo.RunsPage(ctx, created.ID, "no-such-run", 10); err == nil {
+		t.Fatal("an unknown run was accepted as a cursor")
+	}
+}

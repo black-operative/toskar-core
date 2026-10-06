@@ -65,6 +65,7 @@ import type {
   Task,
   Automation,
   AutomationDetail,
+  AutomationRunsPage,
   AutomationInput,
   AutomationPreview,
   AutomationRun,
@@ -733,6 +734,10 @@ export const api = {
   listAutomations: () => request<Automation[]>('/api/v1/automations'),
 
   getAutomation: (id: string) => request<AutomationDetail>(`/api/v1/automations/${id}`),
+
+  /** Runs older than the run before, newest first. */
+  listAutomationRuns: (id: string, before: string) =>
+    request<AutomationRunsPage>(`/api/v1/automations/${id}/runs?before=${encodeURIComponent(before)}`),
 
   previewAutomation: (body: AutomationInput) =>
     request<AutomationPreview>('/api/v1/automations/preview', {

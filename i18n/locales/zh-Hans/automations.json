@@ -82,7 +82,9 @@
     "edit": "编辑",
     "delete": "删除",
     "history": "历史记录",
-    "notRunYet": "这个自动化还没有运行过。"
+    "notRunYet": "这个自动化还没有运行过。",
+    "olderRuns": "显示更早的运行",
+    "loadingOlder": "正在加载…"
   },
   "run": {
     "details": "详情",

@@ -1006,7 +1006,16 @@ export interface AutomationRun {
   retry_at?: string
 }
 
+/** One page of an automation's runs, newest first (#204). */
+export interface AutomationRunsPage {
+  runs: AutomationRun[]
+  /** Older runs exist; ask again with before set to the last run's id. */
+  more: boolean
+}
+
 export interface AutomationDetail extends Automation {
+  /** The newest runs; history_more says older ones exist. */
+  history_more?: boolean
   history: AutomationRun[]
 }
 

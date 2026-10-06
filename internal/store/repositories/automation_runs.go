@@ -425,17 +425,60 @@ func (r *AutomationRepo) ListRuns(ctx context.Context, automationID string) ([]a
 	return scanRuns(rows)
 }
 
-// History loads an automation together with its run history.
+// History loads an automation with its newest runs, a page of them
+// (#204); HistoryMore says older ones exist, which RunsPage reads.
 func (r *AutomationRepo) History(ctx context.Context, automationID string) (automations.Detail, error) {
 	automation, err := r.Get(ctx, automationID)
 	if err != nil {
 		return automations.Detail{}, err
 	}
-	runs, err := r.ListRuns(ctx, automationID)
+	page, err := r.RunsPage(ctx, automationID, "", automations.HistoryPage)
 	if err != nil {
 		return automations.Detail{}, err
 	}
-	return automations.Detail{Automation: automation, History: runs}, nil
+	return automations.Detail{Automation: automation, History: page.Runs, HistoryMore: page.More}, nil
+}
+
+// RunsPage is up to limit runs, newest occurrence first, older than the run
+// before when it is set.
+func (r *AutomationRepo) RunsPage(ctx context.Context, automationID, before string, limit int) (automations.RunsPage, error) {
+	if limit <= 0 || limit > automations.MaxHistoryPage {
+		limit = automations.HistoryPage
+	}
+	where, args := `
+		WHERE automation_id = ?`, []any{automationID}
+	if before != "" {
+		var at string
+		err := r.db.QueryRowContext(ctx, `SELECT occurrence_at FROM automation_runs WHERE id = ? AND automation_id = ?`, before, automationID).Scan(&at)
+		if err == sql.ErrNoRows {
+			return automations.RunsPage{}, fmt.Errorf("run %q not found", before)
+		}
+		if err != nil {
+			return automations.RunsPage{}, err
+		}
+		where += ` AND (occurrence_at < ? OR (occurrence_at = ? AND id < ?))`
+		args = append(args, at, at, before)
+	}
+	// One more than the page says whether there are older ones.
+	rows, err := r.db.QueryContext(ctx, runSelect+where+`
+		ORDER BY occurrence_at DESC, id DESC
+		LIMIT ?`, append(args, limit+1)...)
+	if err != nil {
+		return automations.RunsPage{}, err
+	}
+	defer rows.Close()
+	runs, err := scanRuns(rows)
+	if err != nil {
+		return automations.RunsPage{}, err
+	}
+	page := automations.RunsPage{Runs: runs}
+	if len(runs) > limit {
+		page.Runs, page.More = runs[:limit], true
+	}
+	if page.Runs == nil {
+		page.Runs = []automations.Run{}
+	}
+	return page, nil
 }
 
 // PreviousResult returns the latest successful result scheduled before an occurrence.
