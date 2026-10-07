@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -103,6 +104,33 @@ func (s *Server) handleDeleteAutomation(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// handleParseAutomation reads a request into an automation to review and
+// save: its name, task, schedule, notification, and notes on what was
+// assumed (#204). language is the language the request may be written in
+// besides English, and the language of the name and notes; empty uses the
+// App language.
+func (s *Server) handleParseAutomation(w http.ResponseWriter, r *http.Request) {
+	if s.deps.ParseAutomation == nil {
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Automations are not available.", nil)
+		return
+	}
+	var body struct {
+		Text     string `json:"text"`
+		TimeZone string `json:"time_zone"`
+		Language string `json:"language"`
+	}
+	if err := json.NewDecoder(io.LimitReader(r.Body, 64<<10)).Decode(&body); err != nil {
+		writeErr(w, http.StatusBadRequest, "INVALID_JSON", "invalid body", nil)
+		return
+	}
+	parsed, err := s.deps.ParseAutomation(r.Context(), body.Text, body.TimeZone, body.Language)
+	if err != nil {
+		writeErrFrom(w, http.StatusBadRequest, "AUTOMATION_INVALID", err)
+		return
+	}
+	writeJSON(w, http.StatusOK, parsed)
 }
 
 func (s *Server) handlePreviewAutomation(w http.ResponseWriter, r *http.Request) {

@@ -155,7 +155,12 @@
     "hours": "Cada {{count}} horas",
     "everyMinute": "Cada minuto",
     "minutes": "Cada {{count}} minutos",
-    "seconds": "Cada {{count}} segundos"
+    "seconds": "Cada {{count}} segundos",
+    "weekdaysOnly": "Entre semana a las {{time}}",
+    "weekends": "Los fines de semana a las {{time}}",
+    "weeklyDays": "Cada {{days}} a las {{time}}",
+    "monthly": "Cada mes el día {{day}} a las {{time}}",
+    "cron": "Horario personalizado: {{cron}}"
   },
   "notify": {
     "none": "Solo guardar el resultado",
@@ -179,7 +184,8 @@
     "afternoon": "“Por la tarde” significa a las 3:00 p. m., a menos que indiques otra hora.",
     "morning": "“Por la mañana” significa a las 8:00 a. m., a menos que indiques otra hora.",
     "badTime": "Esa hora no es válida.",
-    "unreadable": "No se pudo entender esa descripción."
+    "unreadable": "No se pudo entender esa descripción.",
+    "byModel": "La IA leyó esta solicitud. Revisa el horario y la notificación antes de guardar."
   },
   "names": {
     "priceAbove": "Precio mayor que {{amount}}",
@@ -201,6 +207,7 @@
     "describePlaceholder": "Cada mañana a las 8:00, revisa este producto y avísame si el precio baja de 500 €.",
     "describeHint": "Di cuándo se ejecuta y qué debe hacer. Toskar completa los detalles de abajo, y puedes cambiar cualquiera.",
     "setUp": "Completar los detalles",
+    "settingUp": "Completando…",
     "ideas": "O empieza con una idea",
     "ideaHint": "Ajusta las palabras, por ejemplo con un enlace en lugar de «esta página», y vuelve a elegir Completar los detalles.",
     "stepDetails": "Revisa los detalles",
@@ -212,8 +219,10 @@
     "kinds": {
       "daily": "Todos los días",
       "weekly": "Todas las semanas",
+      "monthly": "Cada mes",
       "interval": "A intervalos",
-      "once": "Una vez"
+      "once": "Una vez",
+      "cron": "Personalizado (cron)"
     },
     "notifyMe": "Avisarme",
     "notifyChoices": {
@@ -279,6 +288,27 @@
       "when": "Cuándo",
       "does": "Qué hace",
       "tells": "Cuándo te avisa"
-    }
-  }
+    },
+    "times": "Horas",
+    "addTime": "Añadir una hora",
+    "removeTime": "Quitar {{time}}",
+    "days": "Días",
+    "monthDay": "Día del mes",
+    "monthDayHint": "En un mes más corto, se ejecuta el último día.",
+    "cron": "Expresión cron",
+    "cronHint": "Cinco campos, en la zona horaria de abajo: minuto, hora, día del mes, mes y día de la semana."
+  },
+  "draft": {
+    "label": "Automatización por confirmar",
+    "when": "Cuándo",
+    "task": "Tarea",
+    "notify": "Avisar",
+    "hint": "No se ejecuta nada hasta que la crees.",
+    "create": "Crear automatización",
+    "creating": "Creando…",
+    "created": "Creada",
+    "open": "Abrir en Automatizaciones",
+    "failed": "No se pudo crear la automatización."
+  },
+  "runInChat": "De la automatización <automation>{{name}}</automation>"
 }

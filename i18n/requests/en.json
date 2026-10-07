@@ -1,0 +1,270 @@
+{
+  "spaced": true,
+  "numbers": {
+    "a": 1,
+    "an": 1,
+    "one": 1,
+    "other": 2,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+    "fifteen": 15,
+    "twenty": 20,
+    "thirty": 30,
+    "forty": 40,
+    "forty-five": 45,
+    "fortyfive": 45,
+    "fifty": 50,
+    "sixty": 60,
+    "ninety": 90
+  },
+  "interval": {
+    "before": [
+      "every",
+      "each"
+    ],
+    "after": [],
+    "units": {
+      "second": [
+        "second",
+        "seconds"
+      ],
+      "minute": [
+        "minute",
+        "minutes"
+      ],
+      "hour": [
+        "hour",
+        "hours"
+      ],
+      "day": [
+        "day",
+        "days"
+      ]
+    },
+    "hourly": [
+      "hourly"
+    ],
+    "halfHour": [
+      "every half (an |a )?hour",
+      "every half-hour"
+    ]
+  },
+  "daily": {
+    "day": [
+      "every day",
+      "each day",
+      "daily"
+    ],
+    "morning": [
+      "(every|each) morning"
+    ],
+    "afternoon": [
+      "(every|each) afternoon"
+    ],
+    "evening": [
+      "(every|each) evening"
+    ],
+    "night": [
+      "(every|each) night",
+      "nightly"
+    ]
+  },
+  "dayparts": {
+    "morning": [
+      "morning",
+      "mornings"
+    ],
+    "afternoon": [
+      "afternoon",
+      "afternoons"
+    ],
+    "evening": [
+      "evening",
+      "evenings",
+      "tonight"
+    ],
+    "night": [
+      "night",
+      "nights"
+    ]
+  },
+  "weekly": {
+    "before": [
+      "every",
+      "each",
+      "on"
+    ],
+    "after": [],
+    "days": [
+      [
+        "sunday",
+        "sundays"
+      ],
+      [
+        "monday",
+        "mondays"
+      ],
+      [
+        "tuesday",
+        "tuesdays"
+      ],
+      [
+        "wednesday",
+        "wednesdays"
+      ],
+      [
+        "thursday",
+        "thursdays"
+      ],
+      [
+        "friday",
+        "fridays"
+      ],
+      [
+        "saturday",
+        "saturdays"
+      ]
+    ]
+  },
+  "once": {
+    "once": [
+      "once"
+    ],
+    "today": [
+      "today",
+      "tonight"
+    ],
+    "tomorrow": [
+      "tomorrow"
+    ]
+  },
+  "clock": {
+    "at": [
+      "at"
+    ],
+    "hour": [
+      "o'clock",
+      "oclock"
+    ],
+    "minute": [],
+    "half": [],
+    "am": [
+      "a.m.",
+      "a.m",
+      "am"
+    ],
+    "pm": [
+      "p.m.",
+      "p.m",
+      "pm"
+    ],
+    "meridiemFirst": false
+  },
+  "notify": {
+    "none": [
+      "(do not|don't) notify",
+      "store only",
+      "no notification",
+      "no notifications"
+    ],
+    "change": [
+      "(only when|when|if) (it|the result|this|the content|the page) changes",
+      "notify( me)? (only )?on change"
+    ],
+    "significant": [
+      "(only if|only when|when|if)…significant",
+      "worth a notification"
+    ],
+    "available": [
+      "back in stock",
+      "in stock",
+      "out of stock",
+      "(becomes|become|gets) available",
+      "notify( me)? (only )?when (it is |it's |it becomes )?available"
+    ],
+    "below": [
+      "below",
+      "under",
+      "less than",
+      "cheaper than"
+    ],
+    "above": [
+      "above",
+      "over",
+      "more than",
+      "greater than"
+    ],
+    "belowAfter": [],
+    "aboveAfter": []
+  },
+  "currencies": {
+    "$": "USD",
+    "us$": "USD",
+    "usd": "USD",
+    "dollar": "USD",
+    "dollars": "USD",
+    "€": "EUR",
+    "eur": "EUR",
+    "euro": "EUR",
+    "euros": "EUR",
+    "£": "GBP",
+    "gbp": "GBP",
+    "pound": "GBP",
+    "pounds": "GBP",
+    "r$": "BRL",
+    "brl": "BRL",
+    "real": "BRL",
+    "reais": "BRL",
+    "¥": "JPY",
+    "jpy": "JPY",
+    "yen": "JPY",
+    "円": "JPY",
+    "₩": "KRW",
+    "krw": "KRW",
+    "won": "KRW",
+    "원": "KRW",
+    "cny": "CNY",
+    "rmb": "CNY",
+    "yuan": "CNY",
+    "元": "CNY",
+    "nt$": "TWD",
+    "twd": "TWD",
+    "chf": "CHF"
+  },
+  "multipliers": {
+    "k": 1000
+  },
+  "currency": "USD",
+  "names": {
+    "stock": [
+      "stock"
+    ],
+    "release": [
+      "release",
+      "releases"
+    ],
+    "research": [
+      "research"
+    ]
+  },
+  "task": {
+    "dropAtEnd": [
+      " (and )?tell me if the price is (below|under|above|over|less than|more than) #",
+      " notify me only when it becomes available"
+    ],
+    "price": [
+      "price"
+    ],
+    "reportPrice": "Report the current price",
+    "fullStop": ". "
+  }
+}

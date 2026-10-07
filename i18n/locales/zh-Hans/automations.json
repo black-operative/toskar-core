@@ -155,7 +155,12 @@
     "hours": "每 {{count}} 小时",
     "everyMinute": "每分钟",
     "minutes": "每 {{count}} 分钟",
-    "seconds": "每 {{count}} 秒"
+    "seconds": "每 {{count}} 秒",
+    "weekdaysOnly": "工作日 {{time}}",
+    "weekends": "周末 {{time}}",
+    "weeklyDays": "每{{days}} {{time}}",
+    "monthly": "每月 {{day}} 日 {{time}}",
+    "cron": "自定义计划：{{cron}}"
   },
   "notify": {
     "none": "仅保存结果",
@@ -179,7 +184,8 @@
     "afternoon": "除非你另行设置，“下午”指下午 3:00。",
     "morning": "除非你另行设置，“早上”指上午 8:00。",
     "badTime": "该时间无效。",
-    "unreadable": "无法理解该描述。"
+    "unreadable": "无法理解该描述。",
+    "byModel": "此请求由 AI 读取。保存前请检查时间安排和通知。"
   },
   "names": {
     "priceAbove": "价格高于 {{amount}}",
@@ -201,6 +207,7 @@
     "describePlaceholder": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。",
     "describeHint": "说明它何时运行、要做什么。Toskar 会填写下面的详细信息，你可以修改任何一项。",
     "setUp": "填写详细信息",
+    "settingUp": "正在填写…",
     "ideas": "或者从一个想法开始",
     "ideaHint": "根据需要修改文字，比如用链接替换“这个页面”，然后再次选择“填写详细信息”。",
     "stepDetails": "检查详细信息",
@@ -212,8 +219,10 @@
     "kinds": {
       "daily": "每天",
       "weekly": "每周",
+      "monthly": "每月",
       "interval": "按间隔",
-      "once": "一次"
+      "once": "一次",
+      "cron": "自定义（cron）"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -279,6 +288,27 @@
       "when": "何时",
       "does": "做什么",
       "tells": "何时通知你"
-    }
-  }
+    },
+    "times": "时间",
+    "addTime": "添加时间",
+    "removeTime": "移除 {{time}}",
+    "days": "星期",
+    "monthDay": "每月几号",
+    "monthDayHint": "当月没有这一天时，在最后一天运行。",
+    "cron": "cron 表达式",
+    "cronHint": "按下方时区填写五个字段：分钟、小时、日、月、星期。"
+  },
+  "draft": {
+    "label": "待确认的自动化",
+    "when": "时间",
+    "task": "任务",
+    "notify": "通知",
+    "hint": "创建之前不会运行任何内容。",
+    "create": "创建自动化",
+    "creating": "正在创建…",
+    "created": "已创建",
+    "open": "在“自动化”中打开",
+    "failed": "无法创建自动化。"
+  },
+  "runInChat": "来自自动化“<automation>{{name}}</automation>”"
 }

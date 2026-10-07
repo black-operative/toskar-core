@@ -32,6 +32,7 @@ import { MemoryToggle } from './MemoryToggle'
 import { ReadAloudButton, SystemReadAloudButton } from './ReadAloud'
 import { hasSystemSpeech } from './speakableText'
 import { SetupOfferCard } from './SetupOffer'
+import { AutomationDraftCard, AutomationRunNote } from './AutomationDraftCard'
 import { ChatErrorCard } from './ChatErrorCard'
 import { ChatMarkdown } from './ChatMarkdown'
 import { ContextUsageButton } from './ContextUsageButton'
@@ -801,6 +802,14 @@ export function ChatPage() {
           setStatusMessage(null)
           if (payload.content) {
             setStreamingContent((current) => (current ?? '') + payload.content)
+          }
+        }
+        // An automation made from this chat posted its result here (#204).
+        if (event.type === 'automation.completed') {
+          const conversationId = event.payload?.conversation_id as string | undefined
+          if (conversationId) {
+            void queryClient.invalidateQueries({ queryKey: ['messages', conversationId] })
+            void queryClient.invalidateQueries({ queryKey: ['conversations'] })
           }
         }
         if (event.type === 'chat.complete') {
@@ -1706,10 +1715,14 @@ export function ChatPage() {
                     {message.role === 'assistant' ? (
                       <>
                         <ReplyMark />
+                        {message.meta?.automation_run ? <AutomationRunNote run={message.meta.automation_run} /> : null}
                         <ChatMarkdown text={text} />
                         <AnswerDetails meta={message.meta} />
                         {message.meta?.setup ? (
                           <SetupOfferCard offer={message.meta.setup} onContinue={continueAfterSetup} />
+                        ) : null}
+                        {message.meta?.automation ? (
+                          <AutomationDraftCard draft={message.meta.automation} conversationId={message.conversation_id} />
                         ) : null}
                         {canReadAloud ? (
                           <div className="mt-2">

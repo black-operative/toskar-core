@@ -106,7 +106,7 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 			profile:       profile,
 			modelOverride: modelID,
 			taskID:        automation.ID,
-			turnPrompt:    automation.Prompt,
+			turnPrompt:    automations.TaskPrompt(automation.Prompt),
 			trace:         &turnTrace{lang: e.app.appLanguage(ctx)},
 			// Results in the automation's response language (§22).
 			responseLanguage: automation.ResponseLanguage,
@@ -125,8 +125,10 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 	stream, err := orch.Run(ctx, contracts.Task{
 		ID:        automation.ID,
 		ProfileID: profile.ID,
-		Prompt:    automation.Prompt,
-		Status:    contracts.TaskRunning,
+		// The task with its condition's instruction, which the server adds
+		// rather than the saved prompt carrying it (#204).
+		Prompt: automations.RunPrompt(automation),
+		Status: contracts.TaskRunning,
 	}, tools.ForUnattended(profile, automation.Tools, disabled), env)
 	if err != nil {
 		return env.execution(""), err
@@ -138,6 +140,12 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 	out := env.execution(text)
 	if nodeID != "" {
 		out.NodeID = nodeID
+	}
+	out.SourceHash = env.sources.sum()
+	// "Notify on change" compares what changed; when the values and sources
+	// can't tell, the run's model, still loaded, judges (#204).
+	if prev, ok := automations.PreviousFrom(ctx); ok && runErr == nil && ctx.Err() == nil && automations.NeedsJudgment(automation.Notification, prev, out) {
+		out.Change = e.judgeChange(ctx, env, automation, prev.Text, out.Text)
 	}
 	out.Skipped = env.skippedTools()
 	e.reportSkipped(ctx, automation, out.Skipped)
@@ -178,6 +186,8 @@ func (e automationExecutor) reportSkipped(ctx context.Context, automation automa
 type automationEnv struct {
 	base    *chatExecEnv
 	granted []string
+	// sources fingerprints what the run's read-only tools returned (#204).
+	sources sourceRecorder
 
 	mu      sync.Mutex
 	skipped []string
@@ -220,9 +230,13 @@ func (e *automationEnv) ExecuteTool(ctx context.Context, toolID string, args map
 	if err != nil {
 		return nil, err
 	}
-	return e.base.app.Tools.Execute(ctx, toolID, args, policy, "scheduled automation", map[string]any{
+	result, err := e.base.app.Tools.Execute(ctx, toolID, args, policy, "scheduled automation", map[string]any{
 		"automation_id": e.base.taskID,
 	})
+	if err == nil {
+		e.sources.add(toolID, args, result)
+	}
+	return result, err
 }
 
 func (e *automationEnv) Emit(eventType string, payload map[string]any) {

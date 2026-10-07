@@ -2,7 +2,17 @@
   "menu": {
     "quitApp": "Quit Toskar",
     "file": "File",
-    "quit": "Quit"
+    "quit": "Quit",
+    "about": "About Toskar",
+    "settings": "Settings…",
+    "hide": "Hide Toskar",
+    "hideOthers": "Hide Others",
+    "showAll": "Show All",
+    "newChat": "New chat",
+    "window": "Window",
+    "minimize": "Minimize",
+    "zoom": "Zoom",
+    "closeWindow": "Close Window"
   },
   "tray": {
     "tooltip": "Toskar is running in the background",

@@ -114,7 +114,10 @@
       "phi-3-5-mini-q4": "Kompaktes Microsoft-Modell, gut für logisches Denken und leichtes Programmieren.",
       "gemma-2-2b-q4": "Kleines Google-Modell für flotte Alltagschats.",
       "qwen2-5-3b-q4": "Fähiges mittelgroßes Allround-Modell mit Werkzeugaufrufen.",
-      "deepseek-r1-distill-1-5b-q4": "Leichtes Denkmodell, destilliert aus DeepSeek R1."
+      "deepseek-r1-distill-1-5b-q4": "Leichtes Denkmodell, destilliert aus DeepSeek R1.",
+      "qwen2-5-7b-q4": "Starker Allround-Assistent für die tägliche Arbeit.",
+      "qwen2-5-coder-7b-q4": "Starkes Allround-Programmiermodell mit Werkzeugnutzung.",
+      "deepseek-r1-distill-7b-q4": "Stärkeres Denken für Analysen und mehrstufige Aufgaben."
     }
   },
   "onboarding": {

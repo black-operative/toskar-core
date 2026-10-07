@@ -1,21 +1,31 @@
-// The words an automation request is read with, one file per language.
-//
-// Phrases are lowercase and matched against the request after it is
-// lowercased and NFKC-normalized (full-width digits become 0-9, ’ becomes ').
-// A phrase is plain text with a few marks:
-//
-//   (a|b)   either word          (only )?  an optional part
-//   …       up to 40 characters   #         an amount, such as $500 or 5万円
-//
-// In a language written with spaces between words, a space in a phrase
-// matches any run of spaces, and a phrase matches only whole words. In a
-// language written without them (Japanese, Chinese, Korean with its attached
-// particles), spaces are optional and phrases match anywhere.
-//
-// To add a language, copy en.ts, translate the words, and list the file in
-// index.ts. Tests in parseRequest.test.ts read the language's example
-// request (form.describePlaceholder in automations.json).
+# Request words
 
+The words an automation request is read with, one file per language: the
+daemon reads requests with them (`POST /api/v1/automations/parse`, #204), for
+the Automations page, `toskarctl`, and chat.
+
+Phrases are lowercase and matched against the request after it is
+lowercased and NFKC-normalized (full-width digits become 0-9, ’ becomes ').
+A phrase is plain text with a few marks:
+
+```
+(a|b)   either word          (only )?  an optional part
+…       up to 40 characters   #         an amount, such as $500 or 5万円
+```
+
+In a language written with spaces between words, a space in a phrase
+matches any run of spaces, and a phrase matches only whole words. In a
+language written without them (Japanese, Chinese, Korean with its attached
+particles), spaces are optional and phrases match anywhere.
+
+To add a language, copy en.json, translate the words, and add the
+language's cases to internal/automations/request_test.go, which also reads
+its example request (form.describePlaceholder in automations.json) and the
+ideas' requests.
+
+The fields, as the daemon reads them (internal/automations/requestwords.go):
+
+```ts
 export type Daypart = 'morning' | 'afternoon' | 'evening' | 'night'
 
 export interface RequestWords {
@@ -116,3 +126,4 @@ export interface RequestWords {
     fullStop: string
   }
 }
+```

@@ -155,7 +155,12 @@
     "hours": "每 {{count}} 小時",
     "everyMinute": "每分鐘",
     "minutes": "每 {{count}} 分鐘",
-    "seconds": "每 {{count}} 秒"
+    "seconds": "每 {{count}} 秒",
+    "weekdaysOnly": "平日 {{time}}",
+    "weekends": "週末 {{time}}",
+    "weeklyDays": "每{{days}} {{time}}",
+    "monthly": "每月 {{day}} 日 {{time}}",
+    "cron": "自訂排程：{{cron}}"
   },
   "notify": {
     "none": "只儲存結果",
@@ -179,7 +184,8 @@
     "afternoon": "除非你另外設定時間，「下午」指的是下午 3:00。",
     "morning": "除非你另外設定時間，「早上」指的是上午 8:00。",
     "badTime": "這個時間無效。",
-    "unreadable": "無法理解這段描述。"
+    "unreadable": "無法理解這段描述。",
+    "byModel": "此請求由 AI 讀取。儲存前請檢查排程和通知。"
   },
   "names": {
     "priceAbove": "價格高於 {{amount}}",
@@ -201,6 +207,7 @@
     "describePlaceholder": "每天早上8點，檢查這個商品，如果價格低於3000元就告訴我。",
     "describeHint": "說明它何時執行、要做什麼。Toskar 會填寫下方的詳細資料，你可以修改任何一項。",
     "setUp": "填寫詳細資料",
+    "settingUp": "正在填寫…",
     "ideas": "或從一個點子開始",
     "ideaHint": "視需要修改文字，例如用連結取代「這個頁面」，然後再次選擇「填寫詳細資料」。",
     "stepDetails": "檢查詳細資料",
@@ -212,8 +219,10 @@
     "kinds": {
       "daily": "每天",
       "weekly": "每週",
+      "monthly": "每月",
       "interval": "依間隔",
-      "once": "一次"
+      "once": "一次",
+      "cron": "自訂（cron）"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -279,6 +288,27 @@
       "when": "何時",
       "does": "做什麼",
       "tells": "何時通知你"
-    }
-  }
+    },
+    "times": "時間",
+    "addTime": "新增時間",
+    "removeTime": "移除 {{time}}",
+    "days": "星期",
+    "monthDay": "每月幾號",
+    "monthDayHint": "當月沒有這一天時，在最後一天執行。",
+    "cron": "cron 運算式",
+    "cronHint": "依下方時區填寫五個欄位：分鐘、小時、日、月、星期。"
+  },
+  "draft": {
+    "label": "待確認的自動化",
+    "when": "時間",
+    "task": "工作",
+    "notify": "通知",
+    "hint": "建立之前不會執行任何內容。",
+    "create": "建立自動化",
+    "creating": "正在建立…",
+    "created": "已建立",
+    "open": "在「自動化」中開啟",
+    "failed": "無法建立自動化。"
+  },
+  "runInChat": "來自自動化「<automation>{{name}}</automation>」"
 }

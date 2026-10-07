@@ -149,5 +149,9 @@
   "LAN_ACCESS_OFF": "這台電腦已關閉本地網路存取，因此只回應這台電腦上的應用程式。",
   "LAN_ACCESS_FAILED": "無法開啟本地網路存取。",
   "AUTOMATION_RUNNING": "這個自動化已在執行。完成後，結果會顯示在這裡。",
-  "AUTOMATION_TIMEOUT": "執行超過 {{minutes}} 分鐘，已停止。請試試更快的模型或更短的提示。"
+  "AUTOMATION_TIMEOUT": "執行超過 {{minutes}} 分鐘，已停止。請試試更快的模型或更短的提示。",
+  "REQUEST_EMPTY": "請描述這項自動化。",
+  "REQUEST_TIME_ZONE": "需要指定時區。",
+  "REQUEST_NO_SCHEDULE": "請描述它應該在何時執行，例如「每天早上8點」。",
+  "REQUEST_BAD_TIME": "這個時間無效。"
 }

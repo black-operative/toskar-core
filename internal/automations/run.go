@@ -31,6 +31,12 @@ type Run struct {
 	Attempt          int        `json:"attempt"`
 	RetryAt          *time.Time `json:"retry_at,omitempty"`
 	CreatedAt        time.Time  `json:"created_at"`
+	// NotifyDetail says why a finished run did or didn't notify, as
+	// automations:notice.<detail>, with NotifyValues for its placeholders
+	// (price, amount, currency), so the apps explain the server's decision
+	// (#204). Empty for runs from before it was recorded.
+	NotifyDetail string         `json:"notify_detail,omitempty"`
+	NotifyValues map[string]any `json:"notify_values,omitempty"`
 }
 
 // Detail is an automation and its newest runs, newest occurrence first.
@@ -62,4 +68,11 @@ type Execution struct {
 	NodeID  string
 	// Skipped lists tools the run reached that nobody approved for it.
 	Skipped []string
+	// SourceHash fingerprints what the run's tools read, so a run that read
+	// the same pages as the last one hasn't changed (#204). Empty when it
+	// read nothing.
+	SourceHash string
+	// Change is the model's judgment of whether the result differs from the
+	// previous one, when only a judgment could tell.
+	Change *Change
 }

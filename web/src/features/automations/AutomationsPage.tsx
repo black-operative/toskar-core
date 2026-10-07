@@ -386,14 +386,11 @@ function Detail({
           <p className="mt-2 text-sm text-ink-muted">{t('detail.notRunYet')}</p>
         ) : (
           <ul className="mt-2 space-y-3">
-            {history.map((run, index) => (
+            {history.map((run) => (
               <HistoryRow
                 key={run.id}
                 run={run}
                 zone={zone}
-                notification={detail.notification}
-                previous={history.slice(index + 1).find((item) => item.status === 'succeeded')?.result}
-                previousNotified={history.slice(index + 1).find((item) => item.status === 'succeeded')?.notification_sent ?? false}
                 models={models}
               />
             ))}
@@ -412,20 +409,14 @@ function Detail({
 function HistoryRow({
   run,
   zone,
-  notification,
-  previous,
-  previousNotified = false,
   models,
 }: {
   run: AutomationRun
   zone: string
-  notification: AutomationDetail['notification']
-  previous?: string
-  previousNotified?: boolean
   models: Model[]
 }) {
   const { t } = useTranslation('automations')
-  const notice = explainRun(notification, run, previous, previousNotified)
+  const notice = explainRun(run)
   const prose = resultProse(run.result)
   const modelName = models.find((model) => model.id === run.model_id)?.display_name || run.model_id
   return (

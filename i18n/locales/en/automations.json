@@ -155,7 +155,12 @@
     "hours": "Every {{count}} hours",
     "everyMinute": "Every minute",
     "minutes": "Every {{count}} minutes",
-    "seconds": "Every {{count}} seconds"
+    "seconds": "Every {{count}} seconds",
+    "weekdaysOnly": "Weekdays at {{time}}",
+    "weekends": "Weekends at {{time}}",
+    "weeklyDays": "Every {{days}} at {{time}}",
+    "monthly": "Monthly on day {{day}} at {{time}}",
+    "cron": "Custom schedule: {{cron}}"
   },
   "notify": {
     "none": "Store the result only",
@@ -179,7 +184,8 @@
     "afternoon": "Afternoon means 3:00 PM unless you set another time.",
     "morning": "Morning means 8:00 AM unless you set another time.",
     "badTime": "That time is not valid.",
-    "unreadable": "That description could not be read."
+    "unreadable": "That description could not be read.",
+    "byModel": "The AI read this request. Check the schedule and notification before saving."
   },
   "names": {
     "priceAbove": "Price above {{amount}}",
@@ -201,6 +207,7 @@
     "describePlaceholder": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.",
     "describeHint": "Say when it runs and what to do. Toskar fills in the details below, and you can change any of them.",
     "setUp": "Fill in the details",
+    "settingUp": "Filling in…",
     "ideas": "Or start from an idea",
     "ideaHint": "Edit the words to fit, such as a link in place of “this page”, then choose Fill in the details again.",
     "stepDetails": "Check the details",
@@ -212,8 +219,10 @@
     "kinds": {
       "daily": "Every day",
       "weekly": "Every week",
+      "monthly": "Every month",
       "interval": "On an interval",
-      "once": "Once"
+      "once": "Once",
+      "cron": "Custom (cron)"
     },
     "notifyMe": "Notify me",
     "notifyChoices": {
@@ -279,6 +288,27 @@
       "when": "When",
       "does": "What it does",
       "tells": "When you hear"
-    }
-  }
+    },
+    "times": "Times",
+    "addTime": "Add a time",
+    "removeTime": "Remove {{time}}",
+    "days": "Days",
+    "monthDay": "Day of the month",
+    "monthDayHint": "In a shorter month, it runs on the last day.",
+    "cron": "Cron expression",
+    "cronHint": "Five fields, in the time zone below: minute, hour, day of the month, month, and day of the week."
+  },
+  "draft": {
+    "label": "Automation to confirm",
+    "when": "When",
+    "task": "Task",
+    "notify": "Notify",
+    "hint": "Nothing runs until you create it.",
+    "create": "Create automation",
+    "creating": "Creating…",
+    "created": "Created",
+    "open": "Open in Automations",
+    "failed": "Could not create the automation."
+  },
+  "runInChat": "From the automation <automation>{{name}}</automation>"
 }

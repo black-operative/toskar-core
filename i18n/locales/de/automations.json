@@ -155,7 +155,12 @@
     "hours": "Alle {{count}} Stunden",
     "everyMinute": "Jede Minute",
     "minutes": "Alle {{count}} Minuten",
-    "seconds": "Alle {{count}} Sekunden"
+    "seconds": "Alle {{count}} Sekunden",
+    "weekdaysOnly": "Werktags um {{time}}",
+    "weekends": "Am Wochenende um {{time}}",
+    "weeklyDays": "Jeden {{days}} um {{time}}",
+    "monthly": "Monatlich am {{day}}. um {{time}}",
+    "cron": "Eigener Zeitplan: {{cron}}"
   },
   "notify": {
     "none": "Nur Ergebnis speichern",
@@ -179,7 +184,8 @@
     "afternoon": "Nachmittags bedeutet 15:00 Uhr, außer du legst eine andere Zeit fest.",
     "morning": "Morgens bedeutet 8:00 Uhr, außer du legst eine andere Zeit fest.",
     "badTime": "Diese Uhrzeit ist ungültig.",
-    "unreadable": "Diese Beschreibung konnte nicht gelesen werden."
+    "unreadable": "Diese Beschreibung konnte nicht gelesen werden.",
+    "byModel": "Die KI hat diese Anfrage gelesen. Prüfe Zeitplan und Benachrichtigung vor dem Speichern."
   },
   "names": {
     "priceAbove": "Preis über {{amount}}",
@@ -201,6 +207,7 @@
     "describePlaceholder": "Jeden Morgen um 8:00 Uhr: Prüfe dieses Produkt und sag mir, ob der Preis unter 500 € liegt.",
     "describeHint": "Sag, wann es läuft und was zu tun ist. Toskar füllt die Details unten aus, und du kannst alles ändern.",
     "setUp": "Details ausfüllen",
+    "settingUp": "Wird ausgefüllt…",
     "ideas": "Oder starte mit einer Idee",
     "ideaHint": "Passe die Worte an, etwa mit einem Link statt „diese Seite“, und wähle dann erneut „Details ausfüllen“.",
     "stepDetails": "Prüfe die Details",
@@ -212,8 +219,10 @@
     "kinds": {
       "daily": "Täglich",
       "weekly": "Wöchentlich",
+      "monthly": "Monatlich",
       "interval": "In einem Intervall",
-      "once": "Einmal"
+      "once": "Einmal",
+      "cron": "Eigener (Cron)"
     },
     "notifyMe": "Benachrichtigen",
     "notifyChoices": {
@@ -279,6 +288,27 @@
       "when": "Wann",
       "does": "Was es tut",
       "tells": "Wann du Bescheid bekommst"
-    }
-  }
+    },
+    "times": "Uhrzeiten",
+    "addTime": "Uhrzeit hinzufügen",
+    "removeTime": "{{time}} entfernen",
+    "days": "Tage",
+    "monthDay": "Tag des Monats",
+    "monthDayHint": "In einem kürzeren Monat läuft es am letzten Tag.",
+    "cron": "Cron-Ausdruck",
+    "cronHint": "Fünf Felder, in der Zeitzone unten: Minute, Stunde, Tag des Monats, Monat und Wochentag."
+  },
+  "draft": {
+    "label": "Automation zum Bestätigen",
+    "when": "Wann",
+    "task": "Aufgabe",
+    "notify": "Benachrichtigen",
+    "hint": "Nichts läuft, bevor du sie erstellst.",
+    "create": "Automation erstellen",
+    "creating": "Wird erstellt…",
+    "created": "Erstellt",
+    "open": "In Automationen öffnen",
+    "failed": "Die Automation konnte nicht erstellt werden."
+  },
+  "runInChat": "Von der Automation <automation>{{name}}</automation>"
 }

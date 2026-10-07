@@ -46,8 +46,9 @@ type Store interface {
 	FailRun(ctx context.Context, runID string, message string, result Execution, finished time.Time) error
 	ScheduleRetry(ctx context.Context, runID, message string, result Execution, finished, retryAt time.Time) error
 	AbandonExpired(ctx context.Context, now time.Time) ([]Run, error)
-	PreviousResult(ctx context.Context, automationID string, before time.Time) (text string, notified bool, ok bool, err error)
+	PreviousResult(ctx context.Context, automationID string, before time.Time) (prev Previous, ok bool, err error)
 	SetNotificationSent(ctx context.Context, runID string, sent bool) error
+	SetDecision(ctx context.Context, runID, detail string, values map[string]any) error
 	RunFor(ctx context.Context, automationID string, occurrence time.Time) (Run, error)
 }
 
@@ -74,6 +75,9 @@ type Runner struct {
 	// that takes longer. Zero uses the defaults.
 	Workers    int
 	RunTimeout time.Duration
+	// Post adds a result to the chat an automation was made from, when it
+	// notifies, so the person can reply to it there (#204).
+	Post func(ctx context.Context, automation Automation, run Run, text string) error
 
 	mu       sync.Mutex
 	inflight map[string]bool
@@ -261,8 +265,18 @@ func (r *Runner) finish(ctx context.Context, automation Automation, run Run) err
 	go r.keepLease(leaseCtx, run.ID)
 
 	r.publish(events.AutomationStarted, automation, run, Execution{}, nil, false)
+	// The executor compares a change-mode result with the last one while
+	// its model is still loaded (#204).
+	prev, err := r.previous(ctx, automation, run.OccurrenceAt)
+	if err != nil {
+		return err
+	}
+	runCtx := ctx
+	if prev != nil {
+		runCtx = WithPrevious(ctx, *prev)
+	}
 	limit := r.runTimeout()
-	execCtx, cancel := context.WithTimeout(ctx, limit)
+	execCtx, cancel := context.WithTimeout(runCtx, limit)
 	result, execErr := r.Exec.Execute(execCtx, automation)
 	if errors.Is(execCtx.Err(), context.DeadlineExceeded) && ctx.Err() == nil {
 		execErr = timedOut(limit)
@@ -332,7 +346,7 @@ func (r *Runner) finish(ctx context.Context, automation Automation, run Run) err
 	if err := r.Store.CompleteRun(ctx, run.ID, result, finished); err != nil {
 		return err
 	}
-	sent, notifyErr := r.deliver(ctx, automation, run, result)
+	sent, notifyErr := r.deliver(ctx, automation, run, result, prev)
 	if err := r.Store.SetNotificationSent(ctx, run.ID, sent); err != nil {
 		return err
 	}
@@ -384,16 +398,12 @@ func (r *Runner) notifyRepeated(ctx context.Context, automation Automation, run 
 	return true, nil
 }
 
-func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, result Execution) (bool, error) {
-	text, notified, ok, err := r.Store.PreviousResult(ctx, automation.ID, run.OccurrenceAt)
-	if err != nil {
-		return false, err
+func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, result Execution, prev *Previous) (bool, error) {
+	decision := DecideRun(automation.Notification, result, prev)
+	// The apps explain this decision rather than make their own (#204).
+	if err := r.Store.SetDecision(ctx, run.ID, decision.Detail, decision.Values); err != nil && r.Logger != nil {
+		r.Logger.Warn("record automation decision", "run_id", run.ID, "error", err)
 	}
-	var previous *string
-	if ok {
-		previous = &text
-	}
-	decision := Decide(automation.Notification, result.Text, previous, notified)
 	if !decision.Notify {
 		return false, nil
 	}
@@ -402,10 +412,32 @@ func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, re
 	}
 	notice := decision.Notice
 	notice.AutomationID = automation.ID
+	// The notice opens the chat when the result is there; a chat deleted
+	// since leaves it opening the automation.
+	if r.Post != nil && automation.ConversationID != "" {
+		if text := ResultProse(result.Text); text != "" {
+			if err := r.Post(ctx, automation, run, text); err != nil {
+				if r.Logger != nil {
+					r.Logger.Warn("post automation result to its chat", "automation_id", automation.ID, "error", err)
+				}
+			} else {
+				notice.ConversationID = automation.ConversationID
+			}
+		}
+	}
 	if err := r.Notify.Notify(ctx, noticeTitle(automation.Name, notice)); err != nil {
 		return false, err
 	}
 	return true, nil
+}
+
+// previous is the last successful run before this occurrence, or nil.
+func (r *Runner) previous(ctx context.Context, automation Automation, occurrence time.Time) (*Previous, error) {
+	prev, ok, err := r.Store.PreviousResult(ctx, automation.ID, occurrence)
+	if err != nil || !ok {
+		return nil, err
+	}
+	return &prev, nil
 }
 
 func (r *Runner) keepLease(ctx context.Context, runID string) {
@@ -436,6 +468,9 @@ func (r *Runner) publish(eventType string, automation Automation, run Run, resul
 		"run_id":        run.ID,
 		"name":          automation.Name,
 		"occurrence_at": run.OccurrenceAt.UTC().Format(time.RFC3339),
+	}
+	if automation.ConversationID != "" {
+		payload["conversation_id"] = automation.ConversationID
 	}
 	if eventType == events.AutomationCompleted {
 		payload["notification_sent"] = notified

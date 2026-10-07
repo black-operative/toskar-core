@@ -46,10 +46,47 @@ func TestYggctlAutomations(t *testing.T) {
 			enabled := true
 			return repo.Update(ctx, id, automations.Patch{Enabled: &enabled}, now)
 		},
+		ParseAutomation: func(ctx context.Context, text, zone, lang string) (automations.ParsedRequest, error) {
+			if zone == "" {
+				zone = "UTC"
+			}
+			if lang == "" {
+				lang = "en"
+			}
+			return automations.ParseRequest(text, now, zone, lang)
+		},
 	})
 	ts := httptest.NewServer(srv.Handler())
 	t.Cleanup(ts.Close)
 	client := daemonClient{base: ts.URL, client: ts.Client()}
+
+	// A request is read on the daemon, the way the page reads it (#204).
+	var read bytes.Buffer
+	if err := runAutomations([]string{"parse", "every", "friday", "at", "6:30", "PM,", "check", "for", "new", "releases", "--zone", "America/Los_Angeles"}, client, &read); err != nil {
+		t.Fatal(err)
+	}
+	var parsed automations.ParsedRequest
+	if err := json.Unmarshal(read.Bytes(), &parsed); err != nil {
+		t.Fatal(err)
+	}
+	if parsed.Schedule.Kind != automations.KindWeekly || parsed.Schedule.Hour != 18 || parsed.Schedule.TimeZone != "America/Los_Angeles" || parsed.Name != "Release check" {
+		t.Fatalf("parsed = %+v", parsed)
+	}
+	var fromRequest bytes.Buffer
+	if err := runAutomations([]string{"create", "--request", "Every morning at 8:00 AM, check this product and tell me if the price is below $500.", "--model", "gemma-4-e4b"}, client, &fromRequest); err != nil {
+		t.Fatal(err)
+	}
+	var requested automations.Automation
+	if err := json.Unmarshal(fromRequest.Bytes(), &requested); err != nil {
+		t.Fatal(err)
+	}
+	if requested.Name != "Price below $500" || requested.Schedule.Hour != 8 || requested.ModelID != "gemma-4-e4b" || requested.ProfileID != "general-assistant" ||
+		requested.Notification.Condition == nil || requested.Notification.Condition.Value != 500 {
+		t.Fatalf("created from a request = %+v", requested)
+	}
+	if err := runAutomations([]string{"delete", requested.ID}, client, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
 
 	var created bytes.Buffer
 	err = runAutomations([]string{
@@ -161,4 +198,37 @@ func (e *cliExec) count() int {
 	e.mu.Lock()
 	defer e.mu.Unlock()
 	return e.calls
+}
+
+// Several weekdays, several times a day, monthly, and cron (#204).
+func TestBuildRicherSchedules(t *testing.T) {
+	weekdays, err := buildSchedule(scheduleFlags{kind: "weekly", at: "08:00, 17:30", weekdays: "weekdays", zone: "UTC"})
+	if err != nil || len(weekdays.Weekdays) != 5 || weekdays.Weekdays[0] != 1 || len(weekdays.Times) != 2 || weekdays.Times[1].Minute != 30 || *weekdays.Weekday != 1 {
+		t.Fatalf("weekdays = %+v, %v", weekdays, err)
+	}
+	if days, err := parseWeekdays("fri-mon"); err != nil || len(days) != 4 || days[0] != 5 || days[3] != 1 {
+		t.Fatalf("fri-mon = %v, %v", days, err)
+	}
+	if days, err := parseWeekdays("1,3,wed"); err != nil || len(days) != 3 {
+		t.Fatalf("1,3,wed = %v, %v", days, err)
+	}
+	monthly, err := buildSchedule(scheduleFlags{kind: "monthly", at: "09:00", day: 31, zone: "UTC"})
+	if err != nil || monthly.MonthDay != 31 {
+		t.Fatalf("monthly = %+v, %v", monthly, err)
+	}
+	if _, err := buildSchedule(scheduleFlags{kind: "cron", cron: "0 9 * * 1-5", zone: "UTC"}); err != nil {
+		t.Fatal(err)
+	}
+	for name, f := range map[string]scheduleFlags{
+		"no day":     {kind: "monthly", at: "09:00", zone: "UTC"},
+		"no days":    {kind: "weekly", at: "09:00", zone: "UTC"},
+		"day 8":      {kind: "weekly", at: "09:00", weekdays: "8", zone: "UTC"},
+		"bad time":   {kind: "daily", at: "08:00,25:00", zone: "UTC"},
+		"no cron":    {kind: "cron", zone: "UTC"},
+		"never cron": {kind: "cron", cron: "0 0 30 2 *", zone: "UTC"},
+	} {
+		if _, err := buildSchedule(f); err == nil {
+			t.Errorf("%s was accepted", name)
+		}
+	}
 }

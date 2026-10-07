@@ -155,7 +155,12 @@
     "hours": "{{count}}시간마다",
     "everyMinute": "매분",
     "minutes": "{{count}}분마다",
-    "seconds": "{{count}}초마다"
+    "seconds": "{{count}}초마다",
+    "weekdaysOnly": "평일 {{time}}",
+    "weekends": "주말 {{time}}",
+    "weeklyDays": "매주 {{days}} {{time}}",
+    "monthly": "매월 {{day}}일 {{time}}",
+    "cron": "사용자 지정 일정: {{cron}}"
   },
   "notify": {
     "none": "결과만 저장",
@@ -179,7 +184,8 @@
     "afternoon": "다른 시간을 지정하지 않으면 오후는 오후 3:00을 의미해요.",
     "morning": "다른 시간을 지정하지 않으면 아침은 오전 8:00을 의미해요.",
     "badTime": "유효하지 않은 시간이에요.",
-    "unreadable": "설명을 이해할 수 없어요."
+    "unreadable": "설명을 이해할 수 없어요.",
+    "byModel": "이 요청은 AI가 읽었어요. 저장하기 전에 일정과 알림을 확인하세요."
   },
   "names": {
     "priceAbove": "가격 {{amount}} 초과",
@@ -201,6 +207,7 @@
     "describePlaceholder": "매일 아침 8시에, 이 상품을 확인하고 가격이 50만 원 아래로 내려가면 알려 주세요.",
     "describeHint": "언제 실행하고 무엇을 할지 적어 주세요. Toskar가 아래 세부 정보를 채우고, 무엇이든 바꿀 수 있어요.",
     "setUp": "세부 정보 채우기",
+    "settingUp": "채우는 중…",
     "ideas": "또는 아이디어로 시작하기",
     "ideaHint": "'이 페이지' 대신 링크를 넣는 식으로 문장을 고친 다음, 다시 '세부 정보 채우기'를 선택하세요.",
     "stepDetails": "세부 정보 확인",
@@ -212,8 +219,10 @@
     "kinds": {
       "daily": "매일",
       "weekly": "매주",
+      "monthly": "매월",
       "interval": "일정 간격으로",
-      "once": "한 번"
+      "once": "한 번",
+      "cron": "사용자 지정(cron)"
     },
     "notifyMe": "알림 받기",
     "notifyChoices": {
@@ -279,6 +288,27 @@
       "when": "언제",
       "does": "하는 일",
       "tells": "알림 시점"
-    }
-  }
+    },
+    "times": "시간",
+    "addTime": "시간 추가",
+    "removeTime": "{{time}} 삭제",
+    "days": "요일",
+    "monthDay": "날짜",
+    "monthDayHint": "날짜가 없는 달에는 마지막 날에 실행합니다.",
+    "cron": "cron 식",
+    "cronHint": "아래 시간대 기준 다섯 필드: 분, 시, 일, 월, 요일."
+  },
+  "draft": {
+    "label": "확인할 자동화",
+    "when": "실행 시점",
+    "task": "작업",
+    "notify": "알림",
+    "hint": "만들기 전에는 아무것도 실행되지 않습니다.",
+    "create": "자동화 만들기",
+    "creating": "만드는 중…",
+    "created": "만들었습니다",
+    "open": "자동화에서 열기",
+    "failed": "자동화를 만들 수 없습니다."
+  },
+  "runInChat": "자동화 “<automation>{{name}}</automation>”에서"
 }

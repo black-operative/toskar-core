@@ -212,6 +212,9 @@
         "add": "Git add",
         "commit": "Git commit",
         "push": "Git push"
+      },
+      "automations": {
+        "schedule": "Agendar tarefa"
       }
     },
     "unnamed": "Ferramenta",
@@ -577,6 +580,7 @@
     "searchedFiles": "Procurei arquivos correspondentes a “{{query}}”",
     "saved": "Salvei {{path}}",
     "created": "Criei {{name}}",
+    "draftedAutomation": "Rascunho da automação “{{name}}”",
     "ranCommand": "Executei um comando neste computador",
     "browserOpened": "Abri {{page}} no navegador",
     "browserClicked": "Cliquei na página, agora em {{page}}",

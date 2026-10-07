@@ -61,10 +61,12 @@ _toskarctl() {
             '--prompt[prompt to run]:prompt:' \
             '--profile[profile id]:profile:' \
             '--model[installed model id]:model:' \
-            '--schedule[schedule kind]:schedule:(once daily weekly interval)' \
-            '--at[HH:MM or RFC3339]:time:' \
+            '--schedule[schedule kind]:schedule:(once daily weekly monthly interval cron)' \
+            '--at[HH:MM, several such as 08:00,17:00, or RFC3339]:time:' \
             '--every[interval duration, such as 6h]:duration:' \
-            '--weekday[0-6, Sunday is 0]:weekday:(0 1 2 3 4 5 6)' \
+            '--weekday[days 0-6 or names, such as 1,3,5 or weekdays]:weekday:(weekdays 0 1 2 3 4 5 6)' \
+            '--day[day of the month, 1-31]:day:' \
+            '--cron[cron expression]:cron:' \
             '--zone[IANA time zone]:zone:' \
             '*--tool[tool id allowed for this automation]:tool:' \
             '--notify[notification mode]:mode:(always condition change none)' \

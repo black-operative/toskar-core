@@ -2,7 +2,17 @@
   "menu": {
     "quitApp": "Toskarを終了",
     "file": "ファイル",
-    "quit": "終了"
+    "quit": "終了",
+    "about": "Toskarについて",
+    "settings": "設定…",
+    "hide": "Toskarを非表示",
+    "hideOthers": "ほかを非表示",
+    "showAll": "すべてを表示",
+    "newChat": "新しいチャット",
+    "window": "ウインドウ",
+    "minimize": "しまう",
+    "zoom": "拡大/縮小",
+    "closeWindow": "ウインドウを閉じる"
   },
   "tray": {
     "tooltip": "Toskarはバックグラウンドで実行中です",

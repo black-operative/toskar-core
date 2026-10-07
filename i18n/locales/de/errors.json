@@ -149,5 +149,9 @@
   "LAN_ACCESS_OFF": "Der Zugriff aus dem lokalen Netzwerk ist auf diesem Computer aus, daher antwortet er nur Apps auf ihm selbst.",
   "LAN_ACCESS_FAILED": "Der Zugriff aus dem lokalen Netzwerk konnte nicht eingeschaltet werden.",
   "AUTOMATION_RUNNING": "Diese Automation läuft bereits. Ihr Ergebnis erscheint hier, sobald sie fertig ist.",
-  "AUTOMATION_TIMEOUT": "Der Lauf hat länger als {{minutes}} Minuten gedauert und wurde gestoppt. Versuche ein schnelleres Modell oder einen kürzeren Prompt."
+  "AUTOMATION_TIMEOUT": "Der Lauf hat länger als {{minutes}} Minuten gedauert und wurde gestoppt. Versuche ein schnelleres Modell oder einen kürzeren Prompt.",
+  "REQUEST_EMPTY": "Beschreibe die Automation.",
+  "REQUEST_TIME_ZONE": "Eine Zeitzone ist erforderlich.",
+  "REQUEST_NO_SCHEDULE": "Beschreibe, wann es laufen soll, zum Beispiel „jeden Morgen um 8:00 Uhr“.",
+  "REQUEST_BAD_TIME": "Diese Uhrzeit ist ungültig."
 }

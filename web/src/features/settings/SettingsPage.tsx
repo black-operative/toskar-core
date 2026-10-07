@@ -15,6 +15,7 @@ import { useUIStore } from '@/stores/uiStore'
 import type { SettingsPatch } from '@/types/api'
 import { RealmKicker } from '@/components/ui/Realm'
 import { NotificationDestinations } from './NotificationDestinations'
+import { UpdateCheckSetting, UpdateNotice } from './Updates'
 import { WhatLeft } from './WhatLeft'
 import { YourData } from './YourData'
 import { Toggle } from '@/components/ui/Toggle'
@@ -123,6 +124,13 @@ export function SettingsPage() {
     retry: false,
   })
 
+  const updatesQuery = useQuery({
+    queryKey: ['updates'],
+    queryFn: () => api.getUpdates(),
+    retry: false,
+  })
+  const updates = updatesQuery.data
+
   const healthQuery = useQuery({
     queryKey: ['health'],
     queryFn: () => api.getHealth(),
@@ -154,6 +162,7 @@ export function SettingsPage() {
         setAdvancedMode(settings.advanced_mode)
       }
       queryClient.invalidateQueries({ queryKey: ['settings'] })
+      queryClient.invalidateQueries({ queryKey: ['updates'] })
       queryClient.invalidateQueries({ queryKey: ['nodes'] })
       queryClient.invalidateQueries({ queryKey: ['ratings-community'] })
       queryClient.invalidateQueries({ queryKey: ['model-rating'] })
@@ -605,6 +614,7 @@ export function SettingsPage() {
                 {displayVersion(versionQuery.data?.version ?? healthQuery.data?.version) ||
                   t('about.versionUnavailable')}
               </p>
+              <UpdateNotice updates={updates} />
               {versionQuery.data?.commit &&
               versionQuery.data.commit !== 'unknown' &&
               versionQuery.data.commit.trim() !== '' ? (
@@ -641,6 +651,12 @@ export function SettingsPage() {
               </dd>
             </div>
           </dl>
+          <UpdateCheckSetting
+            updates={updates}
+            checked={settings?.update_check ?? true}
+            disabled={busy}
+            onToggle={() => patch({ update_check: !(settings?.update_check ?? true) })}
+          />
           <Link to="/diagnostics" className="btn-secondary inline-block">
             {t('about.diagnostics')}
           </Link>

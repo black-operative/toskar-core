@@ -28,6 +28,8 @@ const (
 	// CommunityRatings is a rating shared or withdrawn, or the public
 	// ratings summary downloaded (#37).
 	CommunityRatings = "community_ratings"
+	// UpdateCheck is the daily look at toskar.ai for a newer version.
+	UpdateCheck = "update_check"
 )
 
 // Sources of a run.

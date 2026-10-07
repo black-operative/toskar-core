@@ -203,3 +203,26 @@ func doRequest(t *testing.T, client *http.Client, method, url string, body any) 
 	}
 	return resp
 }
+
+// A request is read into an automation on the computer, in the language
+// asked for (#204).
+func TestParseAutomationHTTP(t *testing.T) {
+	srv := NewServer(Dependencies{
+		ParseAutomation: func(ctx context.Context, text, zone, lang string) (automations.ParsedRequest, error) {
+			return automations.ParseRequest(text, time.Date(2026, 9, 28, 15, 0, 0, 0, time.UTC), zone, lang)
+		},
+	})
+	ts := httptest.NewServer(srv.Handler())
+	t.Cleanup(ts.Close)
+
+	var parsed automations.ParsedRequest
+	postJSON(t, ts.Client(), ts.URL+"/api/v1/automations/parse", map[string]any{
+		"text": "Jeden Morgen um 8 Uhr prüfen, ob der Preis unter 500 € fällt.", "time_zone": "Europe/Berlin", "language": "de",
+	}, &parsed)
+	if parsed.Schedule.Kind != automations.KindDaily || parsed.Schedule.Hour != 8 || parsed.Notification.Condition == nil || parsed.Notification.Condition.Currency != "EUR" {
+		t.Fatalf("parsed = %+v", parsed)
+	}
+	if status := doStatus(t, ts.Client(), http.MethodPost, ts.URL+"/api/v1/automations/parse", []byte(`{"text":"Check the news.","time_zone":"UTC","language":"en"}`)); status != http.StatusBadRequest {
+		t.Fatalf("no schedule: %d", status)
+	}
+}

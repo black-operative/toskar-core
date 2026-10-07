@@ -114,7 +114,10 @@
       "phi-3-5-mini-q4": "Modelo compacto de Microsoft, bueno para razonar y programar un poco.",
       "gemma-2-2b-q4": "Modelo pequeño de Google para chats ágiles del día a día.",
       "qwen2-5-3b-q4": "Modelo general de tamaño medio y muy capaz, con llamadas a herramientas.",
-      "deepseek-r1-distill-1-5b-q4": "Modelo de razonamiento ligero destilado de DeepSeek R1."
+      "deepseek-r1-distill-1-5b-q4": "Modelo de razonamiento ligero destilado de DeepSeek R1.",
+      "qwen2-5-7b-q4": "Asistente general sólido para el trabajo diario.",
+      "qwen2-5-coder-7b-q4": "Modelo de programación sólido y versátil, con uso de herramientas.",
+      "deepseek-r1-distill-7b-q4": "Razonamiento más sólido para análisis y problemas de varios pasos."
     }
   },
   "onboarding": {

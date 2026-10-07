@@ -184,6 +184,10 @@
     "git": {
       "label": "Git",
       "description": "Das Repository ansehen und committen oder pushen"
+    },
+    "automations": {
+      "label": "Automationen",
+      "description": "Aufgaben, die nach Zeitplan laufen, im Chat einrichten; du bestätigst jede"
     }
   },
   "tools": {

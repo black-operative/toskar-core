@@ -118,9 +118,14 @@ type Automation struct {
 	// "app" the App language, "auto" the language the request is written
 	// in, or a BCP 47 tag such as "de". A language the request asks for
 	// always wins.
-	ResponseLanguage string    `json:"response_language,omitempty"`
-	CreatedAt        time.Time `json:"created_at"`
-	UpdatedAt        time.Time `json:"updated_at"`
+	ResponseLanguage string `json:"response_language,omitempty"`
+	// ConversationID is the chat the automation was made from, and DraftID
+	// the draft that chat showed (#204). Both are empty for one made
+	// elsewhere.
+	ConversationID string    `json:"conversation_id,omitempty"`
+	DraftID        string    `json:"draft_id,omitempty"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
 	// NextRunAt is the occurrence the daemon should execute next.
 	// A missed restart keeps only the latest missed occurrence here.
 	NextRunAt *time.Time `json:"next_run_at,omitempty"`
@@ -166,6 +171,10 @@ type CreateInput struct {
 	Notification Notification `json:"notification"`
 	// ResponseLanguage: see Automation.
 	ResponseLanguage string `json:"response_language,omitempty"`
+	// ConversationID and DraftID: see Automation. Creating a draft again
+	// returns the automation it already made.
+	ConversationID string `json:"conversation_id,omitempty"`
+	DraftID        string `json:"draft_id,omitempty"`
 }
 
 // Patch updates the fields that are non-nil.

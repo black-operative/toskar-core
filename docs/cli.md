@@ -49,6 +49,8 @@ How it is started depends on how it was installed:
 ```bash
 toskarctl automations list
 toskarctl automations get AUTOMATION_ID
+toskarctl automations parse "every morning at 8, tell me if the price is below $500" --zone America/Los_Angeles
+toskarctl automations create --request "every morning at 8, tell me if the price is below $500" --zone America/Los_Angeles
 toskarctl automations create --name "Morning price" --prompt "Check the price of …" \
   --profile general-assistant --model auto --schedule daily --at 08:00 --zone America/Los_Angeles \
   --notify condition --condition-kind threshold --condition-op below --condition-value 500
@@ -59,7 +61,7 @@ toskarctl automations resume AUTOMATION_ID
 toskarctl automations delete AUTOMATION_ID
 ```
 
-`create` needs `--name`, `--prompt`, `--profile`, and `--model`. `--model auto` lets Auto pick a model for each run. `update` changes only the flags you pass.
+`parse` reads a request the way the Automations page does and prints what it understood: name, task, schedule, notification, and notes. `create --request` creates the automation from a request, with `--profile general-assistant` and `--model auto` unless you pass others; any other flag you pass changes what the request said. Without `--request`, `create` needs `--name`, `--prompt`, `--profile`, and `--model`. `--model auto` lets Auto pick a model for each run. `update` changes only the flags you pass.
 
 | Flag | Values |
 | --- | --- |

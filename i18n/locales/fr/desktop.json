@@ -2,7 +2,17 @@
   "menu": {
     "quitApp": "Quitter Toskar",
     "file": "Fichier",
-    "quit": "Quitter"
+    "quit": "Quitter",
+    "about": "À propos de Toskar",
+    "settings": "Paramètres…",
+    "hide": "Masquer Toskar",
+    "hideOthers": "Masquer les autres",
+    "showAll": "Tout afficher",
+    "newChat": "Nouvelle discussion",
+    "window": "Fenêtre",
+    "minimize": "Placer dans le Dock",
+    "zoom": "Réduire/agrandir",
+    "closeWindow": "Fermer la fenêtre"
   },
   "tray": {
     "tooltip": "Toskar s'exécute en arrière-plan",

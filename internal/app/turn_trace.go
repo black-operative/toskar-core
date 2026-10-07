@@ -38,6 +38,8 @@ type turnTrace struct {
 	ownFiles bool
 	// runID links the answer to its run trace (§35).
 	runID string
+	// automation is an automation the answer drafted (#204).
+	automation *contracts.AutomationDraft
 	// lang is the App language notices are written in (multilingual spec
 	// §16); "" is English.
 	lang string
@@ -381,6 +383,11 @@ func (t *turnTrace) tool(toolID string, args, result map[string]any) {
 			ID: str(result, "id"), Name: name, MimeType: str(result, "mime_type"), Kind: str(result, "kind"),
 			Size: size, Producer: "assistant",
 		})
+	case "automations.schedule":
+		if draft := draftFrom(result); draft != nil {
+			t.automation = draft
+			t.step("automation", "draftedAutomation", map[string]any{"name": draft.Name})
+		}
 	case "terminal":
 		t.untrusted = true
 		t.step("command", "ranCommand", nil)
@@ -477,16 +484,17 @@ func (t *turnTrace) sawUntrusted() bool {
 func (t *turnTrace) meta() *contracts.MessageMeta {
 	t.mu.Lock()
 	defer t.mu.Unlock()
-	if len(t.sources) == 0 && len(t.steps) == 0 && t.notice == "" && len(t.files) == 0 && t.runID == "" {
+	if len(t.sources) == 0 && len(t.steps) == 0 && t.notice == "" && len(t.files) == 0 && t.runID == "" && t.automation == nil {
 		return nil
 	}
 	return &contracts.MessageMeta{
-		Sources:  append([]contracts.Citation(nil), t.sources...),
-		Steps:    append([]contracts.ActivityStep(nil), t.steps...),
-		Notice:   t.notice,
-		Files:    append([]contracts.FileRef(nil), t.files...),
-		RunID:    t.runID,
-		Contract: contracts.ContractVersion,
+		Sources:    append([]contracts.Citation(nil), t.sources...),
+		Steps:      append([]contracts.ActivityStep(nil), t.steps...),
+		Notice:     t.notice,
+		Files:      append([]contracts.FileRef(nil), t.files...),
+		RunID:      t.runID,
+		Contract:   contracts.ContractVersion,
+		Automation: t.automation,
 	}
 }
 

@@ -185,6 +185,10 @@
     "git": {
       "label": "Git",
       "description": "Esamina il repository, ed esegue commit o push"
+    },
+    "automations": {
+      "label": "Automazioni",
+      "description": "Imposta dalla chat attività che vengono eseguite secondo una pianificazione; le confermi una per una"
     }
   },
   "tools": {

@@ -1046,12 +1046,38 @@ paths:
                   properties:
                     id: {type: string}
                     at: {type: string, format: date-time}
-                    kind: {type: string, enum: [web_search, web_page, places, paired_computer, external_server, connector, notification, community_ratings]}
+                    kind: {type: string, enum: [web_search, web_page, places, paired_computer, external_server, connector, notification, community_ratings, update_check]}
                     destination: {type: string}
                     detail: {type: string}
                     source: {type: string}
                     conversation_id: {type: string}
                     task_id: {type: string}
+  /api/v1/updates:
+    get:
+      summary: Whether a newer Toskar is out, from the daily check of toskar.ai
+      operationId: getUpdates
+      description: Release builds installed from a download check https://toskar.ai/releases/latest.json once a day, while the `update_check` setting is on. The App Store edition, the copy the desktop app runs (`TOSKAR_UPDATE_CHECK=off`), and development builds don't check, and say `supported` false.
+      responses:
+        "200":
+          description: The last check's result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  supported: {type: boolean, description: This build checks. False for the App Store edition, the desktop app's copy, and development builds.}
+                  enabled: {type: boolean, description: This build checks and the update_check setting is on.}
+                  current: {type: string}
+                  available: {type: boolean, description: The latest release is newer than this one. A prerelease is offered only to prerelease builds.}
+                  checked_at: {type: string, format: date-time}
+                  latest:
+                    type: object
+                    properties:
+                      version: {type: string}
+                      published_at: {type: string}
+                      prerelease: {type: boolean}
+                      notes_url: {type: string}
+                      download_url: {type: string}
   /api/v1/privacy:
     get:
       summary: Run record retention and a 30-day summary of what left this computer
@@ -4027,6 +4053,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /api/v1/automations/parse:
+    post:
+      summary: Read a request such as "every morning at 8, tell me if the price is below $500" into an automation
+      operationId: parseAutomation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+                time_zone:
+                  type: string
+                  description: Where the schedule runs, such as America/Los_Angeles; empty is this computer's
+                language:
+                  type: string
+                  description: The language the request may be written in besides English, and of the name and notes; empty is the App language
+      responses:
+        "200":
+          description: "{name, prompt, schedule, notification, notes}: an automation to review and save"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400":
+          description: REQUEST_EMPTY, REQUEST_NO_SCHEDULE, REQUEST_BAD_TIME, or REQUEST_TIME_ZONE
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/automations/preview:
     post:
       summary: Check an automation and show its next runs without saving it
@@ -5375,7 +5435,7 @@ components:
       properties:
         kind:
           type: string
-          enum: [once, daily, weekly, interval]
+          enum: [once, daily, weekly, monthly, interval, cron]
         time_zone:
           type: string
           description: IANA time zone
@@ -5385,13 +5445,44 @@ components:
           description: For once
         hour:
           type: integer
+          description: The first of times, for clients that read one
         minute:
           type: integer
+        times:
+          type: array
+          maxItems: 24
+          description: The times of day a daily, weekly, or monthly schedule runs at
+          items:
+            type: object
+            properties:
+              hour:
+                type: integer
+                minimum: 0
+                maximum: 23
+              minute:
+                type: integer
+                minimum: 0
+                maximum: 59
         weekday:
           type: integer
           minimum: 0
           maximum: 6
-          description: Sunday is 0
+          description: Sunday is 0. The first of weekdays, for clients that read one
+        weekdays:
+          type: array
+          description: A weekly schedule's days, Sunday is 0; 1-5 is weekdays only
+          items:
+            type: integer
+            minimum: 0
+            maximum: 6
+        month_day:
+          type: integer
+          minimum: 1
+          maximum: 31
+          description: For monthly. A month without the day runs on its last day.
+        cron:
+          type: string
+          description: For cron, five fields (minute hour day-of-month month day-of-week) in time_zone, such as "0 9 * * 1-5"
         every_seconds:
           type: integer
           description: For interval
@@ -5446,6 +5537,12 @@ components:
         response_language:
           type: string
           description: The language results are written in. account (or omitted) follows the assistant language setting, app the App language, auto the language of the request, or a BCP 47 tag such as de. A language the request asks for always wins.
+        conversation_id:
+          type: string
+          description: The chat the automation was made from, when it came from a chat's draft
+        draft_id:
+          type: string
+          description: The id of the chat's draft (an answer's meta.automation). Creating the same draft again returns the automation it made.
     Automation:
       type: object
       properties:
@@ -5472,6 +5569,12 @@ components:
         response_language:
           type: string
           description: The language results are written in. account (or omitted) follows the assistant language setting, app the App language, auto the language of the request, or a BCP 47 tag such as de. A language the request asks for always wins.
+        conversation_id:
+          type: string
+          description: The chat the automation was made from
+        draft_id:
+          type: string
+          description: The chat draft it was made from
         created_at:
           type: string
           format: date-time

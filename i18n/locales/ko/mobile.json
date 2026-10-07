@@ -114,7 +114,10 @@
       "phi-3-5-mini-q4": "추론과 가벼운 코딩에 좋은 Microsoft의 소형 모델.",
       "gemma-2-2b-q4": "빠른 일상 채팅을 위한 Google의 작은 모델.",
       "qwen2-5-3b-q4": "도구 호출을 지원하는 유능한 중형 일반 모델.",
-      "deepseek-r1-distill-1-5b-q4": "DeepSeek R1에서 증류한 가벼운 추론 모델."
+      "deepseek-r1-distill-1-5b-q4": "DeepSeek R1에서 증류한 가벼운 추론 모델.",
+      "qwen2-5-7b-q4": "일상 업무에 강한 범용 어시스턴트.",
+      "qwen2-5-coder-7b-q4": "도구를 사용할 수 있는 강력한 만능 코딩 모델.",
+      "deepseek-r1-distill-7b-q4": "분석과 여러 단계의 문제에 더 강한 추론 모델."
     }
   },
   "onboarding": {

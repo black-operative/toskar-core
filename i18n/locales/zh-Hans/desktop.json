@@ -2,7 +2,17 @@
   "menu": {
     "quitApp": "退出 Toskar",
     "file": "文件",
-    "quit": "退出"
+    "quit": "退出",
+    "about": "关于 Toskar",
+    "settings": "设置…",
+    "hide": "隐藏 Toskar",
+    "hideOthers": "隐藏其他",
+    "showAll": "全部显示",
+    "newChat": "新聊天",
+    "window": "窗口",
+    "minimize": "最小化",
+    "zoom": "缩放",
+    "closeWindow": "关闭窗口"
   },
   "tray": {
     "tooltip": "Toskar 正在后台运行",
