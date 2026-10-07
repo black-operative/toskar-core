@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "Gib die Adresse des Computers ein, auf dem Toskar läuft.",
     "couldNotReach": "Toskar ist nicht erreichbar.",
-    "unreachable": "Toskar auf diesem Computer ist nicht erreichbar. Nutze dasselbe WLAN und wähle auf diesem Computer „Telefon verbinden“.",
+    "unreachable": "Toskar auf diesem Computer ist nicht erreichbar. Nutze dasselbe WLAN und wähle auf diesem Computer „Gerät verbinden“.",
     "keyRejected": "Dieser API-Schlüssel wurde abgelehnt. Verbinde dich stattdessen mit einem Code vom Computer, oder erstelle einen Schlüssel unter „API-Zugriff“.",
     "dropped": "Die Verbindung zu Toskar wurde unterbrochen.",
     "chatFailed": "Chat fehlgeschlagen.",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "Computer verbinden",
-    "subtitle": "Das Handy nutzt den Computer, auf dem deine Modelle bereits laufen. Öffne auf diesem Computer „Computer“ und wähle „Telefon verbinden“.",
+    "subtitle": "Das Handy nutzt den Computer, auf dem deine Modelle bereits laufen. Öffne auf diesem Computer „Computer“ und wähle „Gerät verbinden“.",
     "address": "Adresse des Computers",
     "addressPlaceholder": "192.168.1.20",
     "code": "Code",
     "codePlaceholder": "6-stelliger Code",
-    "codeHint": "Der Code, den der Computer unter „Computer“ → „Telefon verbinden“ zeigt. Er gilt einmal, 10 Minuten lang.",
+    "codeHint": "Der Code, den der Computer unter „Computer“ → „Gerät verbinden“ zeigt. Er gilt einmal, 10 Minuten lang.",
     "useKey": "Stattdessen einen API-Schlüssel verwenden",
     "useCode": "Stattdessen einen Code verwenden",
     "apiKey": "API-Schlüssel",
@@ -46,7 +46,8 @@
     "connect": "Verbinden",
     "connecting": "Verbindung wird hergestellt",
     "notReady": "Toskar hat geantwortet, ist aber nicht bereit.",
-    "pairUnsupported": "Toskar auf diesem Computer ist zu alt für die Verbindung per Code. Aktualisiere es oder verwende einen API-Schlüssel."
+    "pairUnsupported": "Toskar auf diesem Computer ist zu alt für die Verbindung per Code. Aktualisiere es oder verwende einen API-Schlüssel.",
+    "lede": "Das Handy nutzt den Computer, auf dem deine Modelle bereits laufen."
   },
   "discovery": {
     "onThisNetwork": "In diesem Netzwerk",
@@ -57,7 +58,7 @@
     "none": "Keine Computer gefunden. Starte Toskar auf deinem Computer und nutze dasselbe WLAN, oder gib seine Adresse ein.",
     "localNetworkDenied": "Toskar darf nicht nach Computern in deinem Netzwerk suchen. Erlaube es unter Einstellungen > Datenschutz & Sicherheit > Lokales Netzwerk.",
     "listFailed": "Computer in diesem Netzwerk konnten nicht aufgelistet werden. Du kannst unten trotzdem eine Adresse eingeben.",
-    "lanOff": "Wähle zuerst auf diesem Computer „Telefon verbinden“"
+    "lanOff": "Wähle zuerst auf diesem Computer „Gerät verbinden“"
   },
   "computers": {
     "title": "Computer",
@@ -383,7 +384,7 @@
     }
   },
   "tv": {
-    "connectLede": "Toskar auf deinem Fernseher antwortet mit den Modellen auf deinem Computer. Öffne dort „Computer“ und wähle „Telefon verbinden“.",
+    "connectLede": "Toskar auf deinem Fernseher antwortet mit den Modellen auf deinem Computer.",
     "enterAddress": "Adresse eingeben",
     "askHint": "Drücke das Mikrofon auf der Fernbedienung oder tippe.",
     "tryAsking": "Frag zum Beispiel",
@@ -395,5 +396,12 @@
       "trip": "Plane einen verregneten Samstag in Juneau für eine vierköpfige Familie.",
       "movie": "Schlag einen Familien-Filmabend mit drei Filmen vor, die zusammenpassen."
     }
+  },
+  "setup": {
+    "title": "Auf deinem Computer einrichten",
+    "install": "Hol dir Toskar für Mac, Windows oder Linux auf toskar.ai, falls es noch nicht auf deinem Computer ist.",
+    "open": "Öffne Toskar auf dem Computer: die Toskar-App oder http://localhost:7331 in seinem Browser.",
+    "choose": "Öffne „Computer“ und wähle „Gerät verbinden“.",
+    "code": "Wähle dann hier den Computer und gib den 6-stelligen Code ein, den er zeigt."
   }
 }

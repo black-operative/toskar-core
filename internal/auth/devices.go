@@ -38,11 +38,11 @@ const (
 
 // Errors the pairing endpoint returns, with stable codes for the phone.
 var (
-	ErrNoDeviceCode      = contracts.NewError("PAIRING_NOT_STARTED", nil, errors.New("this computer isn't showing a code; choose Connect a phone on it first"))
+	ErrNoDeviceCode      = contracts.NewError("PAIRING_NOT_STARTED", nil, errors.New("this computer isn't showing a code; choose Connect a device on it first"))
 	ErrWrongDeviceCode   = contracts.NewError("PAIRING_WRONG_CODE", nil, errors.New("that code isn't the one this computer shows"))
-	ErrDeviceCodeExpired = contracts.NewError("PAIRING_EXPIRED", nil, errors.New("the code has expired; choose Connect a phone on the computer again"))
+	ErrDeviceCodeExpired = contracts.NewError("PAIRING_EXPIRED", nil, errors.New("the code has expired; choose Connect a device on the computer again"))
 	ErrDeviceThrottled   = contracts.NewError("PAIRING_THROTTLED", nil, errors.New("too many tries; wait a few minutes, then try again"))
-	ErrNotLocalNetwork   = contracts.NewError("PAIRING_NOT_LOCAL", nil, errors.New("a phone can connect only from this computer's local network"))
+	ErrNotLocalNetwork   = contracts.NewError("PAIRING_NOT_LOCAL", nil, errors.New("a device can connect only from this computer's local network"))
 )
 
 // DevicePairing is the code being shown, and what became of it.
@@ -187,7 +187,7 @@ func (p *DevicePairer) allowTry(address string, now time.Time) bool {
 }
 
 // CleanDeviceName is a phone's name as a key's name: printable, trimmed, and
-// at most 60 characters; "Phone" when it gives none.
+// at most 60 characters; "Device" when it gives none.
 func CleanDeviceName(name string) string {
 	name = strings.Map(func(r rune) rune {
 		switch {
@@ -203,7 +203,7 @@ func CleanDeviceName(name string) string {
 		name = string(r[:maxDeviceNameRunes])
 	}
 	if name == "" {
-		name = "Phone"
+		name = "Device"
 	}
 	return name
 }

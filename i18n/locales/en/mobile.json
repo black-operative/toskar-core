@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "Enter the address of the computer running Toskar.",
     "couldNotReach": "Could not reach Toskar.",
-    "unreachable": "Toskar on that computer is not reachable. Use the same Wi-Fi network, and choose Connect a phone on that computer.",
+    "unreachable": "Toskar on that computer is not reachable. Use the same Wi-Fi network, and choose Connect a device on that computer.",
     "keyRejected": "That API key was rejected. Connect with a code from the computer instead, or create a key in API Access.",
     "dropped": "The connection to Toskar dropped.",
     "chatFailed": "Chat failed.",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "Connect a computer",
-    "subtitle": "The phone uses the computer that already runs your models. On that computer, open Computers and choose Connect a phone.",
+    "subtitle": "The phone uses the computer that already runs your models. On that computer, open Computers and choose Connect a device.",
     "address": "Computer address",
     "addressPlaceholder": "192.168.1.20",
     "code": "Code",
     "codePlaceholder": "6-digit code",
-    "codeHint": "The code the computer shows under Computers → Connect a phone. It works once, for 10 minutes.",
+    "codeHint": "The code the computer shows under Computers → Connect a device. It works once, for 10 minutes.",
     "useKey": "Use an API key instead",
     "useCode": "Use a code instead",
     "apiKey": "API key",
@@ -46,7 +46,8 @@
     "connect": "Connect",
     "connecting": "Connecting",
     "notReady": "Toskar answered, but it is not ready.",
-    "pairUnsupported": "That computer's Toskar is too old to connect with a code. Update it, or use an API key."
+    "pairUnsupported": "That computer's Toskar is too old to connect with a code. Update it, or use an API key.",
+    "lede": "The phone uses the computer that already runs your models."
   },
   "discovery": {
     "onThisNetwork": "On this network",
@@ -57,7 +58,7 @@
     "none": "No computers found. Start Toskar on your computer and use the same Wi-Fi, or enter its address.",
     "localNetworkDenied": "Toskar may not look for computers on your network. Allow it in Settings > Privacy & Security > Local Network.",
     "listFailed": "Computers on this network could not be listed. You can still enter an address below.",
-    "lanOff": "Choose Connect a phone on that computer first"
+    "lanOff": "Choose Connect a device on that computer first"
   },
   "computers": {
     "title": "Computers",
@@ -459,7 +460,7 @@
     "hint": "The window is how much of the chat the model can read at once on this iPhone."
   },
   "tv": {
-    "connectLede": "Toskar on your TV answers with the models on your computer. On that computer, open Computers and choose Connect a phone.",
+    "connectLede": "Toskar on your TV answers with the models on your computer.",
     "enterAddress": "Enter an address",
     "askHint": "Press the microphone on the remote, or type.",
     "tryAsking": "Try asking",
@@ -471,5 +472,12 @@
       "trip": "Plan a rainy Saturday in Juneau for a family of four.",
       "movie": "Suggest a family movie night with three films that go together."
     }
+  },
+  "setup": {
+    "title": "Set it up on your computer",
+    "install": "Get Toskar for Mac, Windows, or Linux at toskar.ai, if it isn't on your computer yet.",
+    "open": "Open Toskar on the computer: the Toskar app, or http://localhost:7331 in its browser.",
+    "choose": "Open Computers and choose Connect a device.",
+    "code": "Back here, choose the computer and type the 6-digit code it shows."
   }
 }

@@ -208,16 +208,16 @@
     },
     {
       "id": "phone",
-      "title": "Use Toskar on your phone",
+      "title": "Use Toskar on your phone, tablet, or TV",
       "paragraphs": [
-        "Toskar for iPhone chats with the models on your computer, with your chats, memory, and knowledge. Your phone and computer need to be on the same network.",
-        "The phone gets a key of its own when you connect it. That key can chat, see your conversations, and read lists such as models and computers, but it can't change settings, models, or keys on the computer. Disconnect a phone any time under API Access → Phones, and it will need a new code to connect again.",
-        "On plain HTTP, someone else on the same network could see the code and the phone's key. Connect phones on a network you trust."
+        "Toskar for iPhone, iPad, and Apple TV chats with the models on your computer, with your chats, memory, and knowledge. The device and the computer need to be on the same network.",
+        "Each device gets a key of its own when you connect it. That key can chat, see your conversations, and read lists such as models and computers, but it can't change settings, models, or keys on the computer. Disconnect a device any time under API Access → Devices, and it will need a new code to connect again.",
+        "On plain HTTP, someone else on the same network could see the code and the device's key. Connect devices on a network you trust."
       ],
       "steps": [
-        "On the computer, open Computers and choose Connect a phone (it's also under API Access → Phones). If local network access is off, choose Allow and show a code: it turns on at once, with no restart.",
-        "On the phone, open Toskar and choose your computer under On this network. If it isn't listed, enter the address the computer shows.",
-        "Type the 6-digit code. It works once, for 10 minutes. The computer shows the phone's name when it connects."
+        "On the computer, open Computers and choose Connect a device (it's also under API Access → Devices). If local network access is off, choose Allow and show a code: it turns on at once, with no restart.",
+        "On the iPhone, iPad, or Apple TV, open Toskar and choose your computer under On this network. If it isn't listed, enter the address the computer shows.",
+        "Type the 6-digit code. It works once, for 10 minutes. The computer shows the device's name when it connects."
       ]
     },
     {

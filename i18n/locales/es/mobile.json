@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "Ingresa la dirección de la computadora que ejecuta Toskar.",
     "couldNotReach": "No se pudo acceder a Toskar.",
-    "unreachable": "No se puede acceder a Toskar en esa computadora. Usa la misma red Wi-Fi y elige Conectar un teléfono en esa computadora.",
+    "unreachable": "No se puede acceder a Toskar en esa computadora. Usa la misma red Wi-Fi y elige Conectar un dispositivo en esa computadora.",
     "keyRejected": "Se rechazó esa clave de API. Conéctate con un código de la computadora, o crea una clave en Acceso a la API.",
     "dropped": "Se perdió la conexión con Toskar.",
     "chatFailed": "Falló el chat.",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "Conectar una computadora",
-    "subtitle": "El teléfono usa la computadora que ya ejecuta tus modelos. En esa computadora, abre Computadoras y elige Conectar un teléfono.",
+    "subtitle": "El teléfono usa la computadora que ya ejecuta tus modelos. En esa computadora, abre Computadoras y elige Conectar un dispositivo.",
     "address": "Dirección de la computadora",
     "addressPlaceholder": "192.168.1.20",
     "code": "Código",
     "codePlaceholder": "Código de 6 dígitos",
-    "codeHint": "El código que muestra la computadora en Computadoras → Conectar un teléfono. Sirve una vez, durante 10 minutos.",
+    "codeHint": "El código que muestra la computadora en Computadoras → Conectar un dispositivo. Sirve una vez, durante 10 minutos.",
     "useKey": "Usar una clave de API",
     "useCode": "Usar un código",
     "apiKey": "Clave de API",
@@ -46,7 +46,8 @@
     "connect": "Conectar",
     "connecting": "Conectando",
     "notReady": "Toskar respondió, pero no está listo.",
-    "pairUnsupported": "El Toskar de esa computadora es demasiado antiguo para conectarse con un código. Actualízalo o usa una clave de API."
+    "pairUnsupported": "El Toskar de esa computadora es demasiado antiguo para conectarse con un código. Actualízalo o usa una clave de API.",
+    "lede": "El teléfono usa la computadora que ya ejecuta tus modelos."
   },
   "discovery": {
     "onThisNetwork": "En esta red",
@@ -57,7 +58,7 @@
     "none": "No se encontraron computadoras. Inicia Toskar en tu computadora y usa la misma red Wi-Fi, o ingresa su dirección.",
     "localNetworkDenied": "Toskar no tiene permiso para buscar computadoras en tu red. Permítelo en Configuración > Privacidad y seguridad > Red local.",
     "listFailed": "No se pudieron listar las computadoras de esta red. Todavía puedes ingresar una dirección abajo.",
-    "lanOff": "Primero elige Conectar un teléfono en esa computadora"
+    "lanOff": "Primero elige Conectar un dispositivo en esa computadora"
   },
   "computers": {
     "title": "Computadoras",
@@ -387,7 +388,7 @@
     }
   },
   "tv": {
-    "connectLede": "Toskar en tu televisor responde con los modelos de tu computadora. En esa computadora, abre Computadoras y elige Conectar un teléfono.",
+    "connectLede": "Toskar en tu televisor responde con los modelos de tu computadora.",
     "enterAddress": "Introducir una dirección",
     "askHint": "Pulsa el micrófono del control remoto o escribe.",
     "tryAsking": "Prueba a preguntar",
@@ -399,5 +400,12 @@
       "trip": "Planea un sábado lluvioso en Juneau para una familia de cuatro.",
       "movie": "Sugiere una noche de cine en familia con tres películas que combinen."
     }
+  },
+  "setup": {
+    "title": "Configúralo en tu computadora",
+    "install": "Descarga Toskar para Mac, Windows o Linux en toskar.ai, si aún no está en tu computadora.",
+    "open": "Abre Toskar en la computadora: la app de Toskar o http://localhost:7331 en su navegador.",
+    "choose": "Abre Computadoras y elige Conectar un dispositivo.",
+    "code": "Luego, aquí, elige la computadora y escribe el código de 6 dígitos que muestra."
   }
 }

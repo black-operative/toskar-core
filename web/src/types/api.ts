@@ -697,7 +697,7 @@ export interface APIKeyRecord {
   revoked: boolean
   /** What the key may ask of the assistant (spec §62). */
   permissions?: APIKeyPermissions
-  /** "device" for a phone's key from Connect a phone (#216). */
+  /** "device" for a device's key from Connect a device (#216). */
   kind?: string
 }
 

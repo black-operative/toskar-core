@@ -905,7 +905,7 @@ func (a *App) requireKeyForRemoteBind(ctx context.Context) error {
 		return err
 	}
 	if len(keys) == 0 {
-		// Turned on in the app, such as by Connect a phone, with no phone
+		// Turned on in the app, such as by Connect a device, with no device
 		// ever connecting: nothing could connect without a key, so go back
 		// to this computer only rather than refuse to start (#216). A host
 		// set in the environment, as in Docker, still needs a key.
@@ -1421,7 +1421,7 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 	return nil
 }
 
-// enableLANForPhone turns on local network access for Connect a phone
+// enableLANForPhone turns on local network access for Connect a device
 // (#216), without the key the setting otherwise needs first: the phone's
 // key comes from pairing.
 func (a *App) enableLANForPhone(ctx context.Context) error {

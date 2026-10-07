@@ -164,7 +164,7 @@ func TestStartTurnsOffUnusedLANAccess(t *testing.T) {
 		t.Fatalf("listening on %s", application.API.Addr())
 	}
 
-	// Connect a phone turns it on again, with no key yet, at once.
+	// Connect a device turns it on again, with no key yet, at once.
 	if err := application.enableLANForPhone(context.Background()); err != nil {
 		t.Fatal(err)
 	}

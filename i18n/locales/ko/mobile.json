@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "Toskar를 실행 중인 컴퓨터의 주소를 입력하세요.",
     "couldNotReach": "Toskar에 연결할 수 없어요.",
-    "unreachable": "해당 컴퓨터의 Toskar에 연결할 수 없어요. 같은 Wi-Fi 네트워크를 사용하고, 해당 컴퓨터에서 '휴대폰 연결'을 선택하세요.",
+    "unreachable": "해당 컴퓨터의 Toskar에 연결할 수 없어요. 같은 Wi-Fi 네트워크를 사용하고, 해당 컴퓨터에서 '기기 연결'을 선택하세요.",
     "keyRejected": "API 키가 거부되었어요. 대신 컴퓨터의 코드로 연결하거나, API 액세스에서 키를 만드세요.",
     "dropped": "Toskar와의 연결이 끊어졌어요.",
     "chatFailed": "채팅에 실패했어요.",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "컴퓨터 연결",
-    "subtitle": "휴대폰은 이미 모델을 실행 중인 컴퓨터를 사용해요. 해당 컴퓨터에서 컴퓨터를 열고 '휴대폰 연결'을 선택하세요.",
+    "subtitle": "휴대폰은 이미 모델을 실행 중인 컴퓨터를 사용해요. 해당 컴퓨터에서 컴퓨터를 열고 '기기 연결'을 선택하세요.",
     "address": "컴퓨터 주소",
     "addressPlaceholder": "192.168.1.20",
     "code": "코드",
     "codePlaceholder": "6자리 코드",
-    "codeHint": "컴퓨터의 컴퓨터 → '휴대폰 연결'에 표시되는 코드예요. 10분 동안 한 번만 쓸 수 있어요.",
+    "codeHint": "컴퓨터의 컴퓨터 → '기기 연결'에 표시되는 코드예요. 10분 동안 한 번만 쓸 수 있어요.",
     "useKey": "대신 API 키 사용",
     "useCode": "대신 코드 사용",
     "apiKey": "API 키",
@@ -46,7 +46,8 @@
     "connect": "연결",
     "connecting": "연결하는 중",
     "notReady": "Toskar가 응답했지만 준비되지 않았어요.",
-    "pairUnsupported": "해당 컴퓨터의 Toskar가 오래되어 코드로 연결할 수 없어요. 업데이트하거나 API 키를 사용하세요."
+    "pairUnsupported": "해당 컴퓨터의 Toskar가 오래되어 코드로 연결할 수 없어요. 업데이트하거나 API 키를 사용하세요.",
+    "lede": "휴대폰은 이미 모델을 실행 중인 컴퓨터를 사용해요."
   },
   "discovery": {
     "onThisNetwork": "이 네트워크에 있음",
@@ -57,7 +58,7 @@
     "none": "컴퓨터를 찾지 못했어요. 컴퓨터에서 Toskar를 시작하고 같은 Wi-Fi를 사용하거나 주소를 입력하세요.",
     "localNetworkDenied": "Toskar가 네트워크에서 컴퓨터를 찾을 수 없어요. 설정 > 개인정보 보호 및 보안 > 로컬 네트워크에서 허용하세요.",
     "listFailed": "이 네트워크의 컴퓨터 목록을 가져올 수 없어요. 아래에 주소를 직접 입력할 수 있어요.",
-    "lanOff": "먼저 해당 컴퓨터에서 '휴대폰 연결'을 선택하세요"
+    "lanOff": "먼저 해당 컴퓨터에서 '기기 연결'을 선택하세요"
   },
   "computers": {
     "title": "컴퓨터",
@@ -379,7 +380,7 @@
     }
   },
   "tv": {
-    "connectLede": "TV의 Toskar는 컴퓨터의 모델로 답해요. 해당 컴퓨터에서 컴퓨터를 열고 '휴대폰 연결'을 선택하세요.",
+    "connectLede": "TV의 Toskar는 컴퓨터의 모델로 답해요.",
     "enterAddress": "주소 입력",
     "askHint": "리모컨의 마이크를 누르거나 입력하세요.",
     "tryAsking": "이렇게 물어보세요",
@@ -391,5 +392,12 @@
       "trip": "4인 가족을 위해 비 오는 토요일 주노 일정을 짜 줘.",
       "movie": "잘 어울리는 영화 세 편으로 가족 영화의 밤을 추천해 줘."
     }
+  },
+  "setup": {
+    "title": "컴퓨터에서 설정하기",
+    "install": "컴퓨터에 아직 Toskar가 없다면 toskar.ai에서 Mac, Windows, Linux용을 받으세요.",
+    "open": "컴퓨터에서 Toskar를 여세요. Toskar 앱이나 브라우저에서 http://localhost:7331을 열면 돼요.",
+    "choose": "컴퓨터를 열고 '기기 연결'을 선택하세요.",
+    "code": "여기로 돌아와 컴퓨터를 선택하고 표시된 6자리 코드를 입력하세요."
   }
 }
