@@ -20,7 +20,7 @@ const automationsUsage = `usage: toskarctl automations <list|get|parse|create|up
   get <id>
   parse <request> [--zone <tz>] [--language <tag>]
   create --request <text> [--profile <id>] [--model <id>] [--zone <tz>] [any flag below to change what it read]
-  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|monthly|interval|cron> [--at <time>] [--every <duration>] [--weekday <days>] [--day <1-31>] [--cron <expr>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--disabled]
+  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|monthly|interval|cron> [--at <time>] [--every <duration>] [--weekday <days>] [--day <1-31>] [--cron <expr>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--save-folder <path>] [--disabled]
   update <id> [--name <name>] [--prompt <text>] [--profile <id>] [--model <id>] [--schedule ...] [--notify <mode>]
   delete <id>
   run <id>
@@ -212,6 +212,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 	op := fs.String("condition-op", "", "below or above")
 	value := fs.Float64("condition-value", 0, "threshold value")
 	disabled := fs.Bool("disabled", false, "create the automation paused")
+	saveFolder := fs.String("save-folder", "", "also save each result as a Markdown file in this folder, such as ~/Documents/Toskar; \"\" stops saving")
 	var tools stringList
 	fs.Var(&tools, "tool", "tool id allowed for this automation, repeatable")
 	if err := fs.Parse(args); err != nil {
@@ -268,6 +269,9 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			}
 			in.Notification = note
 		}
+		if seen["save-folder"] {
+			in.SaveFolder = *saveFolder
+		}
 		if *disabled {
 			off := false
 			in.Enabled = &off
@@ -295,6 +299,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			Schedule:     sched,
 			Tools:        []string(tools),
 			Notification: note,
+			SaveFolder:   *saveFolder,
 		}
 		if *disabled {
 			off := false
@@ -336,6 +341,9 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			return nil, err
 		}
 		patch.Notification = &note
+	}
+	if seen["save-folder"] {
+		patch.SaveFolder = saveFolder
 	}
 	if patch == (automations.Patch{}) {
 		return nil, fmt.Errorf("update needs at least one change")

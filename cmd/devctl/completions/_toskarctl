@@ -73,6 +73,7 @@ _toskarctl() {
             '--condition-kind[condition kind]:kind:(threshold available significant)' \
             '--condition-op[condition operator]:op:(below above)' \
             '--condition-value[threshold value]:value:' \
+            '--save-folder[also save each result in this folder]:folder:_files -/' \
             '--disabled[create the automation paused]'
           ;;
       esac

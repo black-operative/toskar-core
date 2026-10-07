@@ -1024,6 +1024,8 @@ export interface Automation {
   /** The chat it was made from, and that chat's draft (#204). */
   conversation_id?: string
   draft_id?: string
+  /** A folder each result is also saved to as a Markdown file (#204). */
+  save_folder?: string
   created_at: string
   updated_at: string
   next_run_at?: string
@@ -1053,6 +1055,8 @@ export interface AutomationRun {
   notify_values?: Record<string, unknown>
   /** The chat its result was posted to (#204). */
   conversation_id?: string
+  /** Where its result was saved, for an automation with a save folder. */
+  saved_file?: string
 }
 
 /** An automation read from a request on the computer, to review and save (#204). */
@@ -1101,6 +1105,8 @@ export interface AutomationInput {
   /** From a chat's draft: creating the same draft again returns the automation it made (#204). */
   conversation_id?: string
   draft_id?: string
+  /** A folder in the home folder to also save each result to, such as ~/Documents/Toskar; "" stops saving. */
+  save_folder?: string
 }
 
 

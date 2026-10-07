@@ -74,6 +74,9 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   const [value, setValue] = useState(String(initial?.notification.condition?.value ?? ''))
   const [currency, setCurrency] = useState(initial?.notification.condition?.currency ?? 'USD')
   const [selectedTools, setSelectedTools] = useState<string[]>(initial?.tools ?? [])
+  // Also save each result as a file in a folder (#204).
+  const [saving, setSaving] = useState(Boolean(initial?.save_folder))
+  const [saveFolder, setSaveFolder] = useState(initial?.save_folder || '~/Documents/Toskar')
 
   // The computer reads a request (#204), the same way for this form,
   // toskarctl, and chat; a model reads one its words can't.
@@ -181,6 +184,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       notification,
       tools: selectedTools,
       response_language: responseLanguage,
+      save_folder: saving ? saveFolder.trim() : '',
     }
   }
 
@@ -389,6 +393,29 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
         </div>
       )}
       {installed.length === 0 && <p className="text-sm text-danger">{t('form.installModel')}</p>}
+      <div className="space-y-2">
+        <label className="flex items-center gap-2 text-sm text-ink">
+          <input type="checkbox" checked={saving} onChange={(event) => setSaving(event.target.checked)} />
+          {t('form.saveResults')}
+        </label>
+        {saving ? (
+          <label className="block space-y-1 text-sm">
+            <span className="text-ink-muted">{t('form.saveFolder')}</span>
+            <input
+              className="field w-full font-mono"
+              value={saveFolder}
+              spellCheck={false}
+              aria-describedby="automation-save-hint"
+              onChange={(event) => setSaveFolder(event.target.value)}
+              required
+            />
+            <span id="automation-save-hint" className="block text-xs text-ink-faint">
+              {t('form.saveFolderHint')}
+            </span>
+          </label>
+        ) : null}
+      </div>
+
       <details ref={advancedRef} className="space-y-3">
         <summary className="cursor-pointer text-sm text-ink-muted">{t('form.advanced')}</summary>
         <label className="block space-y-1 text-sm">

@@ -152,7 +152,8 @@
       "notRun": "尚未运行"
     },
     "continueInChat": "在聊天中继续",
-    "openingChat": "正在打开聊天…"
+    "openingChat": "正在打开聊天…",
+    "savedTo": "已保存到 {{path}}"
   },
   "pill": {
     "paused": "已暂停",
@@ -347,7 +348,10 @@
     "monthDay": "每月几号",
     "monthDayHint": "当月没有这一天时，在最后一天运行。",
     "cron": "cron 表达式",
-    "cronHint": "按下方时区填写五个字段：分钟、小时、日、月、星期。"
+    "cronHint": "按下方时区填写五个字段：分钟、小时、日、月、星期。",
+    "saveResults": "同时将每次结果保存为文件",
+    "saveFolder": "文件夹",
+    "saveFolderHint": "每次结果都会在你的主文件夹中生成一个新的 Markdown 文件。"
   },
   "draft": {
     "label": "待确认的自动化",

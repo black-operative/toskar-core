@@ -53,7 +53,7 @@ _toskarctl() {
             --weekday) COMPREPLY=($(compgen -W "weekdays 0 1 2 3 4 5 6" -- "$cur")); return ;;
           esac
           if [[ "$cur" == -* ]]; then
-            COMPREPLY=($(compgen -W "--name --prompt --profile --model --schedule --at --every --weekday --day --cron --zone --tool --notify --condition-kind --condition-op --condition-value --disabled" -- "$cur"))
+            COMPREPLY=($(compgen -W "--name --prompt --profile --model --schedule --at --every --weekday --day --cron --zone --tool --notify --condition-kind --condition-op --condition-value --save-folder --disabled" -- "$cur"))
           fi
           ;;
       esac

@@ -43,6 +43,7 @@ type Store interface {
 	MarkRunning(ctx context.Context, runID string, now time.Time, lease time.Duration) error
 	RenewLease(ctx context.Context, runID string, now time.Time, lease time.Duration) error
 	CompleteRun(ctx context.Context, runID string, result Execution, finished time.Time) error
+	SetSavedFile(ctx context.Context, runID, path string) error
 	FailRun(ctx context.Context, runID string, message string, result Execution, finished time.Time) error
 	ScheduleRetry(ctx context.Context, runID, message string, result Execution, finished, retryAt time.Time) error
 	AbandonExpired(ctx context.Context, now time.Time) ([]Run, error)
@@ -345,6 +346,18 @@ func (r *Runner) finish(ctx context.Context, automation Automation, run Run) err
 	}
 	if err := r.Store.CompleteRun(ctx, run.ID, result, finished); err != nil {
 		return err
+	}
+	// Also saved as a file, for an automation with a save folder (#204).
+	if automation.SaveFolder != "" {
+		if text := ResultProse(result.Text); text != "" {
+			path, err := SaveResult(automation, finished, text)
+			if err == nil {
+				err = r.Store.SetSavedFile(ctx, run.ID, path)
+			}
+			if err != nil && r.Logger != nil {
+				r.Logger.Warn("save automation result", "automation", automation.Name, "error", err)
+			}
+		}
 	}
 	sent, notifyErr := r.deliver(ctx, automation, run, result, prev)
 	if err := r.Store.SetNotificationSent(ctx, run.ID, sent); err != nil {

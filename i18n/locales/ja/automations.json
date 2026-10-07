@@ -152,7 +152,8 @@
       "notRun": "未実行"
     },
     "continueInChat": "チャットで続ける",
-    "openingChat": "チャットを開いています…"
+    "openingChat": "チャットを開いています…",
+    "savedTo": "{{path}} に保存しました"
   },
   "pill": {
     "paused": "一時停止中",
@@ -347,7 +348,10 @@
     "monthDay": "日付",
     "monthDayHint": "月の日数が足りない場合は月末に実行します。",
     "cron": "cron式",
-    "cronHint": "下のタイムゾーンで、分・時・日・月・曜日の5つのフィールドを指定します。"
+    "cronHint": "下のタイムゾーンで、分・時・日・月・曜日の5つのフィールドを指定します。",
+    "saveResults": "結果をファイルにも保存する",
+    "saveFolder": "フォルダー",
+    "saveFolderHint": "結果ごとに新しい Markdown ファイルをホームフォルダー内に保存します。"
   },
   "draft": {
     "label": "確認待ちのオートメーション",

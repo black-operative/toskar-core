@@ -26,7 +26,7 @@ const automationSelect = `
 		COALESCE(profile_id, ''), COALESCE(model_id, ''), tools_json, notification_json,
 		created_at, updated_at, next_run_at, last_run_at,
 		consecutive_failures, COALESCE(last_error, ''), COALESCE(response_language, ''),
-		COALESCE(conversation_id, ''), COALESCE(draft_id, '')
+		COALESCE(conversation_id, ''), COALESCE(draft_id, ''), COALESCE(save_folder, '')
 	FROM automations`
 
 // Create stores an automation and computes its first next run.
@@ -57,6 +57,7 @@ func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput,
 		ResponseLanguage: in.ResponseLanguage,
 		ConversationID:   in.ConversationID,
 		DraftID:          in.DraftID,
+		SaveFolder:       in.SaveFolder,
 		CreatedAt:        now,
 		UpdatedAt:        now,
 	}
@@ -143,6 +144,9 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 	}
 	if patch.Tools != nil {
 		existing.Tools = *patch.Tools
+	}
+	if patch.SaveFolder != nil {
+		existing.SaveFolder = *patch.SaveFolder
 	}
 	if patch.ResponseLanguage != nil {
 		existing.ResponseLanguage = *patch.ResponseLanguage
@@ -234,12 +238,12 @@ func (r *AutomationRepo) insert(ctx context.Context, a automations.Automation) e
 		INSERT INTO automations (
 			id, name, enabled, schedule_json, time_zone, prompt, profile_id, model_id,
 			tools_json, notification_json, created_at, updated_at, next_run_at, last_run_at,
-			consecutive_failures, last_error, response_language, conversation_id, draft_id
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			consecutive_failures, last_error, response_language, conversation_id, draft_id, save_folder
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		a.ID, a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.CreatedAt), formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
 		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage),
-		nullIfEmpty(a.ConversationID), nullIfEmpty(a.DraftID))
+		nullIfEmpty(a.ConversationID), nullIfEmpty(a.DraftID), nullIfEmpty(a.SaveFolder))
 	return err
 }
 
@@ -260,11 +264,11 @@ func updateAutomation(ctx context.Context, db execer, a automations.Automation) 
 		UPDATE automations SET
 			name = ?, enabled = ?, schedule_json = ?, time_zone = ?, prompt = ?, profile_id = ?, model_id = ?,
 			tools_json = ?, notification_json = ?, updated_at = ?, next_run_at = ?, last_run_at = ?,
-			consecutive_failures = ?, last_error = ?, response_language = ?
+			consecutive_failures = ?, last_error = ?, response_language = ?, save_folder = ?
 		WHERE id = ?`,
 		a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
-		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage), a.ID)
+		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage), nullIfEmpty(a.SaveFolder), a.ID)
 	if err != nil {
 		return err
 	}
@@ -295,6 +299,10 @@ func prepareAutomation(a *automations.Automation) error {
 		cleaned[i] = strings.TrimSpace(id)
 	}
 	a.Tools = cleaned
+	a.SaveFolder = strings.TrimSpace(a.SaveFolder)
+	if _, err := automations.SaveFolderPath(a.SaveFolder); err != nil {
+		return err
+	}
 	// Both the lists and the single values older clients read (#204).
 	a.Schedule.Cron = strings.TrimSpace(a.Schedule.Cron)
 	a.Schedule = a.Schedule.Normalized()
@@ -333,7 +341,7 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	if err := s.Scan(
 		&a.ID, &a.Name, &enabled, &sched, &zone, &a.Prompt, &a.ProfileID, &a.ModelID, &tools, &note,
 		&created, &updated, &next, &last, &a.ConsecutiveFailures, &a.LastError, &a.ResponseLanguage,
-		&a.ConversationID, &a.DraftID,
+		&a.ConversationID, &a.DraftID, &a.SaveFolder,
 	); err != nil {
 		return automations.Automation{}, err
 	}

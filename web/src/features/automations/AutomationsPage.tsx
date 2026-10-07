@@ -432,6 +432,9 @@ function HistoryRow({
       {prose && <p className="mt-2 whitespace-pre-wrap text-sm text-ink-muted">{prose}</p>}
       {notice.detail && <p className="mt-1 text-sm text-ink-muted">{notice.detail}</p>}
       {run.error && <p className="mt-2 text-sm text-danger">{run.error}</p>}
+      {run.saved_file ? (
+        <p className="mt-1 break-all text-xs text-ink-faint">{t('run.savedTo', { path: run.saved_file })}</p>
+      ) : null}
       {run.status === 'succeeded' && prose ? (
         <div className="mt-2">
           <button type="button" className="btn-secondary btn-sm" disabled={continueInChat.isPending} onClick={() => continueInChat.mutate()}>

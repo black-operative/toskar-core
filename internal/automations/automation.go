@@ -122,10 +122,13 @@ type Automation struct {
 	// ConversationID is the chat the automation was made from, and DraftID
 	// the draft that chat showed (#204). Both are empty for one made
 	// elsewhere.
-	ConversationID string    `json:"conversation_id,omitempty"`
-	DraftID        string    `json:"draft_id,omitempty"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	ConversationID string `json:"conversation_id,omitempty"`
+	DraftID        string `json:"draft_id,omitempty"`
+	// SaveFolder, when set, is a folder each result is also saved to as a
+	// Markdown file (#204), such as ~/Documents/Toskar/News.
+	SaveFolder string    `json:"save_folder,omitempty"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
 	// NextRunAt is the occurrence the daemon should execute next.
 	// A missed restart keeps only the latest missed occurrence here.
 	NextRunAt *time.Time `json:"next_run_at,omitempty"`
@@ -175,6 +178,8 @@ type CreateInput struct {
 	// returns the automation it already made.
 	ConversationID string `json:"conversation_id,omitempty"`
 	DraftID        string `json:"draft_id,omitempty"`
+	// SaveFolder: see Automation.
+	SaveFolder string `json:"save_folder,omitempty"`
 }
 
 // Patch updates the fields that are non-nil.
@@ -189,6 +194,8 @@ type Patch struct {
 	Notification *Notification `json:"notification,omitempty"`
 	// ResponseLanguage: see Automation; "" goes back to the account's.
 	ResponseLanguage *string `json:"response_language,omitempty"`
+	// SaveFolder: see Automation; "" stops saving.
+	SaveFolder *string `json:"save_folder,omitempty"`
 }
 
 // Response languages an automation can have besides a language tag.

@@ -5581,6 +5581,9 @@ components:
         draft_id:
           type: string
           description: The id of the chat's draft (an answer's meta.automation). Creating the same draft again returns the automation it made.
+        save_folder:
+          type: string
+          description: A folder in the home folder, such as ~/Documents/Toskar, to also save each result to as a Markdown file. Empty stops saving.
     Automation:
       type: object
       properties:
@@ -5613,6 +5616,9 @@ components:
         draft_id:
           type: string
           description: The chat draft it was made from
+        save_folder:
+          type: string
+          description: The folder each result is also saved to
         created_at:
           type: string
           format: date-time

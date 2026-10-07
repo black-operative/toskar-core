@@ -152,7 +152,8 @@
       "notRun": "Non ancora eseguita"
     },
     "continueInChat": "Continua in chat",
-    "openingChat": "Apertura della chat…"
+    "openingChat": "Apertura della chat…",
+    "savedTo": "Salvato in {{path}}"
   },
   "pill": {
     "paused": "In pausa",
@@ -347,7 +348,10 @@
     "monthDay": "Giorno del mese",
     "monthDayHint": "In un mese più corto, viene eseguita l’ultimo giorno.",
     "cron": "Espressione cron",
-    "cronHint": "Cinque campi, nel fuso orario qui sotto: minuto, ora, giorno del mese, mese e giorno della settimana."
+    "cronHint": "Cinque campi, nel fuso orario qui sotto: minuto, ora, giorno del mese, mese e giorno della settimana.",
+    "saveResults": "Salva anche ogni risultato come file",
+    "saveFolder": "Cartella",
+    "saveFolderHint": "Un nuovo file Markdown per ogni risultato, nella tua cartella home."
   },
   "draft": {
     "label": "Automazione da confermare",

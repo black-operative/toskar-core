@@ -2,6 +2,9 @@ package automations_test
 
 import (
 	"context"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -93,3 +96,41 @@ func TestResultGoesToTheChatItCameFrom(t *testing.T) {
 		}
 	}
 }
+
+// An automation with a save folder also saves each result as a file, and
+// the run says where (#204).
+func TestResultIsSavedToItsFolder(t *testing.T) {
+	home := t.TempDir()
+	t.Cleanup(automations.SetHomeDir(home))
+	db := openAutomationDB(t)
+	repo := repositories.NewAutomationRepo(db.SQL)
+	ctx := context.Background()
+	createdAt := time.Date(2026, 10, 7, 7, 0, 0, 0, time.UTC)
+	created, err := repo.Create(ctx, automations.CreateInput{
+		ModelID: "auto", Name: "Price", Prompt: "Check the price.", SaveFolder: "~/Toskar/Prices", Notification: priceBelow,
+		Schedule: automations.Schedule{Kind: automations.KindDaily, TimeZone: "UTC", Hour: 8},
+	}, createdAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	clock := createdAt.Add(90 * time.Minute)
+	runner := &automations.Runner{Store: repo, Exec: &scriptedExec{text: "It's €640 today.\n{\"price\": 640}"}, Notify: &recordingNotifier{}, Now: func() time.Time { return clock }, Lease: time.Hour}
+	if err := runner.Tick(ctx); err != nil {
+		t.Fatal(err)
+	}
+	detail, _ := repo.History(ctx, created.ID)
+	saved := detail.History[0].SavedFile
+	if !strings.HasPrefix(saved, filepath.Join(home, "Toskar", "Prices")+string(filepath.Separator)) {
+		t.Fatalf("saved file = %q", saved)
+	}
+	body, err := os.ReadFile(saved)
+	if err != nil || !strings.Contains(string(body), "It's €640 today.") || strings.Contains(string(body), `"price"`) {
+		t.Fatalf("body = %q, %v", body, err)
+	}
+	// Outside the home folder is refused when saved.
+	if _, err := repo.Update(ctx, created.ID, automations.Patch{SaveFolder: ptr("/etc")}, clock); err == nil {
+		t.Fatal("saved a folder outside the home folder")
+	}
+}
+
+func ptr[T any](v T) *T { return &v }

@@ -202,6 +202,19 @@ describe('AutomationsPage', () => {
     expect(screen.getByRole('button', { name: 'Hide how it works' })).toHaveAttribute('aria-expanded', 'true')
   })
 
+  it('also saves results to a folder when asked', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Also save each result as a file' }))
+    fireEvent.change(screen.getByRole('textbox', { name: /^Folder/ }), { target: { value: '~/Documents/Toskar/News' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'News' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Summarize the news.' } })
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    expect(vi.mocked(api.createAutomation).mock.calls[0][0].save_folder).toBe('~/Documents/Toskar/News')
+  })
+
   it('saves a schedule on several days at several times', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))

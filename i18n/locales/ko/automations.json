@@ -152,7 +152,8 @@
       "notRun": "아직 실행 안 됨"
     },
     "continueInChat": "채팅에서 이어 가기",
-    "openingChat": "채팅을 여는 중…"
+    "openingChat": "채팅을 여는 중…",
+    "savedTo": "{{path}}에 저장함"
   },
   "pill": {
     "paused": "일시 정지됨",
@@ -347,7 +348,10 @@
     "monthDay": "날짜",
     "monthDayHint": "날짜가 없는 달에는 마지막 날에 실행합니다.",
     "cron": "cron 식",
-    "cronHint": "아래 시간대 기준 다섯 필드: 분, 시, 일, 월, 요일."
+    "cronHint": "아래 시간대 기준 다섯 필드: 분, 시, 일, 월, 요일.",
+    "saveResults": "결과를 파일로도 저장",
+    "saveFolder": "폴더",
+    "saveFolderHint": "결과마다 새 Markdown 파일을 홈 폴더 안에 저장합니다."
   },
   "draft": {
     "label": "확인할 자동화",

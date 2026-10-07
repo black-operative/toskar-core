@@ -44,6 +44,7 @@ complete -c toskarctl -n $ygg_edit -l notify -x -a 'always condition change none
 complete -c toskarctl -n $ygg_edit -l condition-kind -x -a 'threshold available significant' -d 'Condition kind'
 complete -c toskarctl -n $ygg_edit -l condition-op -x -a 'below above' -d 'Condition operator'
 complete -c toskarctl -n $ygg_edit -l condition-value -r -d 'Threshold value'
+complete -c toskarctl -n $ygg_edit -l save-folder -r -a '(__fish_complete_directories)' -d 'Also save each result in this folder'
 complete -c toskarctl -n $ygg_edit -l disabled -d 'Create the automation paused'
 
 # yggctl, the name from before the rename, completes the same way.

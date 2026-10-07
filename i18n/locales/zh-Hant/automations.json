@@ -152,7 +152,8 @@
       "notRun": "尚未執行"
     },
     "continueInChat": "在聊天中繼續",
-    "openingChat": "正在開啟聊天…"
+    "openingChat": "正在開啟聊天…",
+    "savedTo": "已儲存到 {{path}}"
   },
   "pill": {
     "paused": "已暫停",
@@ -347,7 +348,10 @@
     "monthDay": "每月幾號",
     "monthDayHint": "當月沒有這一天時，在最後一天執行。",
     "cron": "cron 運算式",
-    "cronHint": "依下方時區填寫五個欄位：分鐘、小時、日、月、星期。"
+    "cronHint": "依下方時區填寫五個欄位：分鐘、小時、日、月、星期。",
+    "saveResults": "同時將每次結果儲存為檔案",
+    "saveFolder": "資料夾",
+    "saveFolderHint": "每次結果都會在你的主資料夾中建立一個新的 Markdown 檔案。"
   },
   "draft": {
     "label": "待確認的自動化",
