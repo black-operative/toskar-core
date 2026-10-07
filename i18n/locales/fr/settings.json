@@ -190,7 +190,8 @@
       "external_server": "Serveur externe",
       "connector": "Service connecté",
       "notification": "Notification",
-      "community_ratings": "Notes de la communauté"
+      "community_ratings": "Notes de la communauté",
+      "update_check": "Recherche de mises à jour"
     },
     "kindsLower": {
       "web_search": "recherche web",
@@ -200,7 +201,8 @@
       "external_server": "serveur externe",
       "connector": "service connecté",
       "notification": "notification",
-      "community_ratings": "notes de la communauté"
+      "community_ratings": "notes de la communauté",
+      "update_check": "recherche de mises à jour"
     },
     "sources": {
       "chat": "Discussion",
@@ -244,7 +246,13 @@
     "thisComputer": "Cet ordinateur",
     "service": "Service",
     "unavailable": "Indisponible",
-    "diagnostics": "Ouvrir les diagnostics"
+    "diagnostics": "Ouvrir les diagnostics",
+    "updateAvailable": "Toskar {{version}} est disponible.",
+    "whatsNew": "Nouveautés",
+    "download": "Télécharger",
+    "upToDate": "À jour",
+    "checkUpdates": "Rechercher les mises à jour",
+    "checkUpdatesHint": "Une fois par jour, Toskar demande à toskar.ai le numéro de la dernière version. Rien d'autre n'est envoyé."
   },
   "reset": {
     "title": "Réinitialiser l'application",

@@ -583,6 +583,8 @@ export interface SettingsView {
   community_ratings?: boolean
   /** Ask for a rating after a model has been used a while. */
   ratings_prompts?: boolean
+  /** Look at toskar.ai once a day for a newer version. */
+  update_check?: boolean
   tool_terminal?: string
   tool_file_writes?: string
   tool_git?: string
@@ -781,6 +783,7 @@ export interface ToolRequestedPayload {
 export interface SettingsPatch {
   ui_locale?: string
   community_ratings?: boolean
+  update_check?: boolean
   ratings_prompts?: boolean
   assistant_language_mode?: AssistantLanguageMode
   assistant_language?: string
@@ -1557,7 +1560,7 @@ export interface PersonalStyle {
   instructions?: string
 }
 
-export type EgressKind = 'web_search' | 'web_page' | 'places' | 'paired_computer' | 'external_server' | 'connector' | 'notification' | 'community_ratings'
+export type EgressKind = 'web_search' | 'web_page' | 'places' | 'paired_computer' | 'external_server' | 'connector' | 'notification' | 'community_ratings' | 'update_check'
 
 /** The OpenAI-compatible server whose models can be chosen for a chat (#111). */
 export interface ExternalServerInfo {
@@ -1970,4 +1973,25 @@ export interface RuntimeHistory {
   interval_seconds: number
   now: RuntimeSample
   samples: RuntimeSample[]
+}
+
+/** The latest release toskar.ai names, from the daily update check. */
+export interface LatestRelease {
+  version: string
+  published_at?: string
+  prerelease?: boolean
+  notes_url?: string
+  download_url?: string
+}
+
+/** GET /api/v1/updates: whether a newer Toskar is out. */
+export interface UpdatesStatus {
+  /** This build checks (not the App Store edition, the desktop app's copy, or a development build). */
+  supported: boolean
+  /** It checks and the update_check setting is on. */
+  enabled: boolean
+  current: string
+  available: boolean
+  checked_at?: string
+  latest?: LatestRelease
 }

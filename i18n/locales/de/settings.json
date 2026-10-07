@@ -190,7 +190,8 @@
       "external_server": "Externer Server",
       "connector": "Verbundener Dienst",
       "notification": "Mitteilung",
-      "community_ratings": "Community-Bewertungen"
+      "community_ratings": "Community-Bewertungen",
+      "update_check": "Update-Prüfung"
     },
     "kindsLower": {
       "web_search": "Websuche",
@@ -200,7 +201,8 @@
       "external_server": "externer Server",
       "connector": "verbundener Dienst",
       "notification": "Mitteilung",
-      "community_ratings": "Community-Bewertungen"
+      "community_ratings": "Community-Bewertungen",
+      "update_check": "Update-Prüfung"
     },
     "sources": {
       "chat": "Chat",
@@ -243,7 +245,13 @@
     "thisComputer": "Dieser Computer",
     "service": "Dienst",
     "unavailable": "Nicht verfügbar",
-    "diagnostics": "Diagnose öffnen"
+    "diagnostics": "Diagnose öffnen",
+    "updateAvailable": "Toskar {{version}} ist verfügbar.",
+    "whatsNew": "Neuerungen",
+    "download": "Herunterladen",
+    "upToDate": "Auf dem neuesten Stand",
+    "checkUpdates": "Nach Updates suchen",
+    "checkUpdatesHint": "Einmal am Tag fragt Toskar bei toskar.ai nach der neuesten Versionsnummer. Sonst wird nichts gesendet."
   },
   "reset": {
     "title": "App zurücksetzen",

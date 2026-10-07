@@ -451,7 +451,7 @@ Personalization shapes how answers look in every chat, automation, and API reque
 ## Privacy and run records
 
 Each run records what left this computer.
-- **Record kinds:** `web_search` (the query), `web_page` (the address), `places` (the map service and the place, kind of place and point, or route asked for), `paired_computer` (the prompt and context, or training examples), `external_server` (a chat sent to a server that is not on this computer), `connector` (the service and what it was asked; long text such as a comment's body is left out), `notification` (an email or webhook delivery: the server or host, and the notification's title), and `community_ratings` (a rating shared or withdrawn, with the model, hardware class, and how it runs when that is shared, or the public ratings summary downloaded).
+- **Record kinds:** `web_search` (the query), `web_page` (the address), `places` (the map service and the place, kind of place and point, or route asked for), `paired_computer` (the prompt and context, or training examples), `external_server` (a chat sent to a server that is not on this computer), `connector` (the service and what it was asked; long text such as a comment's body is left out), `notification` (an email or webhook delivery: the server or host, and the notification's title), `community_ratings` (a rating shared or withdrawn, with the model, hardware class, and how it runs when that is shared, or the public ratings summary downloaded), and `update_check` (the daily look at toskar.ai for a newer version; nothing is sent but the request).
 - **Record fields:** `source` (`chat`, `api`, `automation`, `training`), plus `conversation_id` and `task_id` when there are any.
 
 Memories and knowledge sources have `local_only`. Set it with `PATCH /memory/{id}` or the knowledge update, `{"local_only": true}`. A turn that uses a local-only memory or a passage from a local-only source runs on this computer, even when placement would have chosen a paired computer, and its steps say so.
@@ -472,6 +472,11 @@ Every chat turn, API request, and automation run is traced. A chat or API run's 
 - `status`: `completed`, `failed`, or `stopped`.
 
 In advanced mode, an answer has "Run details". Runs are run records, so the retention and delete action above apply to them.
+
+
+### Updates
+
+`GET /updates` says whether a newer Toskar is out. Release builds installed from a download read https://toskar.ai/releases/latest.json a minute after starting and then once a day, while the `update_check` setting is on (the default). The answer has `supported` (this build checks), `enabled` (and the setting is on), `current`, `available`, `checked_at`, and `latest` (`version`, `published_at`, `prerelease`, `notes_url`, `download_url`). `available` is true when `latest` is newer than `current`; a prerelease is offered only to a prerelease build. The App Store edition, the copy the desktop app runs (`TOSKAR_UPDATE_CHECK=off`), and development builds don't check and say `supported: false`. Each check is listed in What left this computer as `update_check`.
 
 ## Community ratings
 

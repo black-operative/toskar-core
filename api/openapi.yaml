@@ -1046,12 +1046,38 @@ paths:
                   properties:
                     id: {type: string}
                     at: {type: string, format: date-time}
-                    kind: {type: string, enum: [web_search, web_page, places, paired_computer, external_server, connector, notification, community_ratings]}
+                    kind: {type: string, enum: [web_search, web_page, places, paired_computer, external_server, connector, notification, community_ratings, update_check]}
                     destination: {type: string}
                     detail: {type: string}
                     source: {type: string}
                     conversation_id: {type: string}
                     task_id: {type: string}
+  /api/v1/updates:
+    get:
+      summary: Whether a newer Toskar is out, from the daily check of toskar.ai
+      operationId: getUpdates
+      description: Release builds installed from a download check https://toskar.ai/releases/latest.json once a day, while the `update_check` setting is on. The App Store edition, the copy the desktop app runs (`TOSKAR_UPDATE_CHECK=off`), and development builds don't check, and say `supported` false.
+      responses:
+        "200":
+          description: The last check's result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  supported: {type: boolean, description: This build checks. False for the App Store edition, the desktop app's copy, and development builds.}
+                  enabled: {type: boolean, description: This build checks and the update_check setting is on.}
+                  current: {type: string}
+                  available: {type: boolean, description: The latest release is newer than this one. A prerelease is offered only to prerelease builds.}
+                  checked_at: {type: string, format: date-time}
+                  latest:
+                    type: object
+                    properties:
+                      version: {type: string}
+                      published_at: {type: string}
+                      prerelease: {type: boolean}
+                      notes_url: {type: string}
+                      download_url: {type: string}
   /api/v1/privacy:
     get:
       summary: Run record retention and a 30-day summary of what left this computer

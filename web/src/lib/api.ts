@@ -103,6 +103,7 @@ import type {
   StopChatResponse,
   LiveFigures,
   GPUSetup,
+  UpdatesStatus,
 } from '@/types/api'
 import type { Upload } from '@/lib/upload'
 
@@ -491,6 +492,7 @@ export const api = {
   getHealth: () => request<HealthResponse>('/api/v1/health'),
 
   getVersion: () => request<VersionResponse>('/api/v1/version'),
+  getUpdates: () => request<UpdatesStatus>('/api/v1/updates'),
 
   getHardware: () => request<HardwareInventory>('/api/v1/hardware'),
 

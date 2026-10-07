@@ -190,7 +190,8 @@
       "external_server": "External server",
       "connector": "Connected service",
       "notification": "Notification",
-      "community_ratings": "Community ratings"
+      "community_ratings": "Community ratings",
+      "update_check": "Update check"
     },
     "kindsLower": {
       "web_search": "web search",
@@ -200,7 +201,8 @@
       "external_server": "external server",
       "connector": "connected service",
       "notification": "notification",
-      "community_ratings": "community ratings"
+      "community_ratings": "community ratings",
+      "update_check": "update check"
     },
     "sources": {
       "chat": "Chat",
@@ -243,7 +245,13 @@
     "thisComputer": "This computer",
     "service": "Service",
     "unavailable": "Unavailable",
-    "diagnostics": "Open diagnostics"
+    "diagnostics": "Open diagnostics",
+    "updateAvailable": "Toskar {{version}} is available.",
+    "whatsNew": "What's new",
+    "download": "Download",
+    "upToDate": "Up to date",
+    "checkUpdates": "Check for updates",
+    "checkUpdatesHint": "Once a day, Toskar asks toskar.ai for the latest version number. Nothing else is sent."
   },
   "reset": {
     "title": "Reset application",

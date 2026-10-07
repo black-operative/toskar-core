@@ -176,6 +176,7 @@ type Server struct {
 	ctl             func() string
 	personal        PersonalStore
 	privacy         Privacy
+	updates         Updates
 	ratings         Ratings
 	network         Network
 	external        ExternalServers
@@ -296,6 +297,7 @@ func (s *Server) routes() {
 	s.mcpRoutes(api)
 	s.personalRoutes(api)
 	s.privacyRoutes(api)
+	s.updatesRoutes(api)
 	s.ratingsRoutes(api)
 	s.networkRoutes(api)
 	s.externalRoutes(api)

@@ -190,7 +190,8 @@
       "external_server": "외부 서버",
       "connector": "연결된 서비스",
       "notification": "알림",
-      "community_ratings": "커뮤니티 평가"
+      "community_ratings": "커뮤니티 평가",
+      "update_check": "업데이트 확인"
     },
     "kindsLower": {
       "web_search": "웹 검색",
@@ -200,7 +201,8 @@
       "external_server": "외부 서버",
       "connector": "연결된 서비스",
       "notification": "알림",
-      "community_ratings": "커뮤니티 평가"
+      "community_ratings": "커뮤니티 평가",
+      "update_check": "업데이트 확인"
     },
     "sources": {
       "chat": "채팅",
@@ -242,7 +244,13 @@
     "thisComputer": "이 컴퓨터",
     "service": "서비스",
     "unavailable": "사용할 수 없음",
-    "diagnostics": "진단 열기"
+    "diagnostics": "진단 열기",
+    "updateAvailable": "Toskar {{version}}을(를) 사용할 수 있습니다.",
+    "whatsNew": "새로운 기능",
+    "download": "다운로드",
+    "upToDate": "최신 상태",
+    "checkUpdates": "업데이트 확인",
+    "checkUpdatesHint": "하루에 한 번 Toskar가 toskar.ai에 최신 버전 번호를 묻습니다. 그 외에는 아무것도 보내지 않습니다."
   },
   "reset": {
     "title": "애플리케이션 재설정",

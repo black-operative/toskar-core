@@ -190,7 +190,8 @@
       "external_server": "外部サーバ",
       "connector": "連携サービス",
       "notification": "通知",
-      "community_ratings": "コミュニティ評価"
+      "community_ratings": "コミュニティ評価",
+      "update_check": "アップデートの確認"
     },
     "kindsLower": {
       "web_search": "Web検索",
@@ -200,7 +201,8 @@
       "external_server": "外部サーバ",
       "connector": "連携サービス",
       "notification": "通知",
-      "community_ratings": "コミュニティ評価"
+      "community_ratings": "コミュニティ評価",
+      "update_check": "アップデートの確認"
     },
     "sources": {
       "chat": "チャット",
@@ -242,7 +244,13 @@
     "thisComputer": "このコンピュータ",
     "service": "サービス",
     "unavailable": "利用不可",
-    "diagnostics": "診断を開く"
+    "diagnostics": "診断を開く",
+    "updateAvailable": "Toskar {{version}} が利用できます。",
+    "whatsNew": "新機能",
+    "download": "ダウンロード",
+    "upToDate": "最新です",
+    "checkUpdates": "アップデートを確認",
+    "checkUpdatesHint": "1日に1回、Toskarはtoskar.aiに最新のバージョン番号を問い合わせます。それ以外は何も送信しません。"
   },
   "reset": {
     "title": "アプリケーションをリセット",

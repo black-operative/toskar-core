@@ -918,6 +918,9 @@ type SettingsView struct {
 	// CommunityRatings shows community model ratings, downloading the
 	// public summary once a day while models are browsed (#37).
 	CommunityRatings bool `json:"community_ratings"`
+	// UpdateCheck looks at toskar.ai once a day for a newer version, and
+	// says so in the app. Builds that update themselves don't check.
+	UpdateCheck bool `json:"update_check"`
 	// RatingsPrompts asks for a rating after a model has been used a while.
 	RatingsPrompts bool `json:"ratings_prompts"`
 	// Tool defaults: deny | ask | allow | allow-for-session
