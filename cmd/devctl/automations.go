@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -19,13 +20,16 @@ const automationsUsage = `usage: toskarctl automations <list|get|parse|create|up
   get <id>
   parse <request> [--zone <tz>] [--language <tag>]
   create --request <text> [--profile <id>] [--model <id>] [--zone <tz>] [any flag below to change what it read]
-  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|interval> [--at <time>] [--every <duration>] [--weekday <0-6>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--disabled]
+  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|monthly|interval|cron> [--at <time>] [--every <duration>] [--weekday <days>] [--day <1-31>] [--cron <expr>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--disabled]
   update <id> [--name <name>] [--prompt <text>] [--profile <id>] [--model <id>] [--schedule ...] [--notify <mode>]
   delete <id>
   run <id>
   pause <id>
   resume <id>
-Times: daily and weekly use HH:MM. once uses RFC3339. interval uses Go durations such as 6h.
+Times: daily, weekly, and monthly use HH:MM, or several such as 08:00,17:00. once uses RFC3339.
+interval uses Go durations such as 6h. --weekday takes 0-6 (Sunday is 0) or names, several
+such as 1,3,5 or mon-fri, or "weekdays". monthly runs on --day, or a month's last day when it
+has fewer. cron takes five fields, such as --cron "0 9 * * 1-5".
 The daemon address is TOSKAR_URL, or 127.0.0.1:7331. A remote daemon uses TOSKAR_API_KEY.`
 
 // runPoll is how often `run` checks whether the run has finished.
@@ -196,10 +200,12 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 	prompt := fs.String("prompt", "", "prompt to run")
 	profile := fs.String("profile", "", "profile id")
 	model := fs.String("model", "", "installed model id")
-	schedule := fs.String("schedule", "", "once, daily, weekly, or interval")
-	at := fs.String("at", "", "HH:MM or RFC3339")
+	schedule := fs.String("schedule", "", "once, daily, weekly, monthly, interval, or cron")
+	at := fs.String("at", "", "HH:MM, several such as 08:00,17:00, or RFC3339")
 	every := fs.String("every", "", "interval duration, such as 6h")
-	weekday := fs.Int("weekday", 0, "0-6, Sunday is 0")
+	weekday := fs.String("weekday", "", "days 0-6 (Sunday is 0) or names, such as 1,3,5, mon-fri, or weekdays")
+	day := fs.Int("day", 0, "day of the month, 1-31")
+	cron := fs.String("cron", "", "cron expression, such as \"0 9 * * 1-5\"")
 	zone := fs.String("zone", "UTC", "IANA time zone")
 	notify := fs.String("notify", "always", "always, condition, change, failure, or none")
 	kind := fs.String("condition-kind", "", "threshold, available, or significant")
@@ -249,7 +255,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			in.ModelID = *model
 		}
 		if seen["schedule"] {
-			sched, err := buildSchedule(*schedule, *at, *every, *zone, weekday, seen["weekday"])
+			sched, err := buildSchedule(scheduleFlags{kind: *schedule, at: *at, every: *every, zone: *zone, weekdays: *weekday, day: *day, cron: *cron})
 			if err != nil {
 				return nil, err
 			}
@@ -273,7 +279,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 		if strings.TrimSpace(*name) == "" || strings.TrimSpace(*prompt) == "" || strings.TrimSpace(*profile) == "" || strings.TrimSpace(*model) == "" {
 			return nil, fmt.Errorf("create requires --request, or --name, --prompt, --profile, and --model")
 		}
-		sched, err := buildSchedule(*schedule, *at, *every, *zone, weekday, seen["weekday"])
+		sched, err := buildSchedule(scheduleFlags{kind: *schedule, at: *at, every: *every, zone: *zone, weekdays: *weekday, day: *day, cron: *cron})
 		if err != nil {
 			return nil, err
 		}
@@ -314,11 +320,11 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 		copied := []string(tools)
 		patch.Tools = &copied
 	}
-	if seen["schedule"] || seen["at"] || seen["every"] || seen["weekday"] || seen["zone"] {
+	if seen["schedule"] || seen["at"] || seen["every"] || seen["weekday"] || seen["day"] || seen["cron"] || seen["zone"] {
 		if !seen["schedule"] {
 			return nil, fmt.Errorf("pass --schedule to change the schedule")
 		}
-		sched, err := buildSchedule(*schedule, *at, *every, *zone, weekday, seen["weekday"])
+		sched, err := buildSchedule(scheduleFlags{kind: *schedule, at: *at, every: *every, zone: *zone, weekdays: *weekday, day: *day, cron: *cron})
 		if err != nil {
 			return nil, err
 		}
@@ -337,42 +343,110 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 	return patch, nil
 }
 
-func buildSchedule(kind, at, every, zone string, weekday *int, weekdaySet bool) (automations.Schedule, error) {
-	sched := automations.Schedule{Kind: automations.Kind(kind), TimeZone: zone}
+type scheduleFlags struct {
+	kind, at, every, zone, weekdays, cron string
+	day                                   int
+}
+
+func buildSchedule(f scheduleFlags) (automations.Schedule, error) {
+	sched := automations.Schedule{Kind: automations.Kind(f.kind), TimeZone: f.zone}
 	switch sched.Kind {
-	case automations.KindDaily, automations.KindWeekly:
-		if at == "" {
+	case automations.KindDaily, automations.KindWeekly, automations.KindMonthly:
+		if f.at == "" {
 			return automations.Schedule{}, fmt.Errorf("--at HH:MM is required")
 		}
-		parsed, err := time.Parse("15:04", at)
-		if err != nil {
-			return automations.Schedule{}, fmt.Errorf("--at must be HH:MM for a daily or weekly schedule")
-		}
-		sched.Hour = parsed.Hour()
-		sched.Minute = parsed.Minute()
-		if sched.Kind == automations.KindWeekly {
-			if !weekdaySet {
-				return automations.Schedule{}, fmt.Errorf("weekly schedule requires --weekday 0-6")
+		for _, part := range strings.Split(f.at, ",") {
+			parsed, err := time.Parse("15:04", strings.TrimSpace(part))
+			if err != nil {
+				return automations.Schedule{}, fmt.Errorf("--at must be HH:MM, or several such as 08:00,17:00, for a %s schedule", f.kind)
 			}
-			day := *weekday
-			sched.Weekday = &day
+			sched.Times = append(sched.Times, automations.ClockTime{Hour: parsed.Hour(), Minute: parsed.Minute()})
 		}
+		switch sched.Kind {
+		case automations.KindWeekly:
+			days, err := parseWeekdays(f.weekdays)
+			if err != nil {
+				return automations.Schedule{}, err
+			}
+			sched.Weekdays = days
+		case automations.KindMonthly:
+			if f.day < 1 || f.day > 31 {
+				return automations.Schedule{}, fmt.Errorf("monthly schedule requires --day 1-31")
+			}
+			sched.MonthDay = f.day
+		}
+	case automations.KindCron:
+		if strings.TrimSpace(f.cron) == "" {
+			return automations.Schedule{}, fmt.Errorf("cron schedule requires --cron, such as \"0 9 * * 1-5\"")
+		}
+		sched.Cron = f.cron
 	case automations.KindOnce:
-		when, err := time.Parse(time.RFC3339, at)
+		when, err := time.Parse(time.RFC3339, f.at)
 		if err != nil {
 			return automations.Schedule{}, fmt.Errorf("--at must be RFC3339 for a one-time schedule")
 		}
 		sched.At = &when
 	case automations.KindInterval:
-		d, err := time.ParseDuration(every)
+		d, err := time.ParseDuration(f.every)
 		if err != nil || d < time.Second {
 			return automations.Schedule{}, fmt.Errorf("--every must be a duration of at least 1s, such as 6h")
 		}
 		sched.EverySeconds = int(d / time.Second)
 	default:
-		return automations.Schedule{}, fmt.Errorf("--schedule must be once, daily, weekly, or interval")
+		return automations.Schedule{}, fmt.Errorf("--schedule must be once, daily, weekly, monthly, interval, or cron")
 	}
-	return sched, nil
+	if err := sched.Validate(); err != nil {
+		return automations.Schedule{}, err
+	}
+	return sched.Normalized(), nil
+}
+
+var weekdayFlagNames = map[string]int{"sun": 0, "mon": 1, "tue": 2, "wed": 3, "thu": 4, "fri": 5, "sat": 6}
+
+// parseWeekdays reads --weekday: numbers or names, lists and ranges, or
+// "weekdays" for Monday to Friday.
+func parseWeekdays(text string) ([]int, error) {
+	text = strings.ToLower(strings.TrimSpace(text))
+	if text == "" {
+		return nil, fmt.Errorf("weekly schedule requires --weekday, such as 1, 1,3,5, or weekdays")
+	}
+	if text == "weekdays" {
+		return []int{1, 2, 3, 4, 5}, nil
+	}
+	one := func(s string) (int, error) {
+		s = strings.TrimSpace(s)
+		if len(s) >= 3 {
+			if v, ok := weekdayFlagNames[s[:3]]; ok {
+				return v, nil
+			}
+		}
+		v, err := strconv.Atoi(s)
+		if err != nil || v < 0 || v > 6 {
+			return 0, fmt.Errorf("--weekday %q is not a day: use 0-6 (Sunday is 0) or a name such as mon", s)
+		}
+		return v, nil
+	}
+	var days []int
+	for _, part := range strings.Split(text, ",") {
+		lo, hi, isRange := strings.Cut(part, "-")
+		a, err := one(lo)
+		if err != nil {
+			return nil, err
+		}
+		b := a
+		if isRange {
+			if b, err = one(hi); err != nil {
+				return nil, err
+			}
+		}
+		for d := a; ; d = (d + 1) % 7 {
+			days = append(days, d)
+			if d == b {
+				break
+			}
+		}
+	}
+	return days, nil
 }
 
 func buildNotification(mode, kind, op string, value float64) (automations.Notification, error) {

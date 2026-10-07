@@ -2,6 +2,7 @@ package automations
 
 import (
 	"fmt"
+	"slices"
 	"time"
 )
 
@@ -14,7 +15,20 @@ const (
 	KindDaily    Kind = "daily"
 	KindWeekly   Kind = "weekly"
 	KindInterval Kind = "interval"
+	// KindMonthly runs on a day of the month, and KindCron on a cron
+	// expression (#204).
+	KindMonthly Kind = "monthly"
+	KindCron    Kind = "cron"
 )
+
+// ClockTime is a time of day, in the schedule's time zone.
+type ClockTime struct {
+	Hour   int `json:"hour"`
+	Minute int `json:"minute"`
+}
+
+// maxTimes is how many times a day a schedule may name.
+const maxTimes = 24
 
 // Schedule is the time rule for an automation.
 // Clock fields are civil time in TimeZone. At and Anchor are absolute instants.
@@ -27,12 +41,62 @@ type Schedule struct {
 	Weekday      *int       `json:"weekday,omitempty"`
 	EverySeconds int        `json:"every_seconds,omitempty"`
 	Anchor       *time.Time `json:"anchor,omitempty"`
+	// Weekdays are a weekly schedule's days, 0 (Sunday) to 6, such as 1-5
+	// for weekdays only; Weekday is the first, for clients from before
+	// several days (#204).
+	Weekdays []int `json:"weekdays,omitempty"`
+	// Times are the times of day a daily, weekly, or monthly schedule runs
+	// at; Hour and Minute are the first.
+	Times []ClockTime `json:"times,omitempty"`
+	// MonthDay is a monthly schedule's day, 1 to 31. A month without that
+	// day runs on its last day.
+	MonthDay int `json:"month_day,omitempty"`
+	// Cron is a cron schedule's five-field expression, such as
+	// "0 9 * * 1-5".
+	Cron string `json:"cron,omitempty"`
+}
+
+// Normalized fills Weekdays and Times from the single-value fields older
+// clients send, and the single-value fields from the lists, so both kinds
+// of client read the same schedule. Lists are sorted without repeats.
+func (s Schedule) Normalized() Schedule {
+	switch s.Kind {
+	case KindDaily, KindWeekly, KindMonthly:
+		if len(s.Times) == 0 {
+			s.Times = []ClockTime{{Hour: s.Hour, Minute: s.Minute}}
+		}
+		s.Times = slices.Clone(s.Times)
+		slices.SortFunc(s.Times, func(a, b ClockTime) int { return (a.Hour*60 + a.Minute) - (b.Hour*60 + b.Minute) })
+		s.Times = slices.Compact(s.Times)
+		s.Hour, s.Minute = s.Times[0].Hour, s.Times[0].Minute
+	default:
+		s.Times = nil
+	}
+	if s.Kind == KindWeekly {
+		if len(s.Weekdays) == 0 && s.Weekday != nil {
+			s.Weekdays = []int{*s.Weekday}
+		}
+		s.Weekdays = slices.Compact(slices.Sorted(slices.Values(s.Weekdays)))
+		if len(s.Weekdays) > 0 {
+			first := s.Weekdays[0]
+			s.Weekday = &first
+		}
+	} else {
+		s.Weekdays = nil
+	}
+	if s.Kind != KindMonthly {
+		s.MonthDay = 0
+	}
+	if s.Kind != KindCron {
+		s.Cron = ""
+	}
+	return s
 }
 
 // Validate checks that the schedule can produce a next run.
 func (s Schedule) Validate() error {
 	switch s.Kind {
-	case KindOnce, KindDaily, KindWeekly, KindInterval:
+	case KindOnce, KindDaily, KindWeekly, KindInterval, KindMonthly, KindCron:
 	case "":
 		return fmt.Errorf("schedule kind is required")
 	default:
@@ -49,20 +113,43 @@ func (s Schedule) Validate() error {
 		if s.At == nil || s.At.IsZero() {
 			return fmt.Errorf("one-time schedule requires at")
 		}
-	case KindDaily, KindWeekly:
-		if s.Hour < 0 || s.Hour > 23 {
-			return fmt.Errorf("hour must be 0-23")
+	case KindDaily, KindWeekly, KindMonthly:
+		n := s.Normalized()
+		if len(n.Times) > maxTimes {
+			return fmt.Errorf("a schedule can run at most %d times a day", maxTimes)
 		}
-		if s.Minute < 0 || s.Minute > 59 {
-			return fmt.Errorf("minute must be 0-59")
+		for _, t := range n.Times {
+			if t.Hour < 0 || t.Hour > 23 {
+				return fmt.Errorf("hour must be 0-23")
+			}
+			if t.Minute < 0 || t.Minute > 59 {
+				return fmt.Errorf("minute must be 0-59")
+			}
 		}
-		if s.Kind == KindWeekly {
-			if s.Weekday == nil {
+		switch s.Kind {
+		case KindWeekly:
+			if len(n.Weekdays) == 0 {
 				return fmt.Errorf("weekly schedule requires weekday")
 			}
-			if *s.Weekday < 0 || *s.Weekday > 6 {
-				return fmt.Errorf("weekday must be 0-6")
+			for _, day := range n.Weekdays {
+				if day < 0 || day > 6 {
+					return fmt.Errorf("weekday must be 0-6")
+				}
 			}
+		case KindMonthly:
+			if s.MonthDay < 1 || s.MonthDay > 31 {
+				return fmt.Errorf("monthly schedule requires month_day 1-31")
+			}
+		}
+	case KindCron:
+		spec, err := parseCron(s.Cron)
+		if err != nil {
+			return err
+		}
+		// An expression such as "0 0 31 2 *" never runs.
+		reference := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
+		if s.withCron(spec).nextSlot(time.UTC, reference).IsZero() {
+			return fmt.Errorf("cron %q never runs", s.Cron)
 		}
 	case KindInterval:
 		if s.EverySeconds < 1 {
@@ -112,16 +199,21 @@ func (s Schedule) NextRun(createdAt, lastOccurrence, now time.Time) (time.Time, 
 		if err != nil {
 			return time.Time{}, false, fmt.Errorf("time zone %q: %w", s.TimeZone, err)
 		}
+		cal := s.calendar()
 		bound := later(createdAt, lastOccurrence)
-		latest := latestCalendar(s, loc, now)
-		if latest.After(bound) && !latest.After(now) {
+		latest := cal.latestSlot(loc, now)
+		if !latest.IsZero() && latest.After(bound) && !latest.After(now) {
 			return wall(latest), true, nil
 		}
 		after := now
 		if bound.After(after) {
 			after = bound
 		}
-		return wall(nextCalendar(s, loc, after)), true, nil
+		next := cal.nextSlot(loc, after)
+		if next.IsZero() {
+			return time.Time{}, false, nil
+		}
+		return wall(next), true, nil
 	}
 }
 
@@ -166,56 +258,92 @@ func firstAfter(start, after time.Time, every time.Duration) time.Time {
 	return after.Add(every - rem)
 }
 
-func latestCalendar(s Schedule, loc *time.Location, now time.Time) time.Time {
-	if s.Kind == KindWeekly {
-		return nearestWeekday(s, loc, now, -1, false)
-	}
-	return nearestDay(s, loc, now, -1, false)
+// calendar is a calendar schedule ready to step through day by day.
+type calendar struct {
+	s    Schedule
+	cron *cronSpec
 }
 
-func nextCalendar(s Schedule, loc *time.Location, after time.Time) time.Time {
-	if s.Kind == KindWeekly {
-		return nearestWeekday(s, loc, after, 1, true)
+func (s Schedule) calendar() calendar {
+	c := calendar{s: s.Normalized()}
+	if s.Kind == KindCron {
+		c.cron, _ = parseCron(s.Cron)
 	}
-	return nearestDay(s, loc, after, 1, true)
+	return c
 }
 
-// nearestDay walks civil days from now. forward is 1 or -1.
-// strict means the slot must be after now; otherwise it must be at or before now.
-func nearestDay(s Schedule, loc *time.Location, now time.Time, forward int, strict bool) time.Time {
+func (s Schedule) withCron(spec *cronSpec) calendar {
+	return calendar{s: s, cron: spec}
+}
+
+// span is how many days to look through for a slot: enough to find one in
+// any schedule that runs at all.
+func (c calendar) span() int {
+	switch c.s.Kind {
+	case KindDaily:
+		return 3
+	case KindWeekly:
+		return 8
+	case KindMonthly:
+		return 63
+	}
+	// A cron on February 29th runs once in four years, or eight across a
+	// century that skips a leap year.
+	return 366*8 + 2
+}
+
+// times are the clock times a day runs at, or nil when it doesn't run.
+func (c calendar) times(day time.Time) []ClockTime {
+	switch c.s.Kind {
+	case KindWeekly:
+		if !slices.Contains(c.s.Weekdays, int(day.Weekday())) {
+			return nil
+		}
+	case KindMonthly:
+		last := time.Date(day.Year(), day.Month()+1, 0, 12, 0, 0, 0, day.Location()).Day()
+		if day.Day() != min(c.s.MonthDay, last) {
+			return nil
+		}
+	case KindCron:
+		if c.cron == nil || !c.cron.matchesDay(day) {
+			return nil
+		}
+		return c.cron.times()
+	}
+	return c.s.Times
+}
+
+// latestSlot is the last slot at or before now, or zero when there is none
+// in the span.
+func (c calendar) latestSlot(loc *time.Location, now time.Time) time.Time {
 	local := now.In(loc)
-	for i := 0; i <= 3; i++ {
-		slot := civilOnDay(local, i*forward, s.Hour, s.Minute, loc)
-		if strict && slot.After(now) {
-			return slot
-		}
-		if !strict && !slot.After(now) {
-			return slot
+	for i := 0; i <= c.span(); i++ {
+		day := civilOnDay(local, -i, 12, 0, loc)
+		times := c.times(day)
+		for j := len(times) - 1; j >= 0; j-- {
+			slot := civilOnDay(local, -i, times[j].Hour, times[j].Minute, loc)
+			if !slot.After(now) {
+				return slot
+			}
 		}
 	}
-	return civilOnDay(local, forward, s.Hour, s.Minute, loc)
+	return time.Time{}
 }
 
-func nearestWeekday(s Schedule, loc *time.Location, now time.Time, forward int, strict bool) time.Time {
-	local := now.In(loc)
-	want := time.Weekday(*s.Weekday)
-	step := 1
-	if forward < 0 {
-		step = -1
-	}
-	for i := 0; i <= 10; i++ {
-		slot := civilOnDay(local, i*step, s.Hour, s.Minute, loc)
-		if slot.Weekday() != want {
-			continue
-		}
-		if strict && slot.After(now) {
-			return slot
-		}
-		if !strict && !slot.After(now) {
-			return slot
+// nextSlot is the first slot after after, or zero when there is none in
+// the span.
+func (c calendar) nextSlot(loc *time.Location, after time.Time) time.Time {
+	local := after.In(loc)
+	for i := 0; i <= c.span(); i++ {
+		day := civilOnDay(local, i, 12, 0, loc)
+		for _, t := range c.times(day) {
+			slot := civilOnDay(local, i, t.Hour, t.Minute, loc)
+			if slot.After(after) {
+				return slot
+			}
 		}
 	}
-	return civilOnDay(local, 7*step, s.Hour, s.Minute, loc)
+	return time.Time{}
 }
 
 // civilOnDay returns hour:minute on the civil day offset from local, using noon as the

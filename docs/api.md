@@ -357,6 +357,19 @@ A trained revision can be exported as one GGUF file that llama.cpp, LM Studio, O
 
 An automation's `notification.mode` is `condition`, `change`, `always`, `failure` (only failed runs), or `none`. An automation runs on the same stack as chat: `model_id` `auto` picks a model for each run, and memories and connected knowledge are used the same way. Its `response_language` is the language results are written in: `account` (the default) follows the assistant language setting, `app` the App language, `auto` the language of the request, or a language tag such as `de`. A language the request asks for, such as "answer in English", always wins. Tools follow the unattended policy, because nobody is there to approve them. Tools listed in the automation's `tools` were approved when it was saved, and they run even if they change things. With no `tools`, only read-only tools the profile allows without asking can run. A tool the profile denies never runs. When a run reaches a tool that was not approved, the tool is skipped and the run continues. The run's `automation.completed` event lists the tool in `skipped`, and an `approval` notification says which tools to approve.
 
+**Schedules.** `schedule.kind` is one of:
+- `once`: at `at`.
+- `daily`, `weekly`, or `monthly`, at each of `times` (`[{"hour": 8, "minute": 0}, {"hour": 17, "minute": 30}]`, up to 24 a day) in `time_zone`.
+  - `weekly` runs on `weekdays`, where Sunday is 0, so `[1, 2, 3, 4, 5]` is weekdays only.
+  - `monthly` runs on `month_day`, or on a month's last day when the month is shorter.
+- `interval`: every `every_seconds`.
+- `cron`: a five-field `cron` expression (minute, hour, day of month, month, day of week) read in `time_zone`.
+  - It takes `*`, ranges, steps, lists, names such as `MON`, and `@daily`-style shorthands.
+  - When both the day of month and the day of week are restricted, a day matching either runs.
+  - An expression that never runs, such as `0 0 31 2 *`, is refused.
+
+Saved schedules also carry `hour`, `minute`, and `weekday`: the first time and day, for clients that read one. A client that sends only those gets a one-time-a-day, one-day schedule, as before.
+
 **Reading a request.** `POST /automations/parse` with `{"text": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.", "time_zone": "America/Los_Angeles", "language": "en"}` returns an automation to review and save: `name` ("Price below $500"), `prompt` (the task without the schedule, "Check this product. Report the current price."), `schedule`, `notification`, and `notes` on what was assumed, such as a time of day when none was given.
 - **Languages:** a request may be written in `language` or in English. `language` is also the language of the name and notes, and the currency of an amount written without one. Empty `language` uses the App language, and empty `time_zone` this computer's.
 - **Words:** the words come from `i18n/requests/<language>.json`, which the web app reads too, so the form and the API read a request the same way.

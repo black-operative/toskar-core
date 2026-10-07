@@ -199,3 +199,36 @@ func (e *cliExec) count() int {
 	defer e.mu.Unlock()
 	return e.calls
 }
+
+// Several weekdays, several times a day, monthly, and cron (#204).
+func TestBuildRicherSchedules(t *testing.T) {
+	weekdays, err := buildSchedule(scheduleFlags{kind: "weekly", at: "08:00, 17:30", weekdays: "weekdays", zone: "UTC"})
+	if err != nil || len(weekdays.Weekdays) != 5 || weekdays.Weekdays[0] != 1 || len(weekdays.Times) != 2 || weekdays.Times[1].Minute != 30 || *weekdays.Weekday != 1 {
+		t.Fatalf("weekdays = %+v, %v", weekdays, err)
+	}
+	if days, err := parseWeekdays("fri-mon"); err != nil || len(days) != 4 || days[0] != 5 || days[3] != 1 {
+		t.Fatalf("fri-mon = %v, %v", days, err)
+	}
+	if days, err := parseWeekdays("1,3,wed"); err != nil || len(days) != 3 {
+		t.Fatalf("1,3,wed = %v, %v", days, err)
+	}
+	monthly, err := buildSchedule(scheduleFlags{kind: "monthly", at: "09:00", day: 31, zone: "UTC"})
+	if err != nil || monthly.MonthDay != 31 {
+		t.Fatalf("monthly = %+v, %v", monthly, err)
+	}
+	if _, err := buildSchedule(scheduleFlags{kind: "cron", cron: "0 9 * * 1-5", zone: "UTC"}); err != nil {
+		t.Fatal(err)
+	}
+	for name, f := range map[string]scheduleFlags{
+		"no day":     {kind: "monthly", at: "09:00", zone: "UTC"},
+		"no days":    {kind: "weekly", at: "09:00", zone: "UTC"},
+		"day 8":      {kind: "weekly", at: "09:00", weekdays: "8", zone: "UTC"},
+		"bad time":   {kind: "daily", at: "08:00,25:00", zone: "UTC"},
+		"no cron":    {kind: "cron", zone: "UTC"},
+		"never cron": {kind: "cron", cron: "0 0 30 2 *", zone: "UTC"},
+	} {
+		if _, err := buildSchedule(f); err == nil {
+			t.Errorf("%s was accepted", name)
+		}
+	}
+}

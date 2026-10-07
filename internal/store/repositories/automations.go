@@ -295,6 +295,9 @@ func prepareAutomation(a *automations.Automation) error {
 		cleaned[i] = strings.TrimSpace(id)
 	}
 	a.Tools = cleaned
+	// Both the lists and the single values older clients read (#204).
+	a.Schedule.Cron = strings.TrimSpace(a.Schedule.Cron)
+	a.Schedule = a.Schedule.Normalized()
 	a.Notification.Normalize()
 	return automations.ValidateDraft(a.Name, a.Prompt, a.ModelID, a.Tools, a.Notification, a.Schedule)
 }

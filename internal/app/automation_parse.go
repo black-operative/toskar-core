@@ -43,12 +43,16 @@ var modelRequestSchema = &structured.Schema{
 		"name": {Type: "string"},
 		"task": {Type: "string"},
 		"schedule": {Type: "object", Required: []string{"kind"}, Properties: map[string]*structured.Schema{
-			"kind":          {Type: "string", Enum: []any{"daily", "weekly", "interval", "once"}},
+			"kind":          {Type: "string", Enum: []any{"daily", "weekly", "monthly", "interval", "once", "cron"}},
 			"hour":          {Type: "integer"},
 			"minute":        {Type: "integer"},
 			"weekday":       {Type: "integer"},
+			"weekdays":      {Type: "array", Items: &structured.Schema{Type: "integer"}},
+			"times":         {Type: "array", Items: &structured.Schema{Type: "string"}},
+			"month_day":     {Type: "integer"},
 			"every_minutes": {Type: "integer"},
 			"date":          {Type: "string"},
+			"cron":          {Type: "string"},
 		}},
 		"notify": {Type: "object", Properties: map[string]*structured.Schema{
 			"mode": {Type: "string", Enum: []any{"always", "change", "none", "condition"}},
@@ -99,8 +103,10 @@ Today is %s, %s, in %s.
 Reply with only this JSON:
 {"name": "a short name for the task, in %s",
  "task": "what to do each time it runs, without when or how to notify, in the request's language",
- "schedule": {"kind": "daily, weekly, interval, or once", "hour": 0-23, "minute": 0-59,
-   "weekday": 0-6 for weekly (0 is Sunday), "every_minutes": for interval, "date": "YYYY-MM-DD" for once},
+ "schedule": {"kind": "daily, weekly, monthly, interval, once, or cron", "hour": 0-23, "minute": 0-59,
+   "times": ["HH:MM", ...] when it runs several times a day,
+   "weekdays": [0-6, ...] for weekly (0 is Sunday; 1-5 for weekdays only), "month_day": 1-31 for monthly,
+   "every_minutes": for interval, "date": "YYYY-MM-DD" for once, "cron": "five fields" only when nothing else fits},
  "notify": {"mode": "always, change, none, or condition",
    "condition": {"kind": "threshold, available, or significant", "op": "below or above", "value": a number, "currency": "an ISO 4217 code such as USD"}}}`,
 			text, today.Weekday(), today.Format("2006-01-02"), timeZone, locale.LanguageName(language, locale.Source))},
@@ -142,11 +148,30 @@ func requestFromModel(obj map[string]any, loc *time.Location, timeZone string) (
 	s := automations.Schedule{Kind: automations.Kind(kind), TimeZone: timeZone, Hour: hour, Minute: minute}
 	switch s.Kind {
 	case automations.KindWeekly:
-		day, ok := num(sched, "weekday")
-		if !ok || day < 0 || day > 6 {
+		if days, ok := sched["weekdays"].([]any); ok && len(days) > 0 {
+			for _, d := range days {
+				v, ok := d.(float64)
+				if !ok || v < 0 || v > 6 {
+					return automations.ParsedRequest{}, false
+				}
+				s.Weekdays = append(s.Weekdays, int(v))
+			}
+		} else {
+			day, ok := num(sched, "weekday")
+			if !ok || day < 0 || day > 6 {
+				return automations.ParsedRequest{}, false
+			}
+			s.Weekday = &day
+		}
+	case automations.KindMonthly:
+		day, ok := num(sched, "month_day")
+		if !ok {
 			return automations.ParsedRequest{}, false
 		}
-		s.Weekday = &day
+		s.MonthDay = day
+	case automations.KindCron:
+		cron, _ := sched["cron"].(string)
+		s.Cron, s.Hour, s.Minute = strings.TrimSpace(cron), 0, 0
 	case automations.KindInterval:
 		minutes, ok := num(sched, "every_minutes")
 		if !ok || minutes < 1 {
@@ -165,9 +190,21 @@ func requestFromModel(obj map[string]any, loc *time.Location, timeZone string) (
 	default:
 		return automations.ParsedRequest{}, false
 	}
+	// Several times a day, for a schedule that runs on days.
+	if times, ok := sched["times"].([]any); ok && len(times) > 0 && (s.Kind == automations.KindDaily || s.Kind == automations.KindWeekly || s.Kind == automations.KindMonthly) {
+		for _, v := range times {
+			text, _ := v.(string)
+			clock, err := time.Parse("15:04", strings.TrimSpace(text))
+			if err != nil {
+				return automations.ParsedRequest{}, false
+			}
+			s.Times = append(s.Times, automations.ClockTime{Hour: clock.Hour(), Minute: clock.Minute()})
+		}
+	}
 	if s.Validate() != nil {
 		return automations.ParsedRequest{}, false
 	}
+	s = s.Normalized()
 	task := strings.TrimSpace(fmt.Sprint(obj["task"]))
 	if task == "" || task == "<nil>" {
 		return automations.ParsedRequest{}, false

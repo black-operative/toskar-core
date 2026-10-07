@@ -35,6 +35,18 @@ func TestRequestFromModel(t *testing.T) {
 		t.Fatalf("interval = %+v", every)
 	}
 
+	weekdays, ok := requestFromModel(map[string]any{"task": "Summarize the news.", "schedule": map[string]any{"kind": "weekly", "weekdays": []any{1.0, 2.0, 3.0, 4.0, 5.0}, "times": []any{"08:00", "17:30"}}}, loc, "UTC")
+	if !ok || len(weekdays.Schedule.Weekdays) != 5 || len(weekdays.Schedule.Times) != 2 || weekdays.Schedule.Times[1].Minute != 30 {
+		t.Fatalf("weekdays = %+v", weekdays.Schedule)
+	}
+	monthly, ok := requestFromModel(map[string]any{"task": "Pay rent.", "schedule": map[string]any{"kind": "monthly", "month_day": 1.0, "hour": 9.0}}, loc, "UTC")
+	if !ok || monthly.Schedule.MonthDay != 1 || monthly.Schedule.Hour != 9 {
+		t.Fatalf("monthly = %+v", monthly.Schedule)
+	}
+	if cron, ok := requestFromModel(map[string]any{"task": "x", "schedule": map[string]any{"kind": "cron", "cron": "0 9 * * 1-5"}}, loc, "UTC"); !ok || cron.Schedule.Cron != "0 9 * * 1-5" {
+		t.Fatalf("cron = %+v", cron.Schedule)
+	}
+
 	for name, bad := range map[string]map[string]any{
 		"no schedule":  {"task": "x"},
 		"no task":      {"schedule": map[string]any{"kind": "daily", "hour": float64(8)}},
@@ -42,7 +54,10 @@ func TestRequestFromModel(t *testing.T) {
 		"weekday 9":    {"task": "x", "schedule": map[string]any{"kind": "weekly", "weekday": float64(9)}},
 		"no interval":  {"task": "x", "schedule": map[string]any{"kind": "interval"}},
 		"bad date":     {"task": "x", "schedule": map[string]any{"kind": "once", "date": "next week"}},
-		"unknown kind": {"task": "x", "schedule": map[string]any{"kind": "monthly"}},
+		"unknown kind": {"task": "x", "schedule": map[string]any{"kind": "yearly"}},
+		"no month day": {"task": "x", "schedule": map[string]any{"kind": "monthly"}},
+		"bad cron":     {"task": "x", "schedule": map[string]any{"kind": "cron", "cron": "0 0 31 2 *"}},
+		"day 7":        {"task": "x", "schedule": map[string]any{"kind": "weekly", "weekdays": []any{1.0, 7.0}}},
 	} {
 		if _, ok := requestFromModel(bad, loc, "UTC"); ok {
 			t.Errorf("%s was accepted", name)
