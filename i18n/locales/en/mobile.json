@@ -114,7 +114,10 @@
       "phi-3-5-mini-q4": "Compact Microsoft model good for reasoning and light coding.",
       "gemma-2-2b-q4": "Small Google model for snappy everyday chat.",
       "qwen2-5-3b-q4": "Capable mid-size general model with tool calling.",
-      "deepseek-r1-distill-1-5b-q4": "Lightweight reasoning model distilled from DeepSeek R1."
+      "deepseek-r1-distill-1-5b-q4": "Lightweight reasoning model distilled from DeepSeek R1.",
+      "qwen2-5-7b-q4": "Strong general assistant for everyday work.",
+      "qwen2-5-coder-7b-q4": "Strong all-round coding model with tool use.",
+      "deepseek-r1-distill-7b-q4": "Stronger reasoning for analysis and multi-step problems."
     }
   },
   "onboarding": {

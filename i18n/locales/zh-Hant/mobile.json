@@ -114,7 +114,10 @@
       "phi-3-5-mini-q4": "Microsoft 的精簡模型，擅長推理和輕度程式設計。",
       "gemma-2-2b-q4": "Google 的小型模型，適合反應靈敏的日常聊天。",
       "qwen2-5-3b-q4": "能力不錯的中型一般模型，支援工具呼叫。",
-      "deepseek-r1-distill-1-5b-q4": "從 DeepSeek R1 蒸餾而來的輕量推理模型。"
+      "deepseek-r1-distill-1-5b-q4": "從 DeepSeek R1 蒸餾而來的輕量推理模型。",
+      "qwen2-5-7b-q4": "適合日常工作的強大通用助理。",
+      "qwen2-5-coder-7b-q4": "支援工具使用的強大全能程式設計模型。",
+      "deepseek-r1-distill-7b-q4": "更強的推理能力，適合分析和多步驟問題。"
     }
   },
   "onboarding": {

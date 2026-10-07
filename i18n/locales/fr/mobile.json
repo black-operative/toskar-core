@@ -114,7 +114,10 @@
       "phi-3-5-mini-q4": "Modèle compact de Microsoft, bon en raisonnement et en code léger.",
       "gemma-2-2b-q4": "Petit modèle de Google pour des discussions du quotidien réactives.",
       "qwen2-5-3b-q4": "Modèle généraliste de taille moyenne, compétent, avec appel d'outils.",
-      "deepseek-r1-distill-1-5b-q4": "Modèle de raisonnement léger distillé à partir de DeepSeek R1."
+      "deepseek-r1-distill-1-5b-q4": "Modèle de raisonnement léger distillé à partir de DeepSeek R1.",
+      "qwen2-5-7b-q4": "Assistant généraliste solide pour le travail de tous les jours.",
+      "qwen2-5-coder-7b-q4": "Modèle de code solide et polyvalent, avec utilisation d'outils.",
+      "deepseek-r1-distill-7b-q4": "Raisonnement plus poussé pour l'analyse et les problèmes en plusieurs étapes."
     }
   },
   "onboarding": {
