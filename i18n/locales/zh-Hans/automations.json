@@ -358,7 +358,9 @@
     "runsSchedule": "按计划",
     "runsPage": "网页有变化时",
     "runsFeed": "订阅源有新文章时",
+    "runsFolder": "文件或文件夹有变化时",
     "watchUrl": "链接",
+    "watchPath": "文件夹或文件",
     "watchHint": "Toskar 按下方计划检查，只有发生变化时才运行，并告诉任务变化了什么。",
     "checkSchedule": "检查频率"
   },
@@ -383,6 +385,7 @@
   },
   "trigger": {
     "page": "{{site}} 有变化时 · 检查：{{schedule}}",
-    "feed": "{{site}} 有新文章 · 检查：{{schedule}}"
+    "feed": "{{site}} 有新文章 · 检查：{{schedule}}",
+    "folder": "{{name}} 有变化时 · 检查：{{schedule}}"
   }
 }

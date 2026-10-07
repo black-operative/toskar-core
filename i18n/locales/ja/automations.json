@@ -358,7 +358,9 @@
     "runsSchedule": "スケジュールどおり",
     "runsPage": "ウェブページが変わったとき",
     "runsFeed": "フィードに新しい投稿があったとき",
+    "runsFolder": "ファイルやフォルダーが変わったとき",
     "watchUrl": "リンク",
+    "watchPath": "フォルダーまたはファイル",
     "watchHint": "下のスケジュールで確認し、変化があったときだけ、何が変わったかをタスクに伝えて実行します。",
     "checkSchedule": "確認の頻度"
   },
@@ -383,6 +385,7 @@
   },
   "trigger": {
     "page": "{{site}} が変わったとき · 確認: {{schedule}}",
-    "feed": "{{site}} の新しい投稿 · 確認: {{schedule}}"
+    "feed": "{{site}} の新しい投稿 · 確認: {{schedule}}",
+    "folder": "{{name}} が変わったとき · 確認: {{schedule}}"
   }
 }

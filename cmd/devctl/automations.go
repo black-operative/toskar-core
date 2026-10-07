@@ -20,7 +20,7 @@ const automationsUsage = `usage: toskarctl automations <list|get|parse|create|up
   get <id>
   parse <request> [--zone <tz>] [--language <tag>]
   create --request <text> [--profile <id>] [--model <id>] [--zone <tz>] [any flag below to change what it read]
-  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|monthly|interval|cron> [--at <time>] [--every <duration>] [--weekday <days>] [--day <1-31>] [--cron <expr>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--save-folder <path>] [--trigger <page|feed|none> --trigger-url <url>] [--disabled]
+  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|monthly|interval|cron> [--at <time>] [--every <duration>] [--weekday <days>] [--day <1-31>] [--cron <expr>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--save-folder <path>] [--trigger <page|feed|folder|none> --trigger-url <url> | --trigger-path <path>] [--disabled]
   update <id> [--name <name>] [--prompt <text>] [--profile <id>] [--model <id>] [--schedule ...] [--notify <mode>]
   delete <id>
   run <id>
@@ -212,8 +212,9 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 	op := fs.String("condition-op", "", "below or above")
 	value := fs.Float64("condition-value", 0, "threshold value")
 	disabled := fs.Bool("disabled", false, "create the automation paused")
-	trigger := fs.String("trigger", "", "page or feed: run only when it changed, checked on the schedule; none runs on the schedule again")
+	trigger := fs.String("trigger", "", "page, feed, or folder: run only when it changed, checked on the schedule; none runs on the schedule again")
 	triggerURL := fs.String("trigger-url", "", "the page or feed to watch")
+	triggerPath := fs.String("trigger-path", "", "the folder or file to watch, in your home folder, such as ~/Documents/Invoices")
 	saveFolder := fs.String("save-folder", "", "also save each result as a Markdown file in this folder, such as ~/Documents/Toskar; \"\" stops saving")
 	var tools stringList
 	fs.Var(&tools, "tool", "tool id allowed for this automation, repeatable")
@@ -275,7 +276,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			in.SaveFolder = *saveFolder
 		}
 		if seen["trigger"] {
-			in.Trigger = buildTrigger(*trigger, *triggerURL)
+			in.Trigger = buildTrigger(*trigger, *triggerURL, *triggerPath)
 		}
 		if *disabled {
 			off := false
@@ -305,7 +306,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			Tools:        []string(tools),
 			Notification: note,
 			SaveFolder:   *saveFolder,
-			Trigger:      buildTrigger(*trigger, *triggerURL),
+			Trigger:      buildTrigger(*trigger, *triggerURL, *triggerPath),
 		}
 		if *disabled {
 			off := false
@@ -352,7 +353,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 		patch.SaveFolder = saveFolder
 	}
 	if seen["trigger"] {
-		t := buildTrigger(*trigger, *triggerURL)
+		t := buildTrigger(*trigger, *triggerURL, *triggerPath)
 		if t == nil {
 			t = &automations.Trigger{}
 		}
@@ -422,13 +423,13 @@ func buildSchedule(f scheduleFlags) (automations.Schedule, error) {
 	return sched.Normalized(), nil
 }
 
-// buildTrigger reads --trigger and --trigger-url; none or nothing is no
+// buildTrigger reads --trigger, --trigger-url, and --trigger-path; none or nothing is no
 // trigger (#204).
-func buildTrigger(kind, url string) *automations.Trigger {
+func buildTrigger(kind, url, path string) *automations.Trigger {
 	if kind == "" || kind == "none" {
 		return nil
 	}
-	return &automations.Trigger{Kind: kind, URL: url}
+	return &automations.Trigger{Kind: kind, URL: url, Path: path}
 }
 
 var weekdayFlagNames = map[string]int{"sun": 0, "mon": 1, "tue": 2, "wed": 3, "thu": 4, "fri": 5, "sat": 6}

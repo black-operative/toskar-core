@@ -73,8 +73,9 @@ _toskarctl() {
             '--condition-kind[condition kind]:kind:(threshold available significant)' \
             '--condition-op[condition operator]:op:(below above)' \
             '--condition-value[threshold value]:value:' \
-            '--trigger[run only when it changed]:trigger:(page feed none)' \
+            '--trigger[run only when it changed]:trigger:(page feed folder none)' \
             '--trigger-url[the page or feed to watch]:url:' \
+            '--trigger-path[the folder or file to watch]:path:_files' \
             '--save-folder[also save each result in this folder]:folder:_files -/' \
             '--disabled[create the automation paused]'
           ;;

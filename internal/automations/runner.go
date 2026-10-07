@@ -274,7 +274,7 @@ func (r *Runner) check(ctx context.Context, automation Automation) (*checked, er
 		if ctx.Err() != nil {
 			return nil, ctx.Err()
 		}
-		return &checked{err: fmt.Errorf("could not check %s: %w", automation.Trigger.URL, err)}, nil
+		return &checked{err: fmt.Errorf("could not check %s: %w", automation.Trigger.Target(), err)}, nil
 	}
 	if !found.Changed {
 		return &checked{skip: true}, r.Store.Checked(ctx, automation.ID, state, *automation.NextRunAt, r.now())

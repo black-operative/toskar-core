@@ -218,6 +218,16 @@ describe('AutomationsPage', () => {
     expect(body.schedule).toMatchObject({ kind: 'interval', every_seconds: 3600 })
   })
 
+  it('fills a folder summary from its template, watching the folder', async () => {
+    vi.mocked(api.listAutomations).mockResolvedValue([])
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: /Folder summary/ }))
+    fireEvent.change(await screen.findByLabelText('Folder'), { target: { value: '~/Documents/Invoices' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
+    expect(await screen.findByRole('combobox', { name: 'Runs' })).toHaveValue('folder')
+    expect(screen.getByText(/When Invoices changes · checked: Every day at 6:00\sPM/, { selector: 'dd' })).toBeInTheDocument()
+  })
+
   it('also saves results to a folder when asked', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))

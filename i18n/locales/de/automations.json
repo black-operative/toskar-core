@@ -358,7 +358,9 @@
     "runsSchedule": "Nach Zeitplan",
     "runsPage": "Wenn sich eine Webseite ändert",
     "runsFeed": "Wenn ein Feed neue Beiträge hat",
+    "runsFolder": "Wenn sich eine Datei oder ein Ordner ändert",
     "watchUrl": "Link",
+    "watchPath": "Ordner oder Datei",
     "watchHint": "Toskar prüft nach dem Zeitplan unten und läuft nur, wenn sich etwas geändert hat, und sagt der Aufgabe, was.",
     "checkSchedule": "Wie oft prüfen"
   },
@@ -385,6 +387,7 @@
   },
   "trigger": {
     "page": "Wenn sich {{site}} ändert · geprüft: {{schedule}}",
-    "feed": "Neue Beiträge auf {{site}} · geprüft: {{schedule}}"
+    "feed": "Neue Beiträge auf {{site}} · geprüft: {{schedule}}",
+    "folder": "Wenn sich {{name}} ändert · geprüft: {{schedule}}"
   }
 }

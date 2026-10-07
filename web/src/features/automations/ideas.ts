@@ -1,5 +1,5 @@
 import i18n from '@/i18n'
-import type { AutomationNotification, AutomationSchedule } from '@/types/api'
+import type { AutomationNotification, AutomationSchedule, AutomationTrigger } from '@/types/api'
 
 /**
  * Ready-made automations to start from (#204). Each is a template with a
@@ -59,6 +59,8 @@ export interface IdeaAutomation {
   prompt: string
   schedule: AutomationSchedule
   notification: AutomationNotification
+  /** What it watches, for a template that runs when something changed. */
+  trigger?: AutomationTrigger
 }
 
 /** The automation a template's fields make, in the App language. */
@@ -77,6 +79,7 @@ export function buildIdea(idea: Idea, values: IdeaValues, timeZone: string, read
   const daily: AutomationSchedule = { kind: 'daily', time_zone: timeZone, ...at, times: [at] }
   let schedule = daily
   let notification: AutomationNotification = { mode: 'always' }
+  let trigger: AutomationTrigger | undefined
   switch (idea.id) {
     case 'price':
       notification = {
@@ -94,8 +97,12 @@ export function buildIdea(idea: Idea, values: IdeaValues, timeZone: string, read
       break
     }
     case 'page':
-    case 'folder':
       notification = { mode: 'change' }
+      break
+    case 'folder':
+      // The run can't open files outside Toskar's workspace, so the folder
+      // is watched: it runs, given what changed, only when something did.
+      trigger = { kind: 'folder', path: params.folder }
       break
   }
   return {
@@ -103,6 +110,7 @@ export function buildIdea(idea: Idea, values: IdeaValues, timeZone: string, read
     prompt: i18n.t(`automations:ideas.${idea.id}.task`, params),
     schedule,
     notification,
+    trigger,
   }
 }
 

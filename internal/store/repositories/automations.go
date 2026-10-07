@@ -318,6 +318,7 @@ func prepareAutomation(a *automations.Automation) error {
 	a.Tools = cleaned
 	if a.Trigger != nil {
 		a.Trigger.URL = strings.TrimSpace(a.Trigger.URL)
+		a.Trigger.Path = strings.TrimSpace(a.Trigger.Path)
 	}
 	if err := a.Trigger.Validate(); err != nil {
 		return err

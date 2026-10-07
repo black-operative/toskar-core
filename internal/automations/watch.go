@@ -17,16 +17,21 @@ import (
 // check. A check is cheap, a fetch and a comparison with the last one, and
 // the model runs only when something changed, told what it was.
 type Trigger struct {
-	// Kind is page (a web page's text changed) or feed (an RSS or Atom
-	// feed has new posts).
+	// Kind is page (a web page's text changed), feed (an RSS or Atom
+	// feed has new posts), or folder (files in a folder, or one file,
+	// changed).
 	Kind string `json:"kind"`
 	URL  string `json:"url,omitempty"`
+	// Path is a folder's or file's, in the home folder; ~ is the home
+	// folder.
+	Path string `json:"path,omitempty"`
 }
 
 // Trigger kinds.
 const (
-	TriggerPage = "page"
-	TriggerFeed = "feed"
+	TriggerPage   = "page"
+	TriggerFeed   = "feed"
+	TriggerFolder = "folder"
 )
 
 // Validate checks a trigger can be watched.
@@ -40,10 +45,25 @@ func (t *Trigger) Validate() error {
 		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			return errors.New("trigger url must be an http or https link")
 		}
+	case TriggerFolder:
+		if strings.TrimSpace(t.Path) == "" {
+			return errors.New("trigger path is required for a folder")
+		}
+		if _, err := SaveFolderPath(t.Path); err != nil {
+			return errors.New("trigger path must be a full path in your home folder, such as ~/Documents/Invoices")
+		}
 	default:
 		return fmt.Errorf("unsupported trigger kind %q", t.Kind)
 	}
 	return nil
+}
+
+// Target is what a trigger watches: its link or its path.
+func (t Trigger) Target() string {
+	if t.Kind == TriggerFolder {
+		return t.Path
+	}
+	return t.URL
 }
 
 // Watcher checks a trigger: whether what it watches changed since state,

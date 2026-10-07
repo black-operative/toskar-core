@@ -76,7 +76,8 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   const [selectedTools, setSelectedTools] = useState<string[]>(initial?.tools ?? [])
   // Run when a page or feed changes instead of every time (#204).
   const [triggerKind, setTriggerKind] = useState<AutomationTrigger['kind']>(initial?.trigger?.kind ?? '')
-  const [triggerURL, setTriggerURL] = useState(initial?.trigger?.url ?? '')
+  // The link to watch, or the folder or file.
+  const [triggerURL, setTriggerURL] = useState(initial?.trigger?.url ?? initial?.trigger?.path ?? '')
   // Also save each result as a file in a folder (#204).
   const [saving, setSaving] = useState(Boolean(initial?.save_folder))
   const [saveFolder, setSaveFolder] = useState(initial?.save_folder || '~/Documents/Toskar')
@@ -104,7 +105,10 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   // A template's fields fill in the details directly, with no request to read.
   function applyIdea() {
     if (!idea || !ideaReady(idea, ideaValues)) return
-    fillFrom({ ...buildIdea(idea, ideaValues, schedule.time_zone || zone, readNumber), notes: [] })
+    const built = buildIdea(idea, ideaValues, schedule.time_zone || zone, readNumber)
+    fillFrom({ ...built, notes: [] })
+    setTriggerKind(built.trigger?.kind ?? '')
+    setTriggerURL(built.trigger?.path ?? built.trigger?.url ?? '')
   }
 
   // Back to describing it, starting from the template's example.
@@ -189,7 +193,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       response_language: responseLanguage,
       save_folder: saving ? saveFolder.trim() : '',
       // An edit that stops watching sends a trigger with no kind.
-      trigger: triggerKind ? { kind: triggerKind, url: triggerURL.trim() } : initial?.trigger ? { kind: '' } : undefined,
+      trigger: triggerKind ? watchTrigger(triggerKind, triggerURL) : initial?.trigger ? { kind: '' } : undefined,
     }
   }
 
@@ -221,7 +225,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
     }
   }
 
-  const summary = whenLabel({ schedule, trigger: triggerKind ? { kind: triggerKind, url: triggerURL } : undefined })
+  const summary = whenLabel({ schedule, trigger: triggerKind ? watchTrigger(triggerKind, triggerURL) : undefined })
 
   return (
     <form
@@ -343,16 +347,18 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
             <option value="">{t('form.runsSchedule')}</option>
             <option value="page">{t('form.runsPage')}</option>
             <option value="feed">{t('form.runsFeed')}</option>
+            <option value="folder">{t('form.runsFolder')}</option>
           </select>
         </label>
         {triggerKind ? (
           <label className="block space-y-1 text-sm">
-            <span className="text-ink-muted">{t('form.watchUrl')}</span>
+            <span className="text-ink-muted">{triggerKind === 'folder' ? t('form.watchPath') : t('form.watchUrl')}</span>
             <input
-              className="field w-full"
-              type="url"
+              className={`field w-full ${triggerKind === 'folder' ? 'font-mono' : ''}`}
+              type={triggerKind === 'folder' ? 'text' : 'url'}
               value={triggerURL}
-              placeholder={triggerKind === 'feed' ? 'https://example.com/feed.xml' : 'https://example.com/careers'}
+              spellCheck={false}
+              placeholder={triggerKind === 'feed' ? 'https://example.com/feed.xml' : triggerKind === 'folder' ? '~/Documents/Invoices' : 'https://example.com/careers'}
               onChange={(event) => setTriggerURL(event.target.value)}
               required
             />
@@ -841,6 +847,10 @@ function splitInterval(seconds: number): { amount: number; unit: IntervalUnit } 
   if (seconds % 86400 === 0 && seconds >= 86400) return { amount: seconds / 86400, unit: 'days' }
   if (seconds % 3600 === 0 && seconds >= 3600) return { amount: seconds / 3600, unit: 'hours' }
   return { amount: Math.max(1, Math.round(seconds / 60)), unit: 'minutes' }
+}
+
+function watchTrigger(kind: AutomationTrigger['kind'], target: string): AutomationTrigger {
+  return kind === 'folder' ? { kind, path: target.trim() } : { kind, url: target.trim() }
 }
 
 function changeKind(schedule: AutomationSchedule, kind: AutomationSchedule['kind']): AutomationSchedule {

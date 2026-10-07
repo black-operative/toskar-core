@@ -50,11 +50,11 @@ _toskarctl() {
             --notify) COMPREPLY=($(compgen -W "always condition change none" -- "$cur")); return ;;
             --condition-kind) COMPREPLY=($(compgen -W "threshold available significant" -- "$cur")); return ;;
             --condition-op) COMPREPLY=($(compgen -W "below above" -- "$cur")); return ;;
-            --trigger) COMPREPLY=($(compgen -W "page feed none" -- "$cur")); return ;;
+            --trigger) COMPREPLY=($(compgen -W "page feed folder none" -- "$cur")); return ;;
             --weekday) COMPREPLY=($(compgen -W "weekdays 0 1 2 3 4 5 6" -- "$cur")); return ;;
           esac
           if [[ "$cur" == -* ]]; then
-            COMPREPLY=($(compgen -W "--name --prompt --profile --model --schedule --at --every --weekday --day --cron --zone --tool --notify --condition-kind --condition-op --condition-value --save-folder --trigger --trigger-url --disabled" -- "$cur"))
+            COMPREPLY=($(compgen -W "--name --prompt --profile --model --schedule --at --every --weekday --day --cron --zone --tool --notify --condition-kind --condition-op --condition-value --save-folder --trigger --trigger-url --trigger-path --disabled" -- "$cur"))
           fi
           ;;
       esac

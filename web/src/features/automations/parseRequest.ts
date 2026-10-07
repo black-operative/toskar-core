@@ -55,9 +55,13 @@ export function scheduleLabel(schedule: AutomationSchedule): string {
 export function whenLabel(item: { schedule: AutomationSchedule; trigger?: AutomationTrigger }): string {
   const schedule = scheduleLabel(item.schedule)
   const trigger = item.trigger
-  if (!trigger?.kind || !trigger.url) return schedule
-  const site = siteOf(trigger.url)
-  return i18n.t(`automations:trigger.${trigger.kind}`, { site, schedule })
+  const target = trigger?.kind === 'folder' ? trigger.path : trigger?.url
+  if (!trigger?.kind || !target) return schedule
+  if (trigger.kind === 'folder') {
+    const name = target.replace(/[\\/]+$/, '').split(/[\\/]/).pop() || target
+    return i18n.t('automations:trigger.folder', { name, schedule })
+  }
+  return i18n.t(`automations:trigger.${trigger.kind}`, { site: siteOf(target), schedule })
 }
 
 function siteOf(url: string): string {

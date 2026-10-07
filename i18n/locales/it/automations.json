@@ -358,7 +358,9 @@
     "runsSchedule": "Secondo la pianificazione",
     "runsPage": "Quando cambia una pagina web",
     "runsFeed": "Quando un feed ha nuovi articoli",
+    "runsFolder": "Quando cambia un file o una cartella",
     "watchUrl": "Link",
+    "watchPath": "Cartella o file",
     "watchHint": "Toskar controlla secondo la pianificazione qui sotto e viene eseguita solo quando qualcosa è cambiato, dicendo all’attività cosa.",
     "checkSchedule": "Ogni quanto controllare"
   },
@@ -387,6 +389,7 @@
   },
   "trigger": {
     "page": "Quando cambia {{site}} · controllo: {{schedule}}",
-    "feed": "Nuovi articoli su {{site}} · controllo: {{schedule}}"
+    "feed": "Nuovi articoli su {{site}} · controllo: {{schedule}}",
+    "folder": "Quando cambia {{name}} · controllo: {{schedule}}"
   }
 }

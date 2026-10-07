@@ -358,7 +358,9 @@
     "runsSchedule": "Según su horario",
     "runsPage": "Cuando cambia una página web",
     "runsFeed": "Cuando un feed tiene publicaciones nuevas",
+    "runsFolder": "Cuando cambia un archivo o una carpeta",
     "watchUrl": "Enlace",
+    "watchPath": "Carpeta o archivo",
     "watchHint": "Toskar lo revisa según el horario de abajo y solo se ejecuta cuando algo cambió, y le dice a la tarea qué fue.",
     "checkSchedule": "Con qué frecuencia revisar"
   },
@@ -387,6 +389,7 @@
   },
   "trigger": {
     "page": "Cuando cambia {{site}} · revisado: {{schedule}}",
-    "feed": "Publicaciones nuevas en {{site}} · revisado: {{schedule}}"
+    "feed": "Publicaciones nuevas en {{site}} · revisado: {{schedule}}",
+    "folder": "Cuando cambia {{name}} · revisado: {{schedule}}"
   }
 }

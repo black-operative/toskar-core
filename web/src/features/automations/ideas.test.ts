@@ -23,7 +23,8 @@ describe('templates', () => {
     expect(stock.name).toBe('Back in stock: shop.example')
 
     const folder = buildIdea(idea('folder'), { ...ideaDefaults('folder'), folder: '~/Documents/Invoices/' }, zone, readNumber)
-    expect(folder.notification).toEqual({ mode: 'change' })
+    expect(folder.notification).toEqual({ mode: 'always' })
+    expect(folder.trigger).toEqual({ kind: 'folder', path: '~/Documents/Invoices/' })
     expect(folder.name).toBe('Folder summary: Invoices')
     expect(folder.schedule).toMatchObject({ kind: 'daily', hour: 18 })
   })

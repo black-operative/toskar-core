@@ -358,7 +358,9 @@
     "runsSchedule": "일정에 따라",
     "runsPage": "웹 페이지가 바뀌면",
     "runsFeed": "피드에 새 글이 올라오면",
+    "runsFolder": "파일이나 폴더가 바뀌면",
     "watchUrl": "링크",
+    "watchPath": "폴더 또는 파일",
     "watchHint": "아래 일정에 따라 확인하고, 바뀐 것이 있을 때만 무엇이 바뀌었는지 작업에 알려 주며 실행합니다.",
     "checkSchedule": "확인 주기"
   },
@@ -383,6 +385,7 @@
   },
   "trigger": {
     "page": "{{site}}이(가) 바뀌면 · 확인: {{schedule}}",
-    "feed": "{{site}}의 새 글 · 확인: {{schedule}}"
+    "feed": "{{site}}의 새 글 · 확인: {{schedule}}",
+    "folder": "{{name}}이(가) 바뀌면 · 확인: {{schedule}}"
   }
 }

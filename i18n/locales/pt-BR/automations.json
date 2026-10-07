@@ -358,7 +358,9 @@
     "runsSchedule": "Conforme o horário",
     "runsPage": "Quando uma página muda",
     "runsFeed": "Quando um feed tem posts novos",
+    "runsFolder": "Quando um arquivo ou pasta muda",
     "watchUrl": "Link",
+    "watchPath": "Pasta ou arquivo",
     "watchHint": "O Toskar verifica no horário abaixo e só roda quando algo mudou, dizendo à tarefa o que foi.",
     "checkSchedule": "Com que frequência verificar"
   },
@@ -387,6 +389,7 @@
   },
   "trigger": {
     "page": "Quando {{site}} muda · verificado: {{schedule}}",
-    "feed": "Posts novos em {{site}} · verificado: {{schedule}}"
+    "feed": "Posts novos em {{site}} · verificado: {{schedule}}",
+    "folder": "Quando {{name}} muda · verificado: {{schedule}}"
   }
 }

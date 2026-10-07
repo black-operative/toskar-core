@@ -1122,8 +1122,10 @@ export interface AutomationInput {
 }
 
 export interface AutomationTrigger {
-  kind: 'page' | 'feed' | ''
+  kind: 'page' | 'feed' | 'folder' | ''
   url?: string
+  /** A folder or file in the home folder, for a folder trigger; ~ is the home folder. */
+  path?: string
 }
 
 

@@ -358,7 +358,9 @@
     "runsSchedule": "On its schedule",
     "runsPage": "When a web page changes",
     "runsFeed": "When a feed has new posts",
+    "runsFolder": "When a file or folder changes",
     "watchUrl": "Link",
+    "watchPath": "Folder or file",
     "watchHint": "Toskar checks it on the schedule below and runs only when something changed, telling the task what it was.",
     "checkSchedule": "How often to check"
   },
@@ -385,6 +387,7 @@
   },
   "trigger": {
     "page": "When {{site}} changes · checked: {{schedule}}",
-    "feed": "New posts on {{site}} · checked: {{schedule}}"
+    "feed": "New posts on {{site}} · checked: {{schedule}}",
+    "folder": "When {{name}} changes · checked: {{schedule}}"
   }
 }
