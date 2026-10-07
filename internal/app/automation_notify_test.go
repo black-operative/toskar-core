@@ -111,3 +111,58 @@ func TestEventsBecomeNotifications(t *testing.T) {
 		t.Fatal("chat tokens are not notifications")
 	}
 }
+
+func TestDesktopNoticesGoToTheDesktopAppWhenItPostsThem(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	settings := repositories.NewSettingsRepo(db.SQL)
+	ctx := context.Background()
+	bus := events.NewBus(16)
+	_, stream := bus.Subscribe()
+	ranOSA := 0
+	desktop := desktopChannel{
+		settings: settings,
+		send:     noticeFunc(func(context.Context, automations.Notice) error { ranOSA++; return nil }),
+		toShell:  shellNotices(bus, "shell"),
+	}
+	hub := gjallarhorn.NewHub(db.SQL, bus, desktop)
+	n := automationNotifier{settings: settings, hub: hub}
+	if err := n.Notify(ctx, automations.Notice{Title: "Morning price", Body: "The laptop is $420.", AutomationID: "a1"}); err != nil {
+		t.Fatal(err)
+	}
+	if ranOSA != 0 {
+		t.Fatalf("the daemon also posted the notice itself (%d)", ranOSA)
+	}
+	var got *events.Event
+	for len(stream) > 0 {
+		evt := <-stream
+		if evt.Type == gjallarhorn.EventDesktop {
+			got = &evt
+		}
+	}
+	if got == nil || got.Payload["title"] != "Morning price" || got.Payload["body"] != "The laptop is $420." || got.Payload["link"] != "/automations?id=a1" || got.Payload["id"] == "" {
+		t.Fatalf("desktop event = %+v", got)
+	}
+	list, _, _ := hub.List(ctx, false, 0)
+	stored, _ := hub.Get(ctx, list[0].ID)
+	if d := stored.Deliveries; len(d) != 1 || d[0].Status != gjallarhorn.DeliveryDelivered {
+		t.Fatalf("deliveries = %+v", d)
+	}
+
+	// Desktop notices off: nothing goes to the app either.
+	_ = settings.SetBool(ctx, "notify_task_finish", false)
+	_ = n.Notify(ctx, automations.Notice{Title: "Evening price", Body: "Same.", AutomationID: "a1"})
+	for len(stream) > 0 {
+		if evt := <-stream; evt.Type == gjallarhorn.EventDesktop {
+			t.Fatalf("sent with desktop notices off: %+v", evt)
+		}
+	}
+
+	// Without the setting the daemon posts them itself, as before.
+	if shellNotices(bus, "") != nil || shellNotices(nil, "shell") != nil {
+		t.Fatal("expected no hand-off")
+	}
+}

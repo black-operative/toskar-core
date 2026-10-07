@@ -86,6 +86,7 @@ Restart the daemon after editing the file by hand. A changed `api_host` or `inte
 | `TOSKAR_WEB_UI_ENABLED` | `web_ui_enabled` | |
 | `TOSKAR_STUB_INFERENCE` | | Answers with a stub model instead of llama.cpp. For tests and the Docker cluster check only. |
 | `TOSKAR_PPROF` | | Serves Go's live profiles at `http://<address>/debug/pprof/`, such as `127.0.0.1:6060`, for diagnosing memory or CPU use. Only a loopback address is accepted. Off when unset. |
+| `TOSKAR_DESKTOP_NOTIFICATIONS` | | `shell` hands desktop notices to the desktop app as `notification.desktop` events instead of posting them from the daemon. The desktop app sets it on the daemon it starts, so its notices carry its name and icon and open the app when clicked. |
 | `TOSKAR_SANDBOXED` | | `1` behaves as if the daemon ran in the macOS App Sandbox (see [Runtimes](runtimes.md#python-environments-in-sandboxed-builds)). For testing. |
 
 `toskarctl` reads two more: `TOSKAR_URL` (the daemon address, default `http://127.0.0.1:7331`) and `TOSKAR_API_KEY` (sent as the bearer token). See [CLI](cli.md).

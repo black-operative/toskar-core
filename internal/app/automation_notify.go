@@ -16,10 +16,16 @@ type boolSettings interface {
 
 // desktopChannel posts a notification with the operating system, while the
 // user still wants desktop notices for scheduled tasks. The daemon posts it,
-// so it appears while the desktop UI is closed.
+// so it appears while the desktop UI is closed. When the desktop app started
+// the daemon and posts notices itself, they go to it as an event instead:
+// the app's notices carry its name and icon, open the app at the notice's
+// link, and work in the Mac App Store's sandbox, where the daemon can't run
+// osascript.
 type desktopChannel struct {
 	settings boolSettings
 	send     automations.Notifier
+	// toShell, when set, hands the notice to the desktop app.
+	toShell func(gjallarhorn.Notification)
 }
 
 func (desktopChannel) Name() string { return "desktop" }
@@ -33,6 +39,10 @@ func (c desktopChannel) Deliver(ctx context.Context, n gjallarhorn.Notification)
 		if !ok {
 			return gjallarhorn.ErrSuppressed
 		}
+	}
+	if c.toShell != nil {
+		c.toShell(n)
+		return nil
 	}
 	if c.send == nil {
 		return gjallarhorn.ErrSuppressed
@@ -166,4 +176,18 @@ func notice(title string, titleParams map[string]any, body string, bodyParams ma
 		m.Body = []locale.Text{locale.Key("notifications:notices."+body, bodyParams)}
 	}
 	return m
+}
+
+// shellNotices returns the hand-off to the desktop app when it asked for
+// desktop notices (TOSKAR_DESKTOP_NOTIFICATIONS=shell on the daemon it
+// starts), or nil, so the daemon posts them itself.
+func shellNotices(bus *events.Bus, setting string) func(gjallarhorn.Notification) {
+	if setting != "shell" || bus == nil {
+		return nil
+	}
+	return func(n gjallarhorn.Notification) {
+		bus.Publish(events.New(gjallarhorn.EventDesktop, map[string]any{
+			"id": n.ID, "severity": n.Severity, "title": n.Title, "body": n.Body, "link": n.Link,
+		}))
+	}
 }

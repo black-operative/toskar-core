@@ -589,6 +589,7 @@ A chat that fails while streaming sends `event: error_code` with the same `code`
 | `work.waiting` | Work waits for higher-priority work, with `class`, `label`, and `reason` |
 | `automation.started`, `automation.completed`, `automation.failed` | An automation runs. `automation.completed` lists skipped tools in `skipped`. |
 | `notification.created` | A notification is stored |
+| `notification.desktop` | A desktop notice for the desktop app to post, with `id`, `severity`, `title`, `body` (in the App language), and `link`. Sent only when the daemon runs with `TOSKAR_DESKTOP_NOTIFICATIONS=shell`; otherwise the daemon posts desktop notices itself. |
 | `model.download.started`, `.progress`, `.completed`, `.failed` | A model downloads |
 | `model.load.started`, `model.load.completed`, `model.unloaded` | A model loads, or the idle sweeper unloads it |
 | `model.health.degraded`, `model.health.failed` | A loaded model stops answering health checks |
