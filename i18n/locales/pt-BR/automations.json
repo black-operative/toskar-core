@@ -215,7 +215,8 @@
     "weekends": "Nos fins de semana às {{time}}",
     "weeklyDays": "Toda {{days}} às {{time}}",
     "monthly": "Todo mês no dia {{day}} às {{time}}",
-    "cron": "Agenda personalizada: {{cron}}"
+    "cron": "Agenda personalizada: {{cron}}",
+    "manual": "Só quando iniciada"
   },
   "notify": {
     "none": "Apenas armazenar o resultado",
@@ -276,7 +277,8 @@
       "monthly": "Todo mês",
       "interval": "Em intervalos",
       "once": "Uma vez",
-      "cron": "Personalizado (cron)"
+      "cron": "Personalizado (cron)",
+      "manual": "Só quando iniciada"
     },
     "notifyMe": "Notificar-me",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "Quando uma página muda",
     "runsFeed": "Quando um feed tem posts novos",
     "runsFolder": "Quando um arquivo ou pasta muda",
+    "runsWebhook": "Quando outro serviço chama o link (webhook)",
     "watchUrl": "Link",
     "watchPath": "Pasta ou arquivo",
     "watchHint": "O Toskar verifica no horário abaixo e só roda quando algo mudou, dizendo à tarefa o que foi.",
-    "checkSchedule": "Com que frequência verificar"
+    "checkSchedule": "Com que frequência verificar",
+    "webhookHint": "Ela roda quando outro serviço chama o link dela. Crie o link na página da automação depois de salvar.",
+    "manualHint": "Ela só roda quando você toca em Executar agora, ou pelo webhook."
   },
   "draft": {
     "label": "Automação para confirmar",
@@ -390,6 +395,19 @@
   "trigger": {
     "page": "Quando {{site}} muda · verificado: {{schedule}}",
     "feed": "Posts novos em {{site}} · verificado: {{schedule}}",
-    "folder": "Quando {{name}} muda · verificado: {{schedule}}"
+    "folder": "Quando {{name}} muda · verificado: {{schedule}}",
+    "webhook": "Quando o link de webhook é chamado"
+  },
+  "webhook": {
+    "title": "Link de webhook",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "shownOnce": "Copie agora: ele só aparece uma vez. Quem tiver o link pode iniciar esta automação.",
+    "howTo": "Envie uma solicitação POST para ele. O corpo, de até 64 KB, é passado à tarefa como dados.",
+    "noLink": "Crie um link para outro serviço chamar.",
+    "hasLink": "Esta automação tem um link. Ele só aparece quando é criado.",
+    "make": "Criar um link",
+    "makeNew": "Criar um link novo",
+    "replaces": "Um link novo desativa o antigo."
   }
 }

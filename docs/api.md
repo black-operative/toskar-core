@@ -364,6 +364,7 @@ An automation's `notification.mode` is `condition`, `change`, `always`, `failure
   - `weekly` runs on `weekdays`, where Sunday is 0, so `[1, 2, 3, 4, 5]` is weekdays only.
   - `monthly` runs on `month_day`, or on a month's last day when the month is shorter.
 - `interval`: every `every_seconds`.
+- `manual`: never on its own, only from Run now or a webhook.
 - `cron`: a five-field `cron` expression (minute, hour, day of month, month, day of week) read in `time_zone`.
   - It takes `*`, ranges, steps, lists, names such as `MON`, and `@daily`-style shorthands.
   - When both the day of month and the day of week are restricted, a day matching either runs.
@@ -388,7 +389,12 @@ Saved schedules also carry `hour`, `minute`, and `weekday`: the first time and d
 - **After a run:** what a check found is kept only once its run succeeds, so a run that fails or retries sees the change again.
 - **Can't fetch:** a check that can't fetch fails the run, so failure notices and auto-pause apply.
 - **Changing or clearing:** watching a different link starts fresh. On update, `{"trigger": {"kind": ""}}` runs on the schedule again.
-- **`toskarctl`:** `--trigger page|feed|folder|none` with `--trigger-url <url>` or `--trigger-path <path>`.
+- **Webhooks:** `{"kind": "webhook"}` runs the automation when another service calls its link, usually with the `manual` schedule, which never runs on its own.
+  - **The link:** `POST /api/v1/automations/{id}/hook` makes the link and returns `{token, path}`, shown only then (only the token's SHA-256 is kept). A new one stops the old one, and `hook_set` says one exists.
+  - **Calling it:** `POST /hooks/{token}`, which needs no API key, answers `202` with `run_id`. The body, up to 64 KB of any type, ends the run's prompt as data from that service, not instructions.
+  - **Refusals:** an unknown token answers `404`, a paused automation `409` `AUTOMATION_PAUSED`, a call within 10 seconds of the last `429` `HOOK_TOO_SOON` with `Retry-After`, and a bigger body `413` `HOOK_TOO_LARGE`.
+- **Untrusted content:** what a trigger delivers was written by someone else. A run it starts can't use tools that change things outside Toskar, such as the terminal, file writes in the workspace, or Git pushes, even ones approved for the automation. They're skipped and reported like unapproved tools. Reading and creating files in Toskar's store still work.
+- **`toskarctl`:** `--trigger page|feed|folder|webhook|none` with `--trigger-url <url>` or `--trigger-path <path>`; `--schedule manual`; and `toskarctl automations hook <id>` prints a new link.
 
 **Saving results.** An automation's `save_folder`, such as `~/Documents/Toskar/News`, also saves each successful result to that folder as a new Markdown file. The file is named for when the run finished in the schedule's time zone and for the automation, such as `2026-10-07 08.30 News.md`. A second file in the same minute gets a number. The folder must be in the home folder (`~` is the home folder) and is made when needed. A path outside it is refused when the automation is saved. The run's `saved_file` is where its result went. A file that can't be written is logged and doesn't fail the run. `toskarctl automations create|update --save-folder` sets the folder, and `--save-folder ""` stops saving.
 

@@ -154,5 +154,9 @@
   "REQUEST_EMPTY": "自動化の内容を説明してください。",
   "REQUEST_TIME_ZONE": "タイムゾーンが必要です。",
   "REQUEST_NO_SCHEDULE": "いつ実行するかを説明してください（例：「毎朝8時に」）。",
-  "REQUEST_BAD_TIME": "その時刻は無効です。"
+  "REQUEST_BAD_TIME": "その時刻は無効です。",
+  "AUTOMATION_NOT_WEBHOOK": "このオートメーションは Webhook では開始しません。",
+  "AUTOMATION_PAUSED": "このオートメーションは一時停止中です。",
+  "HOOK_TOO_SOON": "この Webhook はたった今呼び出されました。数秒後にもう一度お試しください。",
+  "HOOK_TOO_LARGE": "リクエストの本文が 64 KB を超えています。"
 }

@@ -204,6 +204,16 @@ func (r *Runner) tick(ctx context.Context, wait bool) error {
 // paused automation stays paused afterward. When the scheduled occurrence
 // is already due, that occurrence is the one that runs.
 func (r *Runner) RunNow(ctx context.Context, id string) (Run, error) {
+	return r.start(ctx, id, nil)
+}
+
+// RunWith starts one occurrence now, telling it what started it, such as a
+// webhook's request (#204). It returns as RunNow does.
+func (r *Runner) RunWith(ctx context.Context, id string, found Found) (Run, error) {
+	return r.start(ctx, id, &checked{found: found})
+}
+
+func (r *Runner) start(ctx context.Context, id string, check *checked) (Run, error) {
 	if r.Store == nil || r.Exec == nil {
 		return Run{}, errors.New("automation runner is not configured")
 	}
@@ -231,7 +241,7 @@ func (r *Runner) RunNow(ctx context.Context, id string) (Run, error) {
 	go func() {
 		defer r.wg.Done()
 		defer r.end(id)
-		if err := r.finish(r.background(), automation, run, nil); err != nil && r.Logger != nil {
+		if err := r.finish(r.background(), automation, run, check); err != nil && r.Logger != nil {
 			r.Logger.Warn("automation run failed", "automation", automation.Name, "error", err)
 		}
 	}()
@@ -266,7 +276,8 @@ type checked struct {
 // check looks at an automation's trigger. It records a check that found
 // nothing new as the occurrence, so the next one is the next check.
 func (r *Runner) check(ctx context.Context, automation Automation) (*checked, error) {
-	if automation.Trigger == nil || r.Watch == nil {
+	// A webhook has nothing to look at; its schedule, if any, just runs.
+	if automation.Trigger == nil || automation.Trigger.Kind == TriggerWebhook || r.Watch == nil {
 		return nil, nil
 	}
 	found, state, err := r.Watch.Check(ctx, *automation.Trigger, automation.WatchState)

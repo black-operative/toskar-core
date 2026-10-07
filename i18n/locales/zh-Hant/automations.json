@@ -215,7 +215,8 @@
     "weekends": "週末 {{time}}",
     "weeklyDays": "每{{days}} {{time}}",
     "monthly": "每月 {{day}} 日 {{time}}",
-    "cron": "自訂排程：{{cron}}"
+    "cron": "自訂排程：{{cron}}",
+    "manual": "僅在啟動時"
   },
   "notify": {
     "none": "只儲存結果",
@@ -276,7 +277,8 @@
       "monthly": "每月",
       "interval": "依間隔",
       "once": "一次",
-      "cron": "自訂（cron）"
+      "cron": "自訂（cron）",
+      "manual": "僅在啟動時"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "網頁有變化時",
     "runsFeed": "訂閱來源有新文章時",
     "runsFolder": "檔案或資料夾有變化時",
+    "runsWebhook": "其他服務呼叫其連結時（Webhook）",
     "watchUrl": "連結",
     "watchPath": "資料夾或檔案",
     "watchHint": "Toskar 依下方排程檢查，只有發生變化時才執行，並告訴工作變化了什麼。",
-    "checkSchedule": "檢查頻率"
+    "checkSchedule": "檢查頻率",
+    "webhookHint": "其他服務呼叫其連結時執行。儲存後，在自動化頁面上建立連結。",
+    "manualHint": "只有在你點按「立即執行」或透過其 Webhook 時才執行。"
   },
   "draft": {
     "label": "待確認的自動化",
@@ -386,6 +391,19 @@
   "trigger": {
     "page": "{{site}} 有變化時 · 檢查：{{schedule}}",
     "feed": "{{site}} 有新文章 · 檢查：{{schedule}}",
-    "folder": "{{name}} 有變化時 · 檢查：{{schedule}}"
+    "folder": "{{name}} 有變化時 · 檢查：{{schedule}}",
+    "webhook": "其 Webhook 連結被呼叫時"
+  },
+  "webhook": {
+    "title": "Webhook 連結",
+    "copy": "複製",
+    "copied": "已複製",
+    "shownOnce": "請現在複製：它只會顯示一次。任何擁有此連結的人都能啟動此自動化。",
+    "howTo": "向它傳送 POST 請求。請求內容（最多 64 KB）會作為資料交給工作。",
+    "noLink": "建立一個供其他服務呼叫的連結。",
+    "hasLink": "此自動化已有連結。連結只在建立時顯示。",
+    "make": "建立連結",
+    "makeNew": "建立新連結",
+    "replaces": "新連結會讓舊連結失效。"
   }
 }

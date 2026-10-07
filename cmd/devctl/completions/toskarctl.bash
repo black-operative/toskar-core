@@ -40,17 +40,17 @@ _toskarctl() {
       ;;
     automations)
       if [[ ${COMP_CWORD} -eq 2 ]]; then
-        COMPREPLY=($(compgen -W "list get create update delete run pause resume" -- "$cur"))
+        COMPREPLY=($(compgen -W "list get create update delete run pause resume hook" -- "$cur"))
         return
       fi
       case "${COMP_WORDS[2]}" in
         create|update)
           case "$prev" in
-            --schedule) COMPREPLY=($(compgen -W "once daily weekly monthly interval cron" -- "$cur")); return ;;
+            --schedule) COMPREPLY=($(compgen -W "once daily weekly monthly interval cron manual" -- "$cur")); return ;;
             --notify) COMPREPLY=($(compgen -W "always condition change none" -- "$cur")); return ;;
             --condition-kind) COMPREPLY=($(compgen -W "threshold available significant" -- "$cur")); return ;;
             --condition-op) COMPREPLY=($(compgen -W "below above" -- "$cur")); return ;;
-            --trigger) COMPREPLY=($(compgen -W "page feed folder none" -- "$cur")); return ;;
+            --trigger) COMPREPLY=($(compgen -W "page feed folder webhook none" -- "$cur")); return ;;
             --weekday) COMPREPLY=($(compgen -W "weekdays 0 1 2 3 4 5 6" -- "$cur")); return ;;
           esac
           if [[ "$cur" == -* ]]; then

@@ -154,5 +154,9 @@
   "REQUEST_EMPTY": "Descrivi l'automazione.",
   "REQUEST_TIME_ZONE": "È richiesto un fuso orario.",
   "REQUEST_NO_SCHEDULE": "Descrivi quando deve essere eseguita, per esempio “ogni mattina alle 8:00”.",
-  "REQUEST_BAD_TIME": "Quell'orario non è valido."
+  "REQUEST_BAD_TIME": "Quell'orario non è valido.",
+  "AUTOMATION_NOT_WEBHOOK": "Questa automazione non viene avviata da un webhook.",
+  "AUTOMATION_PAUSED": "Questa automazione è in pausa.",
+  "HOOK_TOO_SOON": "Questo webhook è stato chiamato poco fa. Riprova tra qualche secondo.",
+  "HOOK_TOO_LARGE": "Il corpo della richiesta supera i 64 KB."
 }

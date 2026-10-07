@@ -46,7 +46,7 @@ _toskarctl() {
       ;;
     automations)
       if (( CURRENT == 3 )); then
-        _values 'automations command' list get create update delete run pause resume
+        _values 'automations command' list get create update delete run pause resume hook
         return
       fi
       case "${words[3]}" in
@@ -61,7 +61,7 @@ _toskarctl() {
             '--prompt[prompt to run]:prompt:' \
             '--profile[profile id]:profile:' \
             '--model[installed model id]:model:' \
-            '--schedule[schedule kind]:schedule:(once daily weekly monthly interval cron)' \
+            '--schedule[schedule kind]:schedule:(once daily weekly monthly interval cron manual)' \
             '--at[HH:MM, several such as 08:00,17:00, or RFC3339]:time:' \
             '--every[interval duration, such as 6h]:duration:' \
             '--weekday[days 0-6 or names, such as 1,3,5 or weekdays]:weekday:(weekdays 0 1 2 3 4 5 6)' \
@@ -73,7 +73,7 @@ _toskarctl() {
             '--condition-kind[condition kind]:kind:(threshold available significant)' \
             '--condition-op[condition operator]:op:(below above)' \
             '--condition-value[threshold value]:value:' \
-            '--trigger[run only when it changed]:trigger:(page feed folder none)' \
+            '--trigger[run only when it changed]:trigger:(page feed folder webhook none)' \
             '--trigger-url[the page or feed to watch]:url:' \
             '--trigger-path[the folder or file to watch]:path:_files' \
             '--save-folder[also save each result in this folder]:folder:_files -/' \

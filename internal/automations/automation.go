@@ -134,8 +134,12 @@ type Automation struct {
 	// LastCheckedAt when it was.
 	WatchState    []byte     `json:"-"`
 	LastCheckedAt *time.Time `json:"last_checked_at,omitempty"`
-	CreatedAt     time.Time  `json:"created_at"`
-	UpdatedAt     time.Time  `json:"updated_at"`
+	// HookHash is the SHA-256 of a webhook trigger's token, and HookSet
+	// says one was made; the token itself is shown once and not kept.
+	HookHash  string    `json:"-"`
+	HookSet   bool      `json:"hook_set,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 	// NextRunAt is the occurrence the daemon should execute next.
 	// A missed restart keeps only the latest missed occurrence here.
 	NextRunAt *time.Time `json:"next_run_at,omitempty"`

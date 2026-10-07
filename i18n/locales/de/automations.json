@@ -215,7 +215,8 @@
     "weekends": "Am Wochenende um {{time}}",
     "weeklyDays": "Jeden {{days}} um {{time}}",
     "monthly": "Monatlich am {{day}}. um {{time}}",
-    "cron": "Eigener Zeitplan: {{cron}}"
+    "cron": "Eigener Zeitplan: {{cron}}",
+    "manual": "Nur wenn gestartet"
   },
   "notify": {
     "none": "Nur Ergebnis speichern",
@@ -276,7 +277,8 @@
       "monthly": "Monatlich",
       "interval": "In einem Intervall",
       "once": "Einmal",
-      "cron": "Eigener (Cron)"
+      "cron": "Eigener (Cron)",
+      "manual": "Nur wenn gestartet"
     },
     "notifyMe": "Benachrichtigen",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "Wenn sich eine Webseite ändert",
     "runsFeed": "Wenn ein Feed neue Beiträge hat",
     "runsFolder": "Wenn sich eine Datei oder ein Ordner ändert",
+    "runsWebhook": "Wenn ein anderer Dienst den Link aufruft (Webhook)",
     "watchUrl": "Link",
     "watchPath": "Ordner oder Datei",
     "watchHint": "Toskar prüft nach dem Zeitplan unten und läuft nur, wenn sich etwas geändert hat, und sagt der Aufgabe, was.",
-    "checkSchedule": "Wie oft prüfen"
+    "checkSchedule": "Wie oft prüfen",
+    "webhookHint": "Sie läuft, wenn ein anderer Dienst ihren Link aufruft. Erstelle den Link nach dem Speichern auf der Seite der Automation.",
+    "manualHint": "Sie läuft nur, wenn du auf „Jetzt ausführen“ tippst, oder über ihren Webhook."
   },
   "draft": {
     "label": "Automation zum Bestätigen",
@@ -388,6 +393,19 @@
   "trigger": {
     "page": "Wenn sich {{site}} ändert · geprüft: {{schedule}}",
     "feed": "Neue Beiträge auf {{site}} · geprüft: {{schedule}}",
-    "folder": "Wenn sich {{name}} ändert · geprüft: {{schedule}}"
+    "folder": "Wenn sich {{name}} ändert · geprüft: {{schedule}}",
+    "webhook": "Wenn ihr Webhook-Link aufgerufen wird"
+  },
+  "webhook": {
+    "title": "Webhook-Link",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "shownOnce": "Kopiere ihn jetzt: Er wird nur einmal angezeigt. Wer den Link hat, kann diese Automation starten.",
+    "howTo": "Sende eine POST-Anfrage daran. Der Inhalt, bis zu 64 KB, wird der Aufgabe als Daten übergeben.",
+    "noLink": "Erstelle einen Link, den ein anderer Dienst aufrufen kann.",
+    "hasLink": "Diese Automation hat einen Link. Er wird nur beim Erstellen angezeigt.",
+    "make": "Link erstellen",
+    "makeNew": "Neuen Link erstellen",
+    "replaces": "Ein neuer Link deaktiviert den alten."
   }
 }

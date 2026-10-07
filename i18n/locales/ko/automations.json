@@ -215,7 +215,8 @@
     "weekends": "주말 {{time}}",
     "weeklyDays": "매주 {{days}} {{time}}",
     "monthly": "매월 {{day}}일 {{time}}",
-    "cron": "사용자 지정 일정: {{cron}}"
+    "cron": "사용자 지정 일정: {{cron}}",
+    "manual": "시작할 때만"
   },
   "notify": {
     "none": "결과만 저장",
@@ -276,7 +277,8 @@
       "monthly": "매월",
       "interval": "일정 간격으로",
       "once": "한 번",
-      "cron": "사용자 지정(cron)"
+      "cron": "사용자 지정(cron)",
+      "manual": "시작할 때만"
     },
     "notifyMe": "알림 받기",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "웹 페이지가 바뀌면",
     "runsFeed": "피드에 새 글이 올라오면",
     "runsFolder": "파일이나 폴더가 바뀌면",
+    "runsWebhook": "다른 서비스가 링크를 호출하면(웹훅)",
     "watchUrl": "링크",
     "watchPath": "폴더 또는 파일",
     "watchHint": "아래 일정에 따라 확인하고, 바뀐 것이 있을 때만 무엇이 바뀌었는지 작업에 알려 주며 실행합니다.",
-    "checkSchedule": "확인 주기"
+    "checkSchedule": "확인 주기",
+    "webhookHint": "다른 서비스가 링크를 호출하면 실행됩니다. 저장한 뒤 자동화 페이지에서 링크를 만드세요.",
+    "manualHint": "지금 실행을 누르거나 웹훅으로만 실행됩니다."
   },
   "draft": {
     "label": "확인할 자동화",
@@ -386,6 +391,19 @@
   "trigger": {
     "page": "{{site}}이(가) 바뀌면 · 확인: {{schedule}}",
     "feed": "{{site}}의 새 글 · 확인: {{schedule}}",
-    "folder": "{{name}}이(가) 바뀌면 · 확인: {{schedule}}"
+    "folder": "{{name}}이(가) 바뀌면 · 확인: {{schedule}}",
+    "webhook": "웹훅 링크가 호출되면"
+  },
+  "webhook": {
+    "title": "웹훅 링크",
+    "copy": "복사",
+    "copied": "복사됨",
+    "shownOnce": "지금 복사하세요. 한 번만 표시됩니다. 링크가 있는 사람은 누구나 이 자동화를 시작할 수 있습니다.",
+    "howTo": "POST 요청을 보내세요. 본문(최대 64KB)은 데이터로 작업에 전달됩니다.",
+    "noLink": "다른 서비스가 호출할 링크를 만드세요.",
+    "hasLink": "이 자동화에는 링크가 있습니다. 만들 때만 표시됩니다.",
+    "make": "링크 만들기",
+    "makeNew": "새 링크 만들기",
+    "replaces": "새 링크를 만들면 이전 링크는 더 이상 작동하지 않습니다."
   }
 }

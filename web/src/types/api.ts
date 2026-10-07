@@ -972,7 +972,7 @@ export interface Task {
   created_at: string
 }
 
-export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'monthly' | 'interval' | 'cron'
+export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'monthly' | 'interval' | 'cron' | 'manual'
 export type AutomationNotifyMode = 'always' | 'condition' | 'change' | 'failure' | 'none'
 export type AutomationConditionKind = 'threshold' | 'available' | 'significant'
 export type AutomationThresholdOp = 'below' | 'above'
@@ -1036,6 +1036,8 @@ export interface Automation {
   trigger?: AutomationTrigger
   /** When the trigger last checked and found nothing new. */
   last_checked_at?: string
+  /** A webhook trigger has a link; making a new one shows it once. */
+  hook_set?: boolean
   created_at: string
   updated_at: string
   next_run_at?: string
@@ -1122,7 +1124,7 @@ export interface AutomationInput {
 }
 
 export interface AutomationTrigger {
-  kind: 'page' | 'feed' | 'folder' | ''
+  kind: 'page' | 'feed' | 'folder' | 'webhook' | ''
   url?: string
   /** A folder or file in the home folder, for a folder trigger; ~ is the home folder. */
   path?: string

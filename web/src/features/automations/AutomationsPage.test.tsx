@@ -228,6 +228,21 @@ describe('AutomationsPage', () => {
     expect(screen.getByText(/When Invoices changes · checked: Every day at 6:00\sPM/, { selector: 'dd' })).toBeInTheDocument()
   })
 
+  it('runs from a webhook only when called', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Runs' }), { target: { value: 'webhook' } })
+    expect(screen.queryByRole('combobox', { name: 'Repeats' })).not.toBeInTheDocument()
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'New order' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Say who ordered what.' } })
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.trigger).toEqual({ kind: 'webhook' })
+    expect(body.schedule).toMatchObject({ kind: 'manual' })
+  })
+
   it('also saves results to a folder when asked', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))

@@ -340,17 +340,20 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
             onChange={(event) => {
               const next = event.target.value as AutomationTrigger['kind']
               setTriggerKind(next)
-              // Watching checks every hour to start with.
-              if (next && !triggerKind && schedule.kind !== 'interval') setSchedule({ kind: 'interval', time_zone: schedule.time_zone, every_seconds: 3600 })
+              // A webhook runs only when called; watching checks every hour to start with.
+              if (next === 'webhook') setSchedule({ kind: 'manual', time_zone: schedule.time_zone })
+              else if (next && (!triggerKind || triggerKind === 'webhook') && schedule.kind !== 'interval') setSchedule({ kind: 'interval', time_zone: schedule.time_zone, every_seconds: 3600 })
+              else if (!next && schedule.kind === 'manual') setSchedule({ kind: 'daily', time_zone: schedule.time_zone, hour: 8, minute: 0, times: [{ hour: 8, minute: 0 }] })
             }}
           >
             <option value="">{t('form.runsSchedule')}</option>
             <option value="page">{t('form.runsPage')}</option>
             <option value="feed">{t('form.runsFeed')}</option>
             <option value="folder">{t('form.runsFolder')}</option>
+            <option value="webhook">{t('form.runsWebhook')}</option>
           </select>
         </label>
-        {triggerKind ? (
+        {triggerKind && triggerKind !== 'webhook' ? (
           <label className="block space-y-1 text-sm">
             <span className="text-ink-muted">{triggerKind === 'folder' ? t('form.watchPath') : t('form.watchUrl')}</span>
             <input
@@ -365,7 +368,13 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
           </label>
         ) : null}
       </div>
-      {triggerKind ? <p className="text-xs text-ink-faint">{t('form.watchHint')}</p> : null}
+      {triggerKind === 'webhook' ? (
+        <p className="text-xs text-ink-faint">{t('form.webhookHint')}</p>
+      ) : triggerKind ? (
+        <p className="text-xs text-ink-faint">{t('form.watchHint')}</p>
+      ) : null}
+      {triggerKind === 'webhook' ? null : (
+        <>
       <p className="text-sm text-ink-muted">{triggerKind ? t('form.checkSchedule') : t('form.schedule')}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block space-y-1 text-sm">
@@ -381,10 +390,13 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
             <option value="interval">{t('form.kinds.interval')}</option>
             <option value="once">{t('form.kinds.once')}</option>
             <option value="cron">{t('form.kinds.cron')}</option>
+            <option value="manual">{t('form.kinds.manual')}</option>
           </select>
         </label>
         <ScheduleFields schedule={schedule} onChange={setSchedule} />
       </div>
+        </>
+      )}
       <fieldset className="space-y-2">
         <legend className="text-sm text-ink-muted">{t('form.notifyMe')}</legend>
         {NOTIFY_CHOICES.map((choice) => (
@@ -672,6 +684,9 @@ function ScheduleFields({
   onChange: (schedule: AutomationSchedule) => void
 }) {
   const { t } = useTranslation('automations')
+  if (schedule.kind === 'manual') {
+    return <p className="self-end pb-2 text-xs text-ink-faint">{t('form.manualHint')}</p>
+  }
   if (schedule.kind === 'interval') {
     const { amount, unit } = splitInterval(schedule.every_seconds ?? 6 * 3600)
     return (
@@ -850,6 +865,7 @@ function splitInterval(seconds: number): { amount: number; unit: IntervalUnit } 
 }
 
 function watchTrigger(kind: AutomationTrigger['kind'], target: string): AutomationTrigger {
+  if (kind === 'webhook') return { kind }
   return kind === 'folder' ? { kind, path: target.trim() } : { kind, url: target.trim() }
 }
 
@@ -858,6 +874,7 @@ function changeKind(schedule: AutomationSchedule, kind: AutomationSchedule['kind
   if (kind === 'once') return { kind, time_zone, at: schedule.at }
   if (kind === 'interval') return { kind, time_zone, every_seconds: schedule.every_seconds || 6 * 3600 }
   if (kind === 'cron') return { kind, time_zone, cron: schedule.cron || '0 9 * * 1-5' }
+  if (kind === 'manual') return { kind, time_zone }
   // The times carry over between daily, weekly, and monthly.
   const times = schedule.kind === 'daily' || schedule.kind === 'weekly' || schedule.kind === 'monthly' ? scheduleTimes(schedule) : [{ hour: 8, minute: 0 }]
   const base = { time_zone, times, hour: times[0].hour, minute: times[0].minute }

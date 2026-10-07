@@ -57,6 +57,58 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SourceOffer"
+  /hooks/{token}:
+    post:
+      summary: Start the automation a webhook link belongs to
+      description: The token in the link is the only proof, so this needs no API key. The request body (up to 64 KB, any type) goes to the run as data from the caller, never as instructions. One automation's link takes a call at most every 10 seconds.
+      operationId: runHook
+      security: []
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          "*/*":
+            schema:
+              type: string
+      responses:
+        "202":
+          description: The run started; its progress arrives as automation events
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run_id:
+                    type: string
+        "404":
+          description: No automation has this link
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: AUTOMATION_PAUSED, or AUTOMATION_RUNNING while a run is going
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "413":
+          description: HOOK_TOO_LARGE, a body over 64 KB
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: HOOK_TOO_SOON, called again within 10 seconds; Retry-After says when to try
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/hardware:
     get:
       summary: Local hardware inventory
@@ -4227,6 +4279,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /api/v1/automations/{id}/hook:
+    post:
+      summary: Make a webhook trigger's link
+      description: Returns a new token, the only time it's shown; only its hash is kept. The old link stops working.
+      operationId: makeAutomationHook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The token, and the link's path on this daemon
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  path:
+                    type: string
+                    description: /hooks/{token}
+        "404":
+          description: No such automation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: AUTOMATION_NOT_WEBHOOK, the automation has no webhook trigger
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/automations/{id}/runs/{run_id}/chat:
     post:
       summary: Open a run's result in a chat to reply to
@@ -5473,7 +5561,7 @@ components:
       properties:
         kind:
           type: string
-          enum: [once, daily, weekly, monthly, interval, cron]
+          enum: [once, daily, weekly, monthly, interval, cron, manual]
         time_zone:
           type: string
           description: IANA time zone
@@ -5590,7 +5678,7 @@ components:
           properties:
             kind:
               type: string
-              enum: [page, feed, folder, ""]
+              enum: [page, feed, folder, webhook, ""]
             url:
               type: string
               description: The page or feed, for page and feed
@@ -5638,7 +5726,7 @@ components:
           properties:
             kind:
               type: string
-              enum: [page, feed, folder, ""]
+              enum: [page, feed, folder, webhook, ""]
             url:
               type: string
               description: The page or feed, for page and feed
@@ -5649,6 +5737,9 @@ components:
           type: string
           format: date-time
           description: When the trigger last checked and found nothing new
+        hook_set:
+          type: boolean
+          description: A webhook trigger has a link; POST /api/v1/automations/{id}/hook makes a new one
         created_at:
           type: string
           format: date-time

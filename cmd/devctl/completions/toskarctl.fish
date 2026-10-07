@@ -24,7 +24,7 @@ complete -c toskarctl -n '__fish_seen_subcommand_from join-token; and not __fish
 complete -c toskarctl -n '__fish_seen_subcommand_from join-token' -l ttl -r -d 'How long the token lasts, such as 15m'
 complete -c toskarctl -n '__fish_seen_subcommand_from join join-token network leave' -l output -x -a 'text json' -d 'Output format'
 
-set -l ygg_automation_cmds list get create update delete run pause resume
+set -l ygg_automation_cmds list get create update delete run pause resume hook
 complete -c toskarctl -n "__fish_seen_subcommand_from automations; and not __fish_seen_subcommand_from $ygg_automation_cmds" -a "$ygg_automation_cmds"
 
 set -l ygg_edit '__fish_seen_subcommand_from automations; and __fish_seen_subcommand_from create update'
@@ -32,7 +32,7 @@ complete -c toskarctl -n $ygg_edit -l name -r -d 'Automation name'
 complete -c toskarctl -n $ygg_edit -l prompt -r -d 'Prompt to run'
 complete -c toskarctl -n $ygg_edit -l profile -r -d 'Profile id'
 complete -c toskarctl -n $ygg_edit -l model -r -d 'Installed model id'
-complete -c toskarctl -n $ygg_edit -l schedule -x -a 'once daily weekly monthly interval cron' -d 'Schedule kind'
+complete -c toskarctl -n $ygg_edit -l schedule -x -a 'once daily weekly monthly interval cron manual' -d 'Schedule kind'
 complete -c toskarctl -n $ygg_edit -l at -r -d 'HH:MM, several such as 08:00,17:00, or RFC3339'
 complete -c toskarctl -n $ygg_edit -l every -r -d 'Interval duration, such as 6h'
 complete -c toskarctl -n $ygg_edit -l weekday -x -a 'weekdays 0 1 2 3 4 5 6' -d 'Days 0-6 or names, such as 1,3,5 or weekdays'
@@ -45,7 +45,7 @@ complete -c toskarctl -n $ygg_edit -l condition-kind -x -a 'threshold available 
 complete -c toskarctl -n $ygg_edit -l condition-op -x -a 'below above' -d 'Condition operator'
 complete -c toskarctl -n $ygg_edit -l condition-value -r -d 'Threshold value'
 complete -c toskarctl -n $ygg_edit -l save-folder -r -a '(__fish_complete_directories)' -d 'Also save each result in this folder'
-complete -c toskarctl -n $ygg_edit -l trigger -x -a 'page feed folder none' -d 'Run only when it changed'
+complete -c toskarctl -n $ygg_edit -l trigger -x -a 'page feed folder webhook none' -d 'Run only when it changed'
 complete -c toskarctl -n $ygg_edit -l trigger-url -r -d 'The page or feed to watch'
 complete -c toskarctl -n $ygg_edit -l trigger-path -r -d 'The folder or file to watch'
 complete -c toskarctl -n $ygg_edit -l disabled -d 'Create the automation paused'

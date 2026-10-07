@@ -215,7 +215,8 @@
     "weekends": "Le week-end à {{time}}",
     "weeklyDays": "Chaque {{days}} à {{time}}",
     "monthly": "Tous les mois le {{day}} à {{time}}",
-    "cron": "Planification personnalisée : {{cron}}"
+    "cron": "Planification personnalisée : {{cron}}",
+    "manual": "Seulement au démarrage manuel"
   },
   "notify": {
     "none": "Enregistrer uniquement le résultat",
@@ -276,7 +277,8 @@
       "monthly": "Tous les mois",
       "interval": "À intervalle régulier",
       "once": "Une fois",
-      "cron": "Personnalisé (cron)"
+      "cron": "Personnalisé (cron)",
+      "manual": "Seulement au démarrage manuel"
     },
     "notifyMe": "Me notifier",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "Quand une page web change",
     "runsFeed": "Quand un flux a de nouveaux articles",
     "runsFolder": "Quand un fichier ou un dossier change",
+    "runsWebhook": "Quand un autre service appelle son lien (webhook)",
     "watchUrl": "Lien",
     "watchPath": "Dossier ou fichier",
     "watchHint": "Toskar vérifie selon la planification ci-dessous et ne s’exécute que si quelque chose a changé, en disant à la tâche quoi.",
-    "checkSchedule": "Fréquence de vérification"
+    "checkSchedule": "Fréquence de vérification",
+    "webhookHint": "Elle s’exécute quand un autre service appelle son lien. Créez le lien sur la page de l’automatisation après l’enregistrement.",
+    "manualHint": "Elle ne s’exécute que si vous appuyez sur Exécuter maintenant, ou par son webhook."
   },
   "draft": {
     "label": "Automatisation à confirmer",
@@ -390,6 +395,19 @@
   "trigger": {
     "page": "Quand {{site}} change · vérifié : {{schedule}}",
     "feed": "Nouveaux articles sur {{site}} · vérifié : {{schedule}}",
-    "folder": "Quand {{name}} change · vérifié : {{schedule}}"
+    "folder": "Quand {{name}} change · vérifié : {{schedule}}",
+    "webhook": "Quand son lien webhook est appelé"
+  },
+  "webhook": {
+    "title": "Lien webhook",
+    "copy": "Copier",
+    "copied": "Copié",
+    "shownOnce": "Copiez-le maintenant : il n’est affiché qu’une fois. Toute personne qui a le lien peut démarrer cette automatisation.",
+    "howTo": "Envoyez-lui une requête POST. Le corps, jusqu’à 64 Ko, est transmis à la tâche comme données.",
+    "noLink": "Créez un lien qu’un autre service pourra appeler.",
+    "hasLink": "Cette automatisation a un lien. Il n’est affiché qu’à sa création.",
+    "make": "Créer un lien",
+    "makeNew": "Créer un nouveau lien",
+    "replaces": "Un nouveau lien désactive l’ancien."
   }
 }

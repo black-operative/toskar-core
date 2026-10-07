@@ -27,7 +27,7 @@ const automationSelect = `
 		created_at, updated_at, next_run_at, last_run_at,
 		consecutive_failures, COALESCE(last_error, ''), COALESCE(response_language, ''),
 		COALESCE(conversation_id, ''), COALESCE(draft_id, ''), COALESCE(save_folder, ''),
-		COALESCE(trigger_json, ''), COALESCE(watch_state, ''), last_checked_at
+		COALESCE(trigger_json, ''), COALESCE(watch_state, ''), last_checked_at, COALESCE(hook_hash, '')
 	FROM automations`
 
 // Create stores an automation and computes its first next run.
@@ -160,6 +160,10 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 			existing.WatchState, existing.LastCheckedAt = nil, nil
 		}
 		existing.Trigger = next
+		// A link only works while the automation has a webhook trigger.
+		if next == nil || next.Kind != automations.TriggerWebhook {
+			existing.HookHash = ""
+		}
 	}
 	if patch.ResponseLanguage != nil {
 		existing.ResponseLanguage = *patch.ResponseLanguage
@@ -280,12 +284,12 @@ func updateAutomation(ctx context.Context, db execer, a automations.Automation) 
 			name = ?, enabled = ?, schedule_json = ?, time_zone = ?, prompt = ?, profile_id = ?, model_id = ?,
 			tools_json = ?, notification_json = ?, updated_at = ?, next_run_at = ?, last_run_at = ?,
 			consecutive_failures = ?, last_error = ?, response_language = ?, save_folder = ?,
-			trigger_json = ?, watch_state = ?, last_checked_at = ?
+			trigger_json = ?, watch_state = ?, last_checked_at = ?, hook_hash = ?
 		WHERE id = ?`,
 		a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
 		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage), nullIfEmpty(a.SaveFolder),
-		triggerJSON(a.Trigger), nullIfEmpty(string(a.WatchState)), formatTimePtr(a.LastCheckedAt), a.ID)
+		triggerJSON(a.Trigger), nullIfEmpty(string(a.WatchState)), formatTimePtr(a.LastCheckedAt), nullIfEmpty(a.HookHash), a.ID)
 	if err != nil {
 		return err
 	}
@@ -366,7 +370,7 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	if err := s.Scan(
 		&a.ID, &a.Name, &enabled, &sched, &zone, &a.Prompt, &a.ProfileID, &a.ModelID, &tools, &note,
 		&created, &updated, &next, &last, &a.ConsecutiveFailures, &a.LastError, &a.ResponseLanguage,
-		&a.ConversationID, &a.DraftID, &a.SaveFolder, &trigger, &watchState, &checked,
+		&a.ConversationID, &a.DraftID, &a.SaveFolder, &trigger, &watchState, &checked, &a.HookHash,
 	); err != nil {
 		return automations.Automation{}, err
 	}
@@ -391,6 +395,7 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	a.NextRunAt = parseTimePtr(next)
 	a.LastRunAt = parseTimePtr(last)
 	a.LastCheckedAt = parseTimePtr(checked)
+	a.HookSet = a.HookHash != ""
 	if trigger != "" {
 		var t automations.Trigger
 		if err := json.Unmarshal([]byte(trigger), &t); err != nil {
@@ -432,6 +437,27 @@ func (r *AutomationRepo) Checked(ctx context.Context, id string, state []byte, c
 		return err
 	}
 	return r.updateRow(ctx, a)
+}
+
+// SetHookHash keeps the hash of a webhook trigger's new token, which
+// replaces the old link.
+func (r *AutomationRepo) SetHookHash(ctx context.Context, id, hash string) error {
+	res, err := r.db.ExecContext(ctx, `UPDATE automations SET hook_hash = ? WHERE id = ?`, nullIfEmpty(hash), id)
+	if err != nil {
+		return err
+	}
+	if n, _ := res.RowsAffected(); n == 0 {
+		return fmt.Errorf("automation %q not found", id)
+	}
+	return nil
+}
+
+// ByHookHash is the automation a webhook link starts.
+func (r *AutomationRepo) ByHookHash(ctx context.Context, hash string) (automations.Automation, error) {
+	if hash == "" {
+		return automations.Automation{}, sql.ErrNoRows
+	}
+	return scanAutomation(r.db.QueryRowContext(ctx, automationSelect+` WHERE hook_hash = ?`, hash))
 }
 
 // SetWatchState keeps what a trigger's check found, before the run it

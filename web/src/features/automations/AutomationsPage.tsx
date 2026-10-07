@@ -15,6 +15,7 @@ import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { AutomationsIntro, IdeaGallery } from './Intro'
 import type { IdeaId } from './ideas'
+import { WebhookLink } from './WebhookLink'
 
 const screenshotSentence =
   'Every morning at 8:00 AM, check this product and tell me if the price is below $500.'
@@ -353,6 +354,7 @@ function Detail({
               {detail.trigger?.kind ? t('detail.nextCheck', { when: compactWhen(detail.next_run_at, zone) }) : t('detail.next', { when: compactWhen(detail.next_run_at, zone) })}
             </p>
           </div>
+          {detail.trigger?.kind === 'webhook' ? <WebhookLink automationId={detail.id} hookSet={Boolean(detail.hook_set)} /> : null}
           <div>
             <p className="label-caps">{t('detail.task')}</p>
             <p className="whitespace-pre-wrap text-ink">{visibleTask(detail.prompt)}</p>

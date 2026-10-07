@@ -215,7 +215,8 @@
     "weekends": "周末 {{time}}",
     "weeklyDays": "每{{days}} {{time}}",
     "monthly": "每月 {{day}} 日 {{time}}",
-    "cron": "自定义计划：{{cron}}"
+    "cron": "自定义计划：{{cron}}",
+    "manual": "仅在启动时"
   },
   "notify": {
     "none": "仅保存结果",
@@ -276,7 +277,8 @@
       "monthly": "每月",
       "interval": "按间隔",
       "once": "一次",
-      "cron": "自定义（cron）"
+      "cron": "自定义（cron）",
+      "manual": "仅在启动时"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "网页有变化时",
     "runsFeed": "订阅源有新文章时",
     "runsFolder": "文件或文件夹有变化时",
+    "runsWebhook": "其他服务调用其链接时（Webhook）",
     "watchUrl": "链接",
     "watchPath": "文件夹或文件",
     "watchHint": "Toskar 按下方计划检查，只有发生变化时才运行，并告诉任务变化了什么。",
-    "checkSchedule": "检查频率"
+    "checkSchedule": "检查频率",
+    "webhookHint": "其他服务调用其链接时运行。保存后，在自动化页面上创建链接。",
+    "manualHint": "只有在你点按“立即运行”或通过其 Webhook 时才运行。"
   },
   "draft": {
     "label": "待确认的自动化",
@@ -386,6 +391,19 @@
   "trigger": {
     "page": "{{site}} 有变化时 · 检查：{{schedule}}",
     "feed": "{{site}} 有新文章 · 检查：{{schedule}}",
-    "folder": "{{name}} 有变化时 · 检查：{{schedule}}"
+    "folder": "{{name}} 有变化时 · 检查：{{schedule}}",
+    "webhook": "其 Webhook 链接被调用时"
+  },
+  "webhook": {
+    "title": "Webhook 链接",
+    "copy": "复制",
+    "copied": "已复制",
+    "shownOnce": "请现在复制：它只显示一次。任何拥有该链接的人都可以启动此自动化。",
+    "howTo": "向它发送 POST 请求。请求正文（最多 64 KB）会作为数据交给任务。",
+    "noLink": "创建一个供其他服务调用的链接。",
+    "hasLink": "此自动化已有链接。链接只在创建时显示。",
+    "make": "创建链接",
+    "makeNew": "创建新链接",
+    "replaces": "新链接会让旧链接失效。"
   }
 }

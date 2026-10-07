@@ -215,7 +215,8 @@
     "weekends": "Nel fine settimana alle {{time}}",
     "weeklyDays": "Ogni {{days}} alle {{time}}",
     "monthly": "Ogni mese il giorno {{day}} alle {{time}}",
-    "cron": "Pianificazione personalizzata: {{cron}}"
+    "cron": "Pianificazione personalizzata: {{cron}}",
+    "manual": "Solo quando avviata"
   },
   "notify": {
     "none": "Salva solo il risultato",
@@ -276,7 +277,8 @@
       "monthly": "Ogni mese",
       "interval": "A intervalli",
       "once": "Una volta",
-      "cron": "Personalizzato (cron)"
+      "cron": "Personalizzato (cron)",
+      "manual": "Solo quando avviata"
     },
     "notifyMe": "Avvisami",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "Quando cambia una pagina web",
     "runsFeed": "Quando un feed ha nuovi articoli",
     "runsFolder": "Quando cambia un file o una cartella",
+    "runsWebhook": "Quando un altro servizio chiama il suo link (webhook)",
     "watchUrl": "Link",
     "watchPath": "Cartella o file",
     "watchHint": "Toskar controlla secondo la pianificazione qui sotto e viene eseguita solo quando qualcosa è cambiato, dicendo all’attività cosa.",
-    "checkSchedule": "Ogni quanto controllare"
+    "checkSchedule": "Ogni quanto controllare",
+    "webhookHint": "Viene eseguita quando un altro servizio chiama il suo link. Crea il link nella pagina dell’automazione dopo aver salvato.",
+    "manualHint": "Viene eseguita solo quando premi Esegui ora, o dal suo webhook."
   },
   "draft": {
     "label": "Automazione da confermare",
@@ -390,6 +395,19 @@
   "trigger": {
     "page": "Quando cambia {{site}} · controllo: {{schedule}}",
     "feed": "Nuovi articoli su {{site}} · controllo: {{schedule}}",
-    "folder": "Quando cambia {{name}} · controllo: {{schedule}}"
+    "folder": "Quando cambia {{name}} · controllo: {{schedule}}",
+    "webhook": "Quando viene chiamato il suo link webhook"
+  },
+  "webhook": {
+    "title": "Link webhook",
+    "copy": "Copia",
+    "copied": "Copiato",
+    "shownOnce": "Copialo ora: viene mostrato una sola volta. Chiunque abbia il link può avviare questa automazione.",
+    "howTo": "Invia una richiesta POST. Il corpo, fino a 64 KB, viene passato all’attività come dati.",
+    "noLink": "Crea un link da far chiamare a un altro servizio.",
+    "hasLink": "Questa automazione ha un link. Viene mostrato solo quando lo crei.",
+    "make": "Crea un link",
+    "makeNew": "Crea un nuovo link",
+    "replaces": "Un nuovo link disattiva quello vecchio."
   }
 }

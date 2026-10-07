@@ -154,5 +154,9 @@
   "REQUEST_EMPTY": "자동화를 설명하세요.",
   "REQUEST_TIME_ZONE": "시간대가 필요해요.",
   "REQUEST_NO_SCHEDULE": "언제 실행할지 설명하세요(예: “매일 아침 8시에”).",
-  "REQUEST_BAD_TIME": "유효하지 않은 시간이에요."
+  "REQUEST_BAD_TIME": "유효하지 않은 시간이에요.",
+  "AUTOMATION_NOT_WEBHOOK": "이 자동화는 웹훅으로 시작되지 않습니다.",
+  "AUTOMATION_PAUSED": "이 자동화는 일시 중지되었습니다.",
+  "HOOK_TOO_SOON": "이 웹훅은 방금 호출되었습니다. 몇 초 후에 다시 시도하세요.",
+  "HOOK_TOO_LARGE": "요청 본문이 64KB보다 큽니다."
 }

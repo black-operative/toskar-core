@@ -215,7 +215,8 @@
     "weekends": "週末の{{time}}",
     "weeklyDays": "毎週{{days}}の{{time}}",
     "monthly": "毎月{{day}}日の{{time}}",
-    "cron": "カスタムスケジュール: {{cron}}"
+    "cron": "カスタムスケジュール: {{cron}}",
+    "manual": "開始したときだけ"
   },
   "notify": {
     "none": "結果の保存のみ",
@@ -276,7 +277,8 @@
       "monthly": "毎月",
       "interval": "一定間隔",
       "once": "1回",
-      "cron": "カスタム（cron）"
+      "cron": "カスタム（cron）",
+      "manual": "開始したときだけ"
     },
     "notifyMe": "通知",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "ウェブページが変わったとき",
     "runsFeed": "フィードに新しい投稿があったとき",
     "runsFolder": "ファイルやフォルダーが変わったとき",
+    "runsWebhook": "別のサービスがリンクを呼び出したとき（Webhook）",
     "watchUrl": "リンク",
     "watchPath": "フォルダーまたはファイル",
     "watchHint": "下のスケジュールで確認し、変化があったときだけ、何が変わったかをタスクに伝えて実行します。",
-    "checkSchedule": "確認の頻度"
+    "checkSchedule": "確認の頻度",
+    "webhookHint": "別のサービスがリンクを呼び出したときに実行します。保存したあと、オートメーションのページでリンクを作成してください。",
+    "manualHint": "「今すぐ実行」を押したときか、Webhook からのみ実行します。"
   },
   "draft": {
     "label": "確認待ちのオートメーション",
@@ -386,6 +391,19 @@
   "trigger": {
     "page": "{{site}} が変わったとき · 確認: {{schedule}}",
     "feed": "{{site}} の新しい投稿 · 確認: {{schedule}}",
-    "folder": "{{name}} が変わったとき · 確認: {{schedule}}"
+    "folder": "{{name}} が変わったとき · 確認: {{schedule}}",
+    "webhook": "Webhook リンクが呼び出されたとき"
+  },
+  "webhook": {
+    "title": "Webhook リンク",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "shownOnce": "今すぐコピーしてください。表示されるのは一度だけです。リンクを知っている人は誰でもこのオートメーションを開始できます。",
+    "howTo": "POST リクエストを送ってください。本文（最大 64 KB）はデータとしてタスクに渡されます。",
+    "noLink": "別のサービスが呼び出すリンクを作成します。",
+    "hasLink": "このオートメーションにはリンクがあります。表示されるのは作成時だけです。",
+    "make": "リンクを作成",
+    "makeNew": "新しいリンクを作成",
+    "replaces": "新しいリンクを作ると、古いリンクは使えなくなります。"
   }
 }

@@ -32,6 +32,8 @@ const (
 	TriggerPage   = "page"
 	TriggerFeed   = "feed"
 	TriggerFolder = "folder"
+	// TriggerWebhook runs it when another service calls its link (#204).
+	TriggerWebhook = "webhook"
 )
 
 // Validate checks a trigger can be watched.
@@ -44,6 +46,10 @@ func (t *Trigger) Validate() error {
 		u, err := url.Parse(strings.TrimSpace(t.URL))
 		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			return errors.New("trigger url must be an http or https link")
+		}
+	case TriggerWebhook:
+		if t.URL != "" || t.Path != "" {
+			return errors.New("a webhook trigger has no url or path; its link is made for it")
 		}
 	case TriggerFolder:
 		if strings.TrimSpace(t.Path) == "" {

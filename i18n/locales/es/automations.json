@@ -215,7 +215,8 @@
     "weekends": "Los fines de semana a las {{time}}",
     "weeklyDays": "Cada {{days}} a las {{time}}",
     "monthly": "Cada mes el día {{day}} a las {{time}}",
-    "cron": "Horario personalizado: {{cron}}"
+    "cron": "Horario personalizado: {{cron}}",
+    "manual": "Solo cuando se inicia"
   },
   "notify": {
     "none": "Solo guardar el resultado",
@@ -276,7 +277,8 @@
       "monthly": "Cada mes",
       "interval": "A intervalos",
       "once": "Una vez",
-      "cron": "Personalizado (cron)"
+      "cron": "Personalizado (cron)",
+      "manual": "Solo cuando se inicia"
     },
     "notifyMe": "Avisarme",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "Cuando cambia una página web",
     "runsFeed": "Cuando un feed tiene publicaciones nuevas",
     "runsFolder": "Cuando cambia un archivo o una carpeta",
+    "runsWebhook": "Cuando otro servicio llama a su enlace (webhook)",
     "watchUrl": "Enlace",
     "watchPath": "Carpeta o archivo",
     "watchHint": "Toskar lo revisa según el horario de abajo y solo se ejecuta cuando algo cambió, y le dice a la tarea qué fue.",
-    "checkSchedule": "Con qué frecuencia revisar"
+    "checkSchedule": "Con qué frecuencia revisar",
+    "webhookHint": "Se ejecuta cuando otro servicio llama a su enlace. Crea el enlace en la página de la automatización después de guardar.",
+    "manualHint": "Solo se ejecuta cuando pulsas Ejecutar ahora, o desde su webhook."
   },
   "draft": {
     "label": "Automatización por confirmar",
@@ -390,6 +395,19 @@
   "trigger": {
     "page": "Cuando cambia {{site}} · revisado: {{schedule}}",
     "feed": "Publicaciones nuevas en {{site}} · revisado: {{schedule}}",
-    "folder": "Cuando cambia {{name}} · revisado: {{schedule}}"
+    "folder": "Cuando cambia {{name}} · revisado: {{schedule}}",
+    "webhook": "Cuando se llama a su enlace de webhook"
+  },
+  "webhook": {
+    "title": "Enlace de webhook",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "shownOnce": "Cópialo ahora: solo se muestra una vez. Cualquiera con el enlace puede iniciar esta automatización.",
+    "howTo": "Envíale una solicitud POST. El cuerpo, de hasta 64 KB, se pasa a la tarea como datos.",
+    "noLink": "Crea un enlace para que lo llame otro servicio.",
+    "hasLink": "Esta automatización tiene un enlace. Solo se muestra al crearlo.",
+    "make": "Crear un enlace",
+    "makeNew": "Crear un enlace nuevo",
+    "replaces": "Un enlace nuevo desactiva el anterior."
   }
 }

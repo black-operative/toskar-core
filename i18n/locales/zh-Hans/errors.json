@@ -154,5 +154,9 @@
   "REQUEST_EMPTY": "请描述这个自动化。",
   "REQUEST_TIME_ZONE": "需要指定时区。",
   "REQUEST_NO_SCHEDULE": "请描述它应在何时运行，例如“每天早上8点”。",
-  "REQUEST_BAD_TIME": "该时间无效。"
+  "REQUEST_BAD_TIME": "该时间无效。",
+  "AUTOMATION_NOT_WEBHOOK": "此自动化不通过 Webhook 启动。",
+  "AUTOMATION_PAUSED": "此自动化已暂停。",
+  "HOOK_TOO_SOON": "此 Webhook 刚刚被调用过。请几秒后再试。",
+  "HOOK_TOO_LARGE": "请求正文超过 64 KB。"
 }

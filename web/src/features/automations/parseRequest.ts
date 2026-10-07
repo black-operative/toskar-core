@@ -46,6 +46,8 @@ export function scheduleLabel(schedule: AutomationSchedule): string {
       return i18n.t('automations:schedule.cron', { cron: schedule.cron ?? '' })
     case 'interval':
       return intervalLabel(schedule.every_seconds ?? 0)
+    case 'manual':
+      return i18n.t('automations:schedule.manual')
     default:
       return i18n.t('automations:schedule.scheduled')
   }
@@ -55,6 +57,7 @@ export function scheduleLabel(schedule: AutomationSchedule): string {
 export function whenLabel(item: { schedule: AutomationSchedule; trigger?: AutomationTrigger }): string {
   const schedule = scheduleLabel(item.schedule)
   const trigger = item.trigger
+  if (trigger?.kind === 'webhook') return i18n.t('automations:trigger.webhook')
   const target = trigger?.kind === 'folder' ? trigger.path : trigger?.url
   if (!trigger?.kind || !target) return schedule
   if (trigger.kind === 'folder') {

@@ -19,6 +19,9 @@ const (
 	// expression (#204).
 	KindMonthly Kind = "monthly"
 	KindCron    Kind = "cron"
+	// KindManual never runs on its own: only when started, by Run now or a
+	// webhook (#204).
+	KindManual Kind = "manual"
 )
 
 // ClockTime is a time of day, in the schedule's time zone.
@@ -96,7 +99,7 @@ func (s Schedule) Normalized() Schedule {
 // Validate checks that the schedule can produce a next run.
 func (s Schedule) Validate() error {
 	switch s.Kind {
-	case KindOnce, KindDaily, KindWeekly, KindInterval, KindMonthly, KindCron:
+	case KindOnce, KindDaily, KindWeekly, KindInterval, KindMonthly, KindCron, KindManual:
 	case "":
 		return fmt.Errorf("schedule kind is required")
 	default:
@@ -179,6 +182,8 @@ func (s Schedule) NextRun(createdAt, lastOccurrence, now time.Time) (time.Time, 
 	now = wall(now)
 
 	switch s.Kind {
+	case KindManual:
+		return time.Time{}, false, nil
 	case KindOnce:
 		if !lastOccurrence.IsZero() {
 			return time.Time{}, false, nil

@@ -215,7 +215,8 @@
     "weekends": "Weekends at {{time}}",
     "weeklyDays": "Every {{days}} at {{time}}",
     "monthly": "Monthly on day {{day}} at {{time}}",
-    "cron": "Custom schedule: {{cron}}"
+    "cron": "Custom schedule: {{cron}}",
+    "manual": "Only when started"
   },
   "notify": {
     "none": "Store the result only",
@@ -276,7 +277,8 @@
       "monthly": "Every month",
       "interval": "On an interval",
       "once": "Once",
-      "cron": "Custom (cron)"
+      "cron": "Custom (cron)",
+      "manual": "Only when started"
     },
     "notifyMe": "Notify me",
     "notifyChoices": {
@@ -359,10 +361,13 @@
     "runsPage": "When a web page changes",
     "runsFeed": "When a feed has new posts",
     "runsFolder": "When a file or folder changes",
+    "runsWebhook": "When another service calls its link (webhook)",
     "watchUrl": "Link",
     "watchPath": "Folder or file",
     "watchHint": "Toskar checks it on the schedule below and runs only when something changed, telling the task what it was.",
-    "checkSchedule": "How often to check"
+    "checkSchedule": "How often to check",
+    "webhookHint": "It runs when another service calls its link. Make the link on the automation's page after saving.",
+    "manualHint": "It runs only when you press Run now, or from its webhook."
   },
   "draft": {
     "label": "Automation to confirm",
@@ -388,6 +393,19 @@
   "trigger": {
     "page": "When {{site}} changes · checked: {{schedule}}",
     "feed": "New posts on {{site}} · checked: {{schedule}}",
-    "folder": "When {{name}} changes · checked: {{schedule}}"
+    "folder": "When {{name}} changes · checked: {{schedule}}",
+    "webhook": "When its webhook link is called"
+  },
+  "webhook": {
+    "title": "Webhook link",
+    "copy": "Copy",
+    "copied": "Copied",
+    "shownOnce": "Copy it now: it's shown only once. Anyone with the link can start this automation.",
+    "howTo": "Send a POST request to it. The body, up to 64 KB, is given to the task as data.",
+    "noLink": "Make a link for another service to call.",
+    "hasLink": "This automation has a link. It's shown only when it's made.",
+    "make": "Make a link",
+    "makeNew": "Make a new link",
+    "replaces": "A new link stops the old one."
   }
 }
