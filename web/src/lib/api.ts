@@ -66,6 +66,7 @@ import type {
   Automation,
   AutomationDetail,
   AutomationRunsPage,
+  ParsedAutomation,
   AutomationInput,
   AutomationPreview,
   AutomationRun,
@@ -738,6 +739,13 @@ export const api = {
   /** Runs older than the run before, newest first. */
   listAutomationRuns: (id: string, before: string) =>
     request<AutomationRunsPage>(`/api/v1/automations/${id}/runs?before=${encodeURIComponent(before)}`),
+
+  /** Reads a request such as "every morning at 8, tell me if the price is below $500" on the computer. */
+  parseAutomation: (text: string, timeZone: string, language: string) =>
+    request<ParsedAutomation>('/api/v1/automations/parse', {
+      method: 'POST',
+      body: JSON.stringify({ text, time_zone: timeZone, language }),
+    }),
 
   previewAutomation: (body: AutomationInput) =>
     request<AutomationPreview>('/api/v1/automations/preview', {

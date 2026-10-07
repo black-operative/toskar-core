@@ -179,7 +179,8 @@
     "afternoon": "Nachmittags bedeutet 15:00 Uhr, außer du legst eine andere Zeit fest.",
     "morning": "Morgens bedeutet 8:00 Uhr, außer du legst eine andere Zeit fest.",
     "badTime": "Diese Uhrzeit ist ungültig.",
-    "unreadable": "Diese Beschreibung konnte nicht gelesen werden."
+    "unreadable": "Diese Beschreibung konnte nicht gelesen werden.",
+    "byModel": "Die KI hat diese Anfrage gelesen. Prüfe Zeitplan und Benachrichtigung vor dem Speichern."
   },
   "names": {
     "priceAbove": "Preis über {{amount}}",
@@ -201,6 +202,7 @@
     "describePlaceholder": "Jeden Morgen um 8:00 Uhr: Prüfe dieses Produkt und sag mir, ob der Preis unter 500 € liegt.",
     "describeHint": "Sag, wann es läuft und was zu tun ist. Toskar füllt die Details unten aus, und du kannst alles ändern.",
     "setUp": "Details ausfüllen",
+    "settingUp": "Wird ausgefüllt…",
     "ideas": "Oder starte mit einer Idee",
     "ideaHint": "Passe die Worte an, etwa mit einem Link statt „diese Seite“, und wähle dann erneut „Details ausfüllen“.",
     "stepDetails": "Prüfe die Details",

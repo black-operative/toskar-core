@@ -360,7 +360,8 @@ An automation's `notification.mode` is `condition`, `change`, `always`, `failure
 **Reading a request.** `POST /automations/parse` with `{"text": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.", "time_zone": "America/Los_Angeles", "language": "en"}` returns an automation to review and save: `name` ("Price below $500"), `prompt` (the task without the schedule, "Check this product. Report the current price."), `schedule`, `notification`, and `notes` on what was assumed, such as a time of day when none was given.
 - **Languages:** a request may be written in `language` or in English. `language` is also the language of the name and notes, and the currency of an amount written without one. Empty `language` uses the App language, and empty `time_zone` this computer's.
 - **Words:** the words come from `i18n/requests/<language>.json`, which the web app reads too, so the form and the API read a request the same way.
-- **Errors:** a request with no schedule it can read answers `400` `REQUEST_NO_SCHEDULE`. `REQUEST_EMPTY`, `REQUEST_BAD_TIME`, and `REQUEST_TIME_ZONE` cover the rest.
+- **A model as fallback:** when the words find no schedule, such as "first thing on weekdays", Auto's model reads the request into the same fields. A schedule it gives that couldn't run is refused. Its result carries a note saying the AI read it, so the person checks it before saving.
+- **Errors:** a request with no schedule the words or the model can read answers `400` `REQUEST_NO_SCHEDULE`. `REQUEST_EMPTY`, `REQUEST_BAD_TIME`, and `REQUEST_TIME_ZONE` cover the rest.
 
 **Notify on change.** `change` compares a run with the last successful one by what changed, not how the model worded it. In order:
 1. **Values:** when both results carry the same structured values, such as a price or availability, nothing changed.

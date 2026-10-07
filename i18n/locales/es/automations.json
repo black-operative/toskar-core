@@ -179,7 +179,8 @@
     "afternoon": "“Por la tarde” significa a las 3:00 p. m., a menos que indiques otra hora.",
     "morning": "“Por la mañana” significa a las 8:00 a. m., a menos que indiques otra hora.",
     "badTime": "Esa hora no es válida.",
-    "unreadable": "No se pudo entender esa descripción."
+    "unreadable": "No se pudo entender esa descripción.",
+    "byModel": "La IA leyó esta solicitud. Revisa el horario y la notificación antes de guardar."
   },
   "names": {
     "priceAbove": "Precio mayor que {{amount}}",
@@ -201,6 +202,7 @@
     "describePlaceholder": "Cada mañana a las 8:00, revisa este producto y avísame si el precio baja de 500 €.",
     "describeHint": "Di cuándo se ejecuta y qué debe hacer. Toskar completa los detalles de abajo, y puedes cambiar cualquiera.",
     "setUp": "Completar los detalles",
+    "settingUp": "Completando…",
     "ideas": "O empieza con una idea",
     "ideaHint": "Ajusta las palabras, por ejemplo con un enlace en lugar de «esta página», y vuelve a elegir Completar los detalles.",
     "stepDetails": "Revisa los detalles",

@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { AIProfile, Automation, AutomationInput, AutomationSchedule, Model, ToolRecord } from '@/types/api'
+import type { AIProfile, Automation, AutomationInput, AutomationSchedule, Model, ParsedAutomation, ToolRecord } from '@/types/api'
+import i18n from '@/i18n'
 import { api } from '@/lib/api'
 import { canChat } from '@/features/models/modelPresentation'
 import type { AutomationPreview } from '@/types/api'
 import { useUIStore } from '@/stores/uiStore'
 import { answerLanguages, nameInItself } from '@/i18n/answerLanguages'
 import { currencyName } from '@/i18n/format'
-import { readNumber } from './requestWords/match'
+import { readNumber } from './number'
 import {
   civilInputValue,
   civilToISO,
   composePrompt,
   localTimeZone,
   notificationLabel,
-  parseAutomationRequest,
   resultProse,
   scheduleLabel,
   visibleTask,
@@ -53,6 +53,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   const [description, setDescription] = useState('')
   const [notes, setNotes] = useState<string[]>([])
   const [parseError, setParseError] = useState('')
+  const [parsing, setParsing] = useState(false)
   const [name, setName] = useState(initial?.name ?? '')
   const [task, setTask] = useState(visibleTask(initial?.prompt ?? ''))
   const [preview, setPreview] = useState<AutomationPreview | null>(null)
@@ -70,23 +71,41 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   const [currency, setCurrency] = useState(initial?.notification.condition?.currency ?? 'USD')
   const [selectedTools, setSelectedTools] = useState<string[]>(initial?.tools ?? [])
 
+  // The computer reads a request (#204), the same way for this form,
+  // toskarctl, and chat; a model reads one its words can't.
+  function fillFrom(parsed: ParsedAutomation) {
+    setName(parsed.name)
+    setTask(visibleTask(parsed.prompt))
+    setSchedule(parsed.schedule)
+    setMode(parsed.notification.mode)
+    setConditionKind(parsed.notification.condition?.kind ?? 'threshold')
+    setOp(parsed.notification.condition?.op ?? 'below')
+    setValue(parsed.notification.condition?.value == null ? '' : String(parsed.notification.condition.value))
+    if (parsed.notification.condition?.currency) setCurrency(parsed.notification.condition.currency)
+    setNotes(parsed.notes ?? [])
+    setParseError('')
+  }
+
+  const readRequest = (text: string, timeZone: string) =>
+    api.parseAutomation(text, timeZone, i18n.resolvedLanguage ?? i18n.language)
+
   useEffect(() => {
     if (!seedDescription) return
     setDescription(seedDescription)
-    try {
-      const parsed = parseAutomationRequest(seedDescription, new Date(), zone)
-      setName(parsed.name)
-      setTask(visibleTask(parsed.prompt))
-      setSchedule(parsed.schedule)
-      setMode(parsed.notification.mode)
-      setConditionKind(parsed.notification.condition?.kind ?? 'threshold')
-      setOp(parsed.notification.condition?.op ?? 'below')
-      setValue(parsed.notification.condition?.value == null ? '' : String(parsed.notification.condition.value))
-      if (parsed.notification.condition?.currency) setCurrency(parsed.notification.condition.currency)
-      setNotes(parsed.notes)
-      setParseError('')
-    } catch (err) {
-      setParseError(err instanceof Error ? err.message : t('parse.unreadable'))
+    let current = true
+    setParsing(true)
+    readRequest(seedDescription, zone)
+      .then((parsed) => {
+        if (current && parsed) fillFrom(parsed)
+      })
+      .catch((err: unknown) => {
+        if (current) setParseError(err instanceof Error ? err.message : t('parse.unreadable'))
+      })
+      .finally(() => {
+        if (current) setParsing(false)
+      })
+    return () => {
+      current = false
     }
   }, [seedDescription, zone, t])
 
@@ -118,21 +137,15 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   const lookTools = tools.filter((tool) => tool.enabled && tool.risk !== 'write')
   const changeTools = tools.filter((tool) => tool.enabled && tool.risk === 'write')
 
-  function applyDescription(text = description) {
+  async function applyDescription(text = description) {
+    setParsing(true)
     try {
-      const parsed = parseAutomationRequest(text, new Date(), schedule.time_zone || zone)
-      setName(parsed.name)
-      setTask(visibleTask(parsed.prompt))
-      setSchedule(parsed.schedule)
-      setMode(parsed.notification.mode)
-      setConditionKind(parsed.notification.condition?.kind ?? 'threshold')
-      setOp(parsed.notification.condition?.op ?? 'below')
-      setValue(parsed.notification.condition?.value == null ? '' : String(parsed.notification.condition.value))
-      if (parsed.notification.condition?.currency) setCurrency(parsed.notification.condition.currency)
-      setNotes(parsed.notes)
-      setParseError('')
+      const parsed = await readRequest(text, schedule.time_zone || zone)
+      if (parsed) fillFrom(parsed)
     } catch (err) {
       setParseError(err instanceof Error ? err.message : t('parse.unreadable'))
+    } finally {
+      setParsing(false)
     }
   }
 
@@ -210,8 +223,8 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
           {fromIdea ? t('form.ideaHint') : t('form.describeHint')}
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          <button type="button" className="btn-secondary btn-sm" disabled={!description.trim()} onClick={() => applyDescription()}>
-            {t('form.setUp')}
+          <button type="button" className="btn-secondary btn-sm" disabled={!description.trim() || parsing} onClick={() => void applyDescription()}>
+            {parsing ? t('form.settingUp') : t('form.setUp')}
           </button>
         </div>
         {parseError && <p className="text-sm text-danger">{parseError}</p>}
@@ -231,7 +244,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
                 onClick={() => {
                   const request = t(`ideas.${id}.request`)
                   setDescription(request)
-                  applyDescription(request)
+                  void applyDescription(request)
                 }}
               >
                 {t(`ideas.${id}.title`)}

@@ -4,8 +4,9 @@ import type { AutomationNotification, AutomationSchedule } from '@/types/api'
  * Ready-made automations to start from, for people who aren't sure what to
  * use them for. Each is automations:ideas.<id> in the catalog: a title, a line
  * on what you get, and a request the form's parser reads in that language.
- * `expect` is what the request must turn into; ideas.test.ts checks it in
- * every language.
+ * `expect` is what the request must turn into; the computer reads the
+ * requests, and internal/automations/request_test.go checks them in every
+ * language with the same expectations (#204).
  */
 export const IDEAS: {
   id: 'news' | 'price' | 'stock' | 'releases' | 'page'

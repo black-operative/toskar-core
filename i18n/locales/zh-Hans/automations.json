@@ -179,7 +179,8 @@
     "afternoon": "除非你另行设置，“下午”指下午 3:00。",
     "morning": "除非你另行设置，“早上”指上午 8:00。",
     "badTime": "该时间无效。",
-    "unreadable": "无法理解该描述。"
+    "unreadable": "无法理解该描述。",
+    "byModel": "此请求由 AI 读取。保存前请检查时间安排和通知。"
   },
   "names": {
     "priceAbove": "价格高于 {{amount}}",
@@ -201,6 +202,7 @@
     "describePlaceholder": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。",
     "describeHint": "说明它何时运行、要做什么。Toskar 会填写下面的详细信息，你可以修改任何一项。",
     "setUp": "填写详细信息",
+    "settingUp": "正在填写…",
     "ideas": "或者从一个想法开始",
     "ideaHint": "根据需要修改文字，比如用链接替换“这个页面”，然后再次选择“填写详细信息”。",
     "stepDetails": "检查详细信息",

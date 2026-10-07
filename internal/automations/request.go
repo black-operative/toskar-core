@@ -16,9 +16,9 @@ import (
 
 // Reading an automation request, "every morning at 8, tell me if the price
 // is below $500", into a schedule, a notification, a name, and the task to
-// run (#204). The words come from i18n/requests (requestwords.go); this is a
-// port of web/src/features/automations/parseRequest.ts, so the form,
-// toskarctl, and chat read a request the same way. Text the person sees,
+// run (#204). The words come from i18n/requests (requestwords.go). It is the
+// one reader of requests, so the Automations page, toskarctl, and chat read
+// a request the same way. Text the person sees,
 // such as the name and the notes, is in the language asked for.
 
 // ParsedRequest is an automation read from a request.

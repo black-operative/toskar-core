@@ -319,3 +319,41 @@ func TestEveryLanguageHasRequestWords(t *testing.T) {
 		}
 	}
 }
+
+// The page's ideas (web/src/features/automations/ideas.ts, with the same
+// expectations) must fill in the form as intended in every language.
+func TestIdeaRequestsInEveryLanguage(t *testing.T) {
+	ideas := map[string]struct {
+		kind      Kind
+		mode      NotifyMode
+		condition string
+	}{
+		"news":     {KindDaily, NotifyAlways, ""},
+		"price":    {KindDaily, NotifyOnCondition, ConditionThreshold},
+		"stock":    {KindInterval, NotifyOnCondition, ConditionAvailable},
+		"releases": {KindWeekly, NotifyAlways, ""},
+		"page":     {KindDaily, NotifyOnChange, ""},
+	}
+	for _, lang := range locale.Languages() {
+		if strings.HasPrefix(lang, "en-X") {
+			continue
+		}
+		for id, want := range ideas {
+			request := locale.T(lang, "automations:ideas."+id+".request", nil)
+			parsed, err := ParseRequest(request, requestNow, requestZone, lang)
+			if err != nil {
+				t.Errorf("%s %s %q: %v", lang, id, request, err)
+				continue
+			}
+			if parsed.Schedule.Kind != want.kind || parsed.Notification.Mode != want.mode {
+				t.Errorf("%s %s: %s/%s, want %s/%s", lang, id, parsed.Schedule.Kind, parsed.Notification.Mode, want.kind, want.mode)
+			}
+			if want.condition != "" && (parsed.Notification.Condition == nil || parsed.Notification.Condition.Kind != want.condition) {
+				t.Errorf("%s %s: condition %+v, want %s", lang, id, parsed.Notification.Condition, want.condition)
+			}
+			if len(parsed.Notes) != 0 {
+				t.Errorf("%s %s: notes %v", lang, id, parsed.Notes)
+			}
+		}
+	}
+}

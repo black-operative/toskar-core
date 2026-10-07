@@ -18,11 +18,9 @@ import (
 )
 
 // The words an automation request is read with, one file per language in
-// the shared catalog, i18n/requests/<language>.json, which the web app reads
-// too (#204). The file format is described in
-// web/src/features/automations/requestWords/types.ts. This is a port of
-// requestWords/match.ts: phrases become regular expressions with the same
-// marks and the same whole-word rules.
+// the shared catalog, i18n/requests/<language>.json (format in its
+// README.md, #204). Phrases become regular expressions with the marks and
+// whole-word rules the README describes.
 
 // requestWordList is one language's words.
 type requestWordList struct {

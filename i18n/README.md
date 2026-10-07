@@ -17,9 +17,7 @@ i18n/
     mobile.json             the iPhone app's text
     onboarding.json         the first-run setup
   requests/<language>.json  the words automation requests are read with, such as
-                            "every morning at 8" (format: web/src/features/
-                            automations/requestWords/types.ts); the daemon and
-                            the web app both read them
+                            "every morning at 8" (format: requests/README.md)
     memory.json             the Memory page
     models.json             the Models page and what Chat says about a model
     computers.json          the Computers page
@@ -173,7 +171,6 @@ list of choices, goes through `i18n.t('namespace:key')` too.
    `mobile/src/i18n/plurals.ts` in yeixio/toskar-apps.
 4. Copy `requests/en.json` to `requests/<tag>.json` and translate the words,
    so automation requests can be written in the language. Add its cases to
-   `web/src/features/automations/parseRequest.test.ts` and
    `internal/automations/request_test.go`.
 5. Run `pnpm test` in `web/`. It checks every file against English: valid
    JSON, no duplicate keys, no keys English lacks, the same placeholders,

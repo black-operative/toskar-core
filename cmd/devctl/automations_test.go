@@ -46,10 +46,47 @@ func TestYggctlAutomations(t *testing.T) {
 			enabled := true
 			return repo.Update(ctx, id, automations.Patch{Enabled: &enabled}, now)
 		},
+		ParseAutomation: func(ctx context.Context, text, zone, lang string) (automations.ParsedRequest, error) {
+			if zone == "" {
+				zone = "UTC"
+			}
+			if lang == "" {
+				lang = "en"
+			}
+			return automations.ParseRequest(text, now, zone, lang)
+		},
 	})
 	ts := httptest.NewServer(srv.Handler())
 	t.Cleanup(ts.Close)
 	client := daemonClient{base: ts.URL, client: ts.Client()}
+
+	// A request is read on the daemon, the way the page reads it (#204).
+	var read bytes.Buffer
+	if err := runAutomations([]string{"parse", "every", "friday", "at", "6:30", "PM,", "check", "for", "new", "releases", "--zone", "America/Los_Angeles"}, client, &read); err != nil {
+		t.Fatal(err)
+	}
+	var parsed automations.ParsedRequest
+	if err := json.Unmarshal(read.Bytes(), &parsed); err != nil {
+		t.Fatal(err)
+	}
+	if parsed.Schedule.Kind != automations.KindWeekly || parsed.Schedule.Hour != 18 || parsed.Schedule.TimeZone != "America/Los_Angeles" || parsed.Name != "Release check" {
+		t.Fatalf("parsed = %+v", parsed)
+	}
+	var fromRequest bytes.Buffer
+	if err := runAutomations([]string{"create", "--request", "Every morning at 8:00 AM, check this product and tell me if the price is below $500.", "--model", "gemma-4-e4b"}, client, &fromRequest); err != nil {
+		t.Fatal(err)
+	}
+	var requested automations.Automation
+	if err := json.Unmarshal(fromRequest.Bytes(), &requested); err != nil {
+		t.Fatal(err)
+	}
+	if requested.Name != "Price below $500" || requested.Schedule.Hour != 8 || requested.ModelID != "gemma-4-e4b" || requested.ProfileID != "general-assistant" ||
+		requested.Notification.Condition == nil || requested.Notification.Condition.Value != 500 {
+		t.Fatalf("created from a request = %+v", requested)
+	}
+	if err := runAutomations([]string{"delete", requested.ID}, client, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
 
 	var created bytes.Buffer
 	err = runAutomations([]string{

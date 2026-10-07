@@ -1006,6 +1006,16 @@ export interface AutomationRun {
   retry_at?: string
 }
 
+/** An automation read from a request on the computer, to review and save (#204). */
+export interface ParsedAutomation {
+  name: string
+  prompt: string
+  schedule: AutomationSchedule
+  notification: AutomationNotification
+  /** What was assumed, such as a time of day when none was given. */
+  notes: string[]
+}
+
 /** One page of an automation's runs, newest first (#204). */
 export interface AutomationRunsPage {
   runs: AutomationRun[]

@@ -179,7 +179,8 @@
     "afternoon": "Pomeriggio significa le 15:00, se non imposti un altro orario.",
     "morning": "Mattina significa le 8:00, se non imposti un altro orario.",
     "badTime": "Quell'orario non è valido.",
-    "unreadable": "Impossibile interpretare quella descrizione."
+    "unreadable": "Impossibile interpretare quella descrizione.",
+    "byModel": "L'IA ha letto questa richiesta. Controlla la pianificazione e la notifica prima di salvare."
   },
   "names": {
     "priceAbove": "Prezzo superiore a {{amount}}",
@@ -201,6 +202,7 @@
     "describePlaceholder": "Ogni mattina alle 8:00, controlla questo prodotto e dimmi se il prezzo scende sotto i 500 €.",
     "describeHint": "Di' quando viene eseguita e cosa deve fare. Toskar compila i dettagli qui sotto, e puoi cambiarli tutti.",
     "setUp": "Compila i dettagli",
+    "settingUp": "Compilazione…",
     "ideas": "Oppure parti da un'idea",
     "ideaHint": "Adatta le parole, per esempio con un link al posto di «questa pagina», poi scegli di nuovo Compila i dettagli.",
     "stepDetails": "Controlla i dettagli",

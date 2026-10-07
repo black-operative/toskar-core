@@ -179,7 +179,8 @@
     "afternoon": "Tarde significa 15:00, a menos que você defina outro horário.",
     "morning": "Manhã significa 8:00, a menos que você defina outro horário.",
     "badTime": "Esse horário não é válido.",
-    "unreadable": "Não foi possível entender essa descrição."
+    "unreadable": "Não foi possível entender essa descrição.",
+    "byModel": "A IA leu este pedido. Confira o agendamento e a notificação antes de salvar."
   },
   "names": {
     "priceAbove": "Preço acima de {{amount}}",
@@ -201,6 +202,7 @@
     "describePlaceholder": "Todas as manhãs às 8h, verifique este produto e me avise se o preço ficar abaixo de R$ 2.500.",
     "describeHint": "Diga quando ela roda e o que fazer. O Toskar preenche os detalhes abaixo, e você pode mudar qualquer um.",
     "setUp": "Preencher os detalhes",
+    "settingUp": "Preenchendo…",
     "ideas": "Ou comece com uma ideia",
     "ideaHint": "Ajuste as palavras, por exemplo com um link no lugar de “esta página”, e escolha Preencher os detalhes de novo.",
     "stepDetails": "Confira os detalhes",

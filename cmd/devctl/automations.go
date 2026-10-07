@@ -14,9 +14,11 @@ import (
 	"github.com/yeixio/toskar-core/internal/config"
 )
 
-const automationsUsage = `usage: toskarctl automations <list|get|create|update|delete|run|pause|resume>
+const automationsUsage = `usage: toskarctl automations <list|get|parse|create|update|delete|run|pause|resume>
   list
   get <id>
+  parse <request> [--zone <tz>] [--language <tag>]
+  create --request <text> [--profile <id>] [--model <id>] [--zone <tz>] [any flag below to change what it read]
   create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|interval> [--at <time>] [--every <duration>] [--weekday <0-6>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--disabled]
   update <id> [--name <name>] [--prompt <text>] [--profile <id>] [--model <id>] [--schedule ...] [--notify <mode>]
   delete <id>
@@ -68,8 +70,27 @@ func runAutomations(args []string, client daemonClient, out io.Writer) error {
 			return err
 		}
 		return writeJSON(out, detail)
+	case "parse":
+		fs := flag.NewFlagSet("parse", flag.ContinueOnError)
+		fs.SetOutput(io.Discard)
+		zone := fs.String("zone", "", "IANA time zone; empty is the daemon's")
+		lang := fs.String("language", "", "language the request is written in besides English; empty is the App language")
+		text, rest := splitRequest(args[1:])
+		if err := fs.Parse(rest); err != nil {
+			return err
+		}
+		if text == "" {
+			text = strings.Join(fs.Args(), " ")
+		}
+		parsed, err := parseRequest(client, text, *zone, *lang)
+		if err != nil {
+			return err
+		}
+		return writeJSON(out, parsed)
 	case "create":
-		body, err := automationBody(args[1:], true)
+		body, err := automationBody(args[1:], true, func(text, zone string) (automations.ParsedRequest, error) {
+			return parseRequest(client, text, zone, "")
+		})
 		if err != nil {
 			return err
 		}
@@ -82,7 +103,7 @@ func runAutomations(args []string, client daemonClient, out io.Writer) error {
 		if len(args) < 2 {
 			return fmt.Errorf("update requires an automation id")
 		}
-		body, err := automationBody(args[2:], false)
+		body, err := automationBody(args[2:], false, nil)
 		if err != nil {
 			return err
 		}
@@ -147,9 +168,30 @@ func oneID(args []string) (string, error) {
 	return args[0], nil
 }
 
-func automationBody(args []string, create bool) (any, error) {
+// parseRequest reads a request on the daemon, the way the Automations page
+// does (#204).
+func parseRequest(client daemonClient, text, zone, lang string) (automations.ParsedRequest, error) {
+	var parsed automations.ParsedRequest
+	err := client.call(http.MethodPost, "/automations/parse", map[string]any{"text": text, "time_zone": zone, "language": lang}, &parsed)
+	return parsed, err
+}
+
+// splitRequest takes the request text that comes before any flag.
+func splitRequest(args []string) (string, []string) {
+	var words []string
+	for i, a := range args {
+		if strings.HasPrefix(a, "-") {
+			return strings.Join(words, " "), args[i:]
+		}
+		words = append(words, a)
+	}
+	return strings.Join(words, " "), nil
+}
+
+func automationBody(args []string, create bool, parse func(text, zone string) (automations.ParsedRequest, error)) (any, error) {
 	fs := flag.NewFlagSet("automations", flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
+	request := fs.String("request", "", "describe the automation, such as \"every morning at 8, tell me if the price is below $500\"")
 	name := fs.String("name", "", "automation name")
 	prompt := fs.String("prompt", "", "prompt to run")
 	profile := fs.String("profile", "", "profile id")
@@ -172,9 +214,64 @@ func automationBody(args []string, create bool) (any, error) {
 	seen := map[string]bool{}
 	fs.Visit(func(f *flag.Flag) { seen[f.Name] = true })
 
+	if create && strings.TrimSpace(*request) != "" {
+		if parse == nil {
+			return nil, fmt.Errorf("--request needs the daemon")
+		}
+		readZone := ""
+		if seen["zone"] {
+			readZone = *zone
+		}
+		read, err := parse(*request, readZone)
+		if err != nil {
+			return nil, err
+		}
+		// What the request says, with the flags given changing it.
+		in := automations.CreateInput{
+			Name:         read.Name,
+			Prompt:       read.Prompt,
+			ProfileID:    "general-assistant",
+			ModelID:      "auto",
+			Schedule:     read.Schedule,
+			Tools:        []string(tools),
+			Notification: read.Notification,
+		}
+		if seen["name"] {
+			in.Name = *name
+		}
+		if seen["prompt"] {
+			in.Prompt = *prompt
+		}
+		if seen["profile"] {
+			in.ProfileID = *profile
+		}
+		if seen["model"] {
+			in.ModelID = *model
+		}
+		if seen["schedule"] {
+			sched, err := buildSchedule(*schedule, *at, *every, *zone, weekday, seen["weekday"])
+			if err != nil {
+				return nil, err
+			}
+			in.Schedule = sched
+		}
+		if seen["notify"] {
+			note, err := buildNotification(*notify, *kind, *op, *value)
+			if err != nil {
+				return nil, err
+			}
+			in.Notification = note
+		}
+		if *disabled {
+			off := false
+			in.Enabled = &off
+		}
+		return in, nil
+	}
+
 	if create {
 		if strings.TrimSpace(*name) == "" || strings.TrimSpace(*prompt) == "" || strings.TrimSpace(*profile) == "" || strings.TrimSpace(*model) == "" {
-			return nil, fmt.Errorf("create requires --name, --prompt, --profile, and --model")
+			return nil, fmt.Errorf("create requires --request, or --name, --prompt, --profile, and --model")
 		}
 		sched, err := buildSchedule(*schedule, *at, *every, *zone, weekday, seen["weekday"])
 		if err != nil {
