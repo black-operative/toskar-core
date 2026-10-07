@@ -62,4 +62,11 @@ type Execution struct {
 	NodeID  string
 	// Skipped lists tools the run reached that nobody approved for it.
 	Skipped []string
+	// SourceHash fingerprints what the run's tools read, so a run that read
+	// the same pages as the last one hasn't changed (#204). Empty when it
+	// read nothing.
+	SourceHash string
+	// Change is the model's judgment of whether the result differs from the
+	// previous one, when only a judgment could tell.
+	Change *Change
 }

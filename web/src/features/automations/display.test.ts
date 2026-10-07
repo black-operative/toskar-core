@@ -33,4 +33,13 @@ describe('explainRun', () => {
     )
     expect(notice).toEqual({ title: 'Not notified', detail: 'It is in stock.' })
   })
+
+  // The computer decides what changed by the values, what it read, and the
+  // model's judgment, not the wording; the page follows its decision (#204).
+  it("follows the computer's change decision, not the wording", () => {
+    const run = { status: 'succeeded' as const, result: 'The page lists 3 jobs.', notification_sent: false }
+    expect(explainRun({ mode: 'change' }, run, 'There are three jobs listed.')).toEqual({ title: 'Not notified', detail: 'The result did not change.' })
+    expect(explainRun({ mode: 'change' }, { ...run, notification_sent: true }, 'There are two jobs listed.')).toEqual({ title: 'Notified', detail: 'The result changed.' })
+    expect(explainRun({ mode: 'change' }, run, undefined)).toEqual({ title: 'Not notified', detail: 'The first result is saved for comparison.' })
+  })
 })

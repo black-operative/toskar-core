@@ -46,7 +46,7 @@ type Store interface {
 	FailRun(ctx context.Context, runID string, message string, result Execution, finished time.Time) error
 	ScheduleRetry(ctx context.Context, runID, message string, result Execution, finished, retryAt time.Time) error
 	AbandonExpired(ctx context.Context, now time.Time) ([]Run, error)
-	PreviousResult(ctx context.Context, automationID string, before time.Time) (text string, notified bool, ok bool, err error)
+	PreviousResult(ctx context.Context, automationID string, before time.Time) (prev Previous, ok bool, err error)
 	SetNotificationSent(ctx context.Context, runID string, sent bool) error
 	RunFor(ctx context.Context, automationID string, occurrence time.Time) (Run, error)
 }
@@ -261,8 +261,18 @@ func (r *Runner) finish(ctx context.Context, automation Automation, run Run) err
 	go r.keepLease(leaseCtx, run.ID)
 
 	r.publish(events.AutomationStarted, automation, run, Execution{}, nil, false)
+	// The executor compares a change-mode result with the last one while
+	// its model is still loaded (#204).
+	prev, err := r.previous(ctx, automation, run.OccurrenceAt)
+	if err != nil {
+		return err
+	}
+	runCtx := ctx
+	if prev != nil {
+		runCtx = WithPrevious(ctx, *prev)
+	}
 	limit := r.runTimeout()
-	execCtx, cancel := context.WithTimeout(ctx, limit)
+	execCtx, cancel := context.WithTimeout(runCtx, limit)
 	result, execErr := r.Exec.Execute(execCtx, automation)
 	if errors.Is(execCtx.Err(), context.DeadlineExceeded) && ctx.Err() == nil {
 		execErr = timedOut(limit)
@@ -332,7 +342,7 @@ func (r *Runner) finish(ctx context.Context, automation Automation, run Run) err
 	if err := r.Store.CompleteRun(ctx, run.ID, result, finished); err != nil {
 		return err
 	}
-	sent, notifyErr := r.deliver(ctx, automation, run, result)
+	sent, notifyErr := r.deliver(ctx, automation, run, result, prev)
 	if err := r.Store.SetNotificationSent(ctx, run.ID, sent); err != nil {
 		return err
 	}
@@ -384,16 +394,8 @@ func (r *Runner) notifyRepeated(ctx context.Context, automation Automation, run 
 	return true, nil
 }
 
-func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, result Execution) (bool, error) {
-	text, notified, ok, err := r.Store.PreviousResult(ctx, automation.ID, run.OccurrenceAt)
-	if err != nil {
-		return false, err
-	}
-	var previous *string
-	if ok {
-		previous = &text
-	}
-	decision := Decide(automation.Notification, result.Text, previous, notified)
+func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, result Execution, prev *Previous) (bool, error) {
+	decision := DecideRun(automation.Notification, result, prev)
 	if !decision.Notify {
 		return false, nil
 	}
@@ -406,6 +408,15 @@ func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, re
 		return false, err
 	}
 	return true, nil
+}
+
+// previous is the last successful run before this occurrence, or nil.
+func (r *Runner) previous(ctx context.Context, automation Automation, occurrence time.Time) (*Previous, error) {
+	prev, ok, err := r.Store.PreviousResult(ctx, automation.ID, occurrence)
+	if err != nil || !ok {
+		return nil, err
+	}
+	return &prev, nil
 }
 
 func (r *Runner) keepLease(ctx context.Context, runID string) {

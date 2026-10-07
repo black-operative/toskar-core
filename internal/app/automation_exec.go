@@ -139,6 +139,12 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 	if nodeID != "" {
 		out.NodeID = nodeID
 	}
+	out.SourceHash = env.sources.sum()
+	// "Notify on change" compares what changed; when the values and sources
+	// can't tell, the run's model, still loaded, judges (#204).
+	if prev, ok := automations.PreviousFrom(ctx); ok && runErr == nil && ctx.Err() == nil && automations.NeedsJudgment(automation.Notification, prev, out) {
+		out.Change = e.judgeChange(ctx, env, automation, prev.Text, out.Text)
+	}
 	out.Skipped = env.skippedTools()
 	e.reportSkipped(ctx, automation, out.Skipped)
 	return out, runErr
@@ -178,6 +184,8 @@ func (e automationExecutor) reportSkipped(ctx context.Context, automation automa
 type automationEnv struct {
 	base    *chatExecEnv
 	granted []string
+	// sources fingerprints what the run's read-only tools returned (#204).
+	sources sourceRecorder
 
 	mu      sync.Mutex
 	skipped []string
@@ -220,9 +228,13 @@ func (e *automationEnv) ExecuteTool(ctx context.Context, toolID string, args map
 	if err != nil {
 		return nil, err
 	}
-	return e.base.app.Tools.Execute(ctx, toolID, args, policy, "scheduled automation", map[string]any{
+	result, err := e.base.app.Tools.Execute(ctx, toolID, args, policy, "scheduled automation", map[string]any{
 		"automation_id": e.base.taskID,
 	})
+	if err == nil {
+		e.sources.add(toolID, args, result)
+	}
+	return result, err
 }
 
 func (e *automationEnv) Emit(eventType string, payload map[string]any) {

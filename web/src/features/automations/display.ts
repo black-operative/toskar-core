@@ -1,7 +1,7 @@
 import i18n from '@/i18n'
 import { formatDate, formatPrice } from '@/i18n/format'
 import type { AutomationNotification, AutomationRun } from '@/types/api'
-import { formatWhen, resultProse } from './parseRequest'
+import { formatWhen } from './parseRequest'
 
 export interface NoticeExplanation {
   title: string
@@ -27,10 +27,13 @@ export function explainRun(
     if (!previousResult) {
       return { title: i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.firstSaved') }
     }
-    if (normalize(run.result) === normalize(previousResult)) {
+    // The computer decides what changed, by the values, what it read, and
+    // the model's judgment, not the wording (#204); its decision is whether
+    // it notified.
+    if (!run.notification_sent) {
       return { title: i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.unchanged') }
     }
-    return { title: run.notification_sent ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.changed') }
+    return { title: i18n.t('automations:notice.notified'), detail: i18n.t('automations:notice.changed') }
   }
   return explainCondition(notification, run.result, previousResult, previousNotified, run.notification_sent)
 }
@@ -171,10 +174,6 @@ function readSignal(result: string | undefined): { price?: number; available?: b
 
 function formatAmount(value: number, currency: string | undefined): string {
   return formatPrice(value, currency)
-}
-
-function normalize(value: string | undefined): string {
-  return resultProse(value)
 }
 
 function durationLabel(ms: number): string {

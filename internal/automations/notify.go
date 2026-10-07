@@ -198,6 +198,14 @@ func noticeFor(n Notification, result string) Notice {
 	return withMessage(Notice{}, locale.Message{Title: locale.Key("notifications:notices.automationUnnamed", nil), Body: body})
 }
 
+// changeNotice says what changed, as the model put it.
+func changeNotice(what string) Notice {
+	return withMessage(Notice{}, locale.Message{
+		Title: locale.Key("notifications:notices.automationUnnamed", nil),
+		Body:  []locale.Text{locale.Literal(oneLine(what, 180))},
+	})
+}
+
 // withMessage is notice with message, and its title and body in English.
 func withMessage(notice Notice, m locale.Message) Notice {
 	notice.Message = &m
@@ -280,6 +288,9 @@ func ConditionSchema(n Notification) *structured.Schema {
 	switch n.Condition.Kind {
 	case ConditionThreshold:
 		return structured.Object(map[string]string{"price": "number"})
+	case ConditionAvailable:
+		// A flag, not English phrases, so it works in every language (#204).
+		return structured.Object(map[string]string{"available": "boolean"})
 	case ConditionSignificant:
 		return structured.Object(map[string]string{"significant": "boolean"})
 	}

@@ -356,6 +356,14 @@ A trained revision can be exported as one GGUF file that llama.cpp, LM Studio, O
 
 An automation's `notification.mode` is `condition`, `change`, `always`, `failure` (only failed runs), or `none`. An automation runs on the same stack as chat: `model_id` `auto` picks a model for each run, and memories and connected knowledge are used the same way. Its `response_language` is the language results are written in: `account` (the default) follows the assistant language setting, `app` the App language, `auto` the language of the request, or a language tag such as `de`. A language the request asks for, such as "answer in English", always wins. Tools follow the unattended policy, because nobody is there to approve them. Tools listed in the automation's `tools` were approved when it was saved, and they run even if they change things. With no `tools`, only read-only tools the profile allows without asking can run. A tool the profile denies never runs. When a run reaches a tool that was not approved, the tool is skipped and the run continues. The run's `automation.completed` event lists the tool in `skipped`, and an `approval` notification says which tools to approve.
 
+**Notify on change.** `change` compares a run with the last successful one by what changed, not how the model worded it. In order:
+1. **Values:** when both results carry the same structured values, such as a price or availability, nothing changed.
+2. **Sources:** each run fingerprints what its read-only tools returned, such as the pages and search results it read. The same fingerprint means nothing changed, with no model call.
+3. **Judgment:** otherwise the run's model, still loaded, judges whether anything the person would care about changed, beyond rewording. The notification says what changed, in the response language.
+4. **Text:** if the model gives no usable answer, a different text counts as a change.
+
+The first successful run is the baseline. The `available` condition asks for a JSON `available` flag, like `price` for a threshold, so it works in every language.
+
 **Runs.**
 - **Running together:** due automations run two at a time, so a slow one doesn't hold up the rest. An automation that is still running isn't started again.
 - **Time limit:** each run has 20 minutes. One that takes longer is stopped, fails with `AUTOMATION_TIMEOUT`, and isn't retried.

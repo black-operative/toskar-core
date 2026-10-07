@@ -160,10 +160,10 @@ func (r *AutomationRepo) CompleteRun(ctx context.Context, runID string, result a
 	if _, err := tx.ExecContext(ctx, `
 		UPDATE automation_runs
 		SET status = ?, result = ?, error = NULL, model_id = ?, node_id = ?,
-			finished_at = ?, lease_until = NULL
+			finished_at = ?, lease_until = NULL, source_hash = ?
 		WHERE id = ?`,
 		automations.RunSucceeded, result.Text, nullIfEmpty(result.ModelID), nullIfEmpty(result.NodeID),
-		formatTime(finished), runID); err != nil {
+		formatTime(finished), nullIfEmpty(result.SourceHash), runID); err != nil {
 		return err
 	}
 
@@ -481,22 +481,24 @@ func (r *AutomationRepo) RunsPage(ctx context.Context, automationID, before stri
 	return page, nil
 }
 
-// PreviousResult returns the latest successful result scheduled before an occurrence.
-func (r *AutomationRepo) PreviousResult(ctx context.Context, automationID string, before time.Time) (string, bool, bool, error) {
-	var text string
+// PreviousResult returns the latest successful run scheduled before an
+// occurrence: its result, whether it notified, and what its tools read.
+func (r *AutomationRepo) PreviousResult(ctx context.Context, automationID string, before time.Time) (automations.Previous, bool, error) {
+	var prev automations.Previous
 	var notified int
 	err := r.db.QueryRowContext(ctx, `
-		SELECT COALESCE(result, ''), notification_sent FROM automation_runs
+		SELECT COALESCE(result, ''), notification_sent, COALESCE(source_hash, '') FROM automation_runs
 		WHERE automation_id = ? AND status = ? AND occurrence_at < ?
 		ORDER BY occurrence_at DESC
-		LIMIT 1`, automationID, automations.RunSucceeded, formatTime(clock(before))).Scan(&text, &notified)
+		LIMIT 1`, automationID, automations.RunSucceeded, formatTime(clock(before))).Scan(&prev.Text, &notified, &prev.SourceHash)
 	if err == sql.ErrNoRows {
-		return "", false, false, nil
+		return automations.Previous{}, false, nil
 	}
 	if err != nil {
-		return "", false, false, err
+		return automations.Previous{}, false, err
 	}
-	return text, notified != 0, true, nil
+	prev.Notified = notified != 0
+	return prev, true, nil
 }
 
 // SetNotificationSent records whether the user was notified for this occurrence.
