@@ -365,5 +365,11 @@
     "open": "オートメーションで開く",
     "failed": "オートメーションを作成できませんでした。"
   },
-  "runInChat": "オートメーション「<automation>{{name}}</automation>」から"
+  "runInChat": "オートメーション「<automation>{{name}}</automation>」から",
+  "digest": {
+    "title": "オートメーションのまとめ",
+    "intro_other": "前回のまとめ以降に、{{count}}件のオートメーションが見つけたこと。",
+    "noResult": "実行しましたが、報告することはありません。",
+    "failed_other": "{{count}}回失敗しました。最後のエラー: {{error}}"
+  }
 }

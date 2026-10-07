@@ -115,6 +115,7 @@ Settings are stored in `toskar.db`. The app's Settings page shows them, and `GET
 | `memory_enabled` | `true` | Persistent memory for chats. Each chat can still turn it off. |
 | `notify_task_finish` | `true` | Desktop notices for finished automations and tasks |
 | `notify_peer_offline` | `true` | A notice when a paired computer goes offline |
+| `automation_digest`, `automation_digest_zone` | off | The time of day, such as `08:00`, in that IANA time zone, one digest of every automation's results goes out; `""` is off |
 | `update_check` | `true` | Look at toskar.ai once a day for a newer version, and say so in Settings. Builds that update themselves (App Store, the desktop app) don't check. |
 | `community_ratings` | `false` | Show community model ratings, downloading the public summary once a day while models are browsed |
 | `ratings_prompts` | `true` | Ask for a rating after a model has been used a while |

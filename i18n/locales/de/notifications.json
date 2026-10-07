@@ -168,7 +168,10 @@
     "digest_one": "{{count}} Mitteilung",
     "digest_other": "{{count}} Mitteilungen",
     "digestMore_one": "… und {{count}} weitere",
-    "digestMore_other": "… und {{count}} weitere"
+    "digestMore_other": "… und {{count}} weitere",
+    "automationDigest": "Automationsübersicht",
+    "automationDigestBody_one": "1 Automation ist gelaufen: {{names}}",
+    "automationDigestBody_other": "{{count}} Automationen sind gelaufen: {{names}}"
   },
   "sent": {
     "times": "{{title}} ({{count}}-mal)",

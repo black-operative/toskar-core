@@ -137,7 +137,10 @@
     "title": "Notificações",
     "description": "Alertas sobre trabalhos demorados e a conectividade da equipe.",
     "taskFinish": "Notificar quando tarefas terminarem",
-    "peerOffline": "Notificar quando um computador pareado ficar offline"
+    "peerOffline": "Notificar quando um computador pareado ficar offline",
+    "digest": "Resumo diário das automações",
+    "digestHint": "Um resumo dos resultados de todas as automações por dia, em um chat que você pode responder.",
+    "digestTime": "Horário"
   },
   "toolPermissions": {
     "title": "Permissões de ferramentas",

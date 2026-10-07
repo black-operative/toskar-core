@@ -579,6 +579,10 @@ export interface SettingsView {
   save_task_history?: boolean
   notify_task_finish?: boolean
   notify_peer_offline?: boolean
+  /** The time of day one digest of every automation's results goes out, such as 08:00, or "" for none (#204). */
+  automation_digest?: string
+  /** The IANA time zone automation_digest is in. */
+  automation_digest_zone?: string
   /** Show community model ratings; downloads the public summary once a day while models are browsed. */
   community_ratings?: boolean
   /** Ask for a rating after a model has been used a while. */
@@ -804,6 +808,8 @@ export interface SettingsPatch {
   save_task_history?: boolean
   notify_task_finish?: boolean
   notify_peer_offline?: boolean
+  automation_digest?: string
+  automation_digest_zone?: string
   tool_terminal?: string
   tool_file_writes?: string
   tool_git?: string

@@ -23,6 +23,7 @@ import { LanguageSettings } from './LanguageSettings'
 import { Personalization } from './Personalization'
 import { YggdrasilMark } from '@/components/ui/YggdrasilMark'
 import { formatGigabytes } from '@/i18n/format'
+import { AutomationDigestSetting } from './AutomationDigest'
 
 function ChoiceGroup<T extends string>({
   value,
@@ -449,6 +450,7 @@ export function SettingsPage() {
               }
             />
           </div>
+          <AutomationDigestSetting value={settings?.automation_digest ?? ''} disabled={busy} onChange={patch} />
         </section>
         <NotificationDestinations />
       </div>

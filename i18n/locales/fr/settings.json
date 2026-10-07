@@ -137,7 +137,10 @@
     "title": "Notifications",
     "description": "Alertes pour les travaux de longue durée et la connectivité de l'équipe.",
     "taskFinish": "Notifier à la fin des tâches",
-    "peerOffline": "Notifier quand un ordinateur jumelé se déconnecte"
+    "peerOffline": "Notifier quand un ordinateur jumelé se déconnecte",
+    "digest": "Récapitulatif quotidien des automatisations",
+    "digestHint": "Chaque jour, un résumé des résultats de toutes vos automatisations, dans un chat auquel vous pouvez répondre.",
+    "digestTime": "Heure"
   },
   "toolPermissions": {
     "title": "Autorisations des outils",

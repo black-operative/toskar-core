@@ -516,6 +516,19 @@ func (r *AutomationRepo) SetDecision(ctx context.Context, runID, detail string, 
 	return err
 }
 
+// FinishedSince is every run that succeeded or failed after since, oldest
+// first, for the digest (#204).
+func (r *AutomationRepo) FinishedSince(ctx context.Context, since time.Time) ([]automations.Run, error) {
+	rows, err := r.db.QueryContext(ctx, runSelect+`
+		WHERE status IN ('succeeded', 'failed') AND finished_at > ?
+		ORDER BY finished_at`, formatTime(since))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return scanRuns(rows)
+}
+
 // GetRun loads one run of an automation.
 func (r *AutomationRepo) GetRun(ctx context.Context, automationID, runID string) (automations.Run, error) {
 	run, err := scanRun(r.db.QueryRowContext(ctx, runSelect+` WHERE id = ? AND automation_id = ?`, runID, automationID))

@@ -365,5 +365,11 @@
     "open": "在「自動化」中開啟",
     "failed": "無法建立自動化。"
   },
-  "runInChat": "來自自動化「<automation>{{name}}</automation>」"
+  "runInChat": "來自自動化「<automation>{{name}}</automation>」",
+  "digest": {
+    "title": "自動化摘要",
+    "intro_other": "自上次摘要以來，你的 {{count}} 個自動化發現的內容。",
+    "noResult": "已執行，沒有需要回報的內容。",
+    "failed_other": "失敗了 {{count}} 次，最近一次：{{error}}"
+  }
 }

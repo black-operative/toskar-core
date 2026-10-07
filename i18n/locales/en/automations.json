@@ -365,5 +365,13 @@
     "open": "Open in Automations",
     "failed": "Could not create the automation."
   },
-  "runInChat": "From the automation <automation>{{name}}</automation>"
+  "runInChat": "From the automation <automation>{{name}}</automation>",
+  "digest": {
+    "title": "Automation digest",
+    "intro_one": "What your automation found since the last digest.",
+    "intro_other": "What your {{count}} automations found since the last digest.",
+    "noResult": "Ran, with nothing to report.",
+    "failed_one": "Failed once: {{error}}",
+    "failed_other": "Failed {{count}} times, last: {{error}}"
+  }
 }

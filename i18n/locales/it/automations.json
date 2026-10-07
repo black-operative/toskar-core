@@ -365,5 +365,15 @@
     "open": "Apri in Automazioni",
     "failed": "Impossibile creare l’automazione."
   },
-  "runInChat": "Dall’automazione <automation>{{name}}</automation>"
+  "runInChat": "Dall’automazione <automation>{{name}}</automation>",
+  "digest": {
+    "title": "Riepilogo automazioni",
+    "intro_one": "Cosa ha trovato la tua automazione dall’ultimo riepilogo.",
+    "intro_other": "Cosa hanno trovato le tue {{count}} automazioni dall’ultimo riepilogo.",
+    "intro_many": "Cosa hanno trovato le tue {{count}} automazioni dall’ultimo riepilogo.",
+    "noResult": "Eseguita, niente da segnalare.",
+    "failed_one": "Non riuscita una volta: {{error}}",
+    "failed_other": "Non riuscita {{count}} volte, l’ultima: {{error}}",
+    "failed_many": "Non riuscita {{count}} volte, l’ultima: {{error}}"
+  }
 }

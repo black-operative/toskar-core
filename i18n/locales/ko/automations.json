@@ -365,5 +365,11 @@
     "open": "자동화에서 열기",
     "failed": "자동화를 만들 수 없습니다."
   },
-  "runInChat": "자동화 “<automation>{{name}}</automation>”에서"
+  "runInChat": "자동화 “<automation>{{name}}</automation>”에서",
+  "digest": {
+    "title": "자동화 요약",
+    "intro_other": "지난 요약 이후 자동화 {{count}}개가 찾은 내용입니다.",
+    "noResult": "실행했지만 알릴 내용이 없습니다.",
+    "failed_other": "{{count}}번 실패했습니다. 마지막 오류: {{error}}"
+  }
 }

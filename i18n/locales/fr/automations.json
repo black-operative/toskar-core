@@ -365,5 +365,15 @@
     "open": "Ouvrir dans Automatisations",
     "failed": "Impossible de créer l’automatisation."
   },
-  "runInChat": "De l’automatisation <automation>{{name}}</automation>"
+  "runInChat": "De l’automatisation <automation>{{name}}</automation>",
+  "digest": {
+    "title": "Récapitulatif des automatisations",
+    "intro_one": "Ce que votre automatisation a trouvé depuis le dernier récapitulatif.",
+    "intro_other": "Ce que vos {{count}} automatisations ont trouvé depuis le dernier récapitulatif.",
+    "intro_many": "Ce que vos {{count}} automatisations ont trouvé depuis le dernier récapitulatif.",
+    "noResult": "Exécutée, rien à signaler.",
+    "failed_one": "Échec une fois : {{error}}",
+    "failed_other": "Échec {{count}} fois, le dernier : {{error}}",
+    "failed_many": "Échec {{count}} fois, le dernier : {{error}}"
+  }
 }

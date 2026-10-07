@@ -1052,6 +1052,11 @@ func (a *App) Start(ctx context.Context) error {
 			defer a.wg.Done()
 			a.AutomationRunner.Start(ctx)
 		}()
+		a.wg.Add(1)
+		go func() {
+			defer a.wg.Done()
+			a.digestLoop(ctx)
+		}()
 	}
 	if a.Health != nil {
 		a.wg.Add(1)
@@ -1150,6 +1155,8 @@ func (a *App) settingsView(ctx context.Context) (contracts.SettingsView, error) 
 	uiLocale, _ := a.Settings.GetString(ctx, "ui_locale", "")
 	assistantMode, _ := a.Settings.GetString(ctx, "assistant_language_mode", replylang.ModeAuto)
 	assistantLanguage, _ := a.Settings.GetString(ctx, "assistant_language", "")
+	digest, _ := a.Settings.GetString(ctx, settingDigest, "")
+	digestZone, _ := a.Settings.GetString(ctx, settingDigestZone, "")
 	if assistantMode == "" {
 		assistantMode = replylang.ModeAuto
 	}
@@ -1186,6 +1193,8 @@ func (a *App) settingsView(ctx context.Context) (contracts.SettingsView, error) 
 		UILocale:                uiLocale,
 		AssistantLanguageMode:   assistantMode,
 		AssistantLanguage:       assistantLanguage,
+		AutomationDigest:        digest,
+		AutomationDigestZone:    digestZone,
 	}, nil
 }
 
@@ -1281,6 +1290,22 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 			return contracts.Errorf("INVALID_LOCALE", nil, "ui_locale must be a language tag such as en or es-MX, or empty for the system language")
 		}
 		if err := a.Settings.Set(ctx, "ui_locale", v); err != nil {
+			return err
+		}
+	}
+	if v, ok := patch[settingDigest].(string); ok {
+		if !validDigestTime(v) {
+			return contracts.Errorf("INVALID_SETTING", map[string]any{"setting": settingDigest, "value": v}, "automation_digest must be a time such as 08:00, or empty for none")
+		}
+		if err := a.Settings.Set(ctx, settingDigest, v); err != nil {
+			return err
+		}
+	}
+	if v, ok := patch[settingDigestZone].(string); ok {
+		if _, err := time.LoadLocation(v); err != nil || v == "" {
+			return contracts.Errorf("INVALID_SETTING", map[string]any{"setting": settingDigestZone, "value": v}, "automation_digest_zone must be an IANA time zone such as America/Juneau")
+		}
+		if err := a.Settings.Set(ctx, settingDigestZone, v); err != nil {
 			return err
 		}
 	}

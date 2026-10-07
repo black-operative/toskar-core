@@ -381,6 +381,12 @@ Saved schedules also carry `hour`, `minute`, and `weekday`: the first time and d
 
 **Saving results.** An automation's `save_folder`, such as `~/Documents/Toskar/News`, also saves each successful result to that folder as a new Markdown file. The file is named for when the run finished in the schedule's time zone and for the automation, such as `2026-10-07 08.30 News.md`. A second file in the same minute gets a number. The folder must be in the home folder (`~` is the home folder) and is made when needed. A path outside it is refused when the automation is saved. The run's `saved_file` is where its result went. A file that can't be written is logged and doesn't fail the run. `toskarctl automations create|update --save-folder` sets the folder, and `--save-folder ""` stops saving.
 
+**Digest.** With the `automation_digest` setting at a time such as `08:00` (in `automation_digest_zone`), one answer a day in an *Automation digest* chat sums up every automation that finished since the last digest:
+- each automation's latest result, without its JSON, and how many times it failed, with the last error;
+- one notification that opens the chat (`notifications:notices.automationDigest`).
+
+It's put together from the results, without a model. A day when nothing ran sends nothing. A computer that was off at the time sends it once when it's back. Turning the digest on doesn't send at once: the first one goes out at the next time.
+
 **Notify on change.** `change` compares a run with the last successful one by what changed, not how the model worded it. In order:
 1. **Values:** when both results carry the same structured values, such as a price or availability, nothing changed.
 2. **Sources:** each run fingerprints what its read-only tools returned, such as the pages and search results it read. The same fingerprint means nothing changed, with no model call.

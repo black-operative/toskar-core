@@ -365,5 +365,11 @@
     "open": "在“自动化”中打开",
     "failed": "无法创建自动化。"
   },
-  "runInChat": "来自自动化“<automation>{{name}}</automation>”"
+  "runInChat": "来自自动化“<automation>{{name}}</automation>”",
+  "digest": {
+    "title": "自动化摘要",
+    "intro_other": "自上次摘要以来，你的 {{count}} 个自动化发现的内容。",
+    "noResult": "已运行，没有需要报告的内容。",
+    "failed_other": "失败了 {{count}} 次，最近一次：{{error}}"
+  }
 }

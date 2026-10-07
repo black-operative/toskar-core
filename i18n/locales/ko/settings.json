@@ -137,7 +137,10 @@
     "title": "알림",
     "description": "오래 걸리는 작업과 팀 연결 상태에 관한 알림이에요.",
     "taskFinish": "작업이 끝나면 알림",
-    "peerOffline": "페어링된 컴퓨터가 오프라인이 되면 알림"
+    "peerOffline": "페어링된 컴퓨터가 오프라인이 되면 알림",
+    "digest": "매일 자동화 요약",
+    "digestHint": "매일 모든 자동화의 결과를 한 번에 요약해 답장할 수 있는 채팅으로 보내 드립니다.",
+    "digestTime": "시간"
   },
   "toolPermissions": {
     "title": "도구 권한",

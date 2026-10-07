@@ -137,7 +137,10 @@
     "title": "通知",
     "description": "关于长时间运行的工作和团队连接的提醒。",
     "taskFinish": "任务完成时通知",
-    "peerOffline": "已配对的电脑离线时通知"
+    "peerOffline": "已配对的电脑离线时通知",
+    "digest": "每日自动化摘要",
+    "digestHint": "每天汇总一次所有自动化的结果，发到一个可以回复的聊天中。",
+    "digestTime": "时间"
   },
   "toolPermissions": {
     "title": "工具权限",

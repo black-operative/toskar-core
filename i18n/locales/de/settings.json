@@ -137,7 +137,10 @@
     "title": "Mitteilungen",
     "description": "Hinweise zu lang laufender Arbeit und zur Verbindung im Team.",
     "taskFinish": "Benachrichtigen, wenn Aufgaben fertig sind",
-    "peerOffline": "Benachrichtigen, wenn ein gekoppelter Computer offline geht"
+    "peerOffline": "Benachrichtigen, wenn ein gekoppelter Computer offline geht",
+    "digest": "Tägliche Automationsübersicht",
+    "digestHint": "Jeden Tag eine Zusammenfassung aller Automationsergebnisse, in einem Chat, in dem du antworten kannst.",
+    "digestTime": "Uhrzeit"
   },
   "toolPermissions": {
     "title": "Werkzeugberechtigungen",
