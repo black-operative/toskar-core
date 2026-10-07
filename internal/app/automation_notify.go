@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"net/url"
 
 	"github.com/yeixio/toskar-core/internal/automations"
 	"github.com/yeixio/toskar-core/internal/events"
@@ -71,6 +72,10 @@ func (n automationNotifier) Notify(ctx context.Context, notice automations.Notic
 	link := "/automations"
 	if notice.AutomationID != "" {
 		link += "?id=" + notice.AutomationID
+	}
+	// A result in the chat the automation came from opens there (#204).
+	if notice.ConversationID != "" && !notice.Failure {
+		link = "/chat?c=" + url.QueryEscape(notice.ConversationID)
 	}
 	_, err := n.hub.Notify(ctx, gjallarhorn.Request{
 		SourceType: "automation",

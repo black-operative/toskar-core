@@ -294,5 +294,6 @@
     "created": "Erstellt",
     "open": "In Automationen öffnen",
     "failed": "Die Automation konnte nicht erstellt werden."
-  }
+  },
+  "runInChat": "Von der Automation <automation>{{name}}</automation>"
 }

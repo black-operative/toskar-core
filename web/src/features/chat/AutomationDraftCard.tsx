@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { api } from '@/lib/api'
-import type { AutomationDraft } from '@/types/api'
+import type { AutomationDraft, AutomationRunRef } from '@/types/api'
 import { notificationLabel, scheduleLabel } from '@/features/automations/parseRequest'
 
 /**
@@ -76,5 +76,20 @@ export function AutomationDraftCard({ draft, conversationId }: { draft: Automati
         </p>
       ) : null}
     </div>
+  )
+}
+
+/** Marks a result an automation posted to the chat it was made from (#204). */
+export function AutomationRunNote({ run }: { run: AutomationRunRef }) {
+  const { t } = useTranslation('automations')
+  return (
+    <p className="mb-1.5 text-xs text-ink-faint">
+      <Trans
+        t={t}
+        i18nKey="runInChat"
+        values={{ name: run.name }}
+        components={{ automation: <Link to={`/automations?id=${encodeURIComponent(run.automation_id)}`} className="text-primary underline-offset-2 hover:underline" /> }}
+      />
+    </p>
   )
 }

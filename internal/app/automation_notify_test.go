@@ -166,3 +166,42 @@ func TestDesktopNoticesGoToTheDesktopAppWhenItPostsThem(t *testing.T) {
 		t.Fatal("expected no hand-off")
 	}
 }
+
+// A result posted to the chat an automation came from is an answer there,
+// marked with its automation, and its notice opens that chat (#204).
+func TestAutomationResultInItsChat(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	ctx := context.Background()
+	convs := repositories.NewConversationRepo(db.SQL)
+	conv, err := convs.Create(ctx, "Morning news", "general-assistant", "auto")
+	if err != nil {
+		t.Fatal(err)
+	}
+	a := &App{Conversations: convs}
+	automation := automations.Automation{ID: "a1", Name: "Morning news", ConversationID: conv.ID}
+	if err := a.postAutomationResult(ctx, automation, automations.Run{ID: "r1"}, "Three stories today."); err != nil {
+		t.Fatal(err)
+	}
+	messages, _ := convs.ListMessages(ctx, conv.ID)
+	if len(messages) != 1 || messages[0].Role != "assistant" || messages[0].Meta == nil || messages[0].Meta.AutomationRun == nil ||
+		messages[0].Meta.AutomationRun.RunID != "r1" || messages[0].Meta.AutomationRun.Name != "Morning news" {
+		t.Fatalf("messages = %+v", messages)
+	}
+	if err := a.postAutomationResult(ctx, automations.Automation{ID: "a1", ConversationID: "deleted"}, automations.Run{ID: "r2"}, "x"); err == nil {
+		t.Fatal("posted to a chat that doesn't exist")
+	}
+
+	hub := gjallarhorn.NewHub(db.SQL, events.NewBus(8))
+	n := automationNotifier{hub: hub}
+	if err := n.Notify(ctx, automations.Notice{Title: "Morning news", Body: "Three stories today.", AutomationID: "a1", ConversationID: conv.ID}); err != nil {
+		t.Fatal(err)
+	}
+	list, _, _ := hub.List(ctx, false, 0)
+	if len(list) != 1 || list[0].Link != "/chat?c="+conv.ID {
+		t.Fatalf("center = %+v", list)
+	}
+}

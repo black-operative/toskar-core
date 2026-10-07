@@ -112,3 +112,16 @@ func draftFrom(result map[string]any) *contracts.AutomationDraft {
 	}
 	return nil
 }
+
+// postAutomationResult adds a run's result to the chat the automation was
+// made from (#204), as an answer the person can reply to.
+func (a *App) postAutomationResult(ctx context.Context, automation automations.Automation, run automations.Run, text string) error {
+	if a.Conversations == nil {
+		return errors.New("conversations are not available")
+	}
+	_, err := a.Conversations.AddMessageWithMeta(ctx, automation.ConversationID, "assistant", text, &contracts.MessageMeta{
+		AutomationRun: &contracts.AutomationRunRef{AutomationID: automation.ID, RunID: run.ID, Name: automation.Name},
+		Contract:      contracts.ContractVersion,
+	})
+	return err
+}

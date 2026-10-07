@@ -294,5 +294,6 @@
     "created": "已建立",
     "open": "在「自動化」中開啟",
     "failed": "無法建立自動化。"
-  }
+  },
+  "runInChat": "來自自動化「<automation>{{name}}</automation>」"
 }

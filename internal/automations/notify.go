@@ -23,8 +23,10 @@ type Notice struct {
 	// automation's name, what the model wrote), so each place that shows the
 	// notice writes it in its own language (multilingual spec §22).
 	Message *locale.Message
-	// AutomationID links the notice to its automation.
-	AutomationID string
+	// AutomationID links the notice to its automation, and ConversationID
+	// to the chat it was made from, where its result is (#204).
+	AutomationID   string
+	ConversationID string
 	// Failure is true when the notice reports a failed run.
 	Failure bool
 }
@@ -342,6 +344,15 @@ func parseSignal(result string) (parsedSignal, bool) {
 	}
 	found.prose = structured.Prose(result, f)
 	return found, true
+}
+
+// ResultProse is a result without the JSON a condition asked for: what the
+// model wrote for a person to read.
+func ResultProse(result string) string {
+	if signal, ok := parseSignal(result); ok {
+		return strings.TrimSpace(signal.prose)
+	}
+	return strings.TrimSpace(result)
 }
 
 func normalizeResult(s string) string {

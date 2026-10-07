@@ -611,6 +611,17 @@ type MessageMeta struct {
 	// Automation is an automation the answer drafted, for the person to
 	// confirm (#204, contract 1.10). Nothing is scheduled until they do.
 	Automation *AutomationDraft `json:"automation,omitempty"`
+	// AutomationRun marks a message an automation posted to the chat it
+	// was made from: its result (#204, contract 1.11).
+	AutomationRun *AutomationRunRef `json:"automation_run,omitempty"`
+}
+
+// AutomationRunRef is the automation run a chat message came from.
+type AutomationRunRef struct {
+	AutomationID string `json:"automation_id"`
+	RunID        string `json:"run_id"`
+	// Name is the automation's name when it ran.
+	Name string `json:"name"`
 }
 
 // AutomationDraft is an automation a chat drafted from a request. A client

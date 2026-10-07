@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '@/lib/api'
 import type { Automation, AutomationDraft } from '@/types/api'
-import { AutomationDraftCard } from './AutomationDraftCard'
+import { AutomationDraftCard, AutomationRunNote } from './AutomationDraftCard'
 
 vi.mock('@/lib/api', () => ({
   api: { listAutomations: vi.fn(), createAutomation: vi.fn() },
@@ -53,5 +53,15 @@ describe('AutomationDraftCard', () => {
     renderIt()
     expect(await screen.findByRole('link', { name: 'Open in Automations' })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Create automation' })).not.toBeInTheDocument()
+  })
+
+  it('marks a result an automation posted to its chat', () => {
+    render(
+      <MemoryRouter>
+        <AutomationRunNote run={{ automation_id: 'auto-1', run_id: 'r1', name: 'Morning news' }} />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('link', { name: 'Morning news' })).toHaveAttribute('href', '/automations?id=auto-1')
+    expect(screen.getByText(/From the automation/)).toBeInTheDocument()
   })
 })

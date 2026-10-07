@@ -294,5 +294,6 @@
     "created": "作成しました",
     "open": "オートメーションで開く",
     "failed": "オートメーションを作成できませんでした。"
-  }
+  },
+  "runInChat": "オートメーション「<automation>{{name}}</automation>」から"
 }

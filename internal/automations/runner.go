@@ -75,6 +75,9 @@ type Runner struct {
 	// that takes longer. Zero uses the defaults.
 	Workers    int
 	RunTimeout time.Duration
+	// Post adds a result to the chat an automation was made from, when it
+	// notifies, so the person can reply to it there (#204).
+	Post func(ctx context.Context, automation Automation, run Run, text string) error
 
 	mu       sync.Mutex
 	inflight map[string]bool
@@ -409,6 +412,19 @@ func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, re
 	}
 	notice := decision.Notice
 	notice.AutomationID = automation.ID
+	// The notice opens the chat when the result is there; a chat deleted
+	// since leaves it opening the automation.
+	if r.Post != nil && automation.ConversationID != "" {
+		if text := ResultProse(result.Text); text != "" {
+			if err := r.Post(ctx, automation, run, text); err != nil {
+				if r.Logger != nil {
+					r.Logger.Warn("post automation result to its chat", "automation_id", automation.ID, "error", err)
+				}
+			} else {
+				notice.ConversationID = automation.ConversationID
+			}
+		}
+	}
 	if err := r.Notify.Notify(ctx, noticeTitle(automation.Name, notice)); err != nil {
 		return false, err
 	}
@@ -452,6 +468,9 @@ func (r *Runner) publish(eventType string, automation Automation, run Run, resul
 		"run_id":        run.ID,
 		"name":          automation.Name,
 		"occurrence_at": run.OccurrenceAt.UTC().Format(time.RFC3339),
+	}
+	if automation.ConversationID != "" {
+		payload["conversation_id"] = automation.ConversationID
 	}
 	if eventType == events.AutomationCompleted {
 		payload["notification_sent"] = notified

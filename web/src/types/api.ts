@@ -420,6 +420,15 @@ export interface MessageMeta {
   device?: string
   /** An automation the answer drafted, for the person to confirm (#204, contract 1.10). */
   automation?: AutomationDraft
+  /** A result an automation posted to the chat it was made from (#204, contract 1.11). */
+  automation_run?: AutomationRunRef
+}
+
+export interface AutomationRunRef {
+  automation_id: string
+  run_id: string
+  /** The automation's name when it ran. */
+  name: string
 }
 
 /** An automation a chat drafted; create it with draft_id and conversation_id (#204). */

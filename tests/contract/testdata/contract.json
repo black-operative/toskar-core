@@ -1,5 +1,5 @@
 {
-  "version": "1.10",
+  "version": "1.11",
   "types": {
     "ActivityStep": [
       "kind",
@@ -24,6 +24,11 @@
       "profile_id",
       "prompt",
       "schedule"
+    ],
+    "AutomationRun": [
+      "automation_id",
+      "name",
+      "run_id"
     ],
     "Citation": [
       "artifact_id",
@@ -99,6 +104,7 @@
     ],
     "MessageMeta": [
       "automation",
+      "automation_run",
       "backend",
       "context",
       "contract",

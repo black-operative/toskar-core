@@ -294,5 +294,6 @@
     "created": "만들었습니다",
     "open": "자동화에서 열기",
     "failed": "자동화를 만들 수 없습니다."
-  }
+  },
+  "runInChat": "자동화 “<automation>{{name}}</automation>”에서"
 }
