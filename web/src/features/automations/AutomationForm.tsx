@@ -21,7 +21,7 @@ import {
   visibleTask,
   weekdayName,
 } from './parseRequest'
-import { IDEAS } from './ideas'
+import { IDEAS, buildIdea, ideaDefaults, ideaReady, type IdeaField, type IdeaId, type IdeaValues } from './ideas'
 
 // The notify choices, in order; each is automations:form.notifyChoices.<mode> in the catalog.
 const NOTIFY_CHOICES: AutomationInput['notification']['mode'][] = ['condition', 'change', 'always', 'failure', 'none']
@@ -35,8 +35,8 @@ interface AutomationFormProps {
   tools: ToolRecord[]
   initial?: Automation | null
   seedDescription?: string
-  /** The form was started from an idea, so say how to make it your own. */
-  fromIdea?: boolean
+  /** A template to start from, with its fields to fill in (#204). */
+  seedIdea?: IdeaId | null
   /** Offer the ideas as shortcuts; off when the page already shows them. */
   showIdeas?: boolean
   pending: boolean
@@ -45,13 +45,16 @@ interface AutomationFormProps {
   onSubmit: (input: AutomationInput) => void
 }
 
-export function AutomationForm({ profiles, models, tools, initial, seedDescription = '', fromIdea = false, showIdeas = true, pending, error, onCancel, onSubmit }: AutomationFormProps) {
+export function AutomationForm({ profiles, models, tools, initial, seedDescription = '', seedIdea = null, showIdeas = true, pending, error, onCancel, onSubmit }: AutomationFormProps) {
   const { t } = useTranslation('automations')
   const advanced = useUIStore((state) => state.advancedMode) && new URLSearchParams(window.location.search).get('simple') !== '1'
   const advancedRef = useRef<HTMLDetailsElement>(null)
   const describeRef = useRef<HTMLTextAreaElement>(null)
   const zone = initial?.schedule.time_zone || localTimeZone()
   const [description, setDescription] = useState('')
+  const [ideaID, setIdeaID] = useState<IdeaId | null>(seedIdea)
+  const [ideaValues, setIdeaValues] = useState<IdeaValues>(() => (seedIdea ? ideaDefaults(seedIdea) : {}))
+  const idea = IDEAS.find((item) => item.id === ideaID)
   const [notes, setNotes] = useState<string[]>([])
   const [parseError, setParseError] = useState('')
   const [parsing, setParsing] = useState(false)
@@ -85,6 +88,24 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
     if (parsed.notification.condition?.currency) setCurrency(parsed.notification.condition.currency)
     setNotes(parsed.notes ?? [])
     setParseError('')
+  }
+
+  function chooseIdea(id: IdeaId) {
+    setIdeaID(id)
+    setIdeaValues(ideaDefaults(id))
+  }
+
+  // A template's fields fill in the details directly, with no request to read.
+  function applyIdea() {
+    if (!idea || !ideaReady(idea, ideaValues)) return
+    fillFrom({ ...buildIdea(idea, ideaValues, schedule.time_zone || zone, readNumber), notes: [] })
+  }
+
+  // Back to describing it, starting from the template's example.
+  function describeInstead() {
+    if (ideaID) setDescription(t(`ideas.${ideaID}.request`))
+    setIdeaID(null)
+    requestAnimationFrame(() => describeRef.current?.focus())
   }
 
   const readRequest = (text: string, timeZone: string) =>
@@ -209,49 +230,75 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       {/* Step 1: say it in words; Toskar fills in step 2 from them. */}
       <div className="space-y-2.5 rounded-lg bg-raised/40 p-3">
         <StepHeading number={1}>{t('form.stepDescribe')}</StepHeading>
-        <label className="block space-y-1 text-sm">
-          <span className="sr-only">{t('form.describe')}</span>
-          <textarea
-            ref={describeRef}
-            className="field min-h-24 w-full"
-            value={description}
-            placeholder={t('form.describePlaceholder')}
-            aria-describedby="automation-describe-hint"
-            onChange={(event) => setDescription(event.target.value)}
-          />
-        </label>
-        <p id="automation-describe-hint" className="text-xs leading-relaxed text-ink-muted">
-          {fromIdea ? t('form.ideaHint') : t('form.describeHint')}
-        </p>
-        <div className="flex flex-wrap items-center gap-2">
-          <button type="button" className="btn-secondary btn-sm" disabled={!description.trim() || parsing} onClick={() => void applyDescription()}>
-            {parsing ? t('form.settingUp') : t('form.setUp')}
-          </button>
-        </div>
-        {parseError && <p className="text-sm text-danger">{parseError}</p>}
-        {notes.map((note) => (
-          <p key={note} className="text-sm text-ink-muted">
-            {note}
-          </p>
-        ))}
-        {initial || !showIdeas ? null : (
-          <div className="flex flex-wrap items-center gap-1.5 pt-1">
-            <span className="text-xs text-ink-faint">{t('form.ideas')}</span>
-            {IDEAS.map(({ id }) => (
-              <button
-                key={id}
-                type="button"
-                className="chat-suggestion"
-                onClick={() => {
-                  const request = t(`ideas.${id}.request`)
-                  setDescription(request)
-                  void applyDescription(request)
-                }}
-              >
-                {t(`ideas.${id}.title`)}
+        {idea ? (
+          <div className="space-y-3">
+            <div>
+              <p className="text-sm font-medium text-ink">{t(`ideas.${idea.id}.title`)}</p>
+              <p className="text-xs text-ink-muted">{t(`ideas.${idea.id}.body`)}</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {idea.fields.map((field) => (
+                <IdeaFieldInput
+                  key={field}
+                  field={field}
+                  value={ideaValues[field] ?? ''}
+                  onChange={(next) => setIdeaValues((current) => ({ ...current, [field]: next }))}
+                />
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <button type="button" className="btn-secondary btn-sm" disabled={!ideaReady(idea, ideaValues)} onClick={applyIdea}>
+                {t('form.setUp')}
               </button>
-            ))}
+              <button type="button" className="text-xs text-primary underline-offset-2 hover:underline" onClick={describeInstead}>
+                {t('ideas.describeInstead')}
+              </button>
+            </div>
           </div>
+        ) : (
+          <>
+          <label className="block space-y-1 text-sm">
+            <span className="sr-only">{t('form.describe')}</span>
+            <textarea
+              ref={describeRef}
+              className="field min-h-24 w-full"
+              value={description}
+              placeholder={t('form.describePlaceholder')}
+              aria-describedby="automation-describe-hint"
+              onChange={(event) => setDescription(event.target.value)}
+            />
+          </label>
+          <p id="automation-describe-hint" className="text-xs leading-relaxed text-ink-muted">
+            {t('form.describeHint')}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="button" className="btn-secondary btn-sm" disabled={!description.trim() || parsing} onClick={() => void applyDescription()}>
+              {parsing ? t('form.settingUp') : t('form.setUp')}
+            </button>
+          </div>
+          {parseError && <p className="text-sm text-danger">{parseError}</p>}
+          {notes.map((note) => (
+            <p key={note} className="text-sm text-ink-muted">
+              {note}
+            </p>
+          ))}
+          {initial || !showIdeas ? null : (
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              <span className="text-xs text-ink-faint">{t('form.ideas')}</span>
+              {IDEAS.map(({ id }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className="chat-suggestion"
+                  onClick={() => chooseIdea(id)}
+                >
+                  {t(`ideas.${id}.title`)}
+                </button>
+              ))}
+            </div>
+          )}
+      
+          </>
         )}
       </div>
 
@@ -497,6 +544,52 @@ function StepHeading({ number, children }: { number: number; children: string })
       </span>
       {children}
     </h3>
+  )
+}
+
+function IdeaFieldInput({ field, value, onChange }: { field: IdeaField; value: string; onChange: (value: string) => void }) {
+  const { t } = useTranslation('automations')
+  const label = <span className="text-ink-muted">{t(`ideas.fields.${field}.label`)}</span>
+  if (field === 'currency') {
+    return (
+      <label className="block space-y-1 text-sm">
+        {label}
+        <select className="field w-full" value={value} onChange={(event) => onChange(event.target.value)}>
+          {CURRENCIES.map((code) => (
+            <option key={code} value={code}>
+              {code} · {currencyName(code)}
+            </option>
+          ))}
+        </select>
+      </label>
+    )
+  }
+  if (field === 'weekday') {
+    return (
+      <label className="block space-y-1 text-sm">
+        {label}
+        <select className="field w-full" value={value} onChange={(event) => onChange(event.target.value)}>
+          {[0, 1, 2, 3, 4, 5, 6].map((index) => (
+            <option key={index} value={index}>
+              {weekdayName(index)}
+            </option>
+          ))}
+        </select>
+      </label>
+    )
+  }
+  return (
+    <label className={`block space-y-1 text-sm ${field === 'url' || field === 'folder' || field === 'topics' || field === 'software' ? 'sm:col-span-2' : ''}`}>
+      {label}
+      <input
+        className="field w-full"
+        type={field === 'url' ? 'url' : field === 'time' ? 'time' : 'text'}
+        inputMode={field === 'price' ? 'decimal' : undefined}
+        placeholder={field === 'time' ? undefined : t(`ideas.fields.${field}.placeholder`)}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    </label>
   )
 }
 

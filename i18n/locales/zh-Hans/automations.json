@@ -45,28 +45,78 @@
     "news": {
       "title": "早间新闻摘要",
       "body": "每天早上简要总结科技新闻。",
-      "request": "每天早上7点半，总结今天最重要的科技新闻。"
+      "request": "每天早上7点半，总结今天最重要的科技新闻。",
+      "name": "晨间简报：{{topics}}",
+      "task": "用五个简短要点总结今天关于{{topics}}的重要新闻，并附上每个来源的链接。",
+      "defaultTopics": "科技"
     },
     "price": {
       "title": "价格监控",
       "body": "想买的东西低于你的价格时通知你。",
-      "request": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。"
+      "request": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。",
+      "name": "价格提醒：{{site}}",
+      "task": "查看 {{url}} 上商品的当前价格。"
     },
     "stock": {
       "title": "到货提醒",
       "body": "售罄的商品可以再次购买时立即通知你。",
-      "request": "每6小时检查一次库存，有货时通知我。"
+      "request": "每6小时检查一次库存，有货时通知我。",
+      "name": "到货提醒：{{site}}",
+      "task": "查看 {{url}} 上的商品是否有货、现在能否购买。"
     },
     "releases": {
       "title": "每周版本更新",
       "body": "每周五告诉你常用软件有哪些变化。",
-      "request": "每周五上午9点，总结这个软件的新版本。"
+      "request": "每周五上午9点，总结这个软件的新版本。",
+      "name": "版本说明：{{software}}",
+      "task": "查找过去一周 {{software}} 的新版本，总结有哪些变化，并注明版本号。"
     },
     "page": {
       "title": "网页变化提醒",
       "body": "只在你关心的网页有变化时通知你。",
-      "request": "每天晚上6点检查这个页面，有变化时通知我。"
-    }
+      "request": "每天晚上6点检查这个页面，有变化时通知我。",
+      "name": "网页变化提醒：{{site}}",
+      "task": "阅读 {{url}} 页面并总结其内容。"
+    },
+    "folder": {
+      "title": "文件夹摘要",
+      "body": "这台电脑上的文件夹有变化时，告诉你有什么新内容。",
+      "request": "每天晚上6点总结这个文件夹，有变化时通知我。",
+      "name": "文件夹摘要：{{folderName}}",
+      "task": "总结文件夹 {{folder}} 中的文件：哪些是新增或有变化的，以及需要注意的事项。"
+    },
+    "fields": {
+      "topics": {
+        "label": "主题",
+        "placeholder": "科技、科学"
+      },
+      "url": {
+        "label": "链接",
+        "placeholder": "https://example.com/product"
+      },
+      "price": {
+        "label": "低于此价格时通知",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "货币"
+      },
+      "software": {
+        "label": "软件",
+        "placeholder": "名称或链接，例如 Node.js"
+      },
+      "folder": {
+        "label": "文件夹",
+        "placeholder": "~/Documents/Invoices"
+      },
+      "time": {
+        "label": "时间"
+      },
+      "weekday": {
+        "label": "星期"
+      }
+    },
+    "describeInstead": "改为用自己的话描述"
   },
   "detail": {
     "schedule": "时间安排",
@@ -209,7 +259,6 @@
     "setUp": "填写详细信息",
     "settingUp": "正在填写…",
     "ideas": "或者从一个想法开始",
-    "ideaHint": "根据需要修改文字，比如用链接替换“这个页面”，然后再次选择“填写详细信息”。",
     "stepDetails": "检查详细信息",
     "name": "名称",
     "task": "任务",

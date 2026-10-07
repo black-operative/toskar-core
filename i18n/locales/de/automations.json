@@ -45,28 +45,78 @@
     "news": {
       "title": "Nachrichten am Morgen",
       "body": "Jeden Morgen eine kurze Zusammenfassung der Technik-Nachrichten.",
-      "request": "Täglich um 7:30 Uhr die wichtigsten Technik-Nachrichten des Tages zusammenfassen."
+      "request": "Täglich um 7:30 Uhr die wichtigsten Technik-Nachrichten des Tages zusammenfassen.",
+      "name": "Morgenüberblick: {{topics}}",
+      "task": "Fasse die wichtigsten Nachrichten von heute zu {{topics}} in fünf kurzen Punkten zusammen, mit einem Link zu jeder Quelle.",
+      "defaultTopics": "Technik"
     },
     "price": {
       "title": "Preisbeobachtung",
       "body": "Erfahre, wenn etwas, das du willst, unter deinen Preis fällt.",
-      "request": "Jeden Morgen um 8:00 Uhr: Prüfe dieses Produkt und sag mir, ob der Preis unter 500 € liegt."
+      "request": "Jeden Morgen um 8:00 Uhr: Prüfe dieses Produkt und sag mir, ob der Preis unter 500 € liegt.",
+      "name": "Preis beobachten: {{site}}",
+      "task": "Prüfe den aktuellen Preis des Produkts unter {{url}}."
     },
     "stock": {
       "title": "Wieder lieferbar",
       "body": "Erfahre sofort, wenn ein ausverkaufter Artikel wieder erhältlich ist.",
-      "request": "Alle 6 Stunden prüfen, ob dieser Artikel wieder auf Lager ist."
+      "request": "Alle 6 Stunden prüfen, ob dieser Artikel wieder auf Lager ist.",
+      "name": "Wieder verfügbar: {{site}}",
+      "task": "Prüfe, ob der Artikel unter {{url}} vorrätig ist und jetzt gekauft werden kann."
     },
     "releases": {
       "title": "Wöchentliche Release-Notes",
       "body": "Was sich in deiner Software geändert hat, jeden Freitag.",
-      "request": "Jeden Freitag um 9 Uhr die Release-Notes dieser Software zusammenfassen."
+      "request": "Jeden Freitag um 9 Uhr die Release-Notes dieser Software zusammenfassen.",
+      "name": "Versionshinweise: {{software}}",
+      "task": "Finde neue Versionen von {{software}} aus der letzten Woche und fasse zusammen, was sich geändert hat, mit den Versionsnummern."
     },
     "page": {
       "title": "Seite beobachten",
       "body": "Nur Bescheid bekommen, wenn sich eine Seite ändert.",
-      "request": "Täglich um 18 Uhr diese Seite prüfen, nur bei Änderungen."
-    }
+      "request": "Täglich um 18 Uhr diese Seite prüfen, nur bei Änderungen.",
+      "name": "Seite beobachten: {{site}}",
+      "task": "Lies die Seite unter {{url}} und fasse zusammen, was darauf steht."
+    },
+    "folder": {
+      "title": "Ordnerübersicht",
+      "body": "Erfahre, was in einem Ordner auf diesem Computer neu ist, wenn er sich ändert.",
+      "request": "Täglich um 18 Uhr diesen Ordner zusammenfassen, nur bei Änderungen.",
+      "name": "Ordnerübersicht: {{folderName}}",
+      "task": "Fasse die Dateien im Ordner {{folder}} zusammen: was neu ist oder sich geändert hat und was Aufmerksamkeit braucht."
+    },
+    "fields": {
+      "topics": {
+        "label": "Themen",
+        "placeholder": "Technik, Wissenschaft"
+      },
+      "url": {
+        "label": "Link",
+        "placeholder": "https://example.com/produkt"
+      },
+      "price": {
+        "label": "Benachrichtigen unter",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "Währung"
+      },
+      "software": {
+        "label": "Software",
+        "placeholder": "ein Name oder ein Link, etwa Node.js"
+      },
+      "folder": {
+        "label": "Ordner",
+        "placeholder": "~/Dokumente/Rechnungen"
+      },
+      "time": {
+        "label": "Uhrzeit"
+      },
+      "weekday": {
+        "label": "Tag"
+      }
+    },
+    "describeInstead": "Stattdessen in eigenen Worten beschreiben"
   },
   "detail": {
     "schedule": "Zeitplan",
@@ -209,7 +259,6 @@
     "setUp": "Details ausfüllen",
     "settingUp": "Wird ausgefüllt…",
     "ideas": "Oder starte mit einer Idee",
-    "ideaHint": "Passe die Worte an, etwa mit einem Link statt „diese Seite“, und wähle dann erneut „Details ausfüllen“.",
     "stepDetails": "Prüfe die Details",
     "name": "Name",
     "task": "Aufgabe",

@@ -45,28 +45,78 @@
     "news": {
       "title": "Noticias de la mañana",
       "body": "Un resumen breve de las noticias de tecnología, cada mañana.",
-      "request": "Cada mañana a las 7:30, resume las noticias de tecnología más importantes del día."
+      "request": "Cada mañana a las 7:30, resume las noticias de tecnología más importantes del día.",
+      "name": "Resumen matutino: {{topics}}",
+      "task": "Resume las noticias más importantes de hoy sobre {{topics}} en cinco puntos breves, con un enlace a cada fuente.",
+      "defaultTopics": "tecnología"
     },
     "price": {
       "title": "Vigilar un precio",
       "body": "Entérate cuando algo que quieres baje de tu precio.",
-      "request": "Cada mañana a las 8:00, revisa este producto y avísame si el precio baja de 500 €."
+      "request": "Cada mañana a las 8:00, revisa este producto y avísame si el precio baja de 500 €.",
+      "name": "Vigilar precio: {{site}}",
+      "task": "Revisa el precio actual del producto en {{url}}."
     },
     "stock": {
       "title": "De nuevo disponible",
       "body": "Entérate en cuanto un artículo agotado se pueda comprar otra vez.",
-      "request": "Cada 6 horas, comprueba si este artículo vuelve a estar disponible."
+      "request": "Cada 6 horas, comprueba si este artículo vuelve a estar disponible.",
+      "name": "De nuevo disponible: {{site}}",
+      "task": "Comprueba si el artículo en {{url}} está disponible y se puede comprar ahora."
     },
     "releases": {
       "title": "Novedades de la semana",
       "body": "Qué cambió en el software que usas, cada viernes.",
-      "request": "Todos los viernes a las 9:00, revisa las novedades de este programa y resume los cambios."
+      "request": "Todos los viernes a las 9:00, revisa las novedades de este programa y resume los cambios.",
+      "name": "Notas de versión: {{software}}",
+      "task": "Busca las versiones nuevas de {{software}} de la última semana y resume qué cambió, con los números de versión."
     },
     "page": {
       "title": "Vigilar una página",
       "body": "Entérate solo cuando cambie una página que te importa.",
-      "request": "Cada día a las 18:00, revisa esta página y avísame solo si hay cambios."
-    }
+      "request": "Cada día a las 18:00, revisa esta página y avísame solo si hay cambios.",
+      "name": "Vigilar página: {{site}}",
+      "task": "Lee la página en {{url}} y resume lo que dice."
+    },
+    "folder": {
+      "title": "Resumen de carpeta",
+      "body": "Entérate de lo nuevo en una carpeta de este ordenador cuando cambie.",
+      "request": "Cada día a las 18:00, resume esta carpeta y avísame solo si hay cambios.",
+      "name": "Resumen de carpeta: {{folderName}}",
+      "task": "Resume los archivos de la carpeta {{folder}}: qué hay de nuevo o qué cambió, y lo que necesite atención."
+    },
+    "fields": {
+      "topics": {
+        "label": "Temas",
+        "placeholder": "tecnología, ciencia"
+      },
+      "url": {
+        "label": "Enlace",
+        "placeholder": "https://example.com/producto"
+      },
+      "price": {
+        "label": "Avisar por debajo de",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "Moneda"
+      },
+      "software": {
+        "label": "Software",
+        "placeholder": "un nombre o un enlace, como Node.js"
+      },
+      "folder": {
+        "label": "Carpeta",
+        "placeholder": "~/Documentos/Facturas"
+      },
+      "time": {
+        "label": "Hora"
+      },
+      "weekday": {
+        "label": "Día"
+      }
+    },
+    "describeInstead": "Descríbelo con tus propias palabras"
   },
   "detail": {
     "schedule": "Programación",
@@ -209,7 +259,6 @@
     "setUp": "Completar los detalles",
     "settingUp": "Completando…",
     "ideas": "O empieza con una idea",
-    "ideaHint": "Ajusta las palabras, por ejemplo con un enlace en lugar de «esta página», y vuelve a elegir Completar los detalles.",
     "stepDetails": "Revisa los detalles",
     "name": "Nombre",
     "task": "Tarea",

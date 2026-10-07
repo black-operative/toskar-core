@@ -45,28 +45,78 @@
     "news": {
       "title": "Notícias da manhã",
       "body": "Um resumo curto das notícias de tecnologia, toda manhã.",
-      "request": "Todas as manhãs às 7h30, resuma as principais notícias de tecnologia do dia."
+      "request": "Todas as manhãs às 7h30, resuma as principais notícias de tecnologia do dia.",
+      "name": "Resumo da manhã: {{topics}}",
+      "task": "Resuma as principais notícias de hoje sobre {{topics}} em cinco pontos curtos, com um link para cada fonte.",
+      "defaultTopics": "tecnologia"
     },
     "price": {
       "title": "Acompanhar preço",
       "body": "Saiba quando algo que você quer ficar abaixo do seu preço.",
-      "request": "Todas as manhãs às 8h, verifique este produto e me avise se o preço ficar abaixo de R$ 2.500."
+      "request": "Todas as manhãs às 8h, verifique este produto e me avise se o preço ficar abaixo de R$ 2.500.",
+      "name": "Acompanhar preço: {{site}}",
+      "task": "Verifique o preço atual do produto em {{url}}."
     },
     "stock": {
       "title": "De volta ao estoque",
       "body": "Saiba assim que um item esgotado puder ser comprado de novo.",
-      "request": "A cada 6 horas, veja se este item está em estoque."
+      "request": "A cada 6 horas, veja se este item está em estoque.",
+      "name": "De volta ao estoque: {{site}}",
+      "task": "Verifique se o item em {{url}} está em estoque e pode ser comprado agora."
     },
     "releases": {
       "title": "Novidades da semana",
       "body": "O que mudou nos programas que você usa, toda sexta-feira.",
-      "request": "Toda sexta-feira às 9h, resuma as novidades deste software."
+      "request": "Toda sexta-feira às 9h, resuma as novidades deste software.",
+      "name": "Notas de versão: {{software}}",
+      "task": "Encontre as novas versões de {{software}} da última semana e resuma o que mudou, com os números de versão."
     },
     "page": {
       "title": "Acompanhar página",
       "body": "Saiba só quando uma página que importa para você mudar.",
-      "request": "Todos os dias às 18h, verifique esta página e me avise só quando mudar."
-    }
+      "request": "Todos os dias às 18h, verifique esta página e me avise só quando mudar.",
+      "name": "Acompanhar página: {{site}}",
+      "task": "Leia a página em {{url}} e resuma o que ela diz."
+    },
+    "folder": {
+      "title": "Resumo de pasta",
+      "body": "Saiba o que há de novo em uma pasta deste computador quando ela mudar.",
+      "request": "Todos os dias às 18h, resuma esta pasta e me avise só quando mudar.",
+      "name": "Resumo da pasta: {{folderName}}",
+      "task": "Resuma os arquivos da pasta {{folder}}: o que é novo ou mudou, e o que precisa de atenção."
+    },
+    "fields": {
+      "topics": {
+        "label": "Assuntos",
+        "placeholder": "tecnologia, ciência"
+      },
+      "url": {
+        "label": "Link",
+        "placeholder": "https://example.com/produto"
+      },
+      "price": {
+        "label": "Avisar abaixo de",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "Moeda"
+      },
+      "software": {
+        "label": "Software",
+        "placeholder": "um nome ou um link, como Node.js"
+      },
+      "folder": {
+        "label": "Pasta",
+        "placeholder": "~/Documentos/Notas"
+      },
+      "time": {
+        "label": "Horário"
+      },
+      "weekday": {
+        "label": "Dia"
+      }
+    },
+    "describeInstead": "Descrever com suas próprias palavras"
   },
   "detail": {
     "schedule": "Agendamento",
@@ -209,7 +259,6 @@
     "setUp": "Preencher os detalhes",
     "settingUp": "Preenchendo…",
     "ideas": "Ou comece com uma ideia",
-    "ideaHint": "Ajuste as palavras, por exemplo com um link no lugar de “esta página”, e escolha Preencher os detalhes de novo.",
     "stepDetails": "Confira os detalhes",
     "name": "Nome",
     "task": "Tarefa",

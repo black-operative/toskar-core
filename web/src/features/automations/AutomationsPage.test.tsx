@@ -143,26 +143,32 @@ describe('AutomationsPage', () => {
     expect(screen.queryByRole('button', { name: 'Show older runs' })).not.toBeInTheDocument()
   })
 
-  it('explains automations and starts one from an idea when there are none', async () => {
+  it('explains automations and starts one from a template when there are none', async () => {
     vi.mocked(api.listAutomations).mockResolvedValue([])
-    vi.mocked(api.parseAutomation).mockResolvedValue({
-      name: 'Stock check',
-      prompt: 'Check whether this item is back in stock.',
-      schedule: { kind: 'interval', time_zone: 'America/Los_Angeles', every_seconds: 6 * 3600 },
-      notification: { mode: 'condition', condition: { kind: 'available' } },
-      notes: [],
-    })
     renderPage()
     expect(await screen.findByRole('heading', { name: /Put Toskar to work/ })).toBeInTheDocument()
     expect(screen.getByText('Say when')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: /Back in stock/ }))
-    // The form opens filled in from the idea, ready to adjust.
-    expect(await screen.findByDisplayValue('Stock check')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Price watch/ }))
+    // The template asks for its few fields, then fills in the details without reading a request.
+    const fill = await screen.findByRole('button', { name: 'Fill in the details' })
+    expect(fill).toBeDisabled()
+    fireEvent.change(screen.getByLabelText('Link'), { target: { value: 'shop.example.com/laptop' } })
+    fireEvent.change(screen.getByLabelText('Notify below'), { target: { value: '1,299.99' } })
+    fireEvent.click(fill)
+    expect(await screen.findByDisplayValue('Price watch: shop.example.com')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Check the current price of the product at https://shop.example.com/laptop.')).toBeInTheDocument()
+    expect(screen.getByText(/Notify when the price is below \$1,299\.99/, { selector: 'dd' })).toBeInTheDocument()
+    expect(api.parseAutomation).not.toHaveBeenCalled()
+  })
+
+  it('describes a template in words instead, from its example', async () => {
+    vi.mocked(api.listAutomations).mockResolvedValue([])
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: /Folder summary/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Describe it in your own words instead' }))
     expect(screen.getByRole('textbox', { name: 'Describe what you want' })).toHaveValue(
-      'Every 6 hours, check whether this item is back in stock and tell me when it becomes available.',
+      'Every day at 6:00 PM, summarize what is in this folder and notify me only when it changes.',
     )
-    expect(screen.getByText('Notify when it becomes available', { selector: 'dd' })).toBeInTheDocument()
-    expect(screen.getByText(/link in place of/)).toBeInTheDocument()
   })
 
   it('shows how automations work on request when there are some', async () => {

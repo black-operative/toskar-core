@@ -14,6 +14,7 @@ import { RealmKicker } from '@/components/ui/Realm'
 import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { AutomationsIntro, IdeaGallery } from './Intro'
+import type { IdeaId } from './ideas'
 
 const screenshotSentence =
   'Every morning at 8:00 AM, check this product and tell me if the price is below $500.'
@@ -28,8 +29,8 @@ export function AutomationsPage() {
   const [formError, setFormError] = useState('')
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<'all' | 'active' | 'paused' | 'attention'>('all')
-  // A request to start the form from: an idea someone chose.
-  const [seed, setSeed] = useState('')
+  // A template to start the form from: an idea someone chose.
+  const [seed, setSeed] = useState<IdeaId | null>(null)
   const [showIntro, setShowIntro] = useState(false)
 
   const listQuery = useQuery({
@@ -73,8 +74,8 @@ export function AutomationsPage() {
   // With none yet, the page explains automations and offers ideas instead of an empty list.
   const empty = !listQuery.isLoading && !listQuery.isError && !hasAutomations
 
-  function startNew(request = '') {
-    setSeed(request)
+  function startNew(idea: IdeaId | null = null) {
+    setSeed(idea)
     setCreating(true)
     setEditing(false)
     setSelectedID(null)
@@ -255,24 +256,18 @@ export function AutomationsPage() {
         <aside>
           {creating || editing ? (
             <AutomationForm
-              key={editing ? selectedID ?? 'edit' : `new-${seed}`}
+              key={editing ? selectedID ?? 'edit' : `new-${seed ?? ''}`}
               profiles={profiles}
               models={models}
               tools={tools}
               initial={editing ? detail : null}
-              seedDescription={
-                creating && new URLSearchParams(window.location.search).get('compose') === '1'
-                  ? screenshotSentence
-                  : creating
-                    ? seed
-                    : ''
-              }
-              fromIdea={creating && Boolean(seed)}
+              seedDescription={creating && new URLSearchParams(window.location.search).get('compose') === '1' ? screenshotSentence : ''}
+              seedIdea={creating ? seed : null}
               showIdeas={!empty}
               pending={save.isPending}
               error={formError}
               onCancel={() => {
-                setSeed('')
+                setSeed(null)
                 setCreating(false)
                 setEditing(false)
                 setFormError('')

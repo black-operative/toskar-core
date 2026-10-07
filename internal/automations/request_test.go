@@ -320,8 +320,9 @@ func TestEveryLanguageHasRequestWords(t *testing.T) {
 	}
 }
 
-// The page's ideas (web/src/features/automations/ideas.ts, with the same
-// expectations) must fill in the form as intended in every language.
+// The example requests of the page's templates
+// (web/src/features/automations/ideas.ts), which "Describe it instead"
+// starts from, must read as intended in every language.
 func TestIdeaRequestsInEveryLanguage(t *testing.T) {
 	ideas := map[string]struct {
 		kind      Kind
@@ -333,6 +334,7 @@ func TestIdeaRequestsInEveryLanguage(t *testing.T) {
 		"stock":    {KindInterval, NotifyOnCondition, ConditionAvailable},
 		"releases": {KindWeekly, NotifyAlways, ""},
 		"page":     {KindDaily, NotifyOnChange, ""},
+		"folder":   {KindDaily, NotifyOnChange, ""},
 	}
 	for _, lang := range locale.Languages() {
 		if strings.HasPrefix(lang, "en-X") {
