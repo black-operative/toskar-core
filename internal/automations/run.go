@@ -37,6 +37,9 @@ type Run struct {
 	// (#204). Empty for runs from before it was recorded.
 	NotifyDetail string         `json:"notify_detail,omitempty"`
 	NotifyValues map[string]any `json:"notify_values,omitempty"`
+	// ConversationID is the chat its result was posted to, by the
+	// automation's own chat or by "Continue in chat" (#204).
+	ConversationID string `json:"conversation_id,omitempty"`
 }
 
 // Detail is an automation and its newest runs, newest occurrence first.

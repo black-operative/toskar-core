@@ -150,7 +150,9 @@
       "retrying": "再試行中",
       "running": "実行中",
       "notRun": "未実行"
-    }
+    },
+    "continueInChat": "チャットで続ける",
+    "openingChat": "チャットを開いています…"
   },
   "pill": {
     "paused": "一時停止中",

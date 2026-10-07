@@ -733,8 +733,9 @@ func New(opts Options) (*App, error) {
 			}
 			return created, nil
 		},
-		GetAutomation:      a.Automations.History,
-		ListAutomationRuns: a.Automations.RunsPage,
+		GetAutomation:         a.Automations.History,
+		ListAutomationRuns:    a.Automations.RunsPage,
+		ContinueAutomationRun: a.continueAutomationRun,
 		UpdateAutomation: func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error) {
 			return a.Automations.Update(ctx, id, patch, time.Now())
 		},

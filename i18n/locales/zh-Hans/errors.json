@@ -149,6 +149,7 @@
   "LAN_ACCESS_OFF": "这台电脑关闭了本地网络访问，因此只响应这台电脑上的应用。",
   "LAN_ACCESS_FAILED": "无法开启本地网络访问。",
   "AUTOMATION_RUNNING": "此自动化已在运行。完成后，结果会显示在这里。",
+  "AUTOMATION_NO_RESULT": "此次运行没有可在聊天中继续的结果。",
   "AUTOMATION_TIMEOUT": "运行超过 {{minutes}} 分钟，已停止。请试试更快的模型或更短的提示。",
   "REQUEST_EMPTY": "请描述这个自动化。",
   "REQUEST_TIME_ZONE": "需要指定时区。",

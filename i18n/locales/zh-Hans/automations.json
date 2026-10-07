@@ -150,7 +150,9 @@
       "retrying": "正在重试",
       "running": "正在运行",
       "notRun": "尚未运行"
-    }
+    },
+    "continueInChat": "在聊天中继续",
+    "openingChat": "正在打开聊天…"
   },
   "pill": {
     "paused": "已暂停",

@@ -149,6 +149,7 @@
   "LAN_ACCESS_OFF": "이 컴퓨터에서 로컬 네트워크 액세스가 꺼져 있어서 이 컴퓨터의 앱에만 응답해요.",
   "LAN_ACCESS_FAILED": "로컬 네트워크 액세스를 켜지 못했어요.",
   "AUTOMATION_RUNNING": "이 자동화는 이미 실행 중이에요. 끝나면 결과가 여기에 표시돼요.",
+  "AUTOMATION_NO_RESULT": "이 실행에는 채팅에서 이어 갈 결과가 없습니다.",
   "AUTOMATION_TIMEOUT": "실행이 {{minutes}}분을 넘어서 중지했어요. 더 빠른 모델이나 더 짧은 프롬프트를 사용해 보세요.",
   "REQUEST_EMPTY": "자동화를 설명하세요.",
   "REQUEST_TIME_ZONE": "시간대가 필요해요.",

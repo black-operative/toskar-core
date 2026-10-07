@@ -150,7 +150,9 @@
       "retrying": "다시 시도하는 중",
       "running": "실행 중",
       "notRun": "아직 실행 안 됨"
-    }
+    },
+    "continueInChat": "채팅에서 이어 가기",
+    "openingChat": "채팅을 여는 중…"
   },
   "pill": {
     "paused": "일시 정지됨",

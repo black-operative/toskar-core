@@ -4227,6 +4227,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /api/v1/automations/{id}/runs/{run_id}/chat:
+    post:
+      summary: Open a run's result in a chat to reply to
+      description: Returns the chat the result was already posted to, or makes one with the result as its first answer, marked with meta.automation_run.
+      operationId: continueAutomationRun
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The chat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversation_id:
+                    type: string
+        "404":
+          description: No such automation or run
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: AUTOMATION_NO_RESULT, the run failed or hasn't finished
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/automations/{id}/run:
     post:
       summary: Run an automation now

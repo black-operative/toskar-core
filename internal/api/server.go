@@ -96,7 +96,10 @@ type Dependencies struct {
 	UpdateAutomation   func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
 	DeleteAutomation   func(ctx context.Context, id string) error
 	RunAutomation      func(ctx context.Context, id string) (automations.Run, error)
-	PreviewAutomation  func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
+	// ContinueAutomationRun opens a run's result in a chat and returns the
+	// chat (#204).
+	ContinueAutomationRun func(ctx context.Context, id, runID string) (string, error)
+	PreviewAutomation     func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
 	// ParseAutomation reads a request such as "every morning at 8, tell me
 	// if the price is below $500" into an automation (#204).
 	ParseAutomation      func(ctx context.Context, text, timeZone, language string) (automations.ParsedRequest, error)
@@ -244,6 +247,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/automations/{id}/resume", s.handleResumeAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}", s.handleGetAutomation).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/automations/{id}/runs", s.handleListAutomationRuns).Methods(http.MethodGet, http.MethodOptions)
+	api.HandleFunc("/automations/{id}/runs/{run_id}/chat", s.handleContinueAutomationRun).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}", s.handleUpdateAutomation).Methods(http.MethodPatch)
 	api.HandleFunc("/automations/{id}", s.handleDeleteAutomation).Methods(http.MethodDelete)
 	api.HandleFunc("/tools", s.handleListTools).Methods(http.MethodGet, http.MethodOptions)
@@ -448,6 +452,7 @@ func (s *Server) BindAutomations(d Dependencies) {
 	s.deps.UpdateAutomation = d.UpdateAutomation
 	s.deps.DeleteAutomation = d.DeleteAutomation
 	s.deps.RunAutomation = d.RunAutomation
+	s.deps.ContinueAutomationRun = d.ContinueAutomationRun
 	s.deps.PreviewAutomation = d.PreviewAutomation
 	s.deps.ParseAutomation = d.ParseAutomation
 	s.deps.PauseAutomation = d.PauseAutomation

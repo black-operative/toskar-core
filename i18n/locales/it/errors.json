@@ -149,6 +149,7 @@
   "LAN_ACCESS_OFF": "L'accesso dalla rete locale è disattivato su questo computer, quindi risponde solo alle app su di esso.",
   "LAN_ACCESS_FAILED": "Non è stato possibile attivare l'accesso dalla rete locale.",
   "AUTOMATION_RUNNING": "Questa automazione è già in esecuzione. Il risultato apparirà qui al termine.",
+  "AUTOMATION_NO_RESULT": "Questa esecuzione non ha un risultato da continuare in chat.",
   "AUTOMATION_TIMEOUT": "L'esecuzione ha richiesto più di {{minutes}} minuti ed è stata interrotta. Prova un modello più veloce o un prompt più breve.",
   "REQUEST_EMPTY": "Descrivi l'automazione.",
   "REQUEST_TIME_ZONE": "È richiesto un fuso orario.",

@@ -11,6 +11,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func (s *Server) handleListAutomations(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +75,27 @@ func (s *Server) handleListAutomationRuns(w http.ResponseWriter, r *http.Request
 		return
 	}
 	writeJSON(w, http.StatusOK, page)
+}
+
+// handleContinueAutomationRun opens a run's result in a chat to reply to:
+// the chat it was posted to, or a new one (#204).
+func (s *Server) handleContinueAutomationRun(w http.ResponseWriter, r *http.Request) {
+	if s.deps.ContinueAutomationRun == nil {
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Automations are not available.", nil)
+		return
+	}
+	vars := mux.Vars(r)
+	conversationID, err := s.deps.ContinueAutomationRun(r.Context(), vars["id"], vars["run_id"])
+	if err != nil {
+		// A run with nothing to continue from.
+		if code, _ := contracts.ErrorCode(err); code != "" {
+			writeErrFrom(w, http.StatusConflict, code, err)
+			return
+		}
+		writeAutomationErr(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]string{"conversation_id": conversationID})
 }
 
 func (s *Server) handleUpdateAutomation(w http.ResponseWriter, r *http.Request) {

@@ -149,6 +149,7 @@
   "LAN_ACCESS_OFF": "El acceso desde la red local está desactivado en esta computadora, así que solo responde a las apps de ella.",
   "LAN_ACCESS_FAILED": "No se pudo activar el acceso desde la red local.",
   "AUTOMATION_RUNNING": "Esta automatización ya se está ejecutando. Su resultado aparecerá aquí cuando termine.",
+  "AUTOMATION_NO_RESULT": "Esta ejecución no tiene un resultado para continuar en el chat.",
   "AUTOMATION_TIMEOUT": "La ejecución tardó más de {{minutes}} minutos y se detuvo. Prueba un modelo más rápido o una instrucción más corta.",
   "REQUEST_EMPTY": "Describe la automatización.",
   "REQUEST_TIME_ZONE": "Se requiere una zona horaria.",

@@ -150,7 +150,9 @@
       "retrying": "Neuer Versuch",
       "running": "Läuft",
       "notRun": "Noch nicht gelaufen"
-    }
+    },
+    "continueInChat": "Im Chat fortsetzen",
+    "openingChat": "Chat wird geöffnet…"
   },
   "pill": {
     "paused": "Pausiert",

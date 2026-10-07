@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { api } from '@/lib/api'
 import type { Automation, AutomationDetail } from '@/types/api'
 import { AutomationsPage } from './AutomationsPage'
@@ -25,6 +25,7 @@ vi.mock('@/lib/api', async () => {
       runAutomation: vi.fn(),
       listAutomationRuns: vi.fn(),
       parseAutomation: vi.fn(),
+      continueAutomationRun: vi.fn(),
     },
   }
 })
@@ -116,6 +117,27 @@ describe('AutomationsPage', () => {
       notification: { mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500, currency: 'USD' } },
       notes: [],
     })
+  })
+
+  it('continues a run in chat', async () => {
+    vi.mocked(api.continueAutomationRun).mockResolvedValue({ conversation_id: 'conv-9' })
+    function ChatSpy() {
+      return <p>chat {new URLSearchParams(useLocation().search).get('c')}</p>
+    }
+    render(
+      <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+        <MemoryRouter initialEntries={['/automations']}>
+          <Routes>
+            <Route path="/automations" element={<AutomationsPage />} />
+            <Route path="/chat" element={<ChatSpy />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    fireEvent.click(await screen.findByRole('button', { name: /Price below \$500/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Continue in chat' }))
+    expect(await screen.findByText('chat conv-9')).toBeInTheDocument()
+    expect(api.continueAutomationRun).toHaveBeenCalledWith('auto-1', 'run-1')
   })
 
   it('shows the latest result and runs the history actions', async () => {

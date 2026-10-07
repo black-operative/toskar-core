@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import i18n from '@/i18n'
 import { api, ApiError } from '@/lib/api'
 import { subscribeEvents } from '@/lib/events'
@@ -411,8 +411,16 @@ function HistoryRow({
   models: Model[]
 }) {
   const { t } = useTranslation('automations')
+  const navigate = useNavigate()
   const notice = explainRun(run)
   const prose = resultProse(run.result)
+  // Reply to a result in a chat: the one it went to, or a new one (#204).
+  const continueInChat = useMutation({
+    mutationFn: () => api.continueAutomationRun(run.automation_id, run.id),
+    onSuccess: (opened) => {
+      if (opened) navigate(`/chat?c=${encodeURIComponent(opened.conversation_id)}`)
+    },
+  })
   const modelName = models.find((model) => model.id === run.model_id)?.display_name || run.model_id
   return (
     <li className="rounded-lg bg-raised/50 p-3">
@@ -424,6 +432,16 @@ function HistoryRow({
       {prose && <p className="mt-2 whitespace-pre-wrap text-sm text-ink-muted">{prose}</p>}
       {notice.detail && <p className="mt-1 text-sm text-ink-muted">{notice.detail}</p>}
       {run.error && <p className="mt-2 text-sm text-danger">{run.error}</p>}
+      {run.status === 'succeeded' && prose ? (
+        <div className="mt-2">
+          <button type="button" className="btn-secondary btn-sm" disabled={continueInChat.isPending} onClick={() => continueInChat.mutate()}>
+            {continueInChat.isPending ? t('run.openingChat') : t('run.continueInChat')}
+          </button>
+          {continueInChat.isError ? (
+            <p className="mt-1 text-xs text-danger">{continueInChat.error instanceof Error ? continueInChat.error.message : ''}</p>
+          ) : null}
+        </div>
+      ) : null}
       <details className="mt-2">
         <summary className="cursor-pointer text-xs text-ink-faint">{t('run.details')}</summary>
         <div className="mt-2 space-y-1 text-xs text-ink-faint">
