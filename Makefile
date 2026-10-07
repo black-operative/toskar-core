@@ -1,7 +1,10 @@
 .DEFAULT_GOAL := help
 
-COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null || echo unknown)
+NULL := $(if $(findstring /,$(SHELL)),/dev/null,NUL)
+COMMIT := $(shell git rev-parse --short HEAD 2>$(NULL) || echo unknown)
 LDFLAGS := -X github.com/yeixio/toskar-core/internal/version.Commit=$(COMMIT)
+# ".exe" for Windows
+EXE := $(shell go env GOEXE)
 
 .PHONY: help start ui frontend daemon run-daemon run-web all tidy test vet fmt lint ci quality quality-real test-cluster package-headless screenshots appstore-screenshots icons
 
@@ -16,9 +19,11 @@ help: ## Show targets
 	@echo "Targets:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
+# Exported here because cmd.exe cannot parse a VAR=value command prefix.
+start: export TOSKAR_WEB_UI_DIR := $(CURDIR)/web/dist
 start: ui daemon ## Build the web UI and daemon, then run it
 	@echo "Open http://127.0.0.1:7331"
-	TOSKAR_WEB_UI_DIR="$(CURDIR)/web/dist" ./bin/toskar
+	./bin/toskar$(EXE)
 
 run-daemon: start ## Alias of start
 
@@ -29,8 +34,8 @@ frontend: ## Install web dependencies, run web tests, and build web/dist
 	cd web && pnpm install && pnpm test && pnpm build
 
 daemon: ## Build bin/toskar and bin/toskarctl
-	go build -ldflags "$(LDFLAGS)" -o bin/toskar ./cmd/daemon
-	go build -ldflags "$(LDFLAGS)" -o bin/toskarctl ./cmd/devctl
+	go build -ldflags "$(LDFLAGS)" -o bin/toskar$(EXE) ./cmd/daemon
+	go build -ldflags "$(LDFLAGS)" -o bin/toskarctl$(EXE) ./cmd/devctl
 
 run-web: ## Start the Vite dev server on http://127.0.0.1:5173
 	cd web && pnpm dev

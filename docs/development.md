@@ -17,7 +17,9 @@ cd toskar-core
 make start
 ```
 
-`make` with no target prints `make help`. `make start` installs web dependencies, writes `web/dist`, builds `bin/toskar` and `bin/toskarctl`, and runs the daemon with `TOSKAR_WEB_UI_DIR` set to `web/dist`. Open `http://127.0.0.1:7331`.
+`make` with no target prints `make help`. `make start` installs web dependencies, writes `web/dist`, builds `bin/toskar` and `bin/toskarctl` (`bin/toskar.exe` and `bin/toskarctl.exe` on Windows), and runs the daemon with `TOSKAR_WEB_UI_DIR` set to `web/dist`. Open `http://127.0.0.1:7331`.
+
+On Windows, `make start`, `make ui`, `make daemon`, and `make frontend` work from PowerShell, cmd, or Git Bash, with Go, Node.js, pnpm, and GNU make on `PATH` (`winget install ezwinports.make`). Without `sh` on `PATH`, make runs recipes in `cmd.exe`. The other targets use POSIX tools such as `find`, `awk`, `chmod`, and `VAR=value command`, so run them from Git Bash.
 
 `make daemon` stamps the current git commit into both binaries. A build from this tree reports `0.1.0-dev` unless `-ldflags` sets `internal/version.Version`. `toskarctl version` and `toskar -version` print the license and the corresponding-source URL. `toskarctl completion <bash|zsh|fish>` prints the completion scripts in `cmd/devctl/completions/`, which the packages also install. Update those scripts when you add a `toskarctl` command. Release packaging sets the version as well, so a tagged build points at `tree/v<version>`.
 
