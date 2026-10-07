@@ -1,6 +1,6 @@
 import i18n from '@/i18n'
-import { formatDate, formatPrice } from '@/i18n/format'
-import type { AutomationCondition, AutomationNotification, AutomationSchedule } from '@/types/api'
+import { formatDate, formatList, formatPrice } from '@/i18n/format'
+import type { AutomationClockTime, AutomationCondition, AutomationNotification, AutomationSchedule } from '@/types/api'
 // Labels and prompt helpers for automations. Requests are read on the
 // computer (POST /api/v1/automations/parse, #204), with the words in
 // i18n/requests; what this shows, such as schedules, is in the App language.
@@ -29,12 +29,21 @@ export function scheduleLabel(schedule: AutomationSchedule): string {
         ? i18n.t('automations:schedule.onceAt', { when: formatWhen(schedule.at, schedule.time_zone) })
         : i18n.t('automations:schedule.once')
     case 'daily':
-      return i18n.t('automations:schedule.daily', { time: clockLabel(schedule.hour ?? 0, schedule.minute ?? 0) })
-    case 'weekly':
-      return i18n.t('automations:schedule.weekly', {
-        day: weekdayName(schedule.weekday ?? 0),
-        time: clockLabel(schedule.hour ?? 0, schedule.minute ?? 0),
-      })
+      return i18n.t('automations:schedule.daily', { time: timesLabel(schedule) })
+    case 'weekly': {
+      const days = scheduleWeekdays(schedule)
+      const time = timesLabel(schedule)
+      const key = days.join(',')
+      if (key === '0,1,2,3,4,5,6') return i18n.t('automations:schedule.daily', { time })
+      if (key === '1,2,3,4,5') return i18n.t('automations:schedule.weekdaysOnly', { time })
+      if (key === '0,6') return i18n.t('automations:schedule.weekends', { time })
+      if (days.length === 1) return i18n.t('automations:schedule.weekly', { day: weekdayName(days[0]), time })
+      return i18n.t('automations:schedule.weeklyDays', { days: formatList(days.map(weekdayName)), time })
+    }
+    case 'monthly':
+      return i18n.t('automations:schedule.monthly', { day: schedule.month_day ?? 1, time: timesLabel(schedule) })
+    case 'cron':
+      return i18n.t('automations:schedule.cron', { cron: schedule.cron ?? '' })
     case 'interval':
       return intervalLabel(schedule.every_seconds ?? 0)
     default:
@@ -140,6 +149,22 @@ function intervalLabel(seconds: number): string {
 }
 
 /** A time of day in the App language's clock: 6:30 PM in English, 18:30 in German. */
+/** A schedule's times of day, sorted; older schedules have one, in hour and minute. */
+export function scheduleTimes(schedule: AutomationSchedule): AutomationClockTime[] {
+  const times = schedule.times?.length ? schedule.times : [{ hour: schedule.hour ?? 0, minute: schedule.minute ?? 0 }]
+  return [...times].sort((a, b) => a.hour * 60 + a.minute - (b.hour * 60 + b.minute))
+}
+
+/** A weekly schedule's days, sorted; older schedules have one, in weekday. */
+export function scheduleWeekdays(schedule: AutomationSchedule): number[] {
+  const days = schedule.weekdays?.length ? schedule.weekdays : [schedule.weekday ?? 1]
+  return [...new Set(days)].sort((a, b) => a - b)
+}
+
+function timesLabel(schedule: AutomationSchedule): string {
+  return formatList(scheduleTimes(schedule).map((t) => clockLabel(t.hour, t.minute)))
+}
+
 function clockLabel(hour: number, minute: number): string {
   return formatDate(new Date(2000, 0, 1, hour, minute), { hour: 'numeric', minute: '2-digit' })
 }

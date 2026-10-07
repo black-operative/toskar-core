@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { applyLanguage } from '@/i18n'
-import { civilToISO, notificationLabel, visibleTask } from './parseRequest'
+import { civilToISO, notificationLabel, scheduleLabel, visibleTask } from './parseRequest'
 import { readNumber } from './number'
 
 // Requests are read on the computer (internal/automations/request_test.go
@@ -38,5 +38,22 @@ describe('prices', () => {
     expect(notificationLabel({ mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500 } })).toBe('Notify when the price is below $500')
     await applyLanguage('de')
     expect(notificationLabel({ mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500, currency: 'EUR' } })).toMatch(/500\s€/)
+  })
+})
+
+// Several weekdays, several times a day, monthly, and cron (#204).
+describe('schedule labels', () => {
+  const tz = { time_zone: zone }
+  it('names days and times as people say them', async () => {
+    expect(scheduleLabel({ kind: 'daily', ...tz, times: [{ hour: 17, minute: 0 }, { hour: 8, minute: 0 }] })).toMatch(/^Every day at 8:00\sAM and 5:00\sPM$/)
+    expect(scheduleLabel({ kind: 'weekly', ...tz, weekdays: [1, 2, 3, 4, 5], hour: 9 })).toMatch(/^Weekdays at 9:00\sAM$/)
+    expect(scheduleLabel({ kind: 'weekly', ...tz, weekdays: [0, 6], hour: 10 })).toMatch(/^Weekends at 10:00\sAM$/)
+    expect(scheduleLabel({ kind: 'weekly', ...tz, weekdays: [1, 3, 5], hour: 9 })).toMatch(/^Every Monday, Wednesday, and Friday at 9:00\sAM$/)
+    // An older schedule with one day reads as before.
+    expect(scheduleLabel({ kind: 'weekly', ...tz, weekday: 2, hour: 9 })).toMatch(/^Every Tuesday at 9:00\sAM$/)
+    expect(scheduleLabel({ kind: 'monthly', ...tz, month_day: 15, hour: 9 })).toMatch(/^Monthly on day 15 at 9:00\sAM$/)
+    expect(scheduleLabel({ kind: 'cron', ...tz, cron: '0 9 * * 1-5' })).toBe('Custom schedule: 0 9 * * 1-5')
+    await applyLanguage('de')
+    expect(scheduleLabel({ kind: 'weekly', ...tz, weekdays: [1, 3], hour: 9 })).toBe('Jeden Montag und Mittwoch um 9:00')
   })
 })

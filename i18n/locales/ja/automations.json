@@ -155,7 +155,12 @@
     "hours": "{{count}}時間ごと",
     "everyMinute": "1分ごと",
     "minutes": "{{count}}分ごと",
-    "seconds": "{{count}}秒ごと"
+    "seconds": "{{count}}秒ごと",
+    "weekdaysOnly": "平日の{{time}}",
+    "weekends": "週末の{{time}}",
+    "weeklyDays": "毎週{{days}}の{{time}}",
+    "monthly": "毎月{{day}}日の{{time}}",
+    "cron": "カスタムスケジュール: {{cron}}"
   },
   "notify": {
     "none": "結果の保存のみ",
@@ -214,8 +219,10 @@
     "kinds": {
       "daily": "毎日",
       "weekly": "毎週",
+      "monthly": "毎月",
       "interval": "一定間隔",
-      "once": "1回"
+      "once": "1回",
+      "cron": "カスタム（cron）"
     },
     "notifyMe": "通知",
     "notifyChoices": {
@@ -281,7 +288,15 @@
       "when": "いつ",
       "does": "何をするか",
       "tells": "いつ知らせるか"
-    }
+    },
+    "times": "時刻",
+    "addTime": "時刻を追加",
+    "removeTime": "{{time}}を削除",
+    "days": "曜日",
+    "monthDay": "日付",
+    "monthDayHint": "月の日数が足りない場合は月末に実行します。",
+    "cron": "cron式",
+    "cronHint": "下のタイムゾーンで、分・時・日・月・曜日の5つのフィールドを指定します。"
   },
   "draft": {
     "label": "確認待ちのオートメーション",

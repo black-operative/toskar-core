@@ -21,6 +21,11 @@ export function formatSequence(steps: readonly string[]): string {
   return steps.join(directionOf(i18n.language) === 'rtl' ? ' ← ' : ' → ')
 }
 
+/** Joins items as the App language lists them: "8:00 AM and 5:00 PM". */
+export function formatList(items: readonly string[]): string {
+  return new Intl.ListFormat(formatLocale(), { type: 'conjunction' }).format(items)
+}
+
 export function formatNumber(value: number, options?: Intl.NumberFormatOptions): string {
   return new Intl.NumberFormat(formatLocale(), options).format(value)
 }

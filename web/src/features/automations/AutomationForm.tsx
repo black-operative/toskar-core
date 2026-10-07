@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { AIProfile, Automation, AutomationInput, AutomationSchedule, Model, ParsedAutomation, ToolRecord } from '@/types/api'
+import type { AIProfile, Automation, AutomationClockTime, AutomationInput, AutomationSchedule, Model, ParsedAutomation, ToolRecord } from '@/types/api'
 import i18n from '@/i18n'
 import { api } from '@/lib/api'
 import { canChat } from '@/features/models/modelPresentation'
 import type { AutomationPreview } from '@/types/api'
 import { useUIStore } from '@/stores/uiStore'
 import { answerLanguages, nameInItself } from '@/i18n/answerLanguages'
-import { currencyName } from '@/i18n/format'
+import { currencyName, formatDate } from '@/i18n/format'
 import { readNumber } from './number'
 import {
   civilInputValue,
@@ -16,6 +16,8 @@ import {
   notificationLabel,
   resultProse,
   scheduleLabel,
+  scheduleTimes,
+  scheduleWeekdays,
   visibleTask,
   weekdayName,
 } from './parseRequest'
@@ -280,8 +282,10 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
           >
             <option value="daily">{t('form.kinds.daily')}</option>
             <option value="weekly">{t('form.kinds.weekly')}</option>
+            <option value="monthly">{t('form.kinds.monthly')}</option>
             <option value="interval">{t('form.kinds.interval')}</option>
             <option value="once">{t('form.kinds.once')}</option>
+            <option value="cron">{t('form.kinds.cron')}</option>
           </select>
         </label>
         <ScheduleFields schedule={schedule} onChange={setSchedule} />
@@ -550,35 +554,117 @@ function ScheduleFields({
       </label>
     )
   }
-  return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-3">
+  if (schedule.kind === 'cron') {
+    return (
       <label className="block space-y-1 text-sm">
-        <span className="text-ink-muted">{t('form.time')}</span>
+        <span className="text-ink-muted">{t('form.cron')}</span>
         <input
-          className="field w-full"
-          type="time"
-          value={`${String(schedule.hour ?? 0).padStart(2, '0')}:${String(schedule.minute ?? 0).padStart(2, '0')}`}
-          onChange={(event) => {
-            const [hour, minute] = event.target.value.split(':').map(Number)
-            onChange({ ...schedule, hour, minute })
-          }}
+          className="field w-full font-mono"
+          value={schedule.cron ?? ''}
+          placeholder="0 9 * * 1-5"
+          spellCheck={false}
+          aria-describedby="automation-cron-hint"
+          onChange={(event) => onChange({ ...schedule, cron: event.target.value })}
           required
         />
+        <span id="automation-cron-hint" className="block text-xs text-ink-faint">
+          {t('form.cronHint')}
+        </span>
       </label>
-      {schedule.kind === 'weekly' && (
-        <label className="block space-y-1 text-sm">
-          <span className="text-ink-muted">{t('form.day')}</span>
-          <select
-            className="field w-full"
-            value={schedule.weekday ?? 1}
-            onChange={(event) => onChange({ ...schedule, weekday: Number(event.target.value) })}
+    )
+  }
+  // Daily, weekly, and monthly run at one or more times a day (#204).
+  const times = scheduleTimes(schedule)
+  const setTimes = (next: AutomationClockTime[]) => onChange({ ...schedule, times: next, hour: next[0].hour, minute: next[0].minute })
+  const days = scheduleWeekdays(schedule)
+  return (
+    <div className="space-y-3">
+      <fieldset className="space-y-1 text-sm">
+        <legend className="text-ink-muted">{times.length > 1 ? t('form.times') : t('form.time')}</legend>
+        {times.map((time, index) => {
+          const value = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`
+          return (
+            <div key={index} className="flex items-center gap-2">
+              <input
+                className="field w-full"
+                type="time"
+                aria-label={t('form.time')}
+                value={value}
+                onChange={(event) => {
+                  const [hour, minute] = event.target.value.split(':').map(Number)
+                  if (Number.isNaN(hour)) return
+                  setTimes(times.map((item, i) => (i === index ? { hour, minute } : item)))
+                }}
+                required
+              />
+              {times.length > 1 ? (
+                <button
+                  type="button"
+                  className="shrink-0 rounded px-2 py-1 text-ink-faint hover:bg-raised hover:text-ink"
+                  aria-label={t('form.removeTime', { time: value })}
+                  onClick={() => setTimes(times.filter((_, i) => i !== index))}
+                >
+                  ×
+                </button>
+              ) : null}
+            </div>
+          )
+        })}
+        {times.length < 24 ? (
+          <button
+            type="button"
+            className="text-xs text-primary underline-offset-2 hover:underline"
+            onClick={() => {
+              const last = times[times.length - 1]
+              setTimes([...times, { hour: Math.min(23, last.hour + 1), minute: last.minute }])
+            }}
           >
-            {[0, 1, 2, 3, 4, 5, 6].map((index) => (
-              <option key={index} value={index}>
-                {weekdayName(index)}
-              </option>
-            ))}
-          </select>
+            {t('form.addTime')}
+          </button>
+        ) : null}
+      </fieldset>
+      {schedule.kind === 'weekly' && (
+        <fieldset className="space-y-1 text-sm">
+          <legend className="text-ink-muted">{t('form.days')}</legend>
+          <div className="grid grid-cols-7 gap-1">
+            {[0, 1, 2, 3, 4, 5, 6].map((index) => {
+              const on = days.includes(index)
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  aria-pressed={on}
+                  aria-label={weekdayName(index)}
+                  className={`truncate rounded-md border px-0.5 py-1 text-xs ${on ? 'border-primary bg-primary/10 text-ink' : 'border-line text-ink-muted hover:text-ink'}`}
+                  onClick={() => {
+                    // A weekly schedule needs a day.
+                    const next = on ? days.filter((day) => day !== index) : [...days, index].sort((a, b) => a - b)
+                    if (next.length > 0) onChange({ ...schedule, weekdays: next, weekday: next[0] })
+                  }}
+                >
+                  {formatDate(new Date(2023, 0, 1 + index), { weekday: 'short' })}
+                </button>
+              )
+            })}
+          </div>
+        </fieldset>
+      )}
+      {schedule.kind === 'monthly' && (
+        <label className="block space-y-1 text-sm">
+          <span className="text-ink-muted">{t('form.monthDay')}</span>
+          <input
+            className="field w-full"
+            type="number"
+            min={1}
+            max={31}
+            aria-describedby="automation-month-day-hint"
+            value={schedule.month_day ?? 1}
+            onChange={(event) => onChange({ ...schedule, month_day: Math.min(31, Math.max(1, Math.round(Number(event.target.value)) || 1)) })}
+            required
+          />
+          <span id="automation-month-day-hint" className="block text-xs text-ink-faint">
+            {t('form.monthDayHint')}
+          </span>
         </label>
       )}
     </div>
@@ -600,12 +686,19 @@ function splitInterval(seconds: number): { amount: number; unit: IntervalUnit } 
 }
 
 function changeKind(schedule: AutomationSchedule, kind: AutomationSchedule['kind']): AutomationSchedule {
-  if (kind === 'once') return { kind, time_zone: schedule.time_zone, at: schedule.at }
-  if (kind === 'interval') return { kind, time_zone: schedule.time_zone, every_seconds: schedule.every_seconds || 6 * 3600 }
+  const time_zone = schedule.time_zone
+  if (kind === 'once') return { kind, time_zone, at: schedule.at }
+  if (kind === 'interval') return { kind, time_zone, every_seconds: schedule.every_seconds || 6 * 3600 }
+  if (kind === 'cron') return { kind, time_zone, cron: schedule.cron || '0 9 * * 1-5' }
+  // The times carry over between daily, weekly, and monthly.
+  const times = schedule.kind === 'daily' || schedule.kind === 'weekly' || schedule.kind === 'monthly' ? scheduleTimes(schedule) : [{ hour: 8, minute: 0 }]
+  const base = { time_zone, times, hour: times[0].hour, minute: times[0].minute }
   if (kind === 'weekly') {
-    return { kind, time_zone: schedule.time_zone, hour: schedule.hour ?? 8, minute: schedule.minute ?? 0, weekday: schedule.weekday ?? 1 }
+    const weekdays = schedule.kind === 'weekly' ? scheduleWeekdays(schedule) : [1]
+    return { kind, ...base, weekdays, weekday: weekdays[0] }
   }
-  return { kind: 'daily', time_zone: schedule.time_zone, hour: schedule.hour ?? 8, minute: schedule.minute ?? 0 }
+  if (kind === 'monthly') return { kind, ...base, month_day: schedule.month_day ?? 1 }
+  return { kind: 'daily', ...base }
 }
 
 function previewNotification(

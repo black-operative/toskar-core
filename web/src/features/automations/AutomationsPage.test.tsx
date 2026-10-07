@@ -174,6 +174,26 @@ describe('AutomationsPage', () => {
     expect(screen.getByRole('button', { name: 'Hide how it works' })).toHaveAttribute('aria-expanded', 'true')
   })
 
+  it('saves a schedule on several days at several times', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Repeats' }), { target: { value: 'weekly' } })
+    // Monday is on; add Wednesday and Friday, and an evening time.
+    fireEvent.click(screen.getByRole('button', { name: 'Wednesday' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Friday' }))
+    expect(screen.getByRole('button', { name: 'Friday' })).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.click(screen.getByRole('button', { name: 'Add a time' }))
+    const times = screen.getAllByLabelText('Time')
+    fireEvent.change(times[1], { target: { value: '17:30' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'Standup notes' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Summarize the team channel.' } })
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.schedule).toMatchObject({ kind: 'weekly', weekdays: [1, 3, 5], times: [{ hour: 8, minute: 0 }, { hour: 17, minute: 30 }] })
+  })
+
   it('fills a structured task from a description and saves it', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))

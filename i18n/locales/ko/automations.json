@@ -155,7 +155,12 @@
     "hours": "{{count}}시간마다",
     "everyMinute": "매분",
     "minutes": "{{count}}분마다",
-    "seconds": "{{count}}초마다"
+    "seconds": "{{count}}초마다",
+    "weekdaysOnly": "평일 {{time}}",
+    "weekends": "주말 {{time}}",
+    "weeklyDays": "매주 {{days}} {{time}}",
+    "monthly": "매월 {{day}}일 {{time}}",
+    "cron": "사용자 지정 일정: {{cron}}"
   },
   "notify": {
     "none": "결과만 저장",
@@ -214,8 +219,10 @@
     "kinds": {
       "daily": "매일",
       "weekly": "매주",
+      "monthly": "매월",
       "interval": "일정 간격으로",
-      "once": "한 번"
+      "once": "한 번",
+      "cron": "사용자 지정(cron)"
     },
     "notifyMe": "알림 받기",
     "notifyChoices": {
@@ -281,7 +288,15 @@
       "when": "언제",
       "does": "하는 일",
       "tells": "알림 시점"
-    }
+    },
+    "times": "시간",
+    "addTime": "시간 추가",
+    "removeTime": "{{time}} 삭제",
+    "days": "요일",
+    "monthDay": "날짜",
+    "monthDayHint": "날짜가 없는 달에는 마지막 날에 실행합니다.",
+    "cron": "cron 식",
+    "cronHint": "아래 시간대 기준 다섯 필드: 분, 시, 일, 월, 요일."
   },
   "draft": {
     "label": "확인할 자동화",

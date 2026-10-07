@@ -155,7 +155,12 @@
     "hours": "Ogni {{count}} ore",
     "everyMinute": "Ogni minuto",
     "minutes": "Ogni {{count}} minuti",
-    "seconds": "Ogni {{count}} secondi"
+    "seconds": "Ogni {{count}} secondi",
+    "weekdaysOnly": "Nei giorni feriali alle {{time}}",
+    "weekends": "Nel fine settimana alle {{time}}",
+    "weeklyDays": "Ogni {{days}} alle {{time}}",
+    "monthly": "Ogni mese il giorno {{day}} alle {{time}}",
+    "cron": "Pianificazione personalizzata: {{cron}}"
   },
   "notify": {
     "none": "Salva solo il risultato",
@@ -214,8 +219,10 @@
     "kinds": {
       "daily": "Ogni giorno",
       "weekly": "Ogni settimana",
+      "monthly": "Ogni mese",
       "interval": "A intervalli",
-      "once": "Una volta"
+      "once": "Una volta",
+      "cron": "Personalizzato (cron)"
     },
     "notifyMe": "Avvisami",
     "notifyChoices": {
@@ -281,7 +288,15 @@
       "when": "Quando",
       "does": "Cosa fa",
       "tells": "Quando lo sai"
-    }
+    },
+    "times": "Orari",
+    "addTime": "Aggiungi un orario",
+    "removeTime": "Rimuovi {{time}}",
+    "days": "Giorni",
+    "monthDay": "Giorno del mese",
+    "monthDayHint": "In un mese più corto, viene eseguita l’ultimo giorno.",
+    "cron": "Espressione cron",
+    "cronHint": "Cinque campi, nel fuso orario qui sotto: minuto, ora, giorno del mese, mese e giorno della settimana."
   },
   "draft": {
     "label": "Automazione da confermare",

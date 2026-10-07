@@ -155,7 +155,12 @@
     "hours": "每 {{count}} 小時",
     "everyMinute": "每分鐘",
     "minutes": "每 {{count}} 分鐘",
-    "seconds": "每 {{count}} 秒"
+    "seconds": "每 {{count}} 秒",
+    "weekdaysOnly": "平日 {{time}}",
+    "weekends": "週末 {{time}}",
+    "weeklyDays": "每{{days}} {{time}}",
+    "monthly": "每月 {{day}} 日 {{time}}",
+    "cron": "自訂排程：{{cron}}"
   },
   "notify": {
     "none": "只儲存結果",
@@ -214,8 +219,10 @@
     "kinds": {
       "daily": "每天",
       "weekly": "每週",
+      "monthly": "每月",
       "interval": "依間隔",
-      "once": "一次"
+      "once": "一次",
+      "cron": "自訂（cron）"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -281,7 +288,15 @@
       "when": "何時",
       "does": "做什麼",
       "tells": "何時通知你"
-    }
+    },
+    "times": "時間",
+    "addTime": "新增時間",
+    "removeTime": "移除 {{time}}",
+    "days": "星期",
+    "monthDay": "每月幾號",
+    "monthDayHint": "當月沒有這一天時，在最後一天執行。",
+    "cron": "cron 運算式",
+    "cronHint": "依下方時區填寫五個欄位：分鐘、小時、日、月、星期。"
   },
   "draft": {
     "label": "待確認的自動化",

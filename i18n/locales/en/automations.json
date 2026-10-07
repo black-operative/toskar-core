@@ -155,7 +155,12 @@
     "hours": "Every {{count}} hours",
     "everyMinute": "Every minute",
     "minutes": "Every {{count}} minutes",
-    "seconds": "Every {{count}} seconds"
+    "seconds": "Every {{count}} seconds",
+    "weekdaysOnly": "Weekdays at {{time}}",
+    "weekends": "Weekends at {{time}}",
+    "weeklyDays": "Every {{days}} at {{time}}",
+    "monthly": "Monthly on day {{day}} at {{time}}",
+    "cron": "Custom schedule: {{cron}}"
   },
   "notify": {
     "none": "Store the result only",
@@ -214,8 +219,10 @@
     "kinds": {
       "daily": "Every day",
       "weekly": "Every week",
+      "monthly": "Every month",
       "interval": "On an interval",
-      "once": "Once"
+      "once": "Once",
+      "cron": "Custom (cron)"
     },
     "notifyMe": "Notify me",
     "notifyChoices": {
@@ -281,7 +288,15 @@
       "when": "When",
       "does": "What it does",
       "tells": "When you hear"
-    }
+    },
+    "times": "Times",
+    "addTime": "Add a time",
+    "removeTime": "Remove {{time}}",
+    "days": "Days",
+    "monthDay": "Day of the month",
+    "monthDayHint": "In a shorter month, it runs on the last day.",
+    "cron": "Cron expression",
+    "cronHint": "Five fields, in the time zone below: minute, hour, day of the month, month, and day of the week."
   },
   "draft": {
     "label": "Automation to confirm",

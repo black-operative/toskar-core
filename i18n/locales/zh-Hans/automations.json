@@ -155,7 +155,12 @@
     "hours": "每 {{count}} 小时",
     "everyMinute": "每分钟",
     "minutes": "每 {{count}} 分钟",
-    "seconds": "每 {{count}} 秒"
+    "seconds": "每 {{count}} 秒",
+    "weekdaysOnly": "工作日 {{time}}",
+    "weekends": "周末 {{time}}",
+    "weeklyDays": "每{{days}} {{time}}",
+    "monthly": "每月 {{day}} 日 {{time}}",
+    "cron": "自定义计划：{{cron}}"
   },
   "notify": {
     "none": "仅保存结果",
@@ -214,8 +219,10 @@
     "kinds": {
       "daily": "每天",
       "weekly": "每周",
+      "monthly": "每月",
       "interval": "按间隔",
-      "once": "一次"
+      "once": "一次",
+      "cron": "自定义（cron）"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -281,7 +288,15 @@
       "when": "何时",
       "does": "做什么",
       "tells": "何时通知你"
-    }
+    },
+    "times": "时间",
+    "addTime": "添加时间",
+    "removeTime": "移除 {{time}}",
+    "days": "星期",
+    "monthDay": "每月几号",
+    "monthDayHint": "当月没有这一天时，在最后一天运行。",
+    "cron": "cron 表达式",
+    "cronHint": "按下方时区填写五个字段：分钟、小时、日、月、星期。"
   },
   "draft": {
     "label": "待确认的自动化",

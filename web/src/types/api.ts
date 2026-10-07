@@ -966,7 +966,7 @@ export interface Task {
   created_at: string
 }
 
-export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'interval'
+export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'monthly' | 'interval' | 'cron'
 export type AutomationNotifyMode = 'always' | 'condition' | 'change' | 'failure' | 'none'
 export type AutomationConditionKind = 'threshold' | 'available' | 'significant'
 export type AutomationThresholdOp = 'below' | 'above'
@@ -978,8 +978,22 @@ export interface AutomationSchedule {
   at?: string
   hour?: number
   minute?: number
+  /** The first of weekdays, for older clients. */
   weekday?: number
   every_seconds?: number
+  /** A weekly schedule's days, Sunday is 0 (#204). */
+  weekdays?: number[]
+  /** The times of day a daily, weekly, or monthly schedule runs at; hour and minute are the first. */
+  times?: AutomationClockTime[]
+  /** A monthly schedule's day, 1-31; a shorter month runs on its last day. */
+  month_day?: number
+  /** A cron schedule's five-field expression, in time_zone. */
+  cron?: string
+}
+
+export interface AutomationClockTime {
+  hour: number
+  minute: number
 }
 
 export interface AutomationCondition {
