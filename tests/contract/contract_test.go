@@ -43,6 +43,7 @@ var covered = map[string]any{
 	"ActivityStep":    contracts.ActivityStep{},
 	"FileRef":         contracts.FileRef{},
 	"SetupOffer":      contracts.SetupOffer{},
+	"AutomationDraft": contracts.AutomationDraft{},
 	"ContextUsage":    contracts.ContextUsage{},
 	"Conversation":    contracts.Conversation{},
 	"Artifact":        artifacts.Artifact{},

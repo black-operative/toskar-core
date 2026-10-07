@@ -25,13 +25,19 @@ const automationSelect = `
 	SELECT id, name, enabled, schedule_json, time_zone, prompt,
 		COALESCE(profile_id, ''), COALESCE(model_id, ''), tools_json, notification_json,
 		created_at, updated_at, next_run_at, last_run_at,
-		consecutive_failures, COALESCE(last_error, ''), COALESCE(response_language, '')
+		consecutive_failures, COALESCE(last_error, ''), COALESCE(response_language, ''),
+		COALESCE(conversation_id, ''), COALESCE(draft_id, '')
 	FROM automations`
 
 // Create stores an automation and computes its first next run.
 // now is the creation time, so tests can pin the clock.
 func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput, now time.Time) (automations.Automation, error) {
 	now = clock(now)
+	if in.DraftID != "" {
+		if existing, err := r.byDraft(ctx, in.DraftID); err == nil {
+			return existing, nil
+		}
+	}
 	enabled := true
 	if in.Enabled != nil {
 		enabled = *in.Enabled
@@ -49,6 +55,8 @@ func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput,
 		Tools:            in.Tools,
 		Notification:     in.Notification,
 		ResponseLanguage: in.ResponseLanguage,
+		ConversationID:   in.ConversationID,
+		DraftID:          in.DraftID,
 		CreatedAt:        now,
 		UpdatedAt:        now,
 	}
@@ -62,6 +70,11 @@ func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput,
 		return automations.Automation{}, err
 	}
 	return a, nil
+}
+
+// byDraft is the automation a chat's draft made.
+func (r *AutomationRepo) byDraft(ctx context.Context, draftID string) (automations.Automation, error) {
+	return scanAutomation(r.db.QueryRowContext(ctx, automationSelect+` WHERE draft_id = ?`, draftID))
 }
 
 // Get loads one automation by id.
@@ -221,11 +234,12 @@ func (r *AutomationRepo) insert(ctx context.Context, a automations.Automation) e
 		INSERT INTO automations (
 			id, name, enabled, schedule_json, time_zone, prompt, profile_id, model_id,
 			tools_json, notification_json, created_at, updated_at, next_run_at, last_run_at,
-			consecutive_failures, last_error, response_language
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			consecutive_failures, last_error, response_language, conversation_id, draft_id
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		a.ID, a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.CreatedAt), formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
-		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage))
+		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage),
+		nullIfEmpty(a.ConversationID), nullIfEmpty(a.DraftID))
 	return err
 }
 
@@ -316,6 +330,7 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	if err := s.Scan(
 		&a.ID, &a.Name, &enabled, &sched, &zone, &a.Prompt, &a.ProfileID, &a.ModelID, &tools, &note,
 		&created, &updated, &next, &last, &a.ConsecutiveFailures, &a.LastError, &a.ResponseLanguage,
+		&a.ConversationID, &a.DraftID,
 	); err != nil {
 		return automations.Automation{}, err
 	}

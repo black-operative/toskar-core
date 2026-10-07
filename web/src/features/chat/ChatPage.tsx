@@ -32,6 +32,7 @@ import { MemoryToggle } from './MemoryToggle'
 import { ReadAloudButton, SystemReadAloudButton } from './ReadAloud'
 import { hasSystemSpeech } from './speakableText'
 import { SetupOfferCard } from './SetupOffer'
+import { AutomationDraftCard } from './AutomationDraftCard'
 import { ChatErrorCard } from './ChatErrorCard'
 import { ChatMarkdown } from './ChatMarkdown'
 import { ContextUsageButton } from './ContextUsageButton'
@@ -1710,6 +1711,9 @@ export function ChatPage() {
                         <AnswerDetails meta={message.meta} />
                         {message.meta?.setup ? (
                           <SetupOfferCard offer={message.meta.setup} onContinue={continueAfterSetup} />
+                        ) : null}
+                        {message.meta?.automation ? (
+                          <AutomationDraftCard draft={message.meta.automation} conversationId={message.conversation_id} />
                         ) : null}
                         {canReadAloud ? (
                           <div className="mt-2">

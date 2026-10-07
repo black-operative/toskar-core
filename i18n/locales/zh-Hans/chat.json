@@ -204,6 +204,9 @@
         "add": "Git add",
         "commit": "Git commit",
         "push": "Git push"
+      },
+      "automations": {
+        "schedule": "安排任务"
       }
     },
     "unnamed": "工具",
@@ -525,6 +528,7 @@
     "searchedFiles": "查找了与“{{query}}”匹配的文件",
     "saved": "保存了 {{path}}",
     "created": "创建了 {{name}}",
+    "draftedAutomation": "已起草自动化“{{name}}”",
     "ranCommand": "在这台电脑上运行了一条命令",
     "browserOpened": "在浏览器中打开了 {{page}}",
     "browserClicked": "在页面上点击，现在位于 {{page}}",

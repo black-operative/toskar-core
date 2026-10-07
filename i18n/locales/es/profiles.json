@@ -185,6 +185,10 @@
     "git": {
       "label": "Git",
       "description": "Inspecciona el repositorio y hace commit o push"
+    },
+    "automations": {
+      "label": "Automatizaciones",
+      "description": "Configura desde el chat tareas que se ejecutan según un horario; confirmas cada una"
     }
   },
   "tools": {

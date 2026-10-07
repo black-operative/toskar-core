@@ -184,6 +184,10 @@
     "git": {
       "label": "Git",
       "description": "Inspect the repository, and commit or push"
+    },
+    "automations": {
+      "label": "Automations",
+      "description": "Set up tasks that run on a schedule from chat; you confirm each one"
     }
   },
   "tools": {

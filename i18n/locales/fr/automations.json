@@ -282,5 +282,17 @@
       "does": "Ce qu'elle fait",
       "tells": "Quand vous êtes prévenu"
     }
+  },
+  "draft": {
+    "label": "Automatisation à confirmer",
+    "when": "Quand",
+    "task": "Tâche",
+    "notify": "Notifier",
+    "hint": "Rien ne s’exécute tant que vous ne l’avez pas créée.",
+    "create": "Créer l’automatisation",
+    "creating": "Création…",
+    "created": "Créée",
+    "open": "Ouvrir dans Automatisations",
+    "failed": "Impossible de créer l’automatisation."
   }
 }

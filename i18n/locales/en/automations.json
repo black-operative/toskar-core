@@ -282,5 +282,17 @@
       "does": "What it does",
       "tells": "When you hear"
     }
+  },
+  "draft": {
+    "label": "Automation to confirm",
+    "when": "When",
+    "task": "Task",
+    "notify": "Notify",
+    "hint": "Nothing runs until you create it.",
+    "create": "Create automation",
+    "creating": "Creating…",
+    "created": "Created",
+    "open": "Open in Automations",
+    "failed": "Could not create the automation."
   }
 }

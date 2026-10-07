@@ -183,6 +183,10 @@
     "git": {
       "label": "Git",
       "description": "저장소를 살펴보고, 커밋하거나 푸시해요"
+    },
+    "automations": {
+      "label": "자동화",
+      "description": "채팅에서 일정에 따라 실행되는 작업을 설정합니다. 각 작업은 직접 확인합니다"
     }
   },
   "tools": {

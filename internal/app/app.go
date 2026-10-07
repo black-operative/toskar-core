@@ -763,6 +763,7 @@ func New(opts Options) (*App, error) {
 	a.API.BindMemory(a.Muninn)
 	a.Tools.Register(&artifacts.CreateTool{Store: a.Artifacts})
 	a.Tools.Register(&artifacts.AnalyzeTool{Store: a.Artifacts})
+	a.Tools.Register(&scheduleTool{app: a})
 	a.API.BindArtifacts(a.Artifacts)
 	a.API.BindKnowledge(a.Mimir)
 	a.Images = a.newImageSetup(cfg)

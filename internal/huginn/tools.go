@@ -5,6 +5,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/yeixio/toskar-core/internal/automations"
 	"github.com/yeixio/toskar-core/internal/tools"
 )
 
@@ -26,6 +27,8 @@ var toolGroups = map[string][]string{
 	"shell":   {"terminal"},
 	"gitr":    {"git.status", "git.diff", "git.log", "git.show"},
 	"gitw":    {"git.add", "git.commit", "git.push"},
+	// schedule drafts an automation the person confirms (#204).
+	"schedule": {"automations.schedule"},
 }
 
 // Groups each kind of request gets before cues in the message add more.
@@ -41,22 +44,23 @@ var kindGroups = map[Kind][]string{
 }
 
 var (
-	cueRead    = regexp.MustCompile(`(?i)(\b(files?|folders?|director(y|ies)|documents?|workspace|repo|repository|project|readme|log file)\b|[~./][\w./-]*/[\w.-]+|\b\w+\.(go|py|js|ts|tsx|md|txt|json|ya?ml|toml|csv|log|sh)\b)`)
-	cueWrite   = regexp.MustCompile(`(?i)\b(save|write|edit|update|change|fix|rename|append|create)\b.{0,40}\b(file|files|folder|config|readme|script)\b`)
-	cueShell   = regexp.MustCompile(`(?i)\b(run|execute|install|build|compile|terminal|command|shell|script|npm|pnpm|pip|brew|make|go test|go build)\b`)
-	cueGit     = regexp.MustCompile(`(?i)\b(git|commit|branch|diff|merge|rebase|staged|push|pull request)\b`)
-	cueGitW    = regexp.MustCompile(`(?i)\b(commit|stage|push)\b`)
-	cueMake    = regexp.MustCompile(`(?i)\b(make|create|write|generate|export|save|build)\b.{0,40}\b(files?|spreadsheets?|documents?|docs?|csv|xlsx|pdf|tables?|reports?|lists?)\b`)
-	cueCode    = regexp.MustCompile(`(?i)\b(calculat\w*|comput\w*|analy[sz]\w*|plot\w*|charts?|graphs?|python|statistic\w*|regression|correlat\w*|simulat\w*|forecast\w*|average|median|percentiles?|run (this|the|my) code)\b`)
-	cueListen  = regexp.MustCompile(`(?i)\b(transcri\w*|recordings?|voice (notes?|memos?|messages?)|audio|podcasts?|what (does|did) (it|she|he|they) say)\b`)
-	cueSpeak   = regexp.MustCompile(`(?i)(\b(read (it|this|that|them)?\s*(aloud|out loud)|out loud|aloud|text to speech|narrat\w*|voice ?over|audio version|say it)\b)`)
-	cueDraw    = regexp.MustCompile(`(?i)(\b(draw|paint|sketch|illustrat\w*|render)\b|\b(make|create|generate|design|produce|give me)\b.{0,40}\b(images?|pictures?|photos?|illustrations?|drawings?|paintings?|logos?|icons?|wallpapers?|artwork|portraits?|posters?)\b)`)
-	cueRetouch = regexp.MustCompile(`(?i)\b(edit|change|retouch|recolou?r|remove|replace|turn|make|add)\b.{0,40}\b(images?|pictures?|photos?|backgrounds?|\w+\.(png|jpe?g))\b`)
-	cuePlaces  = regexp.MustCompile(`(?i)(\b(near (me|here|by)|nearby|nearest|closest|directions?|route (from|between)|how (far|long does it take)|distance (from|to|between)|drive (from|to)|walk (from|to)|get (from|to)|address (of|for)|open now|opening hours|restaurants?|caf[eé]s?|pharmac(y|ies)|gas stations?)\b)`)
-	cueFilm    = regexp.MustCompile(`(?i)\b(videos?|clips?|animat\w*|movies?|footage|gifs?|bring (it|this|that|the|my)( \w+)? to life|make (it|this) move)\b`)
-	cueBrowse  = regexp.MustCompile(`(?i)(\b(browser|click|fill (in|out)|sign up|add to (my )?cart|on (the|that|their) (site|page|website)|log ?in to|screenshot|navigate to)\b|\bgo to \S+\.\w{2,}\b)`)
-	cueSheet   = regexp.MustCompile(`(?i)\b(spreadsheets?|xlsx|csv|excel|workbooks?|sheets?)\b`)
-	cueWeb     = regexp.MustCompile(`(?i)(\b(search|web|online|internet|look up|website|url|links?|news|latest)\b|https?://)`)
+	cueRead     = regexp.MustCompile(`(?i)(\b(files?|folders?|director(y|ies)|documents?|workspace|repo|repository|project|readme|log file)\b|[~./][\w./-]*/[\w.-]+|\b\w+\.(go|py|js|ts|tsx|md|txt|json|ya?ml|toml|csv|log|sh)\b)`)
+	cueWrite    = regexp.MustCompile(`(?i)\b(save|write|edit|update|change|fix|rename|append|create)\b.{0,40}\b(file|files|folder|config|readme|script)\b`)
+	cueShell    = regexp.MustCompile(`(?i)\b(run|execute|install|build|compile|terminal|command|shell|script|npm|pnpm|pip|brew|make|go test|go build)\b`)
+	cueGit      = regexp.MustCompile(`(?i)\b(git|commit|branch|diff|merge|rebase|staged|push|pull request)\b`)
+	cueGitW     = regexp.MustCompile(`(?i)\b(commit|stage|push)\b`)
+	cueMake     = regexp.MustCompile(`(?i)\b(make|create|write|generate|export|save|build)\b.{0,40}\b(files?|spreadsheets?|documents?|docs?|csv|xlsx|pdf|tables?|reports?|lists?)\b`)
+	cueCode     = regexp.MustCompile(`(?i)\b(calculat\w*|comput\w*|analy[sz]\w*|plot\w*|charts?|graphs?|python|statistic\w*|regression|correlat\w*|simulat\w*|forecast\w*|average|median|percentiles?|run (this|the|my) code)\b`)
+	cueListen   = regexp.MustCompile(`(?i)\b(transcri\w*|recordings?|voice (notes?|memos?|messages?)|audio|podcasts?|what (does|did) (it|she|he|they) say)\b`)
+	cueSpeak    = regexp.MustCompile(`(?i)(\b(read (it|this|that|them)?\s*(aloud|out loud)|out loud|aloud|text to speech|narrat\w*|voice ?over|audio version|say it)\b)`)
+	cueDraw     = regexp.MustCompile(`(?i)(\b(draw|paint|sketch|illustrat\w*|render)\b|\b(make|create|generate|design|produce|give me)\b.{0,40}\b(images?|pictures?|photos?|illustrations?|drawings?|paintings?|logos?|icons?|wallpapers?|artwork|portraits?|posters?)\b)`)
+	cueRetouch  = regexp.MustCompile(`(?i)\b(edit|change|retouch|recolou?r|remove|replace|turn|make|add)\b.{0,40}\b(images?|pictures?|photos?|backgrounds?|\w+\.(png|jpe?g))\b`)
+	cuePlaces   = regexp.MustCompile(`(?i)(\b(near (me|here|by)|nearby|nearest|closest|directions?|route (from|between)|how (far|long does it take)|distance (from|to|between)|drive (from|to)|walk (from|to)|get (from|to)|address (of|for)|open now|opening hours|restaurants?|caf[eé]s?|pharmac(y|ies)|gas stations?)\b)`)
+	cueFilm     = regexp.MustCompile(`(?i)\b(videos?|clips?|animat\w*|movies?|footage|gifs?|bring (it|this|that|the|my)( \w+)? to life|make (it|this) move)\b`)
+	cueBrowse   = regexp.MustCompile(`(?i)(\b(browser|click|fill (in|out)|sign up|add to (my )?cart|on (the|that|their) (site|page|website)|log ?in to|screenshot|navigate to)\b|\bgo to \S+\.\w{2,}\b)`)
+	cueSheet    = regexp.MustCompile(`(?i)\b(spreadsheets?|xlsx|csv|excel|workbooks?|sheets?)\b`)
+	cueSchedule = regexp.MustCompile(`(?i)\b(remind me|automat(e|ion|ions)|recurring|on a schedule|schedule (a|an|this|that|it|the) (task|job|check|summary|report|reminder))\b`)
+	cueWeb      = regexp.MustCompile(`(?i)(\b(search|web|online|internet|look up|website|url|links?|news|latest)\b|https?://)`)
 )
 
 // ToolsFor picks the tools worth offering for a request (spec §16): the
@@ -115,6 +119,11 @@ func ToolsFor(k Kind, message string, available []string) []string {
 	}
 	if cueRetouch.MatchString(message) {
 		want["retouch"] = true
+	}
+	// Words in every language with request words find a repeating
+	// schedule, such as "every morning" or "jeden Montag".
+	if cueSchedule.MatchString(message) || automations.Recurring(message) {
+		want["schedule"] = true
 	}
 	var out []string
 	for _, id := range available {

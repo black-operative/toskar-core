@@ -5480,6 +5480,12 @@ components:
         response_language:
           type: string
           description: The language results are written in. account (or omitted) follows the assistant language setting, app the App language, auto the language of the request, or a BCP 47 tag such as de. A language the request asks for always wins.
+        conversation_id:
+          type: string
+          description: The chat the automation was made from, when it came from a chat's draft
+        draft_id:
+          type: string
+          description: The id of the chat's draft (an answer's meta.automation). Creating the same draft again returns the automation it made.
     Automation:
       type: object
       properties:
@@ -5506,6 +5512,12 @@ components:
         response_language:
           type: string
           description: The language results are written in. account (or omitted) follows the assistant language setting, app the App language, auto the language of the request, or a BCP 47 tag such as de. A language the request asks for always wins.
+        conversation_id:
+          type: string
+          description: The chat the automation was made from
+        draft_id:
+          type: string
+          description: The chat draft it was made from
         created_at:
           type: string
           format: date-time

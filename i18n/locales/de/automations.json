@@ -282,5 +282,17 @@
       "does": "Was es tut",
       "tells": "Wann du Bescheid bekommst"
     }
+  },
+  "draft": {
+    "label": "Automation zum Bestätigen",
+    "when": "Wann",
+    "task": "Aufgabe",
+    "notify": "Benachrichtigen",
+    "hint": "Nichts läuft, bevor du sie erstellst.",
+    "create": "Automation erstellen",
+    "creating": "Wird erstellt…",
+    "created": "Erstellt",
+    "open": "In Automationen öffnen",
+    "failed": "Die Automation konnte nicht erstellt werden."
   }
 }

@@ -418,6 +418,21 @@ export interface MessageMeta {
   /** The backend and device that ran the answer (#317, contract 1.8). */
   backend?: string
   device?: string
+  /** An automation the answer drafted, for the person to confirm (#204, contract 1.10). */
+  automation?: AutomationDraft
+}
+
+/** An automation a chat drafted; create it with draft_id and conversation_id (#204). */
+export interface AutomationDraft {
+  id: string
+  name: string
+  prompt: string
+  schedule: AutomationSchedule
+  notification: AutomationNotification
+  /** The chat's profile, which runs it. */
+  profile_id?: string
+  /** What was assumed, such as a time the request didn't give. */
+  notes?: string[]
 }
 
 /** An offer to install a missing ability, then finish the request (Gungnir §29). */
@@ -980,6 +995,9 @@ export interface Automation {
   notification: AutomationNotification
   /** The language results are written in: see AutomationInput. */
   response_language?: string
+  /** The chat it was made from, and that chat's draft (#204). */
+  conversation_id?: string
+  draft_id?: string
   created_at: string
   updated_at: string
   next_run_at?: string
@@ -1052,6 +1070,9 @@ export interface AutomationInput {
   enabled?: boolean
   /** account (the assistant language setting), app, auto (the request's language), or a language tag. */
   response_language?: string
+  /** From a chat's draft: creating the same draft again returns the automation it made (#204). */
+  conversation_id?: string
+  draft_id?: string
 }
 
 

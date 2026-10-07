@@ -282,5 +282,17 @@
       "does": "Cosa fa",
       "tells": "Quando lo sai"
     }
+  },
+  "draft": {
+    "label": "Automazione da confermare",
+    "when": "Quando",
+    "task": "Attività",
+    "notify": "Notifica",
+    "hint": "Non viene eseguito nulla finché non la crei.",
+    "create": "Crea automazione",
+    "creating": "Creazione…",
+    "created": "Creata",
+    "open": "Apri in Automazioni",
+    "failed": "Impossibile creare l’automazione."
   }
 }

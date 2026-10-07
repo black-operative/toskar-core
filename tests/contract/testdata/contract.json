@@ -1,5 +1,5 @@
 {
-  "version": "1.9",
+  "version": "1.10",
   "types": {
     "ActivityStep": [
       "kind",
@@ -15,6 +15,15 @@
       "producer",
       "size_bytes",
       "source_task"
+    ],
+    "AutomationDraft": [
+      "id",
+      "name",
+      "notes",
+      "notification",
+      "profile_id",
+      "prompt",
+      "schedule"
     ],
     "Citation": [
       "artifact_id",
@@ -89,6 +98,7 @@
       "role"
     ],
     "MessageMeta": [
+      "automation",
       "backend",
       "context",
       "contract",

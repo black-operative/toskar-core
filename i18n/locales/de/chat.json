@@ -208,6 +208,9 @@
         "add": "Git add",
         "commit": "Git commit",
         "push": "Git push"
+      },
+      "automations": {
+        "schedule": "Aufgabe planen"
       }
     },
     "unnamed": "Werkzeug",
@@ -551,6 +554,7 @@
     "searchedFiles": "Nach Dateien zu „{{query}}“ gesucht",
     "saved": "{{path}} gespeichert",
     "created": "{{name}} erstellt",
+    "draftedAutomation": "Automation „{{name}}“ entworfen",
     "ranCommand": "Einen Befehl auf diesem Computer ausgeführt",
     "browserOpened": "{{page}} im Browser geöffnet",
     "browserClicked": "Auf die Seite geklickt, jetzt {{page}}",

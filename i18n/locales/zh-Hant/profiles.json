@@ -183,6 +183,10 @@
     "git": {
       "label": "Git",
       "description": "檢查儲存庫，以及進行 commit 或 push"
+    },
+    "automations": {
+      "label": "自動化",
+      "description": "在聊天中設定依排程執行的工作；每一項都由你確認"
     }
   },
   "tools": {

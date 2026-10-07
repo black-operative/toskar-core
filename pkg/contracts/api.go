@@ -1,6 +1,7 @@
 package contracts
 
 import (
+	"encoding/json"
 	"strings"
 	"time"
 )
@@ -607,6 +608,28 @@ type MessageMeta struct {
 	// known, such as when a step ran on a paired computer.
 	Backend string `json:"backend,omitempty"`
 	Device  string `json:"device,omitempty"`
+	// Automation is an automation the answer drafted, for the person to
+	// confirm (#204, contract 1.10). Nothing is scheduled until they do.
+	Automation *AutomationDraft `json:"automation,omitempty"`
+}
+
+// AutomationDraft is an automation a chat drafted from a request. A client
+// shows it and, when the person confirms, creates it with POST
+// /api/v1/automations, passing ID as draft_id and the conversation as
+// conversation_id; creating the same draft again returns that automation.
+type AutomationDraft struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Prompt string `json:"prompt"`
+	// Schedule and Notification are the automation's, as POST
+	// /api/v1/automations takes them.
+	Schedule     json.RawMessage `json:"schedule"`
+	Notification json.RawMessage `json:"notification"`
+	// ProfileID is the chat's profile, which runs it.
+	ProfileID string `json:"profile_id,omitempty"`
+	// Notes say what was assumed, such as a time the request didn't give,
+	// in the App language.
+	Notes []string `json:"notes,omitempty"`
 }
 
 // ContextUsage is how a turn used the model's context window, in tokens.
