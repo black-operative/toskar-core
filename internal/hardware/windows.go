@@ -65,115 +65,82 @@ func platformDisk(ctx context.Context, path string) (contracts.DiskInfo, error) 
 	return contracts.DiskInfo{Path: path, TotalBytes: totalBytes, AvailableBytes: freeBytesAvailable}, nil
 }
 
-// Stores result across registry check as well as powershell command fallback
-type gpuRow struct {
-	name string
-	vram uint64
-}
-
-// adapterRAMFallback reads Win32_VideoController. AdapterRAM is 32-bit, so it caps at 4 GB;
-func adapterRAMFallback(ctx context.Context) []gpuRow {
-	out, err := powershell(ctx, `Get-CimInstance Win32_VideoController | ForEach-Object { $_.Name + '|' + $_.AdapterRAM }`)
+// adapterRAM lists all present video cards, value is capped at 32-bit (4 GB).
+func adapterRAM(ctx context.Context) []gpuRow {
+	out, err := powershell(
+		ctx,
+		`Get-CimInstance Win32_VideoController | ForEach-Object { $_.Name + '|' + $_.AdapterRAM }`,
+	)
 	if err != nil {
 		return nil
 	}
-
 	var rows []gpuRow
 	for _, line := range strings.Split(strings.TrimSpace(out), "\n") {
 		line = strings.TrimSpace(line)
 		if line == "" {
 			continue
 		}
-
-		// Name and VRAM
-		parts := strings.SplitN(line, "|", 2)
-		gpuName := strings.TrimSpace(parts[0])
-		var gpuVram uint64
-		if len(parts) > 1 {
-			gpuVram, _ = strconv.ParseUint(strings.TrimSpace(parts[1]), 10, 64)
-		}
-		rows = append(rows, gpuRow{name: gpuName, vram: gpuVram})
+		name, ram, _ := strings.Cut(line, "|")
+		vram, _ := strconv.ParseUint(strings.TrimSpace(ram), 10, 64)
+		rows = append(rows, gpuRow{name: strings.TrimSpace(name), vram: vram})
 	}
 	return rows
 }
 
-func platformAccelerators(ctx context.Context) ([]contracts.Accelerator, error) {
-	var gpus []gpuRow
-
-	// AdapterRAM results, loaded at most once and only if an adapter needs them
-	var fallbackRows []gpuRow
-	fallbackLoaded := false
-
-	// Registry check
-	if registryRoot, err := registry.OpenKey(
+// registryVRAM maps each display class entry's name to its memory sizes, in key
+// order. The class key also holds entries for adapters that are gone, so it is only
+// used to look up the size of an adapter that is present.
+func registryVRAM() map[string][]uint64 {
+	sizes := map[string][]uint64{}
+	root, err := registry.OpenKey(
 		registry.LOCAL_MACHINE,
 		`SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}`,
 		registry.ENUMERATE_SUB_KEYS|registry.QUERY_VALUE,
-	); err == nil {
-		defer registryRoot.Close()
-		subKeys, _ := registryRoot.ReadSubKeyNames(-1)
-
-		for _, subKey := range subKeys {
-			// filter numbers like 0000, 0001; skip "Configuration", "Properties" etc.
-			if len(subKey) != 4 || strings.Trim(subKey, "0123456789") != "" {
-				continue
-			}
-
-			currentKey, err := registry.OpenKey(registryRoot, subKey, registry.QUERY_VALUE)
-			if err != nil {
-				continue
-			}
-
-			// Name and VRAM
-			gpuName, _, _ := currentKey.GetStringValue("DriverDesc")
-
-			var size uint64
-			if v, _, err := currentKey.GetIntegerValue("HardwareInformation.qwMemorySize"); err == nil {
-				size = v
-			} else if b, _, err := currentKey.GetBinaryValue("HardwareInformation.qwMemorySize"); err == nil && len(b) >= 8 {
-				// Convert i'th byte to int and left shift for next byte
-				for i := 7; i > -1; i-- {
-					size = size<<8 | uint64(b[i])
-				}
-			}
-			currentKey.Close()
-
-			// Registry has no size for this adapter, try AdapterRAM by name
-			if size == 0 {
-				if !fallbackLoaded {
-					fallbackRows = adapterRAMFallback(ctx)
-					fallbackLoaded = true
-				}
-				for _, row := range fallbackRows {
-					if strings.EqualFold(row.name, gpuName) {
-						size = row.vram
-						break
-					}
-				}
-			}
-
-			// Size still 0 implies Basic and Virtual display adapters, which have no VRAM value
-			if size == 0 {
-				continue
-			}
-
-			gpus = append(
-				gpus,
-				gpuRow{
-					name: strings.TrimSpace(gpuName),
-					vram: size,
-				},
-			)
-		}
+	)
+	if err != nil {
+		return sizes
 	}
+	defer root.Close()
+	subKeys, _ := root.ReadSubKeyNames(-1)
 
-	// Complete Fallback in-case registry check fails all
-	if len(gpus) == 0 {
-		if !fallbackLoaded {
-			fallbackRows = adapterRAMFallback(ctx)
+	for _, subKey := range subKeys {
+		// filter numbers like 0000, 0001; skip "Configuration", "Properties" etc.
+		if len(subKey) != 4 || strings.Trim(subKey, "0123456789") != "" {
+			continue
 		}
-		gpus = fallbackRows
+		key, err := registry.OpenKey(root, subKey, registry.QUERY_VALUE)
+		if err != nil {
+			continue
+		}
+		name, _, _ := key.GetStringValue("DriverDesc")
+		size := registryMemory(key, "HardwareInformation.qwMemorySize")
+		if size == 0 {
+			// Some drivers only write the 32-bit value.
+			size = registryMemory(key, "HardwareInformation.MemorySize")
+		}
+		key.Close()
+
+		nameKey := gpuNameKey(name)
+		sizes[nameKey] = append(sizes[nameKey], size)
 	}
+	return sizes
+}
+
+// registryMemory reads a size stored either as a number or as binary.
+func registryMemory(key registry.Key, value string) uint64 {
+	if v, _, err := key.GetIntegerValue(value); err == nil {
+		return v
+	}
+	if b, _, err := key.GetBinaryValue(value); err == nil {
+		return qwordFromBinary(b)
+	}
+	return 0
+}
+
+func platformAccelerators(ctx context.Context) ([]contracts.Accelerator, error) {
+	// Win32_VideoController lists only adapters that are present, so a removed
+	// card's leftover registry entry cannot show up. The registry only corrects sizes.
+	gpus := mergeGPUs(adapterRAM(ctx), registryVRAM())
 
 	var accels []contracts.Accelerator
 	for i, gpu := range gpus {
