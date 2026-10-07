@@ -45,6 +45,8 @@ complete -c toskarctl -n $ygg_edit -l condition-kind -x -a 'threshold available 
 complete -c toskarctl -n $ygg_edit -l condition-op -x -a 'below above' -d 'Condition operator'
 complete -c toskarctl -n $ygg_edit -l condition-value -r -d 'Threshold value'
 complete -c toskarctl -n $ygg_edit -l save-folder -r -a '(__fish_complete_directories)' -d 'Also save each result in this folder'
+complete -c toskarctl -n $ygg_edit -l trigger -x -a 'page feed none' -d 'Run only when it changed'
+complete -c toskarctl -n $ygg_edit -l trigger-url -r -d 'The page or feed to watch'
 complete -c toskarctl -n $ygg_edit -l disabled -d 'Create the automation paused'
 
 # yggctl, the name from before the rename, completes the same way.

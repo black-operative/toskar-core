@@ -127,7 +127,7 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 		ProfileID: profile.ID,
 		// The task with its condition's instruction, which the server adds
 		// rather than the saved prompt carrying it (#204).
-		Prompt: automations.RunPrompt(automation),
+		Prompt: withChangeNote(automations.RunPrompt(automation), automations.ChangeNote(ctx)),
 		Status: contracts.TaskRunning,
 	}, tools.ForUnattended(profile, automation.Tools, disabled), env)
 	if err != nil {
@@ -303,4 +303,12 @@ func collectAutomationEvents(stream <-chan pluginapi.OrchestrationEvent) (text, 
 		}
 	}
 	return strings.TrimSpace(b.String()), nodeID, err
+}
+
+// withChangeNote adds what a trigger found to a run's prompt (#204).
+func withChangeNote(prompt, note string) string {
+	if note == "" {
+		return prompt
+	}
+	return prompt + "\n\n" + note
 }

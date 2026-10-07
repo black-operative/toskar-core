@@ -134,7 +134,9 @@
     "history": "Verlauf",
     "notRunYet": "Diese Automation ist noch nicht gelaufen.",
     "olderRuns": "Ältere Läufe anzeigen",
-    "loadingOlder": "Wird geladen…"
+    "loadingOlder": "Wird geladen…",
+    "lastChecked": "Zuletzt geprüft {{when}}, nichts Neues",
+    "nextCheck": "Nächste Prüfung {{when}}"
   },
   "run": {
     "details": "Details",
@@ -351,7 +353,14 @@
     "cronHint": "Fünf Felder, in der Zeitzone unten: Minute, Stunde, Tag des Monats, Monat und Wochentag.",
     "saveResults": "Jedes Ergebnis auch als Datei speichern",
     "saveFolder": "Ordner",
-    "saveFolderHint": "Eine neue Markdown-Datei pro Ergebnis, in deinem Benutzerordner."
+    "saveFolderHint": "Eine neue Markdown-Datei pro Ergebnis, in deinem Benutzerordner.",
+    "runs": "Läuft",
+    "runsSchedule": "Nach Zeitplan",
+    "runsPage": "Wenn sich eine Webseite ändert",
+    "runsFeed": "Wenn ein Feed neue Beiträge hat",
+    "watchUrl": "Link",
+    "watchHint": "Toskar prüft nach dem Zeitplan unten und läuft nur, wenn sich etwas geändert hat, und sagt der Aufgabe, was.",
+    "checkSchedule": "Wie oft prüfen"
   },
   "draft": {
     "label": "Automation zum Bestätigen",
@@ -373,5 +382,9 @@
     "noResult": "Gelaufen, ohne etwas zu melden.",
     "failed_one": "Einmal fehlgeschlagen: {{error}}",
     "failed_other": "{{count}}-mal fehlgeschlagen, zuletzt: {{error}}"
+  },
+  "trigger": {
+    "page": "Wenn sich {{site}} ändert · geprüft: {{schedule}}",
+    "feed": "Neue Beiträge auf {{site}} · geprüft: {{schedule}}"
   }
 }

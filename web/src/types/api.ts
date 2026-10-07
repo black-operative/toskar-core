@@ -1032,6 +1032,10 @@ export interface Automation {
   draft_id?: string
   /** A folder each result is also saved to as a Markdown file (#204). */
   save_folder?: string
+  /** Runs only when a page or feed changed, checked on the schedule (#204). */
+  trigger?: AutomationTrigger
+  /** When the trigger last checked and found nothing new. */
+  last_checked_at?: string
   created_at: string
   updated_at: string
   next_run_at?: string
@@ -1113,6 +1117,13 @@ export interface AutomationInput {
   draft_id?: string
   /** A folder in the home folder to also save each result to, such as ~/Documents/Toskar; "" stops saving. */
   save_folder?: string
+  /** A page or feed to watch; one with no kind runs on the schedule again. */
+  trigger?: AutomationTrigger
+}
+
+export interface AutomationTrigger {
+  kind: 'page' | 'feed' | ''
+  url?: string
 }
 
 

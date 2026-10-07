@@ -202,6 +202,22 @@ describe('AutomationsPage', () => {
     expect(screen.getByRole('button', { name: 'Hide how it works' })).toHaveAttribute('aria-expanded', 'true')
   })
 
+  it('runs when a page changes, checked every hour to start', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Runs' }), { target: { value: 'page' } })
+    fireEvent.change(screen.getByRole('textbox', { name: 'Link' }), { target: { value: 'https://example.com/careers' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'Careers' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: "Say what's new." } })
+    expect(screen.getByText(/When example\.com changes · checked: Every hour/, { selector: 'dd' })).toBeInTheDocument()
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.trigger).toEqual({ kind: 'page', url: 'https://example.com/careers' })
+    expect(body.schedule).toMatchObject({ kind: 'interval', every_seconds: 3600 })
+  })
+
   it('also saves results to a folder when asked', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))

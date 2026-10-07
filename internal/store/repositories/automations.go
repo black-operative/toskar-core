@@ -26,7 +26,8 @@ const automationSelect = `
 		COALESCE(profile_id, ''), COALESCE(model_id, ''), tools_json, notification_json,
 		created_at, updated_at, next_run_at, last_run_at,
 		consecutive_failures, COALESCE(last_error, ''), COALESCE(response_language, ''),
-		COALESCE(conversation_id, ''), COALESCE(draft_id, ''), COALESCE(save_folder, '')
+		COALESCE(conversation_id, ''), COALESCE(draft_id, ''), COALESCE(save_folder, ''),
+		COALESCE(trigger_json, ''), COALESCE(watch_state, ''), last_checked_at
 	FROM automations`
 
 // Create stores an automation and computes its first next run.
@@ -58,6 +59,7 @@ func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput,
 		ConversationID:   in.ConversationID,
 		DraftID:          in.DraftID,
 		SaveFolder:       in.SaveFolder,
+		Trigger:          in.Trigger,
 		CreatedAt:        now,
 		UpdatedAt:        now,
 	}
@@ -147,6 +149,17 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 	}
 	if patch.SaveFolder != nil {
 		existing.SaveFolder = *patch.SaveFolder
+	}
+	if patch.Trigger != nil {
+		next := patch.Trigger
+		if next.Kind == "" {
+			next = nil
+		}
+		// Watching something else starts from a fresh look at it.
+		if !sameTrigger(existing.Trigger, next) {
+			existing.WatchState, existing.LastCheckedAt = nil, nil
+		}
+		existing.Trigger = next
 	}
 	if patch.ResponseLanguage != nil {
 		existing.ResponseLanguage = *patch.ResponseLanguage
@@ -238,12 +251,14 @@ func (r *AutomationRepo) insert(ctx context.Context, a automations.Automation) e
 		INSERT INTO automations (
 			id, name, enabled, schedule_json, time_zone, prompt, profile_id, model_id,
 			tools_json, notification_json, created_at, updated_at, next_run_at, last_run_at,
-			consecutive_failures, last_error, response_language, conversation_id, draft_id, save_folder
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			consecutive_failures, last_error, response_language, conversation_id, draft_id, save_folder,
+			trigger_json, watch_state, last_checked_at
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		a.ID, a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.CreatedAt), formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
 		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage),
-		nullIfEmpty(a.ConversationID), nullIfEmpty(a.DraftID), nullIfEmpty(a.SaveFolder))
+		nullIfEmpty(a.ConversationID), nullIfEmpty(a.DraftID), nullIfEmpty(a.SaveFolder),
+		triggerJSON(a.Trigger), nullIfEmpty(string(a.WatchState)), formatTimePtr(a.LastCheckedAt))
 	return err
 }
 
@@ -264,11 +279,13 @@ func updateAutomation(ctx context.Context, db execer, a automations.Automation) 
 		UPDATE automations SET
 			name = ?, enabled = ?, schedule_json = ?, time_zone = ?, prompt = ?, profile_id = ?, model_id = ?,
 			tools_json = ?, notification_json = ?, updated_at = ?, next_run_at = ?, last_run_at = ?,
-			consecutive_failures = ?, last_error = ?, response_language = ?, save_folder = ?
+			consecutive_failures = ?, last_error = ?, response_language = ?, save_folder = ?,
+			trigger_json = ?, watch_state = ?, last_checked_at = ?
 		WHERE id = ?`,
 		a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
-		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage), nullIfEmpty(a.SaveFolder), a.ID)
+		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage), nullIfEmpty(a.SaveFolder),
+		triggerJSON(a.Trigger), nullIfEmpty(string(a.WatchState)), formatTimePtr(a.LastCheckedAt), a.ID)
 	if err != nil {
 		return err
 	}
@@ -299,6 +316,12 @@ func prepareAutomation(a *automations.Automation) error {
 		cleaned[i] = strings.TrimSpace(id)
 	}
 	a.Tools = cleaned
+	if a.Trigger != nil {
+		a.Trigger.URL = strings.TrimSpace(a.Trigger.URL)
+	}
+	if err := a.Trigger.Validate(); err != nil {
+		return err
+	}
 	a.SaveFolder = strings.TrimSpace(a.SaveFolder)
 	if _, err := automations.SaveFolderPath(a.SaveFolder); err != nil {
 		return err
@@ -337,11 +360,12 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	var a automations.Automation
 	var enabled int
 	var sched, zone, tools, note, created, updated string
-	var next, last sql.NullString
+	var next, last, checked sql.NullString
+	var trigger, watchState string
 	if err := s.Scan(
 		&a.ID, &a.Name, &enabled, &sched, &zone, &a.Prompt, &a.ProfileID, &a.ModelID, &tools, &note,
 		&created, &updated, &next, &last, &a.ConsecutiveFailures, &a.LastError, &a.ResponseLanguage,
-		&a.ConversationID, &a.DraftID, &a.SaveFolder,
+		&a.ConversationID, &a.DraftID, &a.SaveFolder, &trigger, &watchState, &checked,
 	); err != nil {
 		return automations.Automation{}, err
 	}
@@ -365,7 +389,55 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	a.UpdatedAt = parseTime(updated)
 	a.NextRunAt = parseTimePtr(next)
 	a.LastRunAt = parseTimePtr(last)
+	a.LastCheckedAt = parseTimePtr(checked)
+	if trigger != "" {
+		var t automations.Trigger
+		if err := json.Unmarshal([]byte(trigger), &t); err != nil {
+			return automations.Automation{}, fmt.Errorf("trigger: %w", err)
+		}
+		a.Trigger = &t
+	}
+	if watchState != "" {
+		a.WatchState = []byte(watchState)
+	}
 	return a, nil
+}
+
+func triggerJSON(t *automations.Trigger) any {
+	if t == nil || t.Kind == "" {
+		return nil
+	}
+	b, _ := json.Marshal(t)
+	return string(b)
+}
+
+func sameTrigger(a, b *automations.Trigger) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+	return *a == *b
+}
+
+// Checked records a trigger's check that found nothing new, which counts
+// as the occurrence: its state, when it was, and the next check (#204).
+func (r *AutomationRepo) Checked(ctx context.Context, id string, state []byte, checkedAt, now time.Time) error {
+	a, err := r.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+	checkedAt = clock(checkedAt)
+	a.WatchState, a.LastCheckedAt = state, &checkedAt
+	if err := a.SetNextRun(clock(now)); err != nil {
+		return err
+	}
+	return r.updateRow(ctx, a)
+}
+
+// SetWatchState keeps what a trigger's check found, before the run it
+// starts.
+func (r *AutomationRepo) SetWatchState(ctx context.Context, id string, state []byte) error {
+	_, err := r.db.ExecContext(ctx, `UPDATE automations SET watch_state = ? WHERE id = ?`, nullIfEmpty(string(state)), id)
+	return err
 }
 
 func scanAutomations(rows *sql.Rows) ([]automations.Automation, error) {

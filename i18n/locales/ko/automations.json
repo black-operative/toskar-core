@@ -134,7 +134,9 @@
     "history": "기록",
     "notRunYet": "이 자동화는 아직 실행되지 않았어요.",
     "olderRuns": "이전 실행 보기",
-    "loadingOlder": "불러오는 중…"
+    "loadingOlder": "불러오는 중…",
+    "lastChecked": "마지막 확인 {{when}}, 새로운 것 없음",
+    "nextCheck": "다음 확인 {{when}}"
   },
   "run": {
     "details": "세부 정보",
@@ -351,7 +353,14 @@
     "cronHint": "아래 시간대 기준 다섯 필드: 분, 시, 일, 월, 요일.",
     "saveResults": "결과를 파일로도 저장",
     "saveFolder": "폴더",
-    "saveFolderHint": "결과마다 새 Markdown 파일을 홈 폴더 안에 저장합니다."
+    "saveFolderHint": "결과마다 새 Markdown 파일을 홈 폴더 안에 저장합니다.",
+    "runs": "실행 시점",
+    "runsSchedule": "일정에 따라",
+    "runsPage": "웹 페이지가 바뀌면",
+    "runsFeed": "피드에 새 글이 올라오면",
+    "watchUrl": "링크",
+    "watchHint": "아래 일정에 따라 확인하고, 바뀐 것이 있을 때만 무엇이 바뀌었는지 작업에 알려 주며 실행합니다.",
+    "checkSchedule": "확인 주기"
   },
   "draft": {
     "label": "확인할 자동화",
@@ -371,5 +380,9 @@
     "intro_other": "지난 요약 이후 자동화 {{count}}개가 찾은 내용입니다.",
     "noResult": "실행했지만 알릴 내용이 없습니다.",
     "failed_other": "{{count}}번 실패했습니다. 마지막 오류: {{error}}"
+  },
+  "trigger": {
+    "page": "{{site}}이(가) 바뀌면 · 확인: {{schedule}}",
+    "feed": "{{site}}의 새 글 · 확인: {{schedule}}"
   }
 }

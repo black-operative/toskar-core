@@ -715,6 +715,7 @@ func New(opts Options) (*App, error) {
 		Bus:    bus,
 		Logger: logger,
 		Post:   a.postAutomationResult,
+		Watch:  triggerWatcher{},
 		Pause: func(ctx context.Context, id string) error {
 			enabled := false
 			_, err := a.Automations.Update(ctx, id, automations.Patch{Enabled: &enabled}, time.Now())

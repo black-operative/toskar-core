@@ -134,7 +134,9 @@
     "history": "Historial",
     "notRunYet": "Esta automatización todavía no se ha ejecutado.",
     "olderRuns": "Mostrar ejecuciones anteriores",
-    "loadingOlder": "Cargando…"
+    "loadingOlder": "Cargando…",
+    "lastChecked": "Revisado por última vez {{when}}, nada nuevo",
+    "nextCheck": "Próxima revisión {{when}}"
   },
   "run": {
     "details": "Detalles",
@@ -351,7 +353,14 @@
     "cronHint": "Cinco campos, en la zona horaria de abajo: minuto, hora, día del mes, mes y día de la semana.",
     "saveResults": "Guardar también cada resultado como archivo",
     "saveFolder": "Carpeta",
-    "saveFolderHint": "Un archivo Markdown nuevo por resultado, en tu carpeta personal."
+    "saveFolderHint": "Un archivo Markdown nuevo por resultado, en tu carpeta personal.",
+    "runs": "Se ejecuta",
+    "runsSchedule": "Según su horario",
+    "runsPage": "Cuando cambia una página web",
+    "runsFeed": "Cuando un feed tiene publicaciones nuevas",
+    "watchUrl": "Enlace",
+    "watchHint": "Toskar lo revisa según el horario de abajo y solo se ejecuta cuando algo cambió, y le dice a la tarea qué fue.",
+    "checkSchedule": "Con qué frecuencia revisar"
   },
   "draft": {
     "label": "Automatización por confirmar",
@@ -375,5 +384,9 @@
     "failed_one": "Falló una vez: {{error}}",
     "failed_other": "Falló {{count}} veces, la última: {{error}}",
     "failed_many": "Falló {{count}} veces, la última: {{error}}"
+  },
+  "trigger": {
+    "page": "Cuando cambia {{site}} · revisado: {{schedule}}",
+    "feed": "Publicaciones nuevas en {{site}} · revisado: {{schedule}}"
   }
 }

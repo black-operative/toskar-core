@@ -134,7 +134,9 @@
     "history": "歷史紀錄",
     "notRunYet": "這項自動化尚未執行過。",
     "olderRuns": "顯示更早的執行",
-    "loadingOlder": "正在載入…"
+    "loadingOlder": "正在載入…",
+    "lastChecked": "上次檢查 {{when}}，沒有新內容",
+    "nextCheck": "下次檢查 {{when}}"
   },
   "run": {
     "details": "詳細資訊",
@@ -351,7 +353,14 @@
     "cronHint": "依下方時區填寫五個欄位：分鐘、小時、日、月、星期。",
     "saveResults": "同時將每次結果儲存為檔案",
     "saveFolder": "資料夾",
-    "saveFolderHint": "每次結果都會在你的主資料夾中建立一個新的 Markdown 檔案。"
+    "saveFolderHint": "每次結果都會在你的主資料夾中建立一個新的 Markdown 檔案。",
+    "runs": "執行方式",
+    "runsSchedule": "依排程",
+    "runsPage": "網頁有變化時",
+    "runsFeed": "訂閱來源有新文章時",
+    "watchUrl": "連結",
+    "watchHint": "Toskar 依下方排程檢查，只有發生變化時才執行，並告訴工作變化了什麼。",
+    "checkSchedule": "檢查頻率"
   },
   "draft": {
     "label": "待確認的自動化",
@@ -371,5 +380,9 @@
     "intro_other": "自上次摘要以來，你的 {{count}} 個自動化發現的內容。",
     "noResult": "已執行，沒有需要回報的內容。",
     "failed_other": "失敗了 {{count}} 次，最近一次：{{error}}"
+  },
+  "trigger": {
+    "page": "{{site}} 有變化時 · 檢查：{{schedule}}",
+    "feed": "{{site}} 有新文章 · 檢查：{{schedule}}"
   }
 }

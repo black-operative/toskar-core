@@ -51,6 +51,10 @@ type Store interface {
 	SetNotificationSent(ctx context.Context, runID string, sent bool) error
 	SetDecision(ctx context.Context, runID, detail string, values map[string]any) error
 	RunFor(ctx context.Context, automationID string, occurrence time.Time) (Run, error)
+	// Checked records a trigger's check that found nothing new, and
+	// SetWatchState what a check found once its run has used it (#204).
+	Checked(ctx context.Context, id string, state []byte, checkedAt, now time.Time) error
+	SetWatchState(ctx context.Context, id string, state []byte) error
 }
 
 // Executor runs one scheduled prompt. The daemon supplies profile resolution,
@@ -76,6 +80,8 @@ type Runner struct {
 	// that takes longer. Zero uses the defaults.
 	Workers    int
 	RunTimeout time.Duration
+	// Watch checks an automation's trigger before it runs (#204).
+	Watch Watcher
 	// Post adds a result to the chat an automation was made from, when it
 	// notifies, so the person can reply to it there (#204).
 	Post func(ctx context.Context, automation Automation, run Run, text string) error
@@ -225,7 +231,7 @@ func (r *Runner) RunNow(ctx context.Context, id string) (Run, error) {
 	go func() {
 		defer r.wg.Done()
 		defer r.end(id)
-		if err := r.finish(r.background(), automation, run); err != nil && r.Logger != nil {
+		if err := r.finish(r.background(), automation, run, nil); err != nil && r.Logger != nil {
 			r.Logger.Warn("automation run failed", "automation", automation.Name, "error", err)
 		}
 	}()
@@ -236,11 +242,44 @@ func (r *Runner) runOne(ctx context.Context, automation Automation) error {
 	if automation.NextRunAt == nil {
 		return nil
 	}
+	check, err := r.check(ctx, automation)
+	if err != nil || (check != nil && check.skip) {
+		return err
+	}
 	run, ok, err := r.claim(ctx, automation, *automation.NextRunAt)
 	if err != nil || !ok {
 		return err
 	}
-	return r.finish(ctx, automation, run)
+	return r.finish(ctx, automation, run, check)
+}
+
+// checked is what a trigger's check found before a run.
+type checked struct {
+	found Found
+	state []byte
+	// err is a check that couldn't look, which fails the run.
+	err error
+	// skip is a check that found nothing new, which needs no run.
+	skip bool
+}
+
+// check looks at an automation's trigger. It records a check that found
+// nothing new as the occurrence, so the next one is the next check.
+func (r *Runner) check(ctx context.Context, automation Automation) (*checked, error) {
+	if automation.Trigger == nil || r.Watch == nil {
+		return nil, nil
+	}
+	found, state, err := r.Watch.Check(ctx, *automation.Trigger, automation.WatchState)
+	if err != nil {
+		if ctx.Err() != nil {
+			return nil, ctx.Err()
+		}
+		return &checked{err: fmt.Errorf("could not check %s: %w", automation.Trigger.URL, err)}, nil
+	}
+	if !found.Changed {
+		return &checked{skip: true}, r.Store.Checked(ctx, automation.ID, state, *automation.NextRunAt, r.now())
+	}
+	return &checked{found: found, state: state}, nil
 }
 
 // claim takes the occurrence and marks its run running. ok is false when
@@ -260,7 +299,7 @@ func (r *Runner) claim(ctx context.Context, automation Automation, occurrence ti
 
 // finish runs a claimed occurrence within its time limit and records how it
 // ended.
-func (r *Runner) finish(ctx context.Context, automation Automation, run Run) error {
+func (r *Runner) finish(ctx context.Context, automation Automation, run Run, check *checked) error {
 	leaseCtx, stopLease := context.WithCancel(ctx)
 	defer stopLease()
 	go r.keepLease(leaseCtx, run.ID)
@@ -276,9 +315,18 @@ func (r *Runner) finish(ctx context.Context, automation Automation, run Run) err
 	if prev != nil {
 		runCtx = WithPrevious(ctx, *prev)
 	}
+	if check != nil {
+		runCtx = WithChange(runCtx, check.found)
+	}
 	limit := r.runTimeout()
 	execCtx, cancel := context.WithTimeout(runCtx, limit)
-	result, execErr := r.Exec.Execute(execCtx, automation)
+	var result Execution
+	var execErr error
+	if check != nil && check.err != nil {
+		execErr = check.err
+	} else {
+		result, execErr = r.Exec.Execute(execCtx, automation)
+	}
 	if errors.Is(execCtx.Err(), context.DeadlineExceeded) && ctx.Err() == nil {
 		execErr = timedOut(limit)
 	}
@@ -346,6 +394,12 @@ func (r *Runner) finish(ctx context.Context, automation Automation, run Run) err
 	}
 	if err := r.Store.CompleteRun(ctx, run.ID, result, finished); err != nil {
 		return err
+	}
+	// The change is handled, so the next check compares with it.
+	if check != nil && check.state != nil {
+		if err := r.Store.SetWatchState(ctx, automation.ID, check.state); err != nil && r.Logger != nil {
+			r.Logger.Warn("save automation watch state", "automation", automation.Name, "error", err)
+		}
 	}
 	// Also saved as a file, for an automation with a save folder (#204).
 	if automation.SaveFolder != "" {

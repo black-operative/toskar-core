@@ -134,7 +134,9 @@
     "history": "Cronologia",
     "notRunYet": "Questa automazione non è ancora stata eseguita.",
     "olderRuns": "Mostra esecuzioni precedenti",
-    "loadingOlder": "Caricamento…"
+    "loadingOlder": "Caricamento…",
+    "lastChecked": "Ultimo controllo {{when}}, niente di nuovo",
+    "nextCheck": "Prossimo controllo {{when}}"
   },
   "run": {
     "details": "Dettagli",
@@ -351,7 +353,14 @@
     "cronHint": "Cinque campi, nel fuso orario qui sotto: minuto, ora, giorno del mese, mese e giorno della settimana.",
     "saveResults": "Salva anche ogni risultato come file",
     "saveFolder": "Cartella",
-    "saveFolderHint": "Un nuovo file Markdown per ogni risultato, nella tua cartella home."
+    "saveFolderHint": "Un nuovo file Markdown per ogni risultato, nella tua cartella home.",
+    "runs": "Viene eseguita",
+    "runsSchedule": "Secondo la pianificazione",
+    "runsPage": "Quando cambia una pagina web",
+    "runsFeed": "Quando un feed ha nuovi articoli",
+    "watchUrl": "Link",
+    "watchHint": "Toskar controlla secondo la pianificazione qui sotto e viene eseguita solo quando qualcosa è cambiato, dicendo all’attività cosa.",
+    "checkSchedule": "Ogni quanto controllare"
   },
   "draft": {
     "label": "Automazione da confermare",
@@ -375,5 +384,9 @@
     "failed_one": "Non riuscita una volta: {{error}}",
     "failed_other": "Non riuscita {{count}} volte, l’ultima: {{error}}",
     "failed_many": "Non riuscita {{count}} volte, l’ultima: {{error}}"
+  },
+  "trigger": {
+    "page": "Quando cambia {{site}} · controllo: {{schedule}}",
+    "feed": "Nuovi articoli su {{site}} · controllo: {{schedule}}"
   }
 }

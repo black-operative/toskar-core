@@ -134,7 +134,9 @@
     "history": "履歴",
     "notRunYet": "この自動化はまだ実行されていません。",
     "olderRuns": "以前の実行を表示",
-    "loadingOlder": "読み込み中…"
+    "loadingOlder": "読み込み中…",
+    "lastChecked": "最終確認 {{when}}、変化なし",
+    "nextCheck": "次の確認 {{when}}"
   },
   "run": {
     "details": "詳細",
@@ -351,7 +353,14 @@
     "cronHint": "下のタイムゾーンで、分・時・日・月・曜日の5つのフィールドを指定します。",
     "saveResults": "結果をファイルにも保存する",
     "saveFolder": "フォルダー",
-    "saveFolderHint": "結果ごとに新しい Markdown ファイルをホームフォルダー内に保存します。"
+    "saveFolderHint": "結果ごとに新しい Markdown ファイルをホームフォルダー内に保存します。",
+    "runs": "実行のタイミング",
+    "runsSchedule": "スケジュールどおり",
+    "runsPage": "ウェブページが変わったとき",
+    "runsFeed": "フィードに新しい投稿があったとき",
+    "watchUrl": "リンク",
+    "watchHint": "下のスケジュールで確認し、変化があったときだけ、何が変わったかをタスクに伝えて実行します。",
+    "checkSchedule": "確認の頻度"
   },
   "draft": {
     "label": "確認待ちのオートメーション",
@@ -371,5 +380,9 @@
     "intro_other": "前回のまとめ以降に、{{count}}件のオートメーションが見つけたこと。",
     "noResult": "実行しましたが、報告することはありません。",
     "failed_other": "{{count}}回失敗しました。最後のエラー: {{error}}"
+  },
+  "trigger": {
+    "page": "{{site}} が変わったとき · 確認: {{schedule}}",
+    "feed": "{{site}} の新しい投稿 · 確認: {{schedule}}"
   }
 }

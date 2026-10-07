@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { AIProfile, Automation, AutomationClockTime, AutomationInput, AutomationSchedule, Model, ParsedAutomation, ToolRecord } from '@/types/api'
+import type { AIProfile, Automation, AutomationClockTime, AutomationInput, AutomationSchedule, AutomationTrigger, Model, ParsedAutomation, ToolRecord } from '@/types/api'
 import i18n from '@/i18n'
 import { api } from '@/lib/api'
 import { canChat } from '@/features/models/modelPresentation'
@@ -15,7 +15,7 @@ import {
   localTimeZone,
   notificationLabel,
   resultProse,
-  scheduleLabel,
+  whenLabel,
   scheduleTimes,
   scheduleWeekdays,
   visibleTask,
@@ -74,6 +74,9 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   const [value, setValue] = useState(String(initial?.notification.condition?.value ?? ''))
   const [currency, setCurrency] = useState(initial?.notification.condition?.currency ?? 'USD')
   const [selectedTools, setSelectedTools] = useState<string[]>(initial?.tools ?? [])
+  // Run when a page or feed changes instead of every time (#204).
+  const [triggerKind, setTriggerKind] = useState<AutomationTrigger['kind']>(initial?.trigger?.kind ?? '')
+  const [triggerURL, setTriggerURL] = useState(initial?.trigger?.url ?? '')
   // Also save each result as a file in a folder (#204).
   const [saving, setSaving] = useState(Boolean(initial?.save_folder))
   const [saveFolder, setSaveFolder] = useState(initial?.save_folder || '~/Documents/Toskar')
@@ -185,6 +188,8 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       tools: selectedTools,
       response_language: responseLanguage,
       save_folder: saving ? saveFolder.trim() : '',
+      // An edit that stops watching sends a trigger with no kind.
+      trigger: triggerKind ? { kind: triggerKind, url: triggerURL.trim() } : initial?.trigger ? { kind: '' } : undefined,
     }
   }
 
@@ -216,7 +221,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
     }
   }
 
-  const summary = scheduleLabel(schedule)
+  const summary = whenLabel({ schedule, trigger: triggerKind ? { kind: triggerKind, url: triggerURL } : undefined })
 
   return (
     <form
@@ -322,7 +327,40 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
         />
         <span id="automation-task-hint" className="block text-xs text-ink-faint">{t('form.taskHint')}</span>
       </label>
-      <p className="text-sm text-ink-muted">{t('form.schedule')}</p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block space-y-1 text-sm">
+          <span className="text-ink-muted">{t('form.runs')}</span>
+          <select
+            className="field w-full"
+            value={triggerKind}
+            onChange={(event) => {
+              const next = event.target.value as AutomationTrigger['kind']
+              setTriggerKind(next)
+              // Watching checks every hour to start with.
+              if (next && !triggerKind && schedule.kind !== 'interval') setSchedule({ kind: 'interval', time_zone: schedule.time_zone, every_seconds: 3600 })
+            }}
+          >
+            <option value="">{t('form.runsSchedule')}</option>
+            <option value="page">{t('form.runsPage')}</option>
+            <option value="feed">{t('form.runsFeed')}</option>
+          </select>
+        </label>
+        {triggerKind ? (
+          <label className="block space-y-1 text-sm">
+            <span className="text-ink-muted">{t('form.watchUrl')}</span>
+            <input
+              className="field w-full"
+              type="url"
+              value={triggerURL}
+              placeholder={triggerKind === 'feed' ? 'https://example.com/feed.xml' : 'https://example.com/careers'}
+              onChange={(event) => setTriggerURL(event.target.value)}
+              required
+            />
+          </label>
+        ) : null}
+      </div>
+      {triggerKind ? <p className="text-xs text-ink-faint">{t('form.watchHint')}</p> : null}
+      <p className="text-sm text-ink-muted">{triggerKind ? t('form.checkSchedule') : t('form.schedule')}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block space-y-1 text-sm">
           <span className="text-ink-muted">{t('form.repeats')}</span>

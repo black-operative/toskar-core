@@ -134,7 +134,9 @@
     "history": "History",
     "notRunYet": "This automation has not run yet.",
     "olderRuns": "Show older runs",
-    "loadingOlder": "Loading…"
+    "loadingOlder": "Loading…",
+    "lastChecked": "Last checked {{when}}, nothing new",
+    "nextCheck": "Next check {{when}}"
   },
   "run": {
     "details": "Details",
@@ -351,7 +353,14 @@
     "cronHint": "Five fields, in the time zone below: minute, hour, day of the month, month, and day of the week.",
     "saveResults": "Also save each result as a file",
     "saveFolder": "Folder",
-    "saveFolderHint": "A new Markdown file for each result, in your home folder."
+    "saveFolderHint": "A new Markdown file for each result, in your home folder.",
+    "runs": "Runs",
+    "runsSchedule": "On its schedule",
+    "runsPage": "When a web page changes",
+    "runsFeed": "When a feed has new posts",
+    "watchUrl": "Link",
+    "watchHint": "Toskar checks it on the schedule below and runs only when something changed, telling the task what it was.",
+    "checkSchedule": "How often to check"
   },
   "draft": {
     "label": "Automation to confirm",
@@ -373,5 +382,9 @@
     "noResult": "Ran, with nothing to report.",
     "failed_one": "Failed once: {{error}}",
     "failed_other": "Failed {{count}} times, last: {{error}}"
+  },
+  "trigger": {
+    "page": "When {{site}} changes · checked: {{schedule}}",
+    "feed": "New posts on {{site}} · checked: {{schedule}}"
   }
 }

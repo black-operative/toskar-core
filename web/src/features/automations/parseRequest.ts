@@ -1,6 +1,6 @@
 import i18n from '@/i18n'
 import { formatDate, formatList, formatPrice } from '@/i18n/format'
-import type { AutomationClockTime, AutomationCondition, AutomationNotification, AutomationSchedule } from '@/types/api'
+import type { AutomationClockTime, AutomationCondition, AutomationNotification, AutomationSchedule, AutomationTrigger } from '@/types/api'
 // Labels and prompt helpers for automations. Requests are read on the
 // computer (POST /api/v1/automations/parse, #204), with the words in
 // i18n/requests; what this shows, such as schedules, is in the App language.
@@ -48,6 +48,23 @@ export function scheduleLabel(schedule: AutomationSchedule): string {
       return intervalLabel(schedule.every_seconds ?? 0)
     default:
       return i18n.t('automations:schedule.scheduled')
+  }
+}
+
+/** When an automation runs: its schedule, or what it watches and how often it checks (#204). */
+export function whenLabel(item: { schedule: AutomationSchedule; trigger?: AutomationTrigger }): string {
+  const schedule = scheduleLabel(item.schedule)
+  const trigger = item.trigger
+  if (!trigger?.kind || !trigger.url) return schedule
+  const site = siteOf(trigger.url)
+  return i18n.t(`automations:trigger.${trigger.kind}`, { site, schedule })
+}
+
+function siteOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return url
   }
 }
 

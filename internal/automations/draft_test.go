@@ -2,6 +2,7 @@ package automations_test
 
 import (
 	"context"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -134,3 +135,81 @@ func TestResultIsSavedToItsFolder(t *testing.T) {
 }
 
 func ptr[T any](v T) *T { return &v }
+
+type scriptedWatcher struct {
+	found []automations.Found
+	errs  []error
+	calls int
+}
+
+func (w *scriptedWatcher) Check(_ context.Context, _ automations.Trigger, _ []byte) (automations.Found, []byte, error) {
+	i := w.calls
+	w.calls++
+	var err error
+	if i < len(w.errs) {
+		err = w.errs[i]
+	}
+	if err != nil {
+		return automations.Found{}, nil, err
+	}
+	return w.found[i], []byte(`{"n":` + string(rune('0'+i)) + `}`), nil
+}
+
+type noteExec struct{ notes []string }
+
+func (e *noteExec) Execute(ctx context.Context, _ automations.Automation) (automations.Execution, error) {
+	e.notes = append(e.notes, automations.ChangeNote(ctx))
+	return automations.Execution{Text: "Summarized the change."}, nil
+}
+
+// A trigger's check that finds nothing new needs no run; one that finds a
+// change runs, told what changed; one that can't look fails the run (#204).
+func TestTriggerChecksBeforeRunning(t *testing.T) {
+	db := openAutomationDB(t)
+	repo := repositories.NewAutomationRepo(db.SQL)
+	ctx := context.Background()
+	createdAt := time.Date(2026, 10, 7, 7, 0, 0, 0, time.UTC)
+	created, err := repo.Create(ctx, automations.CreateInput{
+		ModelID: "auto", Name: "Careers page", Prompt: "Say what's new.",
+		Trigger:  &automations.Trigger{Kind: automations.TriggerPage, URL: "https://example.com/careers"},
+		Schedule: automations.Schedule{Kind: automations.KindInterval, TimeZone: "UTC", EverySeconds: 3600},
+	}, createdAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	watch := &scriptedWatcher{
+		found: []automations.Found{{}, {Changed: true, Summary: "+ Product manager"}, {}},
+		errs:  []error{nil, nil, errors.New("503 Service Unavailable")},
+	}
+	exec := &noteExec{}
+	clock := createdAt
+	runner := &automations.Runner{Store: repo, Exec: exec, Watch: watch, Notify: &recordingNotifier{}, Now: func() time.Time { return clock }, Lease: time.Hour}
+	tick := func() {
+		clock = clock.Add(time.Hour)
+		if err := runner.Tick(ctx); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	tick() // nothing new
+	detail, _ := repo.History(ctx, created.ID)
+	if len(detail.History) != 0 || detail.LastCheckedAt == nil || detail.NextRunAt == nil || !detail.NextRunAt.After(clock) {
+		t.Fatalf("after a quiet check: %d runs, checked %v, next %v", len(detail.History), detail.LastCheckedAt, detail.NextRunAt)
+	}
+	tick() // changed
+	detail, _ = repo.History(ctx, created.ID)
+	if len(detail.History) != 1 || detail.History[0].Status != automations.RunSucceeded || len(exec.notes) != 1 || !strings.Contains(exec.notes[0], "+ Product manager") {
+		t.Fatalf("after a change: %+v, notes %q", detail.History, exec.notes)
+	}
+	if got, _ := repo.Get(ctx, created.ID); string(got.WatchState) != `{"n":1}` {
+		t.Fatalf("watch state = %s", got.WatchState)
+	}
+	tick() // can't look: a failed run, without the model
+	detail, _ = repo.History(ctx, created.ID)
+	if len(detail.History) != 2 || len(exec.notes) != 1 {
+		t.Fatalf("after a failed check: %d runs, %d model runs", len(detail.History), len(exec.notes))
+	}
+	if run := detail.History[0]; run.Status == automations.RunSucceeded || !strings.Contains(run.Error, "could not check https://example.com/careers") {
+		t.Fatalf("failed check run = %+v", run)
+	}
+}

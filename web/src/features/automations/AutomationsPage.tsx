@@ -9,7 +9,7 @@ import { readScreenshotLaunch } from '@/lib/screenshotMode'
 import type { Automation, AutomationDetail, AutomationInput, AutomationRun, Model } from '@/types/api'
 import { AutomationForm } from './AutomationForm'
 import { clockDetail, compactWhen, explainRun, runTiming } from './display'
-import { notificationLabel, resultProse, scheduleLabel, visibleTask } from './parseRequest'
+import { notificationLabel, resultProse, visibleTask, whenLabel } from './parseRequest'
 import { RealmKicker } from '@/components/ui/Realm'
 import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -238,7 +238,7 @@ export function AutomationsPage() {
                     <p className="selectable-title font-semibold text-ink">{item.name}</p>
                     <StatusPill item={item} />
                   </div>
-                  <p className="mt-1 text-sm text-ink-muted">{scheduleLabel(item.schedule)}</p>
+                  <p className="mt-1 text-sm text-ink-muted">{whenLabel(item)}</p>
                   {resultProse(item.last_result) && (
                     <p className="mt-2 line-clamp-2 text-sm text-ink">{resultProse(item.last_result)}</p>
                   )}
@@ -345,8 +345,13 @@ function Detail({
         <div className="mt-4 space-y-3 text-sm">
           <div>
             <p className="label-caps">{t('detail.schedule')}</p>
-            <p className="text-ink">{scheduleLabel(detail.schedule)}</p>
-            <p className="text-ink-muted">{t('detail.next', { when: compactWhen(detail.next_run_at, zone) })}</p>
+            <p className="text-ink">{whenLabel(detail)}</p>
+            {detail.trigger?.kind && detail.last_checked_at ? (
+              <p className="text-ink-muted">{t('detail.lastChecked', { when: compactWhen(detail.last_checked_at, zone) })}</p>
+            ) : null}
+            <p className="text-ink-muted">
+              {detail.trigger?.kind ? t('detail.nextCheck', { when: compactWhen(detail.next_run_at, zone) }) : t('detail.next', { when: compactWhen(detail.next_run_at, zone) })}
+            </p>
           </div>
           <div>
             <p className="label-caps">{t('detail.task')}</p>

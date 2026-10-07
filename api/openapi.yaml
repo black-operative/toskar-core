@@ -5584,6 +5584,15 @@ components:
         save_folder:
           type: string
           description: A folder in the home folder, such as ~/Documents/Toskar, to also save each result to as a Markdown file. Empty stops saving.
+        trigger:
+          type: object
+          description: Run only when a page or feed changed, checked on the schedule. On update, a trigger with no kind runs on the schedule again.
+          properties:
+            kind:
+              type: string
+              enum: [page, feed, ""]
+            url:
+              type: string
     Automation:
       type: object
       properties:
@@ -5619,6 +5628,19 @@ components:
         save_folder:
           type: string
           description: The folder each result is also saved to
+        trigger:
+          type: object
+          description: Run only when a page or feed changed, checked on the schedule.
+          properties:
+            kind:
+              type: string
+              enum: [page, feed, ""]
+            url:
+              type: string
+        last_checked_at:
+          type: string
+          format: date-time
+          description: When the trigger last checked and found nothing new
         created_at:
           type: string
           format: date-time
