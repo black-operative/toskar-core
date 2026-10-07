@@ -2,7 +2,17 @@
   "menu": {
     "quitApp": "Encerrar o Toskar",
     "file": "Arquivo",
-    "quit": "Encerrar"
+    "quit": "Encerrar",
+    "about": "Sobre o Toskar",
+    "settings": "Configurações…",
+    "hide": "Ocultar Toskar",
+    "hideOthers": "Ocultar Outros",
+    "showAll": "Mostrar Tudo",
+    "newChat": "Novo chat",
+    "window": "Janela",
+    "minimize": "Minimizar",
+    "zoom": "Zoom",
+    "closeWindow": "Fechar Janela"
   },
   "tray": {
     "tooltip": "O Toskar está sendo executado em segundo plano",
