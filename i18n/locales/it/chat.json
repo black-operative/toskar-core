@@ -181,7 +181,10 @@
     "runningCommand": "Esecuzione del comando…",
     "checkingGit": "Controllo di git…",
     "usingTool": "Uso di {{tool}}…",
-    "loadingChat": "Caricamento della chat…"
+    "loadingChat": "Caricamento della chat…",
+    "makingImage": "Creazione dell’immagine…",
+    "changingImage": "Modifica dell’immagine…",
+    "makingVideo": "Creazione del clip, ci vogliono alcuni minuti…"
   },
   "tools": {
     "names": {

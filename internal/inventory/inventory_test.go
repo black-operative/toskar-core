@@ -59,18 +59,19 @@ func TestAbilities(t *testing.T) {
 func TestCapabilityQuestions(t *testing.T) {
 	s := snapshot()
 	for q, want := range map[string]string{
-		"Can you generate an image of a cat?": "image_generation",
-		"Can you execute Python?":             "run_code",
-		"Do you have access to my email?":     "email",
-		"Can you search the web?":             "web",
-		"Are you able to use GitHub?":         "github",
+		"Can you generate images?":        "image_generation",
+		"Can you execute Python?":         "run_code",
+		"Do you have access to my email?": "email",
+		"Can you search the web?":         "web",
+		"Are you able to use GitHub?":     "github",
 	} {
 		got := Ask(s, q)
 		if len(got) == 0 || got[0].ID != want {
 			t.Errorf("%q = %+v, want %s", q, got, want)
 		}
 	}
-	for _, q := range []string{"Generate an image of a cat", "What is the capital of France?", "Run the tests"} {
+	// A question that names something to make asks for it.
+	for _, q := range []string{"Generate an image of a cat", "Can you generate an image of a cat?", "Are you able to make a picture of a dog for me?", "Could you draw me a fox?", "What is the capital of France?", "Run the tests"} {
 		if got := Ask(s, q); len(got) != 0 {
 			t.Errorf("%q treated as a capability question: %+v", q, got)
 		}
@@ -110,7 +111,7 @@ func TestWhichComputerCanRunAModel(t *testing.T) {
 func TestDirectAnswers(t *testing.T) {
 	s := snapshot()
 	for q, want := range map[string]string{
-		"Can you generate an image of a cat?":  "No, I can't generate images right now. No image model",
+		"Can you generate images?":             "No, I can't generate images right now. No image model",
 		"Can you execute Python?":              "Yes, I can run commands and code, using Terminal.",
 		"Which computer can run Qwen 2.5 14B?": "Qwen 2.5 14B:\n- Studio: can run it now",
 	} {
@@ -121,6 +122,7 @@ func TestDirectAnswers(t *testing.T) {
 	}
 	for _, q := range []string{
 		"Generate an image of a cat",
+		"Can you generate an image of a cat?",
 		"Can you search the web and also run Python to chart the results for me?",
 		"Can you explain what a capital city is and why it matters for a country's government?",
 	} {
@@ -136,7 +138,7 @@ func TestImageGenerationNotSetUp(t *testing.T) {
 	s := snapshot()
 	s.Tools = append(s.Tools, Tool{ID: "image.generate", Name: "Generate Image", Description: "Make an image from a description",
 		Source: "builtin", Enabled: true, Unavailable: "image generation isn't set up yet. Set it up on the Tools page"})
-	got, ok := Direct(s, "Can you generate an image of a cat?")
+	got, ok := Direct(s, "Can you generate images?")
 	if !ok || got != "No, I can't generate images right now. Image generation isn't set up yet. Set it up on the Tools page." {
 		t.Fatalf("answer %q", got)
 	}
@@ -151,11 +153,14 @@ func TestImageGenerationNotSetUp(t *testing.T) {
 func TestNeeds(t *testing.T) {
 	s := snapshot()
 	s.Setups = []Setup{{Ability: "image_generation", Option: "flux2-klein-4b", Name: "FLUX.2 [klein] 4B", SizeBytes: 5_207_178_964, Tools: []string{"image.generate"}}}
-	a, ok := Needs(s, "Make me an image of a Viking tree")
-	if !ok || a.ID != "image_generation" || a.Setup == nil || a.Setup.Option != "flux2-klein-4b" {
-		t.Fatalf("needs = %+v %v", a, ok)
+	// A request asked as a question, or to draw something, needs it too.
+	for _, msg := range []string{"Make me an image of a Viking tree", "Are you able to make a picture of a dog for me?", "Can you draw a dog?", "Draw me a fox"} {
+		a, ok := Needs(s, msg)
+		if !ok || a.ID != "image_generation" || a.Setup == nil || a.Setup.Option != "flux2-klein-4b" {
+			t.Fatalf("%q needs = %+v %v", msg, a, ok)
+		}
 	}
-	for _, msg := range []string{"Can you generate an image of a cat?", "What is the capital of France?", "Run the tests"} {
+	for _, msg := range []string{"Can you generate images?", "What is the capital of France?", "Run the tests"} {
 		if a, ok := Needs(s, msg); ok {
 			t.Errorf("%q needs %s", msg, a.ID)
 		}

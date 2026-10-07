@@ -173,7 +173,10 @@
     "runningCommand": "正在執行指令…",
     "checkingGit": "正在檢查 git…",
     "usingTool": "正在使用 {{tool}}…",
-    "loadingChat": "正在載入此聊天…"
+    "loadingChat": "正在載入此聊天…",
+    "makingImage": "正在產生圖片…",
+    "changingImage": "正在修改圖片…",
+    "makingVideo": "正在產生短片，需要幾分鐘…"
   },
   "tools": {
     "names": {

@@ -233,6 +233,18 @@ func (o *Orchestrator) Run(
 			streamText(ch, role, nodeID, content, m, contextusage.Measure(count, plainSys, toolPrompt, messages, promptTokens))
 			return
 		}
+		// A picture or clip the message asks for is made by Toskar, so a
+		// model that doesn't pick the tool still makes it.
+		if !jsonOnly {
+			if reply, m, made := makeMediaFirst(ctx, env, webProfile, role, messages, task.Prompt, reference); made {
+				promptTokens := 0
+				if m != nil {
+					promptTokens = m.PromptTokens
+				}
+				streamText(ch, role, nodeID, reply, m, contextusage.Measure(count, plainSys, toolPrompt, messages, promptTokens))
+				return
+			}
+		}
 		if reply, m, made := makeFileFirst(ctx, env, profile, role, messages, task.Prompt); made {
 			promptTokens := 0
 			if m != nil {

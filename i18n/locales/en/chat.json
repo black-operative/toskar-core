@@ -177,7 +177,10 @@
     "runningCommand": "Running command…",
     "checkingGit": "Checking git…",
     "usingTool": "Using {{tool}}…",
-    "loadingChat": "Loading this chat…"
+    "loadingChat": "Loading this chat…",
+    "makingImage": "Making the picture…",
+    "changingImage": "Changing the picture…",
+    "makingVideo": "Making the clip, which takes a few minutes…"
   },
   "tools": {
     "names": {

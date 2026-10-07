@@ -44,7 +44,10 @@ type Case struct {
 	// search; without it, the message itself.
 	StubQuery string `json:"stub_query"`
 	StubOnly  bool   `json:"stub_only"`
-	Expect    Expect `json:"expect"`
+	// Fixtures needs the in-process run's stand-in tools, such as an image
+	// tool that saves a tiny picture; a daemon has its real ones.
+	Fixtures bool   `json:"fixtures"`
+	Expect   Expect `json:"expect"`
 	// Platforms the case runs on: "core", "phone", or both. Empty is core.
 	Platforms []string `json:"platforms"`
 }
@@ -69,17 +72,20 @@ type Setup struct {
 
 // Expect is the behavior a case checks. Empty fields are not checked.
 type Expect struct {
-	Effort         string   `json:"effort"`
-	Plan           *bool    `json:"plan"`
-	MinWorkers     int      `json:"min_workers"`
-	Lookup         *bool    `json:"lookup"`
-	NoToolsRun     bool     `json:"no_tools_run"`
-	Sources        []string `json:"sources"`
-	Verified       bool     `json:"verified"`
-	NoticeMatches  string   `json:"notice_matches"`
-	StepsMatch     string   `json:"steps_match"`
-	ApprovalFor    []string `json:"approval_for"`
-	NotRun         []string `json:"not_run"`
+	Effort        string   `json:"effort"`
+	Plan          *bool    `json:"plan"`
+	MinWorkers    int      `json:"min_workers"`
+	Lookup        *bool    `json:"lookup"`
+	NoToolsRun    bool     `json:"no_tools_run"`
+	Sources       []string `json:"sources"`
+	Verified      bool     `json:"verified"`
+	NoticeMatches string   `json:"notice_matches"`
+	StepsMatch    string   `json:"steps_match"`
+	ApprovalFor   []string `json:"approval_for"`
+	NotRun        []string `json:"not_run"`
+	// ToolsRun are tools that must run, such as image.generate for "draw
+	// a dog".
+	ToolsRun       []string `json:"tools_run"`
 	PromptContains []string `json:"prompt_contains"`
 	// PromptLacks are texts the model must never be sent (stub only), such
 	// as a page that doesn't answer the question.
@@ -213,6 +219,10 @@ func TestQualitySet(t *testing.T) {
 			if c.StubOnly && d.Name() != "stub" {
 				skipped = true
 				t.Skip("checks a scripted reply")
+			}
+			if c.Fixtures && d.Name() == "real" {
+				skipped = true
+				t.Skip("needs the in-process stand-in tools")
 			}
 			r := d.Run(t, c)
 			failures := check(d.Name(), c, r, deflection)
@@ -371,6 +381,11 @@ func check(driver string, c Case, r Result, deflection *regexp.Regexp) []string 
 			if !slices.Contains(r.toolIDs("tool.requested"), id) {
 				fail("%s did not ask first (requested: %v)", id, r.toolIDs("tool.requested"))
 			}
+		}
+	}
+	for _, id := range x.ToolsRun {
+		if !slices.Contains(r.toolIDs("tool.started"), id) {
+			fail("%s did not run (ran: %v)", id, r.toolIDs("tool.started"))
 		}
 	}
 	for _, id := range x.NotRun {

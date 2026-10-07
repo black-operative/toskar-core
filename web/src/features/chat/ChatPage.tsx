@@ -153,6 +153,9 @@ function toolProgress(toolId?: string, summary?: string): string {
   if (toolId === 'spreadsheet.analyze') return t('status.readingSpreadsheet')
   if (toolId === 'files.create') return t('status.creatingFile')
   if (toolId === 'code.execute') return t('status.runningCode')
+  if (toolId === 'image.generate') return t('status.makingImage')
+  if (toolId === 'image.edit') return t('status.changingImage')
+  if (toolId === 'video.generate') return t('status.makingVideo')
   if (toolId === 'terminal') return t('status.runningCommand')
   if (toolId === 'git.status' || toolId === 'git.diff' || toolId === 'git.log' || toolId === 'git.show') {
     return t('status.checkingGit')
@@ -757,6 +760,13 @@ export function ChatPage() {
           if (conversationId && conversationId !== selectedId && conversationId !== streamingConvRef.current) return
           const name = event.payload?.name as string | undefined
           setStatusMessage(name ? t('status.writingNamed', { name }) : t('status.writingFile'))
+        }
+        // Toskar is making a picture or a clip the message asked for.
+        if (event.type === 'chat.making_media') {
+          const conversationId = event.payload?.conversation_id as string | undefined
+          if (conversationId && conversationId !== selectedId && conversationId !== streamingConvRef.current) return
+          const kind = event.payload?.kind as string | undefined
+          setStatusMessage(kind === 'video' ? t('status.makingVideo') : kind === 'edit' ? t('status.changingImage') : t('status.makingImage'))
         }
         if (event.type === 'chat.lookup') {
           const conversationId = event.payload?.conversation_id as string | undefined
