@@ -362,12 +362,18 @@
     "runsFeed": "When a feed has new posts",
     "runsFolder": "When a file or folder changes",
     "runsWebhook": "When another service calls its link (webhook)",
+    "runsAfter": "After another automation",
     "watchUrl": "Link",
     "watchPath": "Folder or file",
     "watchHint": "Toskar checks it on the schedule below and runs only when something changed, telling the task what it was.",
     "checkSchedule": "How often to check",
     "webhookHint": "It runs when another service calls its link. Make the link on the automation's page after saving.",
-    "manualHint": "It runs only when you press Run now, or from its webhook."
+    "manualHint": "It runs only when you press Run now, or from its webhook.",
+    "afterWhich": "Automation",
+    "afterWhen": "When",
+    "afterSucceeded": "Each time it finishes",
+    "afterNotified": "Only when it notifies",
+    "afterHint": "It runs right after the other automation, given its result. A run that follows another can't use tools that change things outside Toskar."
   },
   "draft": {
     "label": "Automation to confirm",
@@ -394,7 +400,10 @@
     "page": "When {{site}} changes · checked: {{schedule}}",
     "feed": "New posts on {{site}} · checked: {{schedule}}",
     "folder": "When {{name}} changes · checked: {{schedule}}",
-    "webhook": "When its webhook link is called"
+    "webhook": "When its webhook link is called",
+    "after": "After {{name}} finishes",
+    "afterNotified": "After {{name}} notifies",
+    "anotherAutomation": "another automation"
   },
   "webhook": {
     "title": "Webhook link",

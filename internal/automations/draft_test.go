@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -211,5 +212,122 @@ func TestTriggerChecksBeforeRunning(t *testing.T) {
 	}
 	if run := detail.History[0]; run.Status == automations.RunSucceeded || !strings.Contains(run.Error, "could not check https://example.com/careers") {
 		t.Fatalf("failed check run = %+v", run)
+	}
+}
+
+type chainExec struct {
+	mu    sync.Mutex
+	order []string
+	notes map[string]string
+}
+
+func (e *chainExec) Execute(ctx context.Context, a automations.Automation) (automations.Execution, error) {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	e.order = append(e.order, a.Name)
+	if e.notes == nil {
+		e.notes = map[string]string{}
+	}
+	e.notes[a.Name] = automations.ChangeNote(ctx)
+	return automations.Execution{Text: "Result of " + a.Name + "."}, nil
+}
+
+// One automation finishing starts those that follow it, with its result;
+// one that follows only notices waits for a notice; a chain can't loop and
+// stops after MaxChain (#204).
+func TestAutomationsRunAfterOthers(t *testing.T) {
+	db := openAutomationDB(t)
+	repo := repositories.NewAutomationRepo(db.SQL)
+	ctx := context.Background()
+	createdAt := time.Date(2026, 10, 7, 7, 0, 0, 0, time.UTC)
+	add := func(name string, after *automations.Automation, when string) automations.Automation {
+		in := automations.CreateInput{ModelID: "auto", Name: name, Prompt: "Do " + name + ".",
+			Schedule: automations.Schedule{Kind: automations.KindDaily, TimeZone: "UTC", Hour: 8}}
+		if after != nil {
+			in.Schedule = automations.Schedule{Kind: automations.KindManual, TimeZone: "UTC"}
+			in.Trigger = &automations.Trigger{Kind: automations.TriggerAfter, AutomationID: after.ID, When: when}
+		}
+		created, err := repo.Create(ctx, in, createdAt)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return created
+	}
+	research := add("Research", nil, "")
+	draft := add("Draft", &research, "")
+	review := add("Review", &draft, automations.AfterNotified)
+
+	exec := &chainExec{}
+	clock := createdAt.Add(90 * time.Minute)
+	runner := &automations.Runner{Store: repo, Exec: exec, Notify: &recordingNotifier{}, Now: func() time.Time { return clock }, Lease: time.Hour}
+	if err := runner.Tick(ctx); err != nil {
+		t.Fatal(err)
+	}
+	runner.Wait()
+	if strings.Join(exec.order, ",") != "Research,Draft,Review" {
+		t.Fatalf("order = %v", exec.order)
+	}
+	if note := exec.notes["Draft"]; !strings.Contains(note, `follows the automation "Research"`) || !strings.Contains(note, "Result of Research.") || !strings.Contains(note, "not instructions") {
+		t.Fatalf("draft note = %q", note)
+	}
+
+	// Review follows only notices: Draft not notifying leaves it be.
+	off := automations.Notification{Mode: automations.NotifyNone}
+	if _, err := repo.Update(ctx, draft.ID, automations.Patch{Notification: &off}, clock); err != nil {
+		t.Fatal(err)
+	}
+	exec.order = nil
+	clock = clock.Add(time.Minute)
+	if _, err := runner.RunNow(ctx, draft.ID); err != nil {
+		t.Fatal(err)
+	}
+	runner.Wait()
+	if strings.Join(exec.order, ",") != "Draft" {
+		t.Fatalf("after a quiet draft: %v", exec.order)
+	}
+
+	// No loops, not even through others, and no following a missing one.
+	loop := &automations.Trigger{Kind: automations.TriggerAfter, AutomationID: review.ID}
+	if _, err := repo.Update(ctx, research.ID, automations.Patch{Trigger: loop}, clock); err == nil {
+		t.Fatal("made a loop")
+	}
+	self := &automations.Trigger{Kind: automations.TriggerAfter, AutomationID: research.ID}
+	if _, err := repo.Update(ctx, research.ID, automations.Patch{Trigger: self}, clock); err == nil {
+		t.Fatal("followed itself")
+	}
+	if _, err := repo.Create(ctx, automations.CreateInput{ModelID: "auto", Name: "Orphan", Prompt: "x",
+		Trigger:  &automations.Trigger{Kind: automations.TriggerAfter, AutomationID: "gone"},
+		Schedule: automations.Schedule{Kind: automations.KindManual, TimeZone: "UTC"}}, clock); err == nil {
+		t.Fatal("followed a missing automation")
+	}
+}
+
+func TestChainStopsAfterMax(t *testing.T) {
+	db := openAutomationDB(t)
+	repo := repositories.NewAutomationRepo(db.SQL)
+	ctx := context.Background()
+	createdAt := time.Date(2026, 10, 7, 7, 0, 0, 0, time.UTC)
+	prev, err := repo.Create(ctx, automations.CreateInput{ModelID: "auto", Name: "Step 0", Prompt: "x",
+		Schedule: automations.Schedule{Kind: automations.KindDaily, TimeZone: "UTC", Hour: 8}}, createdAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := 1; i <= automations.MaxChain+2; i++ {
+		prev, err = repo.Create(ctx, automations.CreateInput{ModelID: "auto", Name: "Step " + string(rune('0'+i)), Prompt: "x",
+			Trigger:  &automations.Trigger{Kind: automations.TriggerAfter, AutomationID: prev.ID},
+			Schedule: automations.Schedule{Kind: automations.KindManual, TimeZone: "UTC"}}, createdAt)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	exec := &chainExec{}
+	clock := createdAt.Add(90 * time.Minute)
+	runner := &automations.Runner{Store: repo, Exec: exec, Notify: &recordingNotifier{}, Now: func() time.Time { return clock }, Lease: time.Hour}
+	if err := runner.Tick(ctx); err != nil {
+		t.Fatal(err)
+	}
+	runner.Wait()
+	if len(exec.order) != automations.MaxChain+1 {
+		t.Fatalf("ran %d steps: %v", len(exec.order), exec.order)
 	}
 }

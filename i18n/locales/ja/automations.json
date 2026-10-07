@@ -362,12 +362,18 @@
     "runsFeed": "フィードに新しい投稿があったとき",
     "runsFolder": "ファイルやフォルダーが変わったとき",
     "runsWebhook": "別のサービスがリンクを呼び出したとき（Webhook）",
+    "runsAfter": "別のオートメーションのあと",
     "watchUrl": "リンク",
     "watchPath": "フォルダーまたはファイル",
     "watchHint": "下のスケジュールで確認し、変化があったときだけ、何が変わったかをタスクに伝えて実行します。",
     "checkSchedule": "確認の頻度",
     "webhookHint": "別のサービスがリンクを呼び出したときに実行します。保存したあと、オートメーションのページでリンクを作成してください。",
-    "manualHint": "「今すぐ実行」を押したときか、Webhook からのみ実行します。"
+    "manualHint": "「今すぐ実行」を押したときか、Webhook からのみ実行します。",
+    "afterWhich": "オートメーション",
+    "afterWhen": "タイミング",
+    "afterSucceeded": "終わるたびに",
+    "afterNotified": "通知したときだけ",
+    "afterHint": "別のオートメーションの直後に、その結果を受け取って実行します。別のオートメーションに続く実行では、Toskar の外の何かを変更するツールは使えません。"
   },
   "draft": {
     "label": "確認待ちのオートメーション",
@@ -392,7 +398,10 @@
     "page": "{{site}} が変わったとき · 確認: {{schedule}}",
     "feed": "{{site}} の新しい投稿 · 確認: {{schedule}}",
     "folder": "{{name}} が変わったとき · 確認: {{schedule}}",
-    "webhook": "Webhook リンクが呼び出されたとき"
+    "webhook": "Webhook リンクが呼び出されたとき",
+    "after": "{{name}} が終わったあと",
+    "afterNotified": "{{name}} が通知したあと",
+    "anotherAutomation": "別のオートメーション"
   },
   "webhook": {
     "title": "Webhook リンク",

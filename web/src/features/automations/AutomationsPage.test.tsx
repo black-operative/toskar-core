@@ -243,6 +243,23 @@ describe('AutomationsPage', () => {
     expect(body.schedule).toMatchObject({ kind: 'manual' })
   })
 
+  it('runs after another automation, with its name in the summary', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Runs' }), { target: { value: 'after' } })
+    expect(screen.getByRole('combobox', { name: 'Automation' })).toHaveValue('auto-1')
+    fireEvent.change(screen.getByRole('combobox', { name: 'When' }), { target: { value: 'notified' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'Buy it' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Draft a purchase note.' } })
+    expect(screen.getByText('After Price below $500 notifies', { selector: 'dd' })).toBeInTheDocument()
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.trigger).toEqual({ kind: 'after', automation_id: 'auto-1', when: 'notified' })
+    expect(body.schedule).toMatchObject({ kind: 'manual' })
+  })
+
   it('also saves results to a folder when asked', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))

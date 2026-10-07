@@ -393,6 +393,11 @@ Saved schedules also carry `hour`, `minute`, and `weekday`: the first time and d
   - **The link:** `POST /api/v1/automations/{id}/hook` makes the link and returns `{token, path}`, shown only then (only the token's SHA-256 is kept). A new one stops the old one, and `hook_set` says one exists.
   - **Calling it:** `POST /hooks/{token}`, which needs no API key, answers `202` with `run_id`. The body, up to 64 KB of any type, ends the run's prompt as data from that service, not instructions.
   - **Refusals:** an unknown token answers `404`, a paused automation `409` `AUTOMATION_PAUSED`, a call within 10 seconds of the last `429` `HOOK_TOO_SOON` with `Retry-After`, and a bigger body `413` `HOOK_TOO_LARGE`.
+- **Chaining:** `{"kind": "after", "automation_id": "…", "when": "succeeded"}` runs the automation right after another one finishes well. With `"when": "notified"`, it runs only when that one notified, such as after a price condition was met. Its prompt ends with the other one's result, labelled as data.
+  - An after trigger on a missing automation, or one that comes back around to itself through others, is refused when saved.
+  - A chain stops after 5 automations in a row.
+  - A follower usually has the `manual` schedule.
+  - `toskarctl`: `--trigger after --after <id> [--after-when notified]`.
 - **Untrusted content:** what a trigger delivers was written by someone else. A run it starts can't use tools that change things outside Toskar, such as the terminal, file writes in the workspace, or Git pushes, even ones approved for the automation. They're skipped and reported like unapproved tools. Reading and creating files in Toskar's store still work.
 - **`toskarctl`:** `--trigger page|feed|folder|webhook|none` with `--trigger-url <url>` or `--trigger-path <path>`; `--schedule manual`; and `toskarctl automations hook <id>` prints a new link.
 

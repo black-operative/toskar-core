@@ -54,10 +54,14 @@ export function scheduleLabel(schedule: AutomationSchedule): string {
 }
 
 /** When an automation runs: its schedule, or what it watches and how often it checks (#204). */
-export function whenLabel(item: { schedule: AutomationSchedule; trigger?: AutomationTrigger }): string {
+export function whenLabel(item: { schedule: AutomationSchedule; trigger?: AutomationTrigger }, names: Record<string, string> = {}): string {
   const schedule = scheduleLabel(item.schedule)
   const trigger = item.trigger
   if (trigger?.kind === 'webhook') return i18n.t('automations:trigger.webhook')
+  if (trigger?.kind === 'after') {
+    const name = names[trigger.automation_id ?? ''] ?? i18n.t('automations:trigger.anotherAutomation')
+    return i18n.t(trigger.when === 'notified' ? 'automations:trigger.afterNotified' : 'automations:trigger.after', { name })
+  }
   const target = trigger?.kind === 'folder' ? trigger.path : trigger?.url
   if (!trigger?.kind || !target) return schedule
   if (trigger.kind === 'folder') {

@@ -25,6 +25,11 @@ type Trigger struct {
 	// Path is a folder's or file's, in the home folder; ~ is the home
 	// folder.
 	Path string `json:"path,omitempty"`
+	// AutomationID is the automation an after trigger follows, and When
+	// is succeeded (the default: each time it finishes well) or notified
+	// (only when it notified) (#204).
+	AutomationID string `json:"automation_id,omitempty"`
+	When         string `json:"when,omitempty"`
 }
 
 // Trigger kinds.
@@ -34,7 +39,19 @@ const (
 	TriggerFolder = "folder"
 	// TriggerWebhook runs it when another service calls its link (#204).
 	TriggerWebhook = "webhook"
+	// TriggerAfter runs it when another automation finishes, with that
+	// one's result (#204).
+	TriggerAfter = "after"
 )
+
+// When an after trigger follows.
+const (
+	AfterSucceeded = "succeeded"
+	AfterNotified  = "notified"
+)
+
+// MaxChain is how many automations in a row one finishing can start.
+const MaxChain = 5
 
 // Validate checks a trigger can be watched.
 func (t *Trigger) Validate() error {
@@ -46,6 +63,13 @@ func (t *Trigger) Validate() error {
 		u, err := url.Parse(strings.TrimSpace(t.URL))
 		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			return errors.New("trigger url must be an http or https link")
+		}
+	case TriggerAfter:
+		if strings.TrimSpace(t.AutomationID) == "" {
+			return errors.New("an after trigger needs the automation it follows")
+		}
+		if t.When != "" && t.When != AfterSucceeded && t.When != AfterNotified {
+			return errors.New("an after trigger's when is succeeded or notified")
 		}
 	case TriggerWebhook:
 		if t.URL != "" || t.Path != "" {
@@ -82,6 +106,9 @@ type Watcher interface {
 // Found is what a check found.
 type Found struct {
 	Changed bool
+	// Chain is how many automations in a row led to this run, for one
+	// started by an after trigger.
+	Chain int
 	// Summary is what changed, for the run: lines added and removed on a
 	// page, or a feed's new posts.
 	Summary string

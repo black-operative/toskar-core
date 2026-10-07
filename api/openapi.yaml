@@ -5678,13 +5678,20 @@ components:
           properties:
             kind:
               type: string
-              enum: [page, feed, folder, webhook, ""]
+              enum: [page, feed, folder, webhook, after, ""]
             url:
               type: string
               description: The page or feed, for page and feed
             path:
               type: string
               description: A folder or file in the home folder, for folder; ~ is the home folder
+            automation_id:
+              type: string
+              description: For after, the automation it runs after
+            when:
+              type: string
+              enum: [succeeded, notified]
+              description: For after, each time that one succeeds (the default) or only when it notifies
     Automation:
       type: object
       properties:
@@ -5726,13 +5733,20 @@ components:
           properties:
             kind:
               type: string
-              enum: [page, feed, folder, webhook, ""]
+              enum: [page, feed, folder, webhook, after, ""]
             url:
               type: string
               description: The page or feed, for page and feed
             path:
               type: string
               description: A folder or file in the home folder, for folder; ~ is the home folder
+            automation_id:
+              type: string
+              description: For after, the automation it runs after
+            when:
+              type: string
+              enum: [succeeded, notified]
+              description: For after, each time that one succeeds (the default) or only when it notifies
         last_checked_at:
           type: string
           format: date-time

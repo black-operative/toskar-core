@@ -66,6 +66,9 @@ func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput,
 	if err := prepareAutomation(&a); err != nil {
 		return automations.Automation{}, err
 	}
+	if err := r.checkChain(ctx, a); err != nil {
+		return automations.Automation{}, err
+	}
 	if err := a.SetNextRun(now); err != nil {
 		return automations.Automation{}, err
 	}
@@ -173,6 +176,9 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 	}
 	existing.UpdatedAt = clock(now)
 	if err := prepareAutomation(&existing); err != nil {
+		return automations.Automation{}, err
+	}
+	if err := r.checkChain(ctx, existing); err != nil {
 		return automations.Automation{}, err
 	}
 	if err := existing.SetNextRun(existing.UpdatedAt); err != nil {
@@ -437,6 +443,53 @@ func (r *AutomationRepo) Checked(ctx context.Context, id string, state []byte, c
 		return err
 	}
 	return r.updateRow(ctx, a)
+}
+
+// Followers are the automations with an after trigger on id (#204).
+func (r *AutomationRepo) Followers(ctx context.Context, id string) ([]automations.Automation, error) {
+	rows, err := r.db.QueryContext(ctx, automationSelect+` WHERE trigger_json IS NOT NULL ORDER BY name`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	all, err := scanAutomations(rows)
+	if err != nil {
+		return nil, err
+	}
+	var out []automations.Automation
+	for _, a := range all {
+		if a.Trigger != nil && a.Trigger.Kind == automations.TriggerAfter && a.Trigger.AutomationID == id {
+			out = append(out, a)
+		}
+	}
+	return out, nil
+}
+
+// checkChain refuses an after trigger on an automation that doesn't exist,
+// or one that would come back around to a, so finishing never loops
+// (#204).
+func (r *AutomationRepo) checkChain(ctx context.Context, a automations.Automation) error {
+	if a.Trigger == nil || a.Trigger.Kind != automations.TriggerAfter {
+		return nil
+	}
+	next := a.Trigger.AutomationID
+	for steps := 0; steps < 100; steps++ {
+		if next == a.ID {
+			return fmt.Errorf("an automation can't follow itself, even through others")
+		}
+		prev, err := r.Get(ctx, next)
+		if err != nil {
+			if steps == 0 {
+				return fmt.Errorf("the automation it follows doesn't exist")
+			}
+			return nil
+		}
+		if prev.Trigger == nil || prev.Trigger.Kind != automations.TriggerAfter {
+			return nil
+		}
+		next = prev.Trigger.AutomationID
+	}
+	return fmt.Errorf("that chain of automations is too long")
 }
 
 // SetHookHash keeps the hash of a webhook trigger's new token, which

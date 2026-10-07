@@ -73,9 +73,11 @@ _toskarctl() {
             '--condition-kind[condition kind]:kind:(threshold available significant)' \
             '--condition-op[condition operator]:op:(below above)' \
             '--condition-value[threshold value]:value:' \
-            '--trigger[run only when it changed]:trigger:(page feed folder webhook none)' \
+            '--trigger[run only when it changed]:trigger:(page feed folder webhook after none)' \
             '--trigger-url[the page or feed to watch]:url:' \
             '--trigger-path[the folder or file to watch]:path:_files' \
+            '--after[the automation it runs after]:automation id:' \
+            '--after-when[when it runs after]:when:(succeeded notified)' \
             '--save-folder[also save each result in this folder]:folder:_files -/' \
             '--disabled[create the automation paused]'
           ;;

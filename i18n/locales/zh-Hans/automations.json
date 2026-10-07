@@ -362,12 +362,18 @@
     "runsFeed": "订阅源有新文章时",
     "runsFolder": "文件或文件夹有变化时",
     "runsWebhook": "其他服务调用其链接时（Webhook）",
+    "runsAfter": "在另一个自动化之后",
     "watchUrl": "链接",
     "watchPath": "文件夹或文件",
     "watchHint": "Toskar 按下方计划检查，只有发生变化时才运行，并告诉任务变化了什么。",
     "checkSchedule": "检查频率",
     "webhookHint": "其他服务调用其链接时运行。保存后，在自动化页面上创建链接。",
-    "manualHint": "只有在你点按“立即运行”或通过其 Webhook 时才运行。"
+    "manualHint": "只有在你点按“立即运行”或通过其 Webhook 时才运行。",
+    "afterWhich": "自动化",
+    "afterWhen": "时机",
+    "afterSucceeded": "每次完成时",
+    "afterNotified": "仅在发出通知时",
+    "afterHint": "在另一个自动化之后立即运行，并获得它的结果。跟随其他自动化的运行不能使用会更改 Toskar 之外内容的工具。"
   },
   "draft": {
     "label": "待确认的自动化",
@@ -392,7 +398,10 @@
     "page": "{{site}} 有变化时 · 检查：{{schedule}}",
     "feed": "{{site}} 有新文章 · 检查：{{schedule}}",
     "folder": "{{name}} 有变化时 · 检查：{{schedule}}",
-    "webhook": "其 Webhook 链接被调用时"
+    "webhook": "其 Webhook 链接被调用时",
+    "after": "{{name}} 完成后",
+    "afterNotified": "{{name}} 发出通知后",
+    "anotherAutomation": "另一个自动化"
   },
   "webhook": {
     "title": "Webhook 链接",

@@ -362,12 +362,18 @@
     "runsFeed": "Quando um feed tem posts novos",
     "runsFolder": "Quando um arquivo ou pasta muda",
     "runsWebhook": "Quando outro serviço chama o link (webhook)",
+    "runsAfter": "Depois de outra automação",
     "watchUrl": "Link",
     "watchPath": "Pasta ou arquivo",
     "watchHint": "O Toskar verifica no horário abaixo e só roda quando algo mudou, dizendo à tarefa o que foi.",
     "checkSchedule": "Com que frequência verificar",
     "webhookHint": "Ela roda quando outro serviço chama o link dela. Crie o link na página da automação depois de salvar.",
-    "manualHint": "Ela só roda quando você toca em Executar agora, ou pelo webhook."
+    "manualHint": "Ela só roda quando você toca em Executar agora, ou pelo webhook.",
+    "afterWhich": "Automação",
+    "afterWhen": "Quando",
+    "afterSucceeded": "Toda vez que terminar",
+    "afterNotified": "Só quando notificar",
+    "afterHint": "Ela roda logo depois da outra automação, com o resultado dela. Uma execução que segue outra não pode usar ferramentas que mudam coisas fora do Toskar."
   },
   "draft": {
     "label": "Automação para confirmar",
@@ -396,7 +402,10 @@
     "page": "Quando {{site}} muda · verificado: {{schedule}}",
     "feed": "Posts novos em {{site}} · verificado: {{schedule}}",
     "folder": "Quando {{name}} muda · verificado: {{schedule}}",
-    "webhook": "Quando o link de webhook é chamado"
+    "webhook": "Quando o link de webhook é chamado",
+    "after": "Depois que {{name}} terminar",
+    "afterNotified": "Depois que {{name}} notificar",
+    "anotherAutomation": "outra automação"
   },
   "webhook": {
     "title": "Link de webhook",

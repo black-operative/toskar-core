@@ -362,12 +362,18 @@
     "runsFeed": "피드에 새 글이 올라오면",
     "runsFolder": "파일이나 폴더가 바뀌면",
     "runsWebhook": "다른 서비스가 링크를 호출하면(웹훅)",
+    "runsAfter": "다른 자동화가 끝난 뒤",
     "watchUrl": "링크",
     "watchPath": "폴더 또는 파일",
     "watchHint": "아래 일정에 따라 확인하고, 바뀐 것이 있을 때만 무엇이 바뀌었는지 작업에 알려 주며 실행합니다.",
     "checkSchedule": "확인 주기",
     "webhookHint": "다른 서비스가 링크를 호출하면 실행됩니다. 저장한 뒤 자동화 페이지에서 링크를 만드세요.",
-    "manualHint": "지금 실행을 누르거나 웹훅으로만 실행됩니다."
+    "manualHint": "지금 실행을 누르거나 웹훅으로만 실행됩니다.",
+    "afterWhich": "자동화",
+    "afterWhen": "시점",
+    "afterSucceeded": "끝날 때마다",
+    "afterNotified": "알림을 보낼 때만",
+    "afterHint": "다른 자동화가 끝난 직후 그 결과를 받아 실행됩니다. 다른 자동화를 이어 실행할 때는 Toskar 밖의 무언가를 바꾸는 도구를 쓸 수 없습니다."
   },
   "draft": {
     "label": "확인할 자동화",
@@ -392,7 +398,10 @@
     "page": "{{site}}이(가) 바뀌면 · 확인: {{schedule}}",
     "feed": "{{site}}의 새 글 · 확인: {{schedule}}",
     "folder": "{{name}}이(가) 바뀌면 · 확인: {{schedule}}",
-    "webhook": "웹훅 링크가 호출되면"
+    "webhook": "웹훅 링크가 호출되면",
+    "after": "{{name}}이(가) 끝난 뒤",
+    "afterNotified": "{{name}}이(가) 알림을 보낸 뒤",
+    "anotherAutomation": "다른 자동화"
   },
   "webhook": {
     "title": "웹훅 링크",

@@ -67,6 +67,8 @@ export function AutomationsPage() {
   }, [queryClient])
 
   const items = (listQuery.data ?? []).filter((item) => matchesAutomation(item, query, filter))
+  // Names for an automation that runs after another (#204).
+  const names = Object.fromEntries((listQuery.data ?? []).map((item) => [item.id, item.name]))
   const detail = detailQuery.data
   const profiles = profilesQuery.data ?? []
   const tools = toolsQuery.data ?? []
@@ -239,7 +241,7 @@ export function AutomationsPage() {
                     <p className="selectable-title font-semibold text-ink">{item.name}</p>
                     <StatusPill item={item} />
                   </div>
-                  <p className="mt-1 text-sm text-ink-muted">{whenLabel(item)}</p>
+                  <p className="mt-1 text-sm text-ink-muted">{whenLabel(item, names)}</p>
                   {resultProse(item.last_result) && (
                     <p className="mt-2 line-clamp-2 text-sm text-ink">{resultProse(item.last_result)}</p>
                   )}
@@ -261,6 +263,7 @@ export function AutomationsPage() {
               profiles={profiles}
               models={models}
               tools={tools}
+              others={(listQuery.data ?? []).filter((item) => !(editing && item.id === selectedID))}
               initial={editing ? detail : null}
               seedDescription={creating && new URLSearchParams(window.location.search).get('compose') === '1' ? screenshotSentence : ''}
               seedIdea={creating ? seed : null}
@@ -277,6 +280,7 @@ export function AutomationsPage() {
             />
           ) : detail ? (
             <Detail
+              names={names}
               detail={detail}
               models={models}
               // Run now answers once the run starts (#204); it's running
@@ -307,6 +311,7 @@ export function AutomationsPage() {
 
 function Detail({
   detail,
+  names,
   models,
   running,
   runError,
@@ -316,6 +321,7 @@ function Detail({
   onDelete,
 }: {
   detail: AutomationDetail
+  names: Record<string, string>
   models: Model[]
   running: boolean
   runError: string
@@ -346,7 +352,7 @@ function Detail({
         <div className="mt-4 space-y-3 text-sm">
           <div>
             <p className="label-caps">{t('detail.schedule')}</p>
-            <p className="text-ink">{whenLabel(detail)}</p>
+            <p className="text-ink">{whenLabel(detail, names)}</p>
             {detail.trigger?.kind && detail.last_checked_at ? (
               <p className="text-ink-muted">{t('detail.lastChecked', { when: compactWhen(detail.last_checked_at, zone) })}</p>
             ) : null}

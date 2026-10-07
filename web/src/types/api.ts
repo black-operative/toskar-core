@@ -1124,10 +1124,13 @@ export interface AutomationInput {
 }
 
 export interface AutomationTrigger {
-  kind: 'page' | 'feed' | 'folder' | 'webhook' | ''
+  kind: 'page' | 'feed' | 'folder' | 'webhook' | 'after' | ''
   url?: string
   /** A folder or file in the home folder, for a folder trigger; ~ is the home folder. */
   path?: string
+  /** The automation an after trigger follows, and whether each time it succeeds or only when it notifies. */
+  automation_id?: string
+  when?: 'succeeded' | 'notified'
 }
 
 

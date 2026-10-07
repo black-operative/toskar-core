@@ -362,12 +362,18 @@
     "runsFeed": "Quand un flux a de nouveaux articles",
     "runsFolder": "Quand un fichier ou un dossier change",
     "runsWebhook": "Quand un autre service appelle son lien (webhook)",
+    "runsAfter": "Après une autre automatisation",
     "watchUrl": "Lien",
     "watchPath": "Dossier ou fichier",
     "watchHint": "Toskar vérifie selon la planification ci-dessous et ne s’exécute que si quelque chose a changé, en disant à la tâche quoi.",
     "checkSchedule": "Fréquence de vérification",
     "webhookHint": "Elle s’exécute quand un autre service appelle son lien. Créez le lien sur la page de l’automatisation après l’enregistrement.",
-    "manualHint": "Elle ne s’exécute que si vous appuyez sur Exécuter maintenant, ou par son webhook."
+    "manualHint": "Elle ne s’exécute que si vous appuyez sur Exécuter maintenant, ou par son webhook.",
+    "afterWhich": "Automatisation",
+    "afterWhen": "Quand",
+    "afterSucceeded": "Chaque fois qu’elle se termine",
+    "afterNotified": "Seulement quand elle notifie",
+    "afterHint": "Elle s’exécute juste après l’autre automatisation, avec son résultat. Une exécution qui en suit une autre ne peut pas utiliser d’outils qui modifient des choses hors de Toskar."
   },
   "draft": {
     "label": "Automatisation à confirmer",
@@ -396,7 +402,10 @@
     "page": "Quand {{site}} change · vérifié : {{schedule}}",
     "feed": "Nouveaux articles sur {{site}} · vérifié : {{schedule}}",
     "folder": "Quand {{name}} change · vérifié : {{schedule}}",
-    "webhook": "Quand son lien webhook est appelé"
+    "webhook": "Quand son lien webhook est appelé",
+    "after": "Après la fin de {{name}}",
+    "afterNotified": "Après une notification de {{name}}",
+    "anotherAutomation": "une autre automatisation"
   },
   "webhook": {
     "title": "Lien webhook",

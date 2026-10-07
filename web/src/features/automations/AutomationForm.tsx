@@ -33,6 +33,8 @@ interface AutomationFormProps {
   profiles: AIProfile[]
   models: Model[]
   tools: ToolRecord[]
+  /** Other automations, for one that runs after another (#204). */
+  others?: Automation[]
   initial?: Automation | null
   seedDescription?: string
   /** A template to start from, with its fields to fill in (#204). */
@@ -45,7 +47,7 @@ interface AutomationFormProps {
   onSubmit: (input: AutomationInput) => void
 }
 
-export function AutomationForm({ profiles, models, tools, initial, seedDescription = '', seedIdea = null, showIdeas = true, pending, error, onCancel, onSubmit }: AutomationFormProps) {
+export function AutomationForm({ profiles, models, tools, others = [], initial, seedDescription = '', seedIdea = null, showIdeas = true, pending, error, onCancel, onSubmit }: AutomationFormProps) {
   const { t } = useTranslation('automations')
   const advanced = useUIStore((state) => state.advancedMode) && new URLSearchParams(window.location.search).get('simple') !== '1'
   const advancedRef = useRef<HTMLDetailsElement>(null)
@@ -77,7 +79,9 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   // Run when a page or feed changes instead of every time (#204).
   const [triggerKind, setTriggerKind] = useState<AutomationTrigger['kind']>(initial?.trigger?.kind ?? '')
   // The link to watch, or the folder or file.
-  const [triggerURL, setTriggerURL] = useState(initial?.trigger?.url ?? initial?.trigger?.path ?? '')
+  const [triggerURL, setTriggerURL] = useState(initial?.trigger?.url ?? initial?.trigger?.path ?? initial?.trigger?.automation_id ?? '')
+  // When it follows another automation: each time it finishes, or only when it notifies.
+  const [afterWhen, setAfterWhen] = useState<'succeeded' | 'notified'>(initial?.trigger?.when ?? 'succeeded')
   // Also save each result as a file in a folder (#204).
   const [saving, setSaving] = useState(Boolean(initial?.save_folder))
   const [saveFolder, setSaveFolder] = useState(initial?.save_folder || '~/Documents/Toskar')
@@ -193,7 +197,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       response_language: responseLanguage,
       save_folder: saving ? saveFolder.trim() : '',
       // An edit that stops watching sends a trigger with no kind.
-      trigger: triggerKind ? watchTrigger(triggerKind, triggerURL) : initial?.trigger ? { kind: '' } : undefined,
+      trigger: triggerKind ? watchTrigger(triggerKind, triggerURL, afterWhen) : initial?.trigger ? { kind: '' } : undefined,
     }
   }
 
@@ -225,7 +229,10 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
     }
   }
 
-  const summary = whenLabel({ schedule, trigger: triggerKind ? watchTrigger(triggerKind, triggerURL) : undefined })
+  const summary = whenLabel(
+    { schedule, trigger: triggerKind ? watchTrigger(triggerKind, triggerURL, afterWhen) : undefined },
+    Object.fromEntries(others.map((item) => [item.id, item.name])),
+  )
 
   return (
     <form
@@ -340,9 +347,15 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
             onChange={(event) => {
               const next = event.target.value as AutomationTrigger['kind']
               setTriggerKind(next)
-              // A webhook runs only when called; watching checks every hour to start with.
-              if (next === 'webhook') setSchedule({ kind: 'manual', time_zone: schedule.time_zone })
-              else if (next && (!triggerKind || triggerKind === 'webhook') && schedule.kind !== 'interval') setSchedule({ kind: 'interval', time_zone: schedule.time_zone, every_seconds: 3600 })
+              // The link, folder, or automation is the kind's own.
+              if (next === 'after' && triggerKind !== 'after') setTriggerURL(others[0]?.id ?? '')
+              else if (triggerKind === 'after' && next !== 'after') setTriggerURL('')
+              // A webhook or a follower runs only when started; watching checks every hour to start with.
+              if (next === 'webhook' || next === 'after') {
+                setSchedule({ kind: 'manual', time_zone: schedule.time_zone })
+                return
+              }
+              if (next && (!triggerKind || triggerKind === 'webhook' || triggerKind === 'after') && schedule.kind !== 'interval') setSchedule({ kind: 'interval', time_zone: schedule.time_zone, every_seconds: 3600 })
               else if (!next && schedule.kind === 'manual') setSchedule({ kind: 'daily', time_zone: schedule.time_zone, hour: 8, minute: 0, times: [{ hour: 8, minute: 0 }] })
             }}
           >
@@ -351,9 +364,30 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
             <option value="feed">{t('form.runsFeed')}</option>
             <option value="folder">{t('form.runsFolder')}</option>
             <option value="webhook">{t('form.runsWebhook')}</option>
+            {others.length > 0 || triggerKind === 'after' ? <option value="after">{t('form.runsAfter')}</option> : null}
           </select>
         </label>
-        {triggerKind && triggerKind !== 'webhook' ? (
+        {triggerKind === 'after' ? (
+          <>
+            <label className="block space-y-1 text-sm">
+              <span className="text-ink-muted">{t('form.afterWhich')}</span>
+              <select className="field w-full" value={triggerURL} onChange={(event) => setTriggerURL(event.target.value)} required>
+                {others.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block space-y-1 text-sm">
+              <span className="text-ink-muted">{t('form.afterWhen')}</span>
+              <select className="field w-full" value={afterWhen} onChange={(event) => setAfterWhen(event.target.value as 'succeeded' | 'notified')}>
+                <option value="succeeded">{t('form.afterSucceeded')}</option>
+                <option value="notified">{t('form.afterNotified')}</option>
+              </select>
+            </label>
+          </>
+        ) : triggerKind && triggerKind !== 'webhook' ? (
           <label className="block space-y-1 text-sm">
             <span className="text-ink-muted">{triggerKind === 'folder' ? t('form.watchPath') : t('form.watchUrl')}</span>
             <input
@@ -370,10 +404,12 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       </div>
       {triggerKind === 'webhook' ? (
         <p className="text-xs text-ink-faint">{t('form.webhookHint')}</p>
+      ) : triggerKind === 'after' ? (
+        <p className="text-xs text-ink-faint">{t('form.afterHint')}</p>
       ) : triggerKind ? (
         <p className="text-xs text-ink-faint">{t('form.watchHint')}</p>
       ) : null}
-      {triggerKind === 'webhook' ? null : (
+      {triggerKind === 'webhook' || triggerKind === 'after' ? null : (
         <>
       <p className="text-sm text-ink-muted">{triggerKind ? t('form.checkSchedule') : t('form.schedule')}</p>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -864,8 +900,9 @@ function splitInterval(seconds: number): { amount: number; unit: IntervalUnit } 
   return { amount: Math.max(1, Math.round(seconds / 60)), unit: 'minutes' }
 }
 
-function watchTrigger(kind: AutomationTrigger['kind'], target: string): AutomationTrigger {
+function watchTrigger(kind: AutomationTrigger['kind'], target: string, when: 'succeeded' | 'notified' = 'succeeded'): AutomationTrigger {
   if (kind === 'webhook') return { kind }
+  if (kind === 'after') return { kind, automation_id: target, when }
   return kind === 'folder' ? { kind, path: target.trim() } : { kind, url: target.trim() }
 }
 
