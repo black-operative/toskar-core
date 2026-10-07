@@ -1004,6 +1004,9 @@ export interface AutomationRun {
   node_id?: string
   attempt: number
   retry_at?: string
+  /** Why it did or didn't notify, as automations:notice.<notify_detail>, with notify_values for its placeholders (#204). */
+  notify_detail?: string
+  notify_values?: Record<string, unknown>
 }
 
 /** An automation read from a request on the computer, to review and save (#204). */

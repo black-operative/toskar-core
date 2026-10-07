@@ -193,7 +193,8 @@ describe('AutomationsPage', () => {
     const body = vi.mocked(api.createAutomation).mock.calls[0][0]
     expect(body.schedule).toMatchObject({ kind: 'daily', hour: 8, minute: 0 })
     expect(body.notification).toEqual({ mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500, currency: 'USD' } })
-    expect(body.prompt).toContain('{"price": 420}')
+    // The computer adds the price instruction when it runs; the page sends the task (#204).
+    expect(body.prompt).not.toContain('{"price"')
     expect(body.profile_id).toBe('general-assistant')
     expect(body.model_id).toBe('gemma-4-e4b')
     // Results follow the assistant language unless the automation says otherwise (§22).

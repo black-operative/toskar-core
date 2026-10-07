@@ -371,6 +371,8 @@ An automation's `notification.mode` is `condition`, `change`, `always`, `failure
 
 The first successful run is the baseline. The `available` condition asks for a JSON `available` flag, like `price` for a threshold, so it works in every language.
 
+**Conditions and decisions.** A saved `prompt` is only the task. When a run starts, Toskar adds what its condition needs in the result: a JSON `price` in the threshold's currency, an `available` flag, or a `significant` flag. An instruction an older client stored in the prompt is removed when the automation is saved or runs, so it is never asked for twice. Each run records why it did or didn't notify: `notify_detail` is a key the apps show as `automations:notice.<notify_detail>`, such as `notBelow`, `inStock`, or `unchanged`, and `notify_values` fills its placeholders, such as `{"price": 640, "amount": 500, "currency": "USD"}`. `notBelow`, `notAbove`, `notAvailable`, and `notSignificant` mean the condition wasn't met. Runs from before this have neither.
+
 **Runs.**
 - **Running together:** due automations run two at a time, so a slow one doesn't hold up the rest. An automation that is still running isn't started again.
 - **Time limit:** each run has 20 minutes. One that takes longer is stopped, fails with `AUTOMATION_TIMEOUT`, and isn't retried.

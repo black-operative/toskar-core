@@ -37,11 +37,13 @@ func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput,
 		enabled = *in.Enabled
 	}
 	a := automations.Automation{
-		ID:               uuid.NewString(),
-		Name:             in.Name,
-		Enabled:          enabled,
-		Schedule:         in.Schedule,
-		Prompt:           in.Prompt,
+		ID:       uuid.NewString(),
+		Name:     in.Name,
+		Enabled:  enabled,
+		Schedule: in.Schedule,
+		// Only the task: the server adds a condition's instruction at run
+		// time, and drops one an older client wrote into the prompt (#204).
+		Prompt:           automations.TaskPrompt(in.Prompt),
 		ProfileID:        in.ProfileID,
 		ModelID:          in.ModelID,
 		Tools:            in.Tools,
@@ -118,7 +120,7 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 		existing.Schedule = *patch.Schedule
 	}
 	if patch.Prompt != nil {
-		existing.Prompt = *patch.Prompt
+		existing.Prompt = automations.TaskPrompt(*patch.Prompt)
 	}
 	if patch.ProfileID != nil {
 		existing.ProfileID = *patch.ProfileID

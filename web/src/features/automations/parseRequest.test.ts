@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { applyLanguage } from '@/i18n'
-import type { AutomationNotification } from '@/types/api'
-import { civilToISO, composePrompt, notificationLabel, visibleTask } from './parseRequest'
+import { civilToISO, notificationLabel, visibleTask } from './parseRequest'
 import { readNumber } from './number'
 
 // Requests are read on the computer (internal/automations/request_test.go
@@ -31,15 +30,8 @@ describe('prices', () => {
     expect(readNumber('about 5')).toBeNull()
   })
 
-  it('asks the run for the price in the threshold’s currency, and shows the task without it', () => {
-    const notification: AutomationNotification = { mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500, currency: 'EUR' } }
-    const prompt = composePrompt('Prüfe dieses Produkt.', notification)
-    expect(prompt).toContain('numeric price in EUR')
-    expect(visibleTask(prompt)).toBe('Prüfe dieses Produkt.')
-    // A currency change replaces the instruction rather than adding a second one.
-    const yen = composePrompt(prompt, { mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500, currency: 'JPY' } })
-    expect(yen.match(/numeric price/g)).toHaveLength(1)
-    expect(yen).toContain('in JPY')
+  it('shows the task without an instruction an older page stored', () => {
+    expect(visibleTask('Prüfe dieses Produkt.\n\nInclude a JSON object in the result with the numeric price in EUR, for example {"price": 420}.')).toBe('Prüfe dieses Produkt.')
   })
 
   it('shows a threshold in its currency, and an older one without a currency in dollars', async () => {

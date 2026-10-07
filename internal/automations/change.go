@@ -100,7 +100,7 @@ func DecideRun(n Notification, cur Execution, prev *Previous) Decision {
 		return Decide(n, cur.Text, text, notified)
 	}
 	if prev == nil {
-		return Decision{Reason: "waiting for a baseline result"}
+		return Decision{Reason: "waiting for a baseline result", Detail: "firstSaved"}
 	}
 	changed, settled, reason := compareChange(*prev, cur)
 	if !settled && cur.Change != nil {
@@ -115,11 +115,11 @@ func DecideRun(n Notification, cur Execution, prev *Previous) Decision {
 		changed, reason = true, "result changed"
 	}
 	if !changed {
-		return Decision{Reason: reason}
+		return Decision{Reason: reason, Detail: "unchanged"}
 	}
 	notice := noticeFor(n, cur.Text)
 	if cur.Change != nil && cur.Change.Changed && strings.TrimSpace(cur.Change.What) != "" {
 		notice = changeNotice(cur.Change.What)
 	}
-	return Decision{Notify: true, Notice: notice, Reason: reason}
+	return Decision{Notify: true, Notice: notice, Reason: reason, Detail: "changed"}
 }

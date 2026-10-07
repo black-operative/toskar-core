@@ -10,12 +10,8 @@ export function weekdayName(index: number): string {
   return i18n.t(`automations:weekdays.${index}`)
 }
 
-// The run reports the price in the threshold's currency, so the daemon can
-// compare the numbers as they are.
-function priceInstruction(currency: string | undefined): string {
-  const unit = currency ? ` in ${currency}` : ''
-  return `Include a JSON object in the result with the numeric price${unit}, for example {"price": 420}.`
-}
+// The result instructions older pages stored in prompts; the computer adds
+// them when a run starts now (#204), and these show the task without them.
 const PRICE_INSTRUCTION_LINE = /Include a JSON object in the result with the numeric price(?: in [A-Z]{3})?, for example \{"price": 420\}\./g
 const AVAILABLE_INSTRUCTION =
   'Include a JSON object in the result, {"available": true} when the item is available and {"available": false} when it is not.'
@@ -101,11 +97,6 @@ export function visibleTask(prompt: string): string {
   return text.replace(/\n{3,}/g, '\n\n').trim()
 }
 
-// composePrompt stores the task the user wrote and, when needed, the result instruction.
-export function composePrompt(task: string, notification: AutomationNotification): string {
-  return withSignalInstruction(visibleTask(task), notification)
-}
-
 export function resultProse(result: string | undefined): string {
   if (!result) return ''
   const withoutInstruction = visibleTask(result)
@@ -114,27 +105,6 @@ export function resultProse(result: string | undefined): string {
     .replace(/\{[^{}]*"(?:price|available|significant)"[^{}]*\}/g, '')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
-}
-
-function withSignalInstruction(text: string, notification: AutomationNotification): string {
-  const instruction = signalInstruction(notification)
-  if (!instruction || text.includes('{"price"') || text.includes('{"available"') || text.includes('{"significant"')) {
-    return text.trim()
-  }
-  return `${text.trim()}\n\n${instruction}`
-}
-
-function signalInstruction(notification: AutomationNotification): string {
-  switch (notification.condition?.kind) {
-    case 'threshold':
-      return priceInstruction(notification.condition.currency)
-    case 'available':
-      return AVAILABLE_INSTRUCTION
-    case 'significant':
-      return SIGNIFICANT_INSTRUCTION
-    default:
-      return ''
-  }
 }
 
 function formatAmount(value: number, currency: string | undefined): string {

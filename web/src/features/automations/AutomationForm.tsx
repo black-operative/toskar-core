@@ -12,7 +12,6 @@ import { readNumber } from './number'
 import {
   civilInputValue,
   civilToISO,
-  composePrompt,
   localTimeZone,
   notificationLabel,
   resultProse,
@@ -152,7 +151,7 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   function draft(notification = currentNotification()): AutomationInput {
     return {
       name: name.trim() || t('names.fallback'),
-      prompt: composePrompt(task, notification),
+      prompt: visibleTask(task),
       profile_id: profileID,
       model_id: modelID,
       schedule,

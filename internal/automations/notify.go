@@ -38,7 +38,15 @@ type Notifier interface {
 type Decision struct {
 	Notify bool
 	Notice Notice
+	// Reason says why, in English, for logs and the preview.
 	Reason string
+	// Detail is the same as a key the apps show under the run
+	// (automations:notice.<detail>), with Values for its placeholders, so
+	// they explain what the server decided instead of deciding again
+	// (#204). ConditionNotMet marks a condition that didn't hold.
+	Detail          string
+	Values          map[string]any
+	ConditionNotMet bool
 }
 
 type parsedSignal struct {
@@ -58,19 +66,19 @@ type parsedSignal struct {
 func Decide(n Notification, result string, previous *string, previousNotified bool) Decision {
 	switch n.Mode {
 	case NotifyNone:
-		return Decision{Reason: "notifications are off for this automation"}
+		return Decision{Reason: "notifications are off for this automation", Detail: "storesResult"}
 	case NotifyOnFailure:
 		return Decision{Reason: "notifications are only for failures"}
 	case NotifyAlways:
 		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "always"}
 	case NotifyOnChange:
 		if previous == nil {
-			return Decision{Reason: "waiting for a baseline result"}
+			return Decision{Reason: "waiting for a baseline result", Detail: "firstSaved"}
 		}
 		if normalizeResult(result) == normalizeResult(*previous) {
-			return Decision{Reason: "result is unchanged"}
+			return Decision{Reason: "result is unchanged", Detail: "unchanged"}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result changed"}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result changed", Detail: "changed"}
 	case NotifyOnCondition:
 		return decideCondition(n, result, previous, previousNotified)
 	default:
@@ -85,29 +93,40 @@ func decideCondition(n Notification, result string, previous *string, previousNo
 	signal, ok := parseSignal(result)
 	switch n.Condition.Kind {
 	case ConditionThreshold:
+		currency := currencyOf(n)
 		if !ok || signal.Price == nil {
-			return Decision{Reason: "result did not include a price"}
+			return Decision{Reason: "result did not include a price", Detail: "noPrice"}
 		}
 		price := *signal.Price
-		matched := n.Condition.Op == OpAbove && price > n.Condition.Value || n.Condition.Op == OpBelow && price < n.Condition.Value
+		values := map[string]any{"price": price, "amount": n.Condition.Value, "currency": currency}
+		above := n.Condition.Op == OpAbove
+		matched := above && price > n.Condition.Value || n.Condition.Op == OpBelow && price < n.Condition.Value
 		if !matched {
-			return Decision{Reason: "price is not " + n.Condition.Op + " the threshold"}
+			detail := "notBelow"
+			if above {
+				detail = "notAbove"
+			}
+			return Decision{Reason: "price is not " + n.Condition.Op + " the threshold", Detail: detail, Values: values, ConditionNotMet: true}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "price is " + n.Condition.Op + " the threshold"}
+		detail := "priceBelow"
+		if above {
+			detail = "priceAbove"
+		}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "price is " + n.Condition.Op + " the threshold", Detail: detail, Values: values}
 	case ConditionAvailable:
 		available, known := itemAvailable(result)
 		if !known || !available {
-			return Decision{Reason: "item is not available"}
+			return Decision{Reason: "item is not available", Detail: "notAvailable", ConditionNotMet: true}
 		}
 		if previousNotified && previouslyAvailable(previous) {
-			return Decision{Reason: "item was already available"}
+			return Decision{Reason: "item was already available", Detail: "alreadyAvailable"}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "item is in stock"}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "item is in stock", Detail: "inStock"}
 	case ConditionSignificant:
 		if !ok || signal.Significant == nil || !*signal.Significant {
-			return Decision{Reason: "result is not significant"}
+			return Decision{Reason: "result is not significant", Detail: "notSignificant", ConditionNotMet: true}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result is significant"}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result is significant", Detail: "significant"}
 	default:
 		return Decision{Reason: "unknown notification condition"}
 	}

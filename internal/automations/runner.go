@@ -48,6 +48,7 @@ type Store interface {
 	AbandonExpired(ctx context.Context, now time.Time) ([]Run, error)
 	PreviousResult(ctx context.Context, automationID string, before time.Time) (prev Previous, ok bool, err error)
 	SetNotificationSent(ctx context.Context, runID string, sent bool) error
+	SetDecision(ctx context.Context, runID, detail string, values map[string]any) error
 	RunFor(ctx context.Context, automationID string, occurrence time.Time) (Run, error)
 }
 
@@ -396,6 +397,10 @@ func (r *Runner) notifyRepeated(ctx context.Context, automation Automation, run 
 
 func (r *Runner) deliver(ctx context.Context, automation Automation, run Run, result Execution, prev *Previous) (bool, error) {
 	decision := DecideRun(automation.Notification, result, prev)
+	// The apps explain this decision rather than make their own (#204).
+	if err := r.Store.SetDecision(ctx, run.ID, decision.Detail, decision.Values); err != nil && r.Logger != nil {
+		r.Logger.Warn("record automation decision", "run_id", run.ID, "error", err)
+	}
 	if !decision.Notify {
 		return false, nil
 	}

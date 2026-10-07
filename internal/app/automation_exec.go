@@ -106,7 +106,7 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 			profile:       profile,
 			modelOverride: modelID,
 			taskID:        automation.ID,
-			turnPrompt:    automation.Prompt,
+			turnPrompt:    automations.TaskPrompt(automation.Prompt),
 			trace:         &turnTrace{lang: e.app.appLanguage(ctx)},
 			// Results in the automation's response language (§22).
 			responseLanguage: automation.ResponseLanguage,
@@ -125,8 +125,10 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 	stream, err := orch.Run(ctx, contracts.Task{
 		ID:        automation.ID,
 		ProfileID: profile.ID,
-		Prompt:    automation.Prompt,
-		Status:    contracts.TaskRunning,
+		// The task with its condition's instruction, which the server adds
+		// rather than the saved prompt carrying it (#204).
+		Prompt: automations.RunPrompt(automation),
+		Status: contracts.TaskRunning,
 	}, tools.ForUnattended(profile, automation.Tools, disabled), env)
 	if err != nil {
 		return env.execution(""), err

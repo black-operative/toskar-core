@@ -31,6 +31,12 @@ type Run struct {
 	Attempt          int        `json:"attempt"`
 	RetryAt          *time.Time `json:"retry_at,omitempty"`
 	CreatedAt        time.Time  `json:"created_at"`
+	// NotifyDetail says why a finished run did or didn't notify, as
+	// automations:notice.<detail>, with NotifyValues for its placeholders
+	// (price, amount, currency), so the apps explain the server's decision
+	// (#204). Empty for runs from before it was recorded.
+	NotifyDetail string         `json:"notify_detail,omitempty"`
+	NotifyValues map[string]any `json:"notify_values,omitempty"`
 }
 
 // Detail is an automation and its newest runs, newest occurrence first.
