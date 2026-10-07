@@ -457,5 +457,19 @@
     "omitted_other": "The {{count}} oldest messages did not fit and were left out. Every message is still saved.",
     "empty": "Send a message to see how much of this model’s memory the chat is using.",
     "hint": "The window is how much of the chat the model can read at once on this iPhone."
+  },
+  "tv": {
+    "connectLede": "Toskar on your TV answers with the models on your computer. On that computer, open Computers and choose Connect a phone.",
+    "enterAddress": "Enter an address",
+    "askHint": "Press the microphone on the remote, or type.",
+    "tryAsking": "Try asking",
+    "disconnect": "Disconnect",
+    "emptyHint": "Answers come from the models on your computer. Nothing you ask goes to a hosted AI service.",
+    "suggest": {
+      "dinner": "What can I cook tonight with chicken, rice, and spinach?",
+      "homework": "Explain photosynthesis for a ten-year-old.",
+      "trip": "Plan a rainy Saturday in Juneau for a family of four.",
+      "movie": "Suggest a family movie night with three films that go together."
+    }
   }
 }

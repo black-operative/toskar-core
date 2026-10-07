@@ -385,5 +385,19 @@
       "story": "Forseti, fils de Baldr, siège à Glitnir, une salle aux piliers d'or et au toit d'argent. Tous ceux qui lui soumettent un différend repartent réconciliés.",
       "runeName": "Isa, la rune de l'immobilité"
     }
+  },
+  "tv": {
+    "connectLede": "Toskar sur votre téléviseur répond avec les modèles de votre ordinateur. Sur cet ordinateur, ouvrez Ordinateurs et choisissez Connecter un téléphone.",
+    "enterAddress": "Saisir une adresse",
+    "askHint": "Appuyez sur le micro de la télécommande, ou tapez.",
+    "tryAsking": "Essayez de demander",
+    "disconnect": "Déconnecter",
+    "emptyHint": "Les réponses viennent des modèles de votre ordinateur. Rien de ce que vous demandez ne part vers un service d’IA hébergé.",
+    "suggest": {
+      "dinner": "Que puis-je cuisiner ce soir avec du poulet, du riz et des épinards ?",
+      "homework": "Explique la photosynthèse à un enfant de dix ans.",
+      "trip": "Planifie un samedi pluvieux à Juneau pour une famille de quatre personnes.",
+      "movie": "Propose une soirée cinéma en famille avec trois films qui vont bien ensemble."
+    }
   }
 }

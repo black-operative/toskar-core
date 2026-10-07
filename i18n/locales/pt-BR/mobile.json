@@ -385,5 +385,19 @@
       "story": "Forseti, filho de Baldr, se senta em Glitnir, um salão com pilares de ouro e teto de prata. Todos que levam a ele uma disputa saem reconciliados.",
       "runeName": "Isa, a runa da quietude"
     }
+  },
+  "tv": {
+    "connectLede": "O Toskar na sua TV responde com os modelos do seu computador. Nesse computador, abra Computadores e escolha Conectar um celular.",
+    "enterAddress": "Digitar um endereço",
+    "askHint": "Pressione o microfone do controle remoto ou digite.",
+    "tryAsking": "Experimente perguntar",
+    "disconnect": "Desconectar",
+    "emptyHint": "As respostas vêm dos modelos do seu computador. Nada do que você pergunta vai para um serviço de IA hospedado.",
+    "suggest": {
+      "dinner": "O que posso cozinhar hoje à noite com frango, arroz e espinafre?",
+      "homework": "Explique a fotossíntese para uma criança de dez anos.",
+      "trip": "Planeje um sábado chuvoso em Juneau para uma família de quatro pessoas.",
+      "movie": "Sugira uma noite de cinema em família com três filmes que combinem."
+    }
   }
 }

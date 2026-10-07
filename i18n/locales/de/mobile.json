@@ -381,5 +381,19 @@
       "story": "Forseti, Sohn Baldrs, sitzt in Glitnir, einer Halle mit goldenen Säulen und silbernem Dach. Wer einen Streit vor ihn bringt, geht versöhnt davon.",
       "runeName": "Isa, die Rune der Stille"
     }
+  },
+  "tv": {
+    "connectLede": "Toskar auf deinem Fernseher antwortet mit den Modellen auf deinem Computer. Öffne dort „Computer“ und wähle „Telefon verbinden“.",
+    "enterAddress": "Adresse eingeben",
+    "askHint": "Drücke das Mikrofon auf der Fernbedienung oder tippe.",
+    "tryAsking": "Frag zum Beispiel",
+    "disconnect": "Trennen",
+    "emptyHint": "Antworten kommen von den Modellen auf deinem Computer. Nichts, was du fragst, geht an einen gehosteten KI-Dienst.",
+    "suggest": {
+      "dinner": "Was kann ich heute Abend mit Hähnchen, Reis und Spinat kochen?",
+      "homework": "Erkläre Photosynthese für ein zehnjähriges Kind.",
+      "trip": "Plane einen verregneten Samstag in Juneau für eine vierköpfige Familie.",
+      "movie": "Schlag einen Familien-Filmabend mit drei Filmen vor, die zusammenpassen."
+    }
   }
 }
