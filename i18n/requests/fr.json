@@ -1,0 +1,247 @@
+{
+  "spaced": true,
+  "numbers": {
+    "un": 1,
+    "une": 1,
+    "deux": 2,
+    "trois": 3,
+    "quatre": 4,
+    "cinq": 5,
+    "six": 6,
+    "sept": 7,
+    "huit": 8,
+    "neuf": 9,
+    "dix": 10,
+    "onze": 11,
+    "douze": 12,
+    "quinze": 15,
+    "vingt": 20,
+    "trente": 30,
+    "quarante": 40,
+    "quarante-cinq": 45,
+    "cinquante": 50,
+    "soixante": 60,
+    "quatre-vingt-dix": 90
+  },
+  "interval": {
+    "before": [
+      "toutes les",
+      "tous les",
+      "chaque"
+    ],
+    "after": [],
+    "units": {
+      "second": [
+        "seconde",
+        "secondes"
+      ],
+      "minute": [
+        "minute",
+        "minutes",
+        "min"
+      ],
+      "hour": [
+        "heure",
+        "heures"
+      ],
+      "day": [
+        "jour",
+        "jours"
+      ]
+    },
+    "hourly": [
+      "toutes les heures",
+      "chaque heure"
+    ],
+    "halfHour": [
+      "toutes les (demi-heures|demi heures)",
+      "chaque demi-heure"
+    ]
+  },
+  "daily": {
+    "day": [
+      "tous les jours",
+      "chaque jour",
+      "quotidiennement"
+    ],
+    "morning": [
+      "(chaque|tous les) matin(s)?"
+    ],
+    "afternoon": [
+      "(chaque|tous les) (après-midi|apres-midi)"
+    ],
+    "evening": [
+      "(chaque|tous les) soir(s)?"
+    ],
+    "night": [
+      "(chaque|toutes les) nuit(s)?"
+    ]
+  },
+  "dayparts": {
+    "morning": [
+      "matin",
+      "matins",
+      "matinée"
+    ],
+    "afternoon": [
+      "après-midi",
+      "apres-midi",
+      "aprem"
+    ],
+    "evening": [
+      "soir",
+      "soirs",
+      "soirée"
+    ],
+    "night": [
+      "nuit",
+      "nuits"
+    ]
+  },
+  "weekly": {
+    "before": [
+      "chaque",
+      "tous les",
+      "le"
+    ],
+    "after": [],
+    "days": [
+      [
+        "dimanche",
+        "dimanches"
+      ],
+      [
+        "lundi",
+        "lundis"
+      ],
+      [
+        "mardi",
+        "mardis"
+      ],
+      [
+        "mercredi",
+        "mercredis"
+      ],
+      [
+        "jeudi",
+        "jeudis"
+      ],
+      [
+        "vendredi",
+        "vendredis"
+      ],
+      [
+        "samedi",
+        "samedis"
+      ]
+    ]
+  },
+  "once": {
+    "once": [
+      "une fois",
+      "une seule fois"
+    ],
+    "today": [
+      "aujourd'hui",
+      "ce soir",
+      "ce matin",
+      "cet après-midi"
+    ],
+    "tomorrow": [
+      "demain",
+      "après-demain"
+    ]
+  },
+  "clock": {
+    "at": [
+      "à",
+      "vers"
+    ],
+    "hour": [
+      "h",
+      "heure",
+      "heures"
+    ],
+    "minute": [],
+    "half": [
+      "et demie"
+    ],
+    "am": [],
+    "pm": [],
+    "meridiemFirst": false
+  },
+  "notify": {
+    "none": [
+      "ne me (notifie|préviens|prévenez) pas",
+      "ne pas (notifier|prévenir)",
+      "sans notification",
+      "pas de notification",
+      "(enregistre|enregistrer) seulement",
+      "seulement enregistrer"
+    ],
+    "change": [
+      "(quand|lorsque|si) (ça|cela|il|elle|la page|le résultat|le contenu) change",
+      "(en cas de|à chaque) changement"
+    ],
+    "significant": [
+      "(seulement si|uniquement si|si|quand)…(important|importante|significatif|pertinent)",
+      "mérite une notification"
+    ],
+    "available": [
+      "(de nouveau|à nouveau) (en stock|disponible)",
+      "(est|sera|devient|redevient) disponible",
+      "en stock",
+      "rupture de stock"
+    ],
+    "below": [
+      "en dessous de",
+      "en-dessous de",
+      "au-dessous de",
+      "sous",
+      "moins de",
+      "inférieur à",
+      "moins cher que",
+      "descend sous"
+    ],
+    "above": [
+      "au-dessus de",
+      "plus de",
+      "supérieur à",
+      "dépasse( les)?",
+      "plus cher que"
+    ],
+    "belowAfter": [],
+    "aboveAfter": []
+  },
+  "currencies": {
+    "francs": "CHF"
+  },
+  "multipliers": {},
+  "currency": "EUR",
+  "names": {
+    "stock": [
+      "stock",
+      "en stock"
+    ],
+    "release": [
+      "version",
+      "versions",
+      "sortie",
+      "sorties"
+    ],
+    "research": [
+      "recherche",
+      "recherches"
+    ]
+  },
+  "task": {
+    "dropAtEnd": [
+      " et (dis-moi|préviens-moi|indique-moi) si le prix (est inférieur à|est supérieur à|passe sous|passe au-dessus de|descend sous|dépasse|est en dessous de|est au-dessus de) #"
+    ],
+    "price": [
+      "prix"
+    ],
+    "reportPrice": "Indique le prix actuel",
+    "fullStop": ". "
+  }
+}

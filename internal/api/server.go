@@ -84,19 +84,22 @@ type Dependencies struct {
 	ListMessages          func(ctx context.Context, conversationID string) ([]contracts.Message, error)
 	Chat                  func(w http.ResponseWriter, r *http.Request, conversationID, profileID, modelID, message string, stream bool, execution string) error
 	// StopChat stops a conversation's running turn and reports whether one was running.
-	StopChat             func(conversationID string) bool
-	ListTasks            func(ctx context.Context) ([]contracts.Task, error)
-	CreateTask           func(ctx context.Context, profileID, conversationID, prompt string) (contracts.Task, error)
-	GetTask              func(ctx context.Context, id string) (contracts.Task, error)
-	RunTask              func(ctx context.Context, id string) error
-	ListAutomations      func(ctx context.Context) ([]automations.Automation, error)
-	CreateAutomation     func(ctx context.Context, in automations.CreateInput) (automations.Automation, error)
-	GetAutomation        func(ctx context.Context, id string) (automations.Detail, error)
-	ListAutomationRuns   func(ctx context.Context, id, before string, limit int) (automations.RunsPage, error)
-	UpdateAutomation     func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
-	DeleteAutomation     func(ctx context.Context, id string) error
-	RunAutomation        func(ctx context.Context, id string) (automations.Run, error)
-	PreviewAutomation    func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
+	StopChat           func(conversationID string) bool
+	ListTasks          func(ctx context.Context) ([]contracts.Task, error)
+	CreateTask         func(ctx context.Context, profileID, conversationID, prompt string) (contracts.Task, error)
+	GetTask            func(ctx context.Context, id string) (contracts.Task, error)
+	RunTask            func(ctx context.Context, id string) error
+	ListAutomations    func(ctx context.Context) ([]automations.Automation, error)
+	CreateAutomation   func(ctx context.Context, in automations.CreateInput) (automations.Automation, error)
+	GetAutomation      func(ctx context.Context, id string) (automations.Detail, error)
+	ListAutomationRuns func(ctx context.Context, id, before string, limit int) (automations.RunsPage, error)
+	UpdateAutomation   func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
+	DeleteAutomation   func(ctx context.Context, id string) error
+	RunAutomation      func(ctx context.Context, id string) (automations.Run, error)
+	PreviewAutomation  func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
+	// ParseAutomation reads a request such as "every morning at 8, tell me
+	// if the price is below $500" into an automation (#204).
+	ParseAutomation      func(ctx context.Context, text, timeZone, language string) (automations.ParsedRequest, error)
 	PauseAutomation      func(ctx context.Context, id string) (automations.Automation, error)
 	ResumeAutomation     func(ctx context.Context, id string) (automations.Automation, error)
 	DecideTool           func(requestID string, allow, allowSession bool) error
@@ -234,6 +237,7 @@ func (s *Server) routes() {
 	api.HandleFunc("/automations", s.handleListAutomations).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/automations", s.handleCreateAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/preview", s.handlePreviewAutomation).Methods(http.MethodPost)
+	api.HandleFunc("/automations/parse", s.handleParseAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}/run", s.handleRunAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}/pause", s.handlePauseAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}/resume", s.handleResumeAutomation).Methods(http.MethodPost)
@@ -443,6 +447,7 @@ func (s *Server) BindAutomations(d Dependencies) {
 	s.deps.DeleteAutomation = d.DeleteAutomation
 	s.deps.RunAutomation = d.RunAutomation
 	s.deps.PreviewAutomation = d.PreviewAutomation
+	s.deps.ParseAutomation = d.ParseAutomation
 	s.deps.PauseAutomation = d.PauseAutomation
 	s.deps.ResumeAutomation = d.ResumeAutomation
 }

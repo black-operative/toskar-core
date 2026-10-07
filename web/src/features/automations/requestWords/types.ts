@@ -1,4 +1,6 @@
-// The words an automation request is read with, one file per language.
+// The words an automation request is read with, one file per language in
+// the shared catalog, i18n/requests/<language>.json, which the daemon reads
+// too (#204).
 //
 // Phrases are lowercase and matched against the request after it is
 // lowercased and NFKC-normalized (full-width digits become 0-9, ’ becomes ').
@@ -12,8 +14,9 @@
 // language written without them (Japanese, Chinese, Korean with its attached
 // particles), spaces are optional and phrases match anywhere.
 //
-// To add a language, copy en.ts, translate the words, and list the file in
-// index.ts. Tests in parseRequest.test.ts read the language's example
+// To add a language, copy i18n/requests/en.json, translate the words, and
+// add its cases to the tests: web/src/features/automations/parseRequest.test.ts
+// and internal/automations/request_test.go read the language's example
 // request (form.describePlaceholder in automations.json).
 
 export type Daypart = 'morning' | 'afternoon' | 'evening' | 'night'

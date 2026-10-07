@@ -1,0 +1,274 @@
+{
+  "spaced": true,
+  "numbers": {
+    "un": 1,
+    "una": 1,
+    "uno": 1,
+    "dos": 2,
+    "tres": 3,
+    "cuatro": 4,
+    "cinco": 5,
+    "seis": 6,
+    "siete": 7,
+    "ocho": 8,
+    "nueve": 9,
+    "diez": 10,
+    "once": 11,
+    "doce": 12,
+    "quince": 15,
+    "veinte": 20,
+    "treinta": 30,
+    "cuarenta": 40,
+    "cuarenta y cinco": 45,
+    "cincuenta": 50,
+    "sesenta": 60,
+    "noventa": 90
+  },
+  "interval": {
+    "before": [
+      "cada",
+      "todos los",
+      "todas las"
+    ],
+    "after": [],
+    "units": {
+      "second": [
+        "segundo",
+        "segundos"
+      ],
+      "minute": [
+        "minuto",
+        "minutos",
+        "min"
+      ],
+      "hour": [
+        "hora",
+        "horas"
+      ],
+      "day": [
+        "día",
+        "días",
+        "dia",
+        "dias"
+      ]
+    },
+    "hourly": [
+      "cada hora",
+      "a cada hora"
+    ],
+    "halfHour": [
+      "cada media hora"
+    ]
+  },
+  "daily": {
+    "day": [
+      "cada día",
+      "cada dia",
+      "todos los días",
+      "todos los dias",
+      "diariamente",
+      "a diario"
+    ],
+    "morning": [
+      "cada mañana",
+      "todas las mañanas"
+    ],
+    "afternoon": [
+      "cada tarde",
+      "todas las tardes"
+    ],
+    "evening": [],
+    "night": [
+      "cada noche",
+      "todas las noches"
+    ]
+  },
+  "dayparts": {
+    "morning": [
+      "mañana",
+      "mañanas",
+      "madrugada"
+    ],
+    "afternoon": [
+      "tarde",
+      "tardes"
+    ],
+    "evening": [],
+    "night": [
+      "noche",
+      "noches"
+    ]
+  },
+  "weekly": {
+    "before": [
+      "cada",
+      "todos los",
+      "los",
+      "el"
+    ],
+    "after": [],
+    "days": [
+      [
+        "domingo",
+        "domingos"
+      ],
+      [
+        "lunes"
+      ],
+      [
+        "martes"
+      ],
+      [
+        "miércoles",
+        "miercoles"
+      ],
+      [
+        "jueves"
+      ],
+      [
+        "viernes"
+      ],
+      [
+        "sábado",
+        "sábados",
+        "sabado",
+        "sabados"
+      ]
+    ]
+  },
+  "once": {
+    "once": [
+      "una vez",
+      "una sola vez"
+    ],
+    "today": [
+      "hoy",
+      "esta mañana",
+      "esta tarde",
+      "esta noche"
+    ],
+    "tomorrow": [
+      "mañana",
+      "pasado mañana"
+    ],
+    "notTomorrow": [
+      "por la mañana",
+      "de la mañana",
+      "en la mañana",
+      "esta mañana",
+      "cada mañana",
+      "las mañanas"
+    ]
+  },
+  "clock": {
+    "at": [
+      "a las",
+      "a la",
+      "sobre las",
+      "hacia las"
+    ],
+    "hour": [
+      "h",
+      "hs",
+      "horas"
+    ],
+    "minute": [],
+    "half": [
+      "y media"
+    ],
+    "am": [
+      "a. m.",
+      "a.m.",
+      "am"
+    ],
+    "pm": [
+      "p. m.",
+      "p.m.",
+      "pm"
+    ],
+    "meridiemFirst": false
+  },
+  "notify": {
+    "none": [
+      "no me (notifiques|avises)",
+      "no notificar",
+      "sin (notificación|notificaciones|avisos)",
+      "solo (guardar|guarda|guardarlo)"
+    ],
+    "change": [
+      "(solo )?(cuando|si) (cambie|cambia|haya cambios|hay cambios)",
+      "(cuando|si) (el resultado|la página|el contenido|esto) (cambie|cambia)"
+    ],
+    "significant": [
+      "(solo si|solo cuando|si|cuando)…(importante|significativo|relevante)",
+      "merezca (una notificación|un aviso)"
+    ],
+    "available": [
+      "(vuelva|vuelve) a estar (disponible|en stock)",
+      "(de nuevo|otra vez) (disponible|en stock)",
+      "(esté|está|este|esta) disponible",
+      "en stock",
+      "agotado",
+      "hay existencias"
+    ],
+    "below": [
+      "por debajo de",
+      "menos de",
+      "menor (a|que)",
+      "baja de( los)?",
+      "baje de( los)?",
+      "más barato que",
+      "inferior a"
+    ],
+    "above": [
+      "por encima de",
+      "más de",
+      "mas de",
+      "mayor (a|que)",
+      "supera( los| las| el)?",
+      "supere( los| las| el)?",
+      "sube de( los)?",
+      "suba de( los)?",
+      "más caro que",
+      "superior a"
+    ],
+    "belowAfter": [],
+    "aboveAfter": []
+  },
+  "currencies": {
+    "dólar": "USD",
+    "dólares": "USD"
+  },
+  "multipliers": {},
+  "currency": "EUR",
+  "names": {
+    "stock": [
+      "stock",
+      "existencias",
+      "inventario",
+      "agotado"
+    ],
+    "release": [
+      "versión",
+      "versiones",
+      "lanzamiento",
+      "lanzamientos"
+    ],
+    "research": [
+      "investiga",
+      "investigación",
+      "investigar"
+    ]
+  },
+  "task": {
+    "dropAtEnd": [
+      " y (avísame|dime|notifícame|infórmame) si el precio (baja de|sube de|supera|está por debajo de|está por encima de|es menor (a|que)|es mayor (a|que)|es inferior a|es superior a) #"
+    ],
+    "price": [
+      "precio",
+      "precios"
+    ],
+    "reportPrice": "Indica el precio actual",
+    "fullStop": ". "
+  }
+}

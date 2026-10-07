@@ -4027,6 +4027,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /api/v1/automations/parse:
+    post:
+      summary: Read a request such as "every morning at 8, tell me if the price is below $500" into an automation
+      operationId: parseAutomation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+                time_zone:
+                  type: string
+                  description: Where the schedule runs, such as America/Los_Angeles; empty is this computer's
+                language:
+                  type: string
+                  description: The language the request may be written in besides English, and of the name and notes; empty is the App language
+      responses:
+        "200":
+          description: "{name, prompt, schedule, notification, notes}: an automation to review and save"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400":
+          description: REQUEST_EMPTY, REQUEST_NO_SCHEDULE, REQUEST_BAD_TIME, or REQUEST_TIME_ZONE
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/automations/preview:
     post:
       summary: Check an automation and show its next runs without saving it

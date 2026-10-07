@@ -1,29 +1,17 @@
-import { de } from './de'
-import { en } from './en'
-import { es } from './es'
-import { fr } from './fr'
-import { it } from './it'
-import { ja } from './ja'
-import { ko } from './ko'
-import { ptBR } from './pt-BR'
 import type { RequestWords } from './types'
-import { zhHans, zhHant } from './zh'
+
+// The words live in the shared catalog, i18n/requests/<language>.json, so the
+// daemon reads requests with the same words (#204).
+const files = import.meta.glob<RequestWords>('../../../../../i18n/requests/*.json', { eager: true, import: 'default' })
 
 export type { Daypart, RequestWords } from './types'
 
 /** The languages automation requests can be written in, by catalog code. */
-export const requestWords: Record<string, RequestWords> = {
-  en,
-  de,
-  es,
-  fr,
-  it,
-  'pt-BR': ptBR,
-  ja,
-  ko,
-  'zh-Hans': zhHans,
-  'zh-Hant': zhHant,
-}
+export const requestWords: Record<string, RequestWords> = Object.fromEntries(
+  Object.entries(files).map(([file, words]) => [file.replace(/^.*\/(.+)\.json$/, '$1'), words]),
+)
+
+const en = requestWords.en
 
 /** The words for a language tag: an exact match, then one with the same base language (pt → pt-BR). */
 export function requestWordsFor(language: string): RequestWords | undefined {

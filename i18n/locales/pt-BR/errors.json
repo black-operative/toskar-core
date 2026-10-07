@@ -149,5 +149,9 @@
   "LAN_ACCESS_OFF": "O acesso pela rede local está desativado neste computador, então ele só responde aos apps dele.",
   "LAN_ACCESS_FAILED": "Não foi possível ativar o acesso pela rede local.",
   "AUTOMATION_RUNNING": "Esta automação já está em execução. O resultado aparecerá aqui quando terminar.",
-  "AUTOMATION_TIMEOUT": "A execução levou mais de {{minutes}} minutos e foi interrompida. Tente um modelo mais rápido ou um prompt mais curto."
+  "AUTOMATION_TIMEOUT": "A execução levou mais de {{minutes}} minutos e foi interrompida. Tente um modelo mais rápido ou um prompt mais curto.",
+  "REQUEST_EMPTY": "Descreva a automação.",
+  "REQUEST_TIME_ZONE": "É necessário um fuso horário.",
+  "REQUEST_NO_SCHEDULE": "Descreva quando ela deve ser executada, por exemplo “todas as manhãs às 8h”.",
+  "REQUEST_BAD_TIME": "Esse horário não é válido."
 }

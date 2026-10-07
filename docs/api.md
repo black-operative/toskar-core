@@ -211,6 +211,7 @@ Uploads send `text`, or `content_base64` for binary files such as `.xlsx` and `.
 | GET, PATCH, DELETE | `/automations/{id}` | An automation with its history, change it, or delete it |
 | POST | `/automations/{id}/run`, `/pause`, `/resume` | Run now, pause, or resume |
 | GET | `/automations/{id}/runs` | Older runs, a page at a time (`before`, `limit`) |
+| POST | `/automations/parse` | Read a request such as "every morning at 8, tell me if the price is below $500" into an automation to review |
 | GET | `/notifications` | The notification center: `{"notifications": [...], "unread": n}`. `?unread=1` lists unread ones; `?category=` lists one category. |
 | GET | `/notifications/{id}` | One notification with each channel's delivery |
 | GET, POST | `/notifications/destinations` | Email and webhook destinations; creating a webhook returns its signing `secret` once |
@@ -355,6 +356,11 @@ A trained revision can be exported as one GGUF file that llama.cpp, LM Studio, O
 ## Automations and notifications
 
 An automation's `notification.mode` is `condition`, `change`, `always`, `failure` (only failed runs), or `none`. An automation runs on the same stack as chat: `model_id` `auto` picks a model for each run, and memories and connected knowledge are used the same way. Its `response_language` is the language results are written in: `account` (the default) follows the assistant language setting, `app` the App language, `auto` the language of the request, or a language tag such as `de`. A language the request asks for, such as "answer in English", always wins. Tools follow the unattended policy, because nobody is there to approve them. Tools listed in the automation's `tools` were approved when it was saved, and they run even if they change things. With no `tools`, only read-only tools the profile allows without asking can run. A tool the profile denies never runs. When a run reaches a tool that was not approved, the tool is skipped and the run continues. The run's `automation.completed` event lists the tool in `skipped`, and an `approval` notification says which tools to approve.
+
+**Reading a request.** `POST /automations/parse` with `{"text": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.", "time_zone": "America/Los_Angeles", "language": "en"}` returns an automation to review and save: `name` ("Price below $500"), `prompt` (the task without the schedule, "Check this product. Report the current price."), `schedule`, `notification`, and `notes` on what was assumed, such as a time of day when none was given.
+- **Languages:** a request may be written in `language` or in English. `language` is also the language of the name and notes, and the currency of an amount written without one. Empty `language` uses the App language, and empty `time_zone` this computer's.
+- **Words:** the words come from `i18n/requests/<language>.json`, which the web app reads too, so the form and the API read a request the same way.
+- **Errors:** a request with no schedule it can read answers `400` `REQUEST_NO_SCHEDULE`. `REQUEST_EMPTY`, `REQUEST_BAD_TIME`, and `REQUEST_TIME_ZONE` cover the rest.
 
 **Notify on change.** `change` compares a run with the last successful one by what changed, not how the model worded it. In order:
 1. **Values:** when both results carry the same structured values, such as a price or availability, nothing changed.
