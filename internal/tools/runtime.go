@@ -64,6 +64,8 @@ var timeouts = map[string]time.Duration{
 	CapBrowser: 90 * time.Second,
 	// A clip on a slow computer; its own limit stops it sooner.
 	CapVideo: 80 * time.Minute,
+	// A request the words can't read is read by a model.
+	CapAutomations: 2 * time.Minute,
 }
 
 const defaultTimeout = time.Minute

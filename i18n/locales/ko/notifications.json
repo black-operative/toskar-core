@@ -161,7 +161,9 @@
     "test": "Toskar 테스트",
     "testBody": "{{destination}}(으)로 알림이 잘 전달돼요.",
     "digest_other": "알림 {{count}}개",
-    "digestMore_other": "…외 {{count}}개"
+    "digestMore_other": "…외 {{count}}개",
+    "automationDigest": "자동화 요약",
+    "automationDigestBody_other": "자동화 {{count}}개가 실행되었습니다: {{names}}"
   },
   "sent": {
     "times": "{{title}} ({{count}}회)",

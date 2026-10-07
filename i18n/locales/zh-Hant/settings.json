@@ -137,7 +137,10 @@
     "title": "通知",
     "description": "針對長時間執行的工作和團隊連線狀態的提醒。",
     "taskFinish": "工作完成時通知",
-    "peerOffline": "配對的電腦離線時通知"
+    "peerOffline": "配對的電腦離線時通知",
+    "digest": "每日自動化摘要",
+    "digestHint": "每天彙整一次所有自動化的結果，傳到一個可以回覆的聊天中。",
+    "digestTime": "時間"
   },
   "toolPermissions": {
     "title": "工具權限",
@@ -190,7 +193,8 @@
       "external_server": "外部伺服器",
       "connector": "已連結的服務",
       "notification": "通知",
-      "community_ratings": "社群評分"
+      "community_ratings": "社群評分",
+      "update_check": "檢查更新"
     },
     "kindsLower": {
       "web_search": "網路搜尋",
@@ -200,7 +204,8 @@
       "external_server": "外部伺服器",
       "connector": "已連結的服務",
       "notification": "通知",
-      "community_ratings": "社群評分"
+      "community_ratings": "社群評分",
+      "update_check": "檢查更新"
     },
     "sources": {
       "chat": "聊天",
@@ -242,7 +247,13 @@
     "thisComputer": "這台電腦",
     "service": "服務",
     "unavailable": "無法使用",
-    "diagnostics": "打開診斷"
+    "diagnostics": "打開診斷",
+    "updateAvailable": "Toskar {{version}} 已推出。",
+    "whatsNew": "新功能",
+    "download": "下載",
+    "upToDate": "已是最新版本",
+    "checkUpdates": "檢查更新",
+    "checkUpdatesHint": "Toskar 每天向 toskar.ai 詢問一次最新版本號，不會傳送其他任何內容。"
   },
   "reset": {
     "title": "重置應用程式",

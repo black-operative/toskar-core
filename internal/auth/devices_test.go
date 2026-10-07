@@ -106,7 +106,7 @@ func TestDevicePairingLimits(t *testing.T) {
 }
 
 func TestCleanDeviceName(t *testing.T) {
-	if got := auth.CleanDeviceName(""); got != "Phone" {
+	if got := auth.CleanDeviceName(""); got != "Device" {
 		t.Errorf("empty = %q", got)
 	}
 	if got := auth.CleanDeviceName("a\x00b\tc"); got != "ab c" {

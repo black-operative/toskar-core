@@ -201,7 +201,7 @@
     {
       "id": "capability_question_uses_inventory",
       "what": "A question about what Toskar can do is answered from its capability inventory.",
-      "message": "Can you generate an image of a cat?",
+      "message": "Can you generate images?",
       "stub": [
         "No. No image tool is installed."
       ],
@@ -209,6 +209,98 @@
         "steps_match": "(?i)what toskar can do",
         "answer_matches": "(?i)\\b(no|not|can't|cannot|unable)\\b",
         "answer_real_only": true
+      }
+    },
+    {
+      "id": "image_request_makes_picture",
+      "what": "Asked to draw something, Toskar makes the picture and attaches it, even when the model would say it can't.",
+      "message": "Draw an image of a dog for me please.",
+      "stub": [
+        "A friendly golden retriever sitting on a sunny lawn, soft natural light.",
+        "Here's your dog, attached below."
+      ],
+      "fixtures": true,
+      "expect": {
+        "tools_run": [
+          "image.generate"
+        ],
+        "files": [
+          ".png"
+        ],
+        "answer_lacks": "(?i)(can'?t|cannot|unable to|not able to) (draw|create|make|generate|produce)|as an ai|text-based|language model"
+      }
+    },
+    {
+      "id": "image_request_after_install",
+      "what": "After image generation is set up, a request to use it makes the picture instead of pointing to websites.",
+      "message": "we installed the tool, please use it to generate an image of a dog",
+      "stub": [
+        "A happy dog running on a beach at sunset.",
+        "It's attached below."
+      ],
+      "fixtures": true,
+      "expect": {
+        "tools_run": [
+          "image.generate"
+        ],
+        "files": [
+          ".png"
+        ],
+        "not_run": [
+          "internet.search"
+        ],
+        "answer_lacks": "(?i)(can'?t|cannot|unable to|not able to) (draw|create|make|generate|produce)|as an ai|text-based|language model"
+      }
+    },
+    {
+      "id": "image_request_as_question",
+      "what": "A request asked as a question, such as \"are you able to make a picture of a dog for me?\", makes the picture rather than only saying it can.",
+      "message": "Are you able to make a picture of a dog for me?",
+      "stub": [
+        "A cute puppy portrait, studio lighting.",
+        "Here it is, below."
+      ],
+      "fixtures": true,
+      "expect": {
+        "tools_run": [
+          "image.generate"
+        ],
+        "files": [
+          ".png"
+        ],
+        "answer_lacks": "(?i)(can'?t|cannot|unable to|not able to) (draw|create|make|generate|produce)|as an ai|text-based|language model"
+      }
+    },
+    {
+      "id": "video_request_makes_clip",
+      "what": "Asked for a short video, Toskar makes the clip and attaches it.",
+      "message": "Make a short video of waves rolling onto a beach.",
+      "stub": [
+        "Gentle waves rolling onto a sandy beach at sunset, slow pan.",
+        "The clip is attached below."
+      ],
+      "fixtures": true,
+      "expect": {
+        "tools_run": [
+          "video.generate"
+        ],
+        "files": [
+          ".mp4"
+        ],
+        "answer_lacks": "(?i)(can'?t|cannot|unable to|not able to) (draw|create|make|generate|produce)|as an ai|text-based|language model"
+      }
+    },
+    {
+      "id": "finding_pictures_makes_none",
+      "what": "Asking to find pictures online is a search, not a request to make one.",
+      "message": "Find pictures of golden retrievers online",
+      "stub": [
+        "Here are some places to find them."
+      ],
+      "expect": {
+        "not_run": [
+          "image.generate"
+        ]
       }
     },
     {

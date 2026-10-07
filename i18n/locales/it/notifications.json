@@ -175,7 +175,11 @@
     "digest_other": "{{count}} notifiche",
     "digestMore_one": "…e altre {{count}}",
     "digestMore_many": "…e altre {{count}}",
-    "digestMore_other": "…e altre {{count}}"
+    "digestMore_other": "…e altre {{count}}",
+    "automationDigest": "Riepilogo automazioni",
+    "automationDigestBody_one": "È stata eseguita 1 automazione: {{names}}",
+    "automationDigestBody_other": "Sono state eseguite {{count}} automazioni: {{names}}",
+    "automationDigestBody_many": "Sono state eseguite {{count}} automazioni: {{names}}"
   },
   "sent": {
     "times": "{{title}} ({{count}} volte)",

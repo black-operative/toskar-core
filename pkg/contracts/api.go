@@ -1,6 +1,7 @@
 package contracts
 
 import (
+	"encoding/json"
 	"strings"
 	"time"
 )
@@ -607,6 +608,39 @@ type MessageMeta struct {
 	// known, such as when a step ran on a paired computer.
 	Backend string `json:"backend,omitempty"`
 	Device  string `json:"device,omitempty"`
+	// Automation is an automation the answer drafted, for the person to
+	// confirm (#204, contract 1.10). Nothing is scheduled until they do.
+	Automation *AutomationDraft `json:"automation,omitempty"`
+	// AutomationRun marks a message an automation posted to the chat it
+	// was made from: its result (#204, contract 1.11).
+	AutomationRun *AutomationRunRef `json:"automation_run,omitempty"`
+}
+
+// AutomationRunRef is the automation run a chat message came from.
+type AutomationRunRef struct {
+	AutomationID string `json:"automation_id"`
+	RunID        string `json:"run_id"`
+	// Name is the automation's name when it ran.
+	Name string `json:"name"`
+}
+
+// AutomationDraft is an automation a chat drafted from a request. A client
+// shows it and, when the person confirms, creates it with POST
+// /api/v1/automations, passing ID as draft_id and the conversation as
+// conversation_id; creating the same draft again returns that automation.
+type AutomationDraft struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Prompt string `json:"prompt"`
+	// Schedule and Notification are the automation's, as POST
+	// /api/v1/automations takes them.
+	Schedule     json.RawMessage `json:"schedule"`
+	Notification json.RawMessage `json:"notification"`
+	// ProfileID is the chat's profile, which runs it.
+	ProfileID string `json:"profile_id,omitempty"`
+	// Notes say what was assumed, such as a time the request didn't give,
+	// in the App language.
+	Notes []string `json:"notes,omitempty"`
 }
 
 // ContextUsage is how a turn used the model's context window, in tokens.
@@ -884,6 +918,9 @@ type SettingsView struct {
 	// CommunityRatings shows community model ratings, downloading the
 	// public summary once a day while models are browsed (#37).
 	CommunityRatings bool `json:"community_ratings"`
+	// UpdateCheck looks at toskar.ai once a day for a newer version, and
+	// says so in the app. Builds that update themselves don't check.
+	UpdateCheck bool `json:"update_check"`
 	// RatingsPrompts asks for a rating after a model has been used a while.
 	RatingsPrompts bool `json:"ratings_prompts"`
 	// Tool defaults: deny | ask | allow | allow-for-session
@@ -906,6 +943,11 @@ type SettingsView struct {
 	// AssistantLanguage is the BCP 47 tag answers are written in with
 	// AssistantLanguageMode "language", such as "de".
 	AssistantLanguage string `json:"assistant_language"`
+	// AutomationDigest is the time of day, such as "08:00", one digest of
+	// every automation's results goes out, or "" for none (#204), in
+	// AutomationDigestZone, an IANA time zone.
+	AutomationDigest     string `json:"automation_digest"`
+	AutomationDigestZone string `json:"automation_digest_zone"`
 }
 
 // Recommendation explains a recommended model setup.

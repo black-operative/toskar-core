@@ -183,6 +183,10 @@
     "git": {
       "label": "Git",
       "description": "查看代码仓库，以及提交或推送"
+    },
+    "automations": {
+      "label": "自动化",
+      "description": "在聊天中设置按计划运行的任务；每个都由你确认"
     }
   },
   "tools": {

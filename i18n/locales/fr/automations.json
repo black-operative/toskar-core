@@ -45,28 +45,78 @@
     "news": {
       "title": "Actualités du matin",
       "body": "Un court résumé de l'actualité tech, chaque matin.",
-      "request": "Chaque matin à 7 h 30, résume les principales actualités tech du jour."
+      "request": "Chaque matin à 7 h 30, résume les principales actualités tech du jour.",
+      "name": "Point du matin : {{topics}}",
+      "task": "Résume les principales actualités du jour sur {{topics}} en cinq points courts, avec un lien vers chaque source.",
+      "defaultTopics": "technologie"
     },
     "price": {
       "title": "Surveiller un prix",
       "body": "Soyez prévenu quand un article voulu passe sous votre prix.",
-      "request": "Chaque matin à 8 h, vérifie ce produit et dis-moi si le prix est inférieur à 500 €."
+      "request": "Chaque matin à 8 h, vérifie ce produit et dis-moi si le prix est inférieur à 500 €.",
+      "name": "Surveiller un prix : {{site}}",
+      "task": "Vérifie le prix actuel du produit sur {{url}}."
     },
     "stock": {
       "title": "De retour en stock",
       "body": "Soyez prévenu dès qu'un article épuisé est de nouveau disponible.",
-      "request": "Toutes les 6 heures, vérifie si cet article est de nouveau en stock."
+      "request": "Toutes les 6 heures, vérifie si cet article est de nouveau en stock.",
+      "name": "De retour en stock : {{site}}",
+      "task": "Vérifie si l’article sur {{url}} est en stock et peut être acheté maintenant."
     },
     "releases": {
       "title": "Nouveautés de la semaine",
       "body": "Ce qui a changé dans les logiciels que vous utilisez, chaque vendredi.",
-      "request": "Tous les vendredis à 9 h, résume les nouveautés de ce logiciel."
+      "request": "Tous les vendredis à 9 h, résume les nouveautés de ce logiciel.",
+      "name": "Notes de version : {{software}}",
+      "task": "Trouve les nouvelles versions de {{software}} de la semaine passée et résume ce qui a changé, avec les numéros de version."
     },
     "page": {
       "title": "Surveiller une page",
       "body": "Soyez prévenu seulement quand une page qui compte pour vous change.",
-      "request": "Tous les jours à 18h, vérifie cette page et préviens-moi quand ça change."
-    }
+      "request": "Tous les jours à 18h, vérifie cette page et préviens-moi quand ça change.",
+      "name": "Surveiller une page : {{site}}",
+      "task": "Lis la page {{url}} et résume ce qu’elle dit."
+    },
+    "folder": {
+      "title": "Résumé de dossier",
+      "body": "Sachez ce qui est nouveau dans un dossier de cet ordinateur quand il change.",
+      "request": "Tous les jours à 18h, résume ce dossier et préviens-moi quand ça change.",
+      "name": "Résumé du dossier : {{folderName}}",
+      "task": "Résume les fichiers du dossier {{folder}} : ce qui est nouveau ou a changé, et ce qui demande de l’attention."
+    },
+    "fields": {
+      "topics": {
+        "label": "Sujets",
+        "placeholder": "technologie, science"
+      },
+      "url": {
+        "label": "Lien",
+        "placeholder": "https://example.com/produit"
+      },
+      "price": {
+        "label": "Prévenir en dessous de",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "Devise"
+      },
+      "software": {
+        "label": "Logiciel",
+        "placeholder": "un nom ou un lien, comme Node.js"
+      },
+      "folder": {
+        "label": "Dossier",
+        "placeholder": "~/Documents/Factures"
+      },
+      "time": {
+        "label": "Heure"
+      },
+      "weekday": {
+        "label": "Jour"
+      }
+    },
+    "describeInstead": "Le décrire plutôt avec vos propres mots"
   },
   "detail": {
     "schedule": "Planification",
@@ -84,7 +134,9 @@
     "history": "Historique",
     "notRunYet": "Cette automatisation ne s'est pas encore exécutée.",
     "olderRuns": "Afficher les exécutions plus anciennes",
-    "loadingOlder": "Chargement…"
+    "loadingOlder": "Chargement…",
+    "lastChecked": "Vérifié pour la dernière fois {{when}}, rien de nouveau",
+    "nextCheck": "Prochaine vérification {{when}}"
   },
   "run": {
     "details": "Détails",
@@ -100,7 +152,10 @@
       "retrying": "Nouvelle tentative",
       "running": "En cours",
       "notRun": "Pas encore exécutée"
-    }
+    },
+    "continueInChat": "Continuer dans le chat",
+    "openingChat": "Ouverture du chat…",
+    "savedTo": "Enregistré dans {{path}}"
   },
   "pill": {
     "paused": "Suspendue",
@@ -155,7 +210,13 @@
     "hours": "Toutes les {{count}} heures",
     "everyMinute": "Toutes les minutes",
     "minutes": "Toutes les {{count}} minutes",
-    "seconds": "Toutes les {{count}} secondes"
+    "seconds": "Toutes les {{count}} secondes",
+    "weekdaysOnly": "En semaine à {{time}}",
+    "weekends": "Le week-end à {{time}}",
+    "weeklyDays": "Chaque {{days}} à {{time}}",
+    "monthly": "Tous les mois le {{day}} à {{time}}",
+    "cron": "Planification personnalisée : {{cron}}",
+    "manual": "Seulement au démarrage manuel"
   },
   "notify": {
     "none": "Enregistrer uniquement le résultat",
@@ -179,7 +240,8 @@
     "afternoon": "L'après-midi signifie 15 h, sauf si vous indiquez une autre heure.",
     "morning": "Le matin signifie 8 h, sauf si vous indiquez une autre heure.",
     "badTime": "Cette heure n'est pas valide.",
-    "unreadable": "Impossible de comprendre cette description."
+    "unreadable": "Impossible de comprendre cette description.",
+    "byModel": "L'IA a lu cette demande. Vérifiez la planification et la notification avant d'enregistrer."
   },
   "names": {
     "priceAbove": "Prix supérieur à {{amount}}",
@@ -201,8 +263,8 @@
     "describePlaceholder": "Chaque matin à 8 h, vérifie ce produit et dis-moi si le prix est inférieur à 500 €.",
     "describeHint": "Dites quand elle s'exécute et quoi faire. Toskar remplit les détails ci-dessous, et vous pouvez tout modifier.",
     "setUp": "Remplir les détails",
+    "settingUp": "Remplissage…",
     "ideas": "Ou partez d'une idée",
-    "ideaHint": "Adaptez les mots, par exemple avec un lien à la place de « cette page », puis choisissez à nouveau Remplir les détails.",
     "stepDetails": "Vérifiez les détails",
     "name": "Nom",
     "task": "Tâche",
@@ -212,8 +274,11 @@
     "kinds": {
       "daily": "Tous les jours",
       "weekly": "Toutes les semaines",
+      "monthly": "Tous les mois",
       "interval": "À intervalle régulier",
-      "once": "Une fois"
+      "once": "Une fois",
+      "cron": "Personnalisé (cron)",
+      "manual": "Seulement au démarrage manuel"
     },
     "notifyMe": "Me notifier",
     "notifyChoices": {
@@ -279,6 +344,79 @@
       "when": "Quand",
       "does": "Ce qu'elle fait",
       "tells": "Quand vous êtes prévenu"
-    }
+    },
+    "times": "Heures",
+    "addTime": "Ajouter une heure",
+    "removeTime": "Retirer {{time}}",
+    "days": "Jours",
+    "monthDay": "Jour du mois",
+    "monthDayHint": "Dans un mois plus court, elle s’exécute le dernier jour.",
+    "cron": "Expression cron",
+    "cronHint": "Cinq champs, dans le fuseau horaire ci-dessous : minute, heure, jour du mois, mois et jour de la semaine.",
+    "saveResults": "Enregistrer aussi chaque résultat dans un fichier",
+    "saveFolder": "Dossier",
+    "saveFolderHint": "Un nouveau fichier Markdown par résultat, dans votre dossier personnel.",
+    "runs": "S’exécute",
+    "runsSchedule": "Selon sa planification",
+    "runsPage": "Quand une page web change",
+    "runsFeed": "Quand un flux a de nouveaux articles",
+    "runsFolder": "Quand un fichier ou un dossier change",
+    "runsWebhook": "Quand un autre service appelle son lien (webhook)",
+    "runsAfter": "Après une autre automatisation",
+    "watchUrl": "Lien",
+    "watchPath": "Dossier ou fichier",
+    "watchHint": "Toskar vérifie selon la planification ci-dessous et ne s’exécute que si quelque chose a changé, en disant à la tâche quoi.",
+    "checkSchedule": "Fréquence de vérification",
+    "webhookHint": "Elle s’exécute quand un autre service appelle son lien. Créez le lien sur la page de l’automatisation après l’enregistrement.",
+    "manualHint": "Elle ne s’exécute que si vous appuyez sur Exécuter maintenant, ou par son webhook.",
+    "afterWhich": "Automatisation",
+    "afterWhen": "Quand",
+    "afterSucceeded": "Chaque fois qu’elle se termine",
+    "afterNotified": "Seulement quand elle notifie",
+    "afterHint": "Elle s’exécute juste après l’autre automatisation, avec son résultat. Une exécution qui en suit une autre ne peut pas utiliser d’outils qui modifient des choses hors de Toskar."
+  },
+  "draft": {
+    "label": "Automatisation à confirmer",
+    "when": "Quand",
+    "task": "Tâche",
+    "notify": "Notifier",
+    "hint": "Rien ne s’exécute tant que vous ne l’avez pas créée.",
+    "create": "Créer l’automatisation",
+    "creating": "Création…",
+    "created": "Créée",
+    "open": "Ouvrir dans Automatisations",
+    "failed": "Impossible de créer l’automatisation."
+  },
+  "runInChat": "De l’automatisation <automation>{{name}}</automation>",
+  "digest": {
+    "title": "Récapitulatif des automatisations",
+    "intro_one": "Ce que votre automatisation a trouvé depuis le dernier récapitulatif.",
+    "intro_other": "Ce que vos {{count}} automatisations ont trouvé depuis le dernier récapitulatif.",
+    "intro_many": "Ce que vos {{count}} automatisations ont trouvé depuis le dernier récapitulatif.",
+    "noResult": "Exécutée, rien à signaler.",
+    "failed_one": "Échec une fois : {{error}}",
+    "failed_other": "Échec {{count}} fois, le dernier : {{error}}",
+    "failed_many": "Échec {{count}} fois, le dernier : {{error}}"
+  },
+  "trigger": {
+    "page": "Quand {{site}} change · vérifié : {{schedule}}",
+    "feed": "Nouveaux articles sur {{site}} · vérifié : {{schedule}}",
+    "folder": "Quand {{name}} change · vérifié : {{schedule}}",
+    "webhook": "Quand son lien webhook est appelé",
+    "after": "Après la fin de {{name}}",
+    "afterNotified": "Après une notification de {{name}}",
+    "anotherAutomation": "une autre automatisation"
+  },
+  "webhook": {
+    "title": "Lien webhook",
+    "copy": "Copier",
+    "copied": "Copié",
+    "shownOnce": "Copiez-le maintenant : il n’est affiché qu’une fois. Toute personne qui a le lien peut démarrer cette automatisation.",
+    "howTo": "Envoyez-lui une requête POST. Le corps, jusqu’à 64 Ko, est transmis à la tâche comme données.",
+    "noLink": "Créez un lien qu’un autre service pourra appeler.",
+    "hasLink": "Cette automatisation a un lien. Il n’est affiché qu’à sa création.",
+    "make": "Créer un lien",
+    "makeNew": "Créer un nouveau lien",
+    "replaces": "Un nouveau lien désactive l’ancien."
   }
 }

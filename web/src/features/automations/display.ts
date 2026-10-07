@@ -1,38 +1,35 @@
 import i18n from '@/i18n'
 import { formatDate, formatPrice } from '@/i18n/format'
-import type { AutomationNotification, AutomationRun } from '@/types/api'
-import { formatWhen, resultProse } from './parseRequest'
+import type { AutomationRun } from '@/types/api'
+import { formatWhen } from './parseRequest'
 
 export interface NoticeExplanation {
   title: string
   detail: string
 }
 
-export function explainRun(
-  notification: AutomationNotification,
-  run: Pick<AutomationRun, 'status' | 'result' | 'notification_sent'>,
-  previousResult: string | undefined,
-  previousNotified = false,
-): NoticeExplanation {
-  if (run.status === 'failed' || run.status === 'retrying') {
-    return { title: run.notification_sent ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'), detail: '' }
+// The computer decides whether a run notifies and records why (#204); the
+// page shows its decision, notify_detail with notify_values, rather than
+// reading the result again. Runs from before it recorded one say only
+// whether they notified.
+const CONDITION_NOT_MET = new Set(['notAbove', 'notBelow', 'notAvailable', 'notSignificant'])
+
+export function explainRun(run: Pick<AutomationRun, 'status' | 'notification_sent' | 'notify_detail' | 'notify_values'>): NoticeExplanation {
+  const sent = run.notification_sent ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified')
+  const key = run.notify_detail
+  if (!key || run.status === 'failed' || run.status === 'retrying') {
+    return { title: sent, detail: '' }
   }
-  if (notification.mode === 'none') {
-    return { title: i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.storesResult') }
+  const values = run.notify_values ?? {}
+  const currency = typeof values.currency === 'string' ? values.currency : undefined
+  const params: Record<string, string> = {}
+  for (const name of ['price', 'amount'] as const) {
+    if (typeof values[name] === 'number') params[name] = formatPrice(values[name], currency)
   }
-  if (notification.mode === 'always') {
-    return { title: run.notification_sent ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'), detail: '' }
+  return {
+    title: CONDITION_NOT_MET.has(key) ? i18n.t('automations:notice.conditionNotMet') : sent,
+    detail: i18n.t(`automations:notice.${key}`, params),
   }
-  if (notification.mode === 'change') {
-    if (!previousResult) {
-      return { title: i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.firstSaved') }
-    }
-    if (normalize(run.result) === normalize(previousResult)) {
-      return { title: i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.unchanged') }
-    }
-    return { title: run.notification_sent ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.changed') }
-  }
-  return explainCondition(notification, run.result, previousResult, previousNotified, run.notification_sent)
 }
 
 export function compactWhen(iso: string | undefined, timeZone: string): string {
@@ -58,123 +55,6 @@ export function runTiming(run: Pick<AutomationRun, 'occurrence_at' | 'started_at
 
 export function clockDetail(iso: string | undefined, timeZone: string): string {
   return formatWhen(iso, timeZone)
-}
-
-function explainCondition(
-  notification: AutomationNotification,
-  result: string | undefined,
-  previous: string | undefined,
-  previousNotified: boolean,
-  notified: boolean,
-): NoticeExplanation {
-  const condition = notification.condition
-  const signal = readSignal(result)
-  if (!condition || condition.kind === 'threshold') {
-    const currency = condition?.currency
-    const amount = formatAmount(condition?.value ?? 0, currency)
-    const above = condition?.op === 'above'
-    if (signal.price == null) {
-      return { title: notified ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'), detail: notified ? '' : i18n.t('automations:notice.noPrice') }
-    }
-    const matched = above ? signal.price > (condition?.value ?? 0) : signal.price < (condition?.value ?? 0)
-    if (!matched) {
-      return {
-        title: i18n.t('automations:notice.conditionNotMet'),
-        detail: i18n.t(above ? 'automations:notice.notAbove' : 'automations:notice.notBelow', { price: formatAmount(signal.price, currency), amount }),
-      }
-    }
-    return {
-      title: notified ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'),
-      detail: i18n.t(above ? 'automations:notice.priceAbove' : 'automations:notice.priceBelow', { amount }),
-    }
-  }
-  if (condition.kind === 'available') {
-    const available = itemAvailable(result)
-    if (available !== true) {
-      return { title: i18n.t('automations:notice.conditionNotMet'), detail: i18n.t('automations:notice.notAvailable') }
-    }
-    if (previousNotified && itemAvailable(previous) === true) {
-      return { title: i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.alreadyAvailable') }
-    }
-    return { title: notified ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.inStock') }
-  }
-  if (signal.significant !== true) {
-    return { title: i18n.t('automations:notice.conditionNotMet'), detail: i18n.t('automations:notice.notSignificant') }
-  }
-  return { title: notified ? i18n.t('automations:notice.notified') : i18n.t('automations:notice.notNotified'), detail: i18n.t('automations:notice.significant') }
-}
-
-function itemAvailable(result: string | undefined): boolean | undefined {
-  const signal = readSignal(result)
-  if (signal.available != null) return signal.available
-  return inferAvailable(result)
-}
-
-function inferAvailable(result: string | undefined): boolean | undefined {
-  if (!result) return undefined
-  let positive = false
-  let negative = false
-  for (const sentence of result.split(/[.!?\n]/)) {
-    const line = sentence.trim().toLowerCase()
-    if (!line) continue
-    if (availabilityDenied(line)) {
-      negative = true
-      continue
-    }
-    if (availabilityStated(line)) positive = true
-  }
-  if (positive && !negative) return true
-  if (negative && !positive) return false
-  return undefined
-}
-
-function availabilityDenied(line: string): boolean {
-  return [
-    'out of stock',
-    'not in stock',
-    "isn't in stock",
-    'is not in stock',
-    'sold out',
-    'unavailable',
-    'not available',
-    "isn't available",
-    'is not available',
-    'no longer available',
-  ].some((phrase) => line.includes(phrase))
-}
-
-function availabilityStated(line: string): boolean {
-  if (line.includes('if ') || line.includes('whether ') || line.includes('unable') || line.includes('cannot') || line.includes('could not') || line.includes("can't")) {
-    return false
-  }
-  return line.includes('in stock') || line.includes('back in stock') || line.includes('now available') || line.includes('is available') || line.includes('are available')
-}
-
-function readSignal(result: string | undefined): { price?: number; available?: boolean; significant?: boolean } {
-  if (!result) return {}
-  const matches = result.match(/\{[^{}]*"(?:price|available|significant)"[^{}]*\}/g) ?? []
-  let price: number | undefined
-  let available: boolean | undefined
-  let significant: boolean | undefined
-  for (const raw of matches) {
-    try {
-      const body = JSON.parse(raw) as { price?: unknown; available?: unknown; significant?: unknown }
-      if (typeof body.price === 'number') price = body.price
-      if (typeof body.available === 'boolean') available = body.available
-      if (typeof body.significant === 'boolean') significant = body.significant
-    } catch {
-      continue
-    }
-  }
-  return { price, available, significant }
-}
-
-function formatAmount(value: number, currency: string | undefined): string {
-  return formatPrice(value, currency)
-}
-
-function normalize(value: string | undefined): string {
-  return resultProse(value)
 }
 
 function durationLabel(ms: number): string {

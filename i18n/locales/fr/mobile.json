@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "Saisissez l'adresse de l'ordinateur qui exécute Toskar.",
     "couldNotReach": "Impossible de joindre Toskar.",
-    "unreachable": "Toskar est injoignable sur cet ordinateur. Utilisez le même réseau Wi-Fi et choisissez Connecter un téléphone sur cet ordinateur.",
+    "unreachable": "Toskar est injoignable sur cet ordinateur. Utilisez le même réseau Wi-Fi et choisissez Connecter un appareil sur cet ordinateur.",
     "keyRejected": "Cette clé API a été refusée. Connectez-vous plutôt avec un code de l'ordinateur, ou créez une clé dans Accès API.",
     "dropped": "La connexion à Toskar a été interrompue.",
     "chatFailed": "La discussion a échoué.",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "Connecter un ordinateur",
-    "subtitle": "Le téléphone utilise l'ordinateur qui exécute déjà vos modèles. Sur cet ordinateur, ouvrez Ordinateurs et choisissez Connecter un téléphone.",
+    "subtitle": "Le téléphone utilise l'ordinateur qui exécute déjà vos modèles. Sur cet ordinateur, ouvrez Ordinateurs et choisissez Connecter un appareil.",
     "address": "Adresse de l'ordinateur",
     "addressPlaceholder": "192.168.1.20",
     "code": "Code",
     "codePlaceholder": "Code à 6 chiffres",
-    "codeHint": "Le code affiché par l'ordinateur dans Ordinateurs → Connecter un téléphone. Il sert une fois, pendant 10 minutes.",
+    "codeHint": "Le code affiché par l'ordinateur dans Ordinateurs → Connecter un appareil. Il sert une fois, pendant 10 minutes.",
     "useKey": "Utiliser plutôt une clé API",
     "useCode": "Utiliser plutôt un code",
     "apiKey": "Clé API",
@@ -46,7 +46,8 @@
     "connect": "Connecter",
     "connecting": "Connexion",
     "notReady": "Toskar a répondu, mais n'est pas prêt.",
-    "pairUnsupported": "Le Toskar de cet ordinateur est trop ancien pour une connexion par code. Mettez-le à jour ou utilisez une clé API."
+    "pairUnsupported": "Le Toskar de cet ordinateur est trop ancien pour une connexion par code. Mettez-le à jour ou utilisez une clé API.",
+    "lede": "Le téléphone utilise l'ordinateur qui exécute déjà vos modèles."
   },
   "discovery": {
     "onThisNetwork": "Sur ce réseau",
@@ -57,7 +58,7 @@
     "none": "Aucun ordinateur trouvé. Lancez Toskar sur votre ordinateur et utilisez le même Wi-Fi, ou saisissez son adresse.",
     "localNetworkDenied": "Toskar n'est peut-être pas autorisé à rechercher des ordinateurs sur votre réseau. Autorisez-le dans Réglages > Confidentialité et sécurité > Réseau local.",
     "listFailed": "Impossible de lister les ordinateurs de ce réseau. Vous pouvez toujours saisir une adresse ci-dessous.",
-    "lanOff": "Choisissez d'abord Connecter un téléphone sur cet ordinateur"
+    "lanOff": "Choisissez d'abord Connecter un appareil sur cet ordinateur"
   },
   "computers": {
     "title": "Ordinateurs",
@@ -114,7 +115,10 @@
       "phi-3-5-mini-q4": "Modèle compact de Microsoft, bon en raisonnement et en code léger.",
       "gemma-2-2b-q4": "Petit modèle de Google pour des discussions du quotidien réactives.",
       "qwen2-5-3b-q4": "Modèle généraliste de taille moyenne, compétent, avec appel d'outils.",
-      "deepseek-r1-distill-1-5b-q4": "Modèle de raisonnement léger distillé à partir de DeepSeek R1."
+      "deepseek-r1-distill-1-5b-q4": "Modèle de raisonnement léger distillé à partir de DeepSeek R1.",
+      "qwen2-5-7b-q4": "Assistant généraliste solide pour le travail de tous les jours.",
+      "qwen2-5-coder-7b-q4": "Modèle de code solide et polyvalent, avec utilisation d'outils.",
+      "deepseek-r1-distill-7b-q4": "Raisonnement plus poussé pour l'analyse et les problèmes en plusieurs étapes."
     }
   },
   "onboarding": {
@@ -382,5 +386,26 @@
       "story": "Forseti, fils de Baldr, siège à Glitnir, une salle aux piliers d'or et au toit d'argent. Tous ceux qui lui soumettent un différend repartent réconciliés.",
       "runeName": "Isa, la rune de l'immobilité"
     }
+  },
+  "tv": {
+    "connectLede": "Toskar sur votre téléviseur répond avec les modèles de votre ordinateur.",
+    "enterAddress": "Saisir une adresse",
+    "askHint": "Appuyez sur le micro de la télécommande, ou tapez.",
+    "tryAsking": "Essayez de demander",
+    "disconnect": "Déconnecter",
+    "emptyHint": "Les réponses viennent des modèles de votre ordinateur. Rien de ce que vous demandez ne part vers un service d’IA hébergé.",
+    "suggest": {
+      "dinner": "Que puis-je cuisiner ce soir avec du poulet, du riz et des épinards ?",
+      "homework": "Explique la photosynthèse à un enfant de dix ans.",
+      "trip": "Planifie un samedi pluvieux à Juneau pour une famille de quatre personnes.",
+      "movie": "Propose une soirée cinéma en famille avec trois films qui vont bien ensemble."
+    }
+  },
+  "setup": {
+    "title": "Configurez-le sur votre ordinateur",
+    "install": "Téléchargez Toskar pour Mac, Windows ou Linux sur toskar.ai, s'il n'est pas encore sur votre ordinateur.",
+    "open": "Ouvrez Toskar sur l'ordinateur : l'app Toskar, ou http://localhost:7331 dans son navigateur.",
+    "choose": "Ouvrez Ordinateurs et choisissez Connecter un appareil.",
+    "code": "Ensuite, ici, choisissez l'ordinateur et saisissez le code à 6 chiffres qu'il affiche."
   }
 }

@@ -121,9 +121,9 @@
     "otherHeader": "\nHeader:  Authorization: Bearer {{key}}"
   },
   "phones": {
-    "title": "Telefone",
-    "description": "Mit einem Code verbundene Telefone. Jedes hat einen eigenen Schlüssel, der chatten und Listen lesen, aber diesen Computer nicht ändern kann.",
-    "none": "Noch keine Telefone.",
+    "title": "Geräte",
+    "description": "Mit einem Code verbundene Telefone, Tablets und Fernseher. Jedes Gerät hat einen eigenen Schlüssel, der chatten und Listen lesen, aber diesen Computer nicht ändern kann.",
+    "none": "Noch keine Geräte.",
     "meta": "Verbunden {{connected}} · Zuletzt genutzt {{lastUsed}}",
     "confirmDisconnect": "{{name}} trennen? Zum erneuten Verbinden braucht es einen neuen Code.",
     "disconnect": "Trennen"

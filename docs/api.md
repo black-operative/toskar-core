@@ -211,6 +211,8 @@ Uploads send `text`, or `content_base64` for binary files such as `.xlsx` and `.
 | GET, PATCH, DELETE | `/automations/{id}` | An automation with its history, change it, or delete it |
 | POST | `/automations/{id}/run`, `/pause`, `/resume` | Run now, pause, or resume |
 | GET | `/automations/{id}/runs` | Older runs, a page at a time (`before`, `limit`) |
+| POST | `/automations/{id}/runs/{run_id}/chat` | Open a run's result in a chat to reply to; returns `conversation_id` |
+| POST | `/automations/parse` | Read a request such as "every morning at 8, tell me if the price is below $500" into an automation to review |
 | GET | `/notifications` | The notification center: `{"notifications": [...], "unread": n}`. `?unread=1` lists unread ones; `?category=` lists one category. |
 | GET | `/notifications/{id}` | One notification with each channel's delivery |
 | GET, POST | `/notifications/destinations` | Email and webhook destinations; creating a webhook returns its signing `secret` once |
@@ -268,7 +270,12 @@ Assistant messages from `GET /conversations/{id}/messages` carry `meta`: the `so
 
 `POST /chat` takes `attachments`, a list of artifact ids. Chat reads documents, spreadsheets (`.csv`, `.tsv`, `.xlsx`), PDFs with a text layer, JSON, HTML, and code files. Images are not read yet. A scanned PDF attached to a chat is refused with a pointer to the Knowledge page, which reads scanned pages once with text recognition, instead of on every turn. An attached file reaches the model as data in the user turn, the whole file when it fits and otherwise the parts that best match the question, and files attached or produced earlier in the chat add the passages that match later questions. The user message's `meta.files` lists its attachments.
 
-The `files.create` tool, allowed by default in the built-in profiles, saves a file the user can download: a document, JSON, a spreadsheet (`.xlsx` is built from CSV text), or code. It writes only to Toskar's file store. When a message asks for a file and the profile allows `files.create` without asking, Toskar has the model write only the contents and saves the file itself, with a `chat.making_file` event. The answer's `meta.files` lists produced files. File content is served as an attachment with a sandboxing `Content-Security-Policy`, so HTML never runs on the API's origin.
+The `files.create` tool, allowed by default in the built-in profiles, saves a file the user can download: a document, JSON, a spreadsheet (`.xlsx` is built from CSV text), or code. It writes only to Toskar's file store. When a message asks for a file and the profile allows `files.create` without asking, Toskar has the model write only the contents and saves the file itself, with a `chat.making_file` event. The answer's `meta.files` lists produced files: from `files.create`, and from every tool that makes one, such as a picture, a clip, audio read aloud, files code saved, or a page's screenshot.
+
+Pictures and clips work the same way. A message that asks for an image ("draw a dog", "are you able to make a picture of a dog for me?"), a change to an attached image ("make it night"), or a short video doesn't depend on the model choosing the tool, because a small model often says it can't.
+- **How it's made:** when the profile doesn't deny the tool, the model writes only what to make, in English, and Toskar calls `image.generate`, `image.edit`, or `video.generate`, with a `chat.making_media` event. The model then says in the person's language that it's attached. If the model writes nothing usable, the person's own words are used.
+- **What doesn't count:** a question about the ability ("can you make images?"), a how-to, or a request to find, describe, or download pictures.
+- **Before setup:** a request for a picture before image generation is set up, including one asked as a question, gets the setup offer with the request, so the card finishes it once the model is ready. File content is served as an attachment with a sandboxing `Content-Security-Policy`, so HTML never runs on the API's origin.
 
 When a model under 4B parameters answers from attached files or connected knowledge, `meta.notice` says it can mix up numbers and details and suggests a larger model. Auto treats a question about the user's files or knowledge as one that needs a careful answer, so it prefers a larger model that fits.
 
@@ -356,6 +363,67 @@ A trained revision can be exported as one GGUF file that llama.cpp, LM Studio, O
 
 An automation's `notification.mode` is `condition`, `change`, `always`, `failure` (only failed runs), or `none`. An automation runs on the same stack as chat: `model_id` `auto` picks a model for each run, and memories and connected knowledge are used the same way. Its `response_language` is the language results are written in: `account` (the default) follows the assistant language setting, `app` the App language, `auto` the language of the request, or a language tag such as `de`. A language the request asks for, such as "answer in English", always wins. Tools follow the unattended policy, because nobody is there to approve them. Tools listed in the automation's `tools` were approved when it was saved, and they run even if they change things. With no `tools`, only read-only tools the profile allows without asking can run. A tool the profile denies never runs. When a run reaches a tool that was not approved, the tool is skipped and the run continues. The run's `automation.completed` event lists the tool in `skipped`, and an `approval` notification says which tools to approve.
 
+**Schedules.** `schedule.kind` is one of:
+- `once`: at `at`.
+- `daily`, `weekly`, or `monthly`, at each of `times` (`[{"hour": 8, "minute": 0}, {"hour": 17, "minute": 30}]`, up to 24 a day) in `time_zone`.
+  - `weekly` runs on `weekdays`, where Sunday is 0, so `[1, 2, 3, 4, 5]` is weekdays only.
+  - `monthly` runs on `month_day`, or on a month's last day when the month is shorter.
+- `interval`: every `every_seconds`.
+- `manual`: never on its own, only from Run now or a webhook.
+- `cron`: a five-field `cron` expression (minute, hour, day of month, month, day of week) read in `time_zone`.
+  - It takes `*`, ranges, steps, lists, names such as `MON`, and `@daily`-style shorthands.
+  - When both the day of month and the day of week are restricted, a day matching either runs.
+  - An expression that never runs, such as `0 0 31 2 *`, is refused.
+
+Saved schedules also carry `hour`, `minute`, and `weekday`: the first time and day, for clients that read one. A client that sends only those gets a one-time-a-day, one-day schedule, as before.
+
+**Reading a request.** `POST /automations/parse` with `{"text": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.", "time_zone": "America/Los_Angeles", "language": "en"}` returns an automation to review and save: `name` ("Price below $500"), `prompt` (the task without the schedule, "Check this product. Report the current price."), `schedule`, `notification`, and `notes` on what was assumed, such as a time of day when none was given.
+- **Languages:** a request may be written in `language` or in English. `language` is also the language of the name and notes, and the currency of an amount written without one. Empty `language` uses the App language, and empty `time_zone` this computer's.
+- **Words:** the words come from `i18n/requests/<language>.json`, which the web app reads too, so the form and the API read a request the same way.
+- **A model as fallback:** when the words find no schedule, such as "first thing on weekdays", Auto's model reads the request into the same fields. A schedule it gives that couldn't run is refused. Its result carries a note saying the AI read it, so the person checks it before saving.
+- **Errors:** a request with no schedule the words or the model can read answers `400` `REQUEST_NO_SCHEDULE`. `REQUEST_EMPTY`, `REQUEST_BAD_TIME`, and `REQUEST_TIME_ZONE` cover the rest.
+
+**From chat.** When a message asks for something on a repeating schedule, such as "every morning at 8, summarize the news" or "jeden Montag", or says "remind me" or "automate", chat is offered the `automations.schedule` tool. It reads the request like `POST /automations/parse`, in the language it's written in, and drafts the automation without scheduling it. The answer's `meta.automation` carries the draft: `id`, `name`, `prompt`, `schedule`, `notification`, the chat's `profile_id`, and `notes`. The apps show it as a card, and the person creates it with `POST /automations`, passing the draft's fields with `model_id` `auto`, `draft_id`, and `conversation_id`. Creating the same draft again returns the automation it made, and the automation keeps the conversation it came from. When a run of it notifies, its result, without the JSON its condition asked for, is added to that conversation as an answer the person can reply to. Its `meta.automation_run` has `automation_id`, `run_id`, and `name`. `automation.completed` carries the `conversation_id`, and the notification opens the chat. If the chat was deleted, the notification opens the automation instead. `POST /automations/{id}/runs/{run_id}/chat` opens any successful run's result in a chat to reply to. It returns the `conversation_id` of the chat the result was already posted to, or makes a chat named after the automation with the result as its first answer. A run's `conversation_id` names that chat. A failed or unfinished run answers `409` `AUTOMATION_NO_RESULT`.
+
+**Triggers.** An automation's `trigger` runs it only when something changed: `{"kind": "page", "url": "https://…"}` for a web page's text, `{"kind": "feed", "url": "https://…"}` for new posts in an RSS or Atom feed, or `{"kind": "folder", "path": "~/Documents/Invoices"}` for files in a folder, or one file, in the home folder.
+- **Checking:** the schedule says how often to check. A check fetches the page or feed (public addresses only, as the web tools do) and compares it with the last check, without a model.
+- **Nothing new:** the next check is scheduled, with no run. `last_checked_at` says when that last happened.
+- **A change:** the automation runs, and its prompt ends with what changed: lines added and removed on the page, or the new posts with their links.
+- **Folders:** a check compares each file's size and modification time, so it opens nothing that didn't change. Hidden files are left out, and it goes 8 folders deep and up to 5,000 files. A run can't open files outside Toskar's workspace, so it's told which files were added, changed, and removed, with the start of each new or changed text file (4,000 bytes each, 20,000 in all).
+- **First check:** it only remembers what it found.
+- **After a run:** what a check found is kept only once its run succeeds, so a run that fails or retries sees the change again.
+- **Can't fetch:** a check that can't fetch fails the run, so failure notices and auto-pause apply.
+- **Changing or clearing:** watching a different link starts fresh. On update, `{"trigger": {"kind": ""}}` runs on the schedule again.
+- **Webhooks:** `{"kind": "webhook"}` runs the automation when another service calls its link, usually with the `manual` schedule, which never runs on its own.
+  - **The link:** `POST /api/v1/automations/{id}/hook` makes the link and returns `{token, path}`, shown only then (only the token's SHA-256 is kept). A new one stops the old one, and `hook_set` says one exists.
+  - **Calling it:** `POST /hooks/{token}`, which needs no API key, answers `202` with `run_id`. The body, up to 64 KB of any type, ends the run's prompt as data from that service, not instructions.
+  - **Refusals:** an unknown token answers `404`, a paused automation `409` `AUTOMATION_PAUSED`, a call within 10 seconds of the last `429` `HOOK_TOO_SOON` with `Retry-After`, and a bigger body `413` `HOOK_TOO_LARGE`.
+- **Chaining:** `{"kind": "after", "automation_id": "…", "when": "succeeded"}` runs the automation right after another one finishes well. With `"when": "notified"`, it runs only when that one notified, such as after a price condition was met. Its prompt ends with the other one's result, labelled as data.
+  - An after trigger on a missing automation, or one that comes back around to itself through others, is refused when saved.
+  - A chain stops after 5 automations in a row.
+  - A follower usually has the `manual` schedule.
+  - `toskarctl`: `--trigger after --after <id> [--after-when notified]`.
+- **Untrusted content:** what a trigger delivers was written by someone else. A run it starts can't use tools that change things outside Toskar, such as the terminal, file writes in the workspace, or Git pushes, even ones approved for the automation. They're skipped and reported like unapproved tools. Reading and creating files in Toskar's store still work.
+- **`toskarctl`:** `--trigger page|feed|folder|webhook|none` with `--trigger-url <url>` or `--trigger-path <path>`; `--schedule manual`; and `toskarctl automations hook <id>` prints a new link.
+
+**Saving results.** An automation's `save_folder`, such as `~/Documents/Toskar/News`, also saves each successful result to that folder as a new Markdown file. The file is named for when the run finished in the schedule's time zone and for the automation, such as `2026-10-07 08.30 News.md`. A second file in the same minute gets a number. The folder must be in the home folder (`~` is the home folder) and is made when needed. A path outside it is refused when the automation is saved. The run's `saved_file` is where its result went. A file that can't be written is logged and doesn't fail the run. `toskarctl automations create|update --save-folder` sets the folder, and `--save-folder ""` stops saving.
+
+**Digest.** With the `automation_digest` setting at a time such as `08:00` (in `automation_digest_zone`), one answer a day in an *Automation digest* chat sums up every automation that finished since the last digest:
+- each automation's latest result, without its JSON, and how many times it failed, with the last error;
+- one notification that opens the chat (`notifications:notices.automationDigest`).
+
+It's put together from the results, without a model. A day when nothing ran sends nothing. A computer that was off at the time sends it once when it's back. Turning the digest on doesn't send at once: the first one goes out at the next time.
+
+**Notify on change.** `change` compares a run with the last successful one by what changed, not how the model worded it. In order:
+1. **Values:** when both results carry the same structured values, such as a price or availability, nothing changed.
+2. **Sources:** each run fingerprints what its read-only tools returned, such as the pages and search results it read. The same fingerprint means nothing changed, with no model call.
+3. **Judgment:** otherwise the run's model, still loaded, judges whether anything the person would care about changed, beyond rewording. The notification says what changed, in the response language.
+4. **Text:** if the model gives no usable answer, a different text counts as a change.
+
+The first successful run is the baseline. The `available` condition asks for a JSON `available` flag, like `price` for a threshold, so it works in every language.
+
+**Conditions and decisions.** A saved `prompt` is only the task. When a run starts, Toskar adds what its condition needs in the result: a JSON `price` in the threshold's currency, an `available` flag, or a `significant` flag. An instruction an older client stored in the prompt is removed when the automation is saved or runs, so it is never asked for twice. Each run records why it did or didn't notify: `notify_detail` is a key the apps show as `automations:notice.<notify_detail>`, such as `notBelow`, `inStock`, or `unchanged`, and `notify_values` fills its placeholders, such as `{"price": 640, "amount": 500, "currency": "USD"}`. `notBelow`, `notAbove`, `notAvailable`, and `notSignificant` mean the condition wasn't met. Runs from before this have neither.
+
 **Runs.**
 - **Running together:** due automations run two at a time, so a slow one doesn't hold up the rest. An automation that is still running isn't started again.
 - **Time limit:** each run has 20 minutes. One that takes longer is stopped, fails with `AUTOMATION_TIMEOUT`, and isn't retried.
@@ -419,7 +487,7 @@ Personalization shapes how answers look in every chat, automation, and API reque
 ## Privacy and run records
 
 Each run records what left this computer.
-- **Record kinds:** `web_search` (the query), `web_page` (the address), `places` (the map service and the place, kind of place and point, or route asked for), `paired_computer` (the prompt and context, or training examples), `external_server` (a chat sent to a server that is not on this computer), `connector` (the service and what it was asked; long text such as a comment's body is left out), `notification` (an email or webhook delivery: the server or host, and the notification's title), and `community_ratings` (a rating shared or withdrawn, with the model, hardware class, and how it runs when that is shared, or the public ratings summary downloaded).
+- **Record kinds:** `web_search` (the query), `web_page` (the address), `places` (the map service and the place, kind of place and point, or route asked for), `paired_computer` (the prompt and context, or training examples), `external_server` (a chat sent to a server that is not on this computer), `connector` (the service and what it was asked; long text such as a comment's body is left out), `notification` (an email or webhook delivery: the server or host, and the notification's title), `community_ratings` (a rating shared or withdrawn, with the model, hardware class, and how it runs when that is shared, or the public ratings summary downloaded), and `update_check` (the daily look at toskar.ai for a newer version; nothing is sent but the request).
 - **Record fields:** `source` (`chat`, `api`, `automation`, `training`), plus `conversation_id` and `task_id` when there are any.
 
 Memories and knowledge sources have `local_only`. Set it with `PATCH /memory/{id}` or the knowledge update, `{"local_only": true}`. A turn that uses a local-only memory or a passage from a local-only source runs on this computer, even when placement would have chosen a paired computer, and its steps say so.
@@ -440,6 +508,11 @@ Every chat turn, API request, and automation run is traced. A chat or API run's 
 - `status`: `completed`, `failed`, or `stopped`.
 
 In advanced mode, an answer has "Run details". Runs are run records, so the retention and delete action above apply to them.
+
+
+### Updates
+
+`GET /updates` says whether a newer Toskar is out. Release builds installed from a download read https://toskar.ai/releases/latest.json a minute after starting and then once a day, while the `update_check` setting is on (the default). The answer has `supported` (this build checks), `enabled` (and the setting is on), `current`, `available`, `checked_at`, and `latest` (`version`, `published_at`, `prerelease`, `notes_url`, `download_url`). `available` is true when `latest` is newer than `current`; a prerelease is offered only to a prerelease build. The App Store edition, the copy the desktop app runs (`TOSKAR_UPDATE_CHECK=off`), and development builds don't check and say `supported: false`. Each check is listed in What left this computer as `update_check`.
 
 ## Community ratings
 
@@ -536,7 +609,7 @@ A repeat web search or page read is answered from the cache. The tool does not r
 
 ## Client contract
 
-The desktop app, mobile apps, and other clients read a versioned contract: events, run traces, answers with their citations, steps, and files, artifacts, notifications, and egress records. The version is `major.minor`, now `1.9` (1.1 added `repeat_count` to notifications; 1.2 added `setup` to answers, an offer to install what a request needed; 1.3 added stable error codes to chat streams; 1.4 added `message` to notifications, their title and body as catalog keys; 1.5 added `error_code` and `error_details` to run traces; 1.6 added `context` to answers, the context gauge; 1.7 added `backend` and `device` to the models in a run; 1.8 added them to answers; 1.9 added `artifact_id` to file citations, the chat file a source names, so a client can offer it for download).
+The desktop app, mobile apps, and other clients read a versioned contract: events, run traces, answers with their citations, steps, and files, artifacts, notifications, and egress records. The version is `major.minor`, now `1.11` (1.1 added `repeat_count` to notifications; 1.2 added `setup` to answers, an offer to install what a request needed; 1.3 added stable error codes to chat streams; 1.4 added `message` to notifications, their title and body as catalog keys; 1.5 added `error_code` and `error_details` to run traces; 1.6 added `context` to answers, the context gauge; 1.7 added `backend` and `device` to the models in a run; 1.8 added them to answers; 1.9 added `artifact_id` to file citations, the chat file a source names, so a client can offer it for download; 1.10 added `automation` to answers, an automation a chat drafted for the person to confirm; 1.11 added `automation_run`, marking a result an automation posted to its chat).
 - **Where it appears:** every event has `contract`, and so do answer metadata and run traces. Metadata saved before the contract existed has no `contract` and reads as 1.0. Every response carries the `Toskar-Contract` header, and the same value as `Yggdrasil-Contract`, its name from before the rename, and `GET /api/v1/version` has `contract` (`version`, `major`).
 - **Minor versions** add fields or event types. Clients ignore what they do not know, so an older client keeps working.
 - **Major versions** remove something or change its meaning. A client may send `Toskar-Client-Contract: 1.0`, or `Yggdrasil-Client-Contract: 1.0`, which every version accepts; when both are sent, `Toskar-Client-Contract` wins. A client built for another major version gets 426 with code `CONTRACT_MISMATCH`, and the message says whether to update the app or Toskar. A client that sends no header is served as before.
@@ -557,7 +630,7 @@ A chat that fails while streaming sends `event: error_code` with the same `code`
 | `chat.token` | A piece of an answer is written |
 | `chat.complete`, `chat.error`, `chat.stopped` | A turn finishes, fails, or is stopped. `chat.complete` carries the answer's `meta` and `context`. |
 | `chat.model_routed` | A model is chosen for a turn, with `reason`, and `fallback: true` after a failure |
-| `chat.effort`, `chat.lookup`, `chat.verifying`, `chat.making_file`, `chat.summarized` | Effort is set, the web is looked up first, figures are being checked, a requested file is being made, or older messages were summarized |
+| `chat.effort`, `chat.lookup`, `chat.verifying`, `chat.making_file`, `chat.making_media`, `chat.summarized` | Effort is set, the web is looked up first, figures are being checked, a requested file is being made, a requested picture or clip is being made (`kind` is `image`, `edit`, or `video`), or older messages were summarized |
 | `plan.created`, `plan.step` | A request with several parts is planned, and each part runs |
 | `verify.action`, `verify.done`, `verify.code`, `verify.consistency` | The answer checks: figures, claimed actions, code, and contradictions |
 | `tool.requested`, `tool.started`, `tool.completed`, `tool.failed`, `tool.parsed` | A tool call waits for approval, runs, finishes, fails (with `kind`), or is read from text |
@@ -570,6 +643,7 @@ A chat that fails while streaming sends `event: error_code` with the same `code`
 | `work.waiting` | Work waits for higher-priority work, with `class`, `label`, and `reason` |
 | `automation.started`, `automation.completed`, `automation.failed` | An automation runs. `automation.completed` lists skipped tools in `skipped`. |
 | `notification.created` | A notification is stored |
+| `notification.desktop` | A desktop notice for the desktop app to post, with `id`, `severity`, `title`, `body` (in the App language), and `link`. Sent only when the daemon runs with `TOSKAR_DESKTOP_NOTIFICATIONS=shell`; otherwise the daemon posts desktop notices itself. |
 | `model.download.started`, `.progress`, `.completed`, `.failed` | A model downloads |
 | `model.load.started`, `model.load.completed`, `model.unloaded` | A model loads, or the idle sweeper unloads it |
 | `model.health.degraded`, `model.health.failed` | A loaded model stops answering health checks |

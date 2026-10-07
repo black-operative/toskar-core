@@ -78,7 +78,7 @@ func TestBashCompletionCandidates(t *testing.T) {
 		{"toskarctl a", "about automations"},
 		{"toskarctl completion ''", "bash zsh fish"},
 		{"toskarctl automations p", "pause"},
-		{"toskarctl automations create --schedule ''", "once daily weekly interval"},
+		{"toskarctl automations create --schedule ''", "once daily weekly monthly interval cron manual"},
 		{"toskarctl automations update abc --noti", "--notify"},
 		{"toskarctl paths ''", ""},
 	}

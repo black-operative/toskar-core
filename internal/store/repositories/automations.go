@@ -25,32 +25,48 @@ const automationSelect = `
 	SELECT id, name, enabled, schedule_json, time_zone, prompt,
 		COALESCE(profile_id, ''), COALESCE(model_id, ''), tools_json, notification_json,
 		created_at, updated_at, next_run_at, last_run_at,
-		consecutive_failures, COALESCE(last_error, ''), COALESCE(response_language, '')
+		consecutive_failures, COALESCE(last_error, ''), COALESCE(response_language, ''),
+		COALESCE(conversation_id, ''), COALESCE(draft_id, ''), COALESCE(save_folder, ''),
+		COALESCE(trigger_json, ''), COALESCE(watch_state, ''), last_checked_at, COALESCE(hook_hash, '')
 	FROM automations`
 
 // Create stores an automation and computes its first next run.
 // now is the creation time, so tests can pin the clock.
 func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput, now time.Time) (automations.Automation, error) {
 	now = clock(now)
+	if in.DraftID != "" {
+		if existing, err := r.byDraft(ctx, in.DraftID); err == nil {
+			return existing, nil
+		}
+	}
 	enabled := true
 	if in.Enabled != nil {
 		enabled = *in.Enabled
 	}
 	a := automations.Automation{
-		ID:               uuid.NewString(),
-		Name:             in.Name,
-		Enabled:          enabled,
-		Schedule:         in.Schedule,
-		Prompt:           in.Prompt,
+		ID:       uuid.NewString(),
+		Name:     in.Name,
+		Enabled:  enabled,
+		Schedule: in.Schedule,
+		// Only the task: the server adds a condition's instruction at run
+		// time, and drops one an older client wrote into the prompt (#204).
+		Prompt:           automations.TaskPrompt(in.Prompt),
 		ProfileID:        in.ProfileID,
 		ModelID:          in.ModelID,
 		Tools:            in.Tools,
 		Notification:     in.Notification,
 		ResponseLanguage: in.ResponseLanguage,
+		ConversationID:   in.ConversationID,
+		DraftID:          in.DraftID,
+		SaveFolder:       in.SaveFolder,
+		Trigger:          in.Trigger,
 		CreatedAt:        now,
 		UpdatedAt:        now,
 	}
 	if err := prepareAutomation(&a); err != nil {
+		return automations.Automation{}, err
+	}
+	if err := r.checkChain(ctx, a); err != nil {
 		return automations.Automation{}, err
 	}
 	if err := a.SetNextRun(now); err != nil {
@@ -60,6 +76,11 @@ func (r *AutomationRepo) Create(ctx context.Context, in automations.CreateInput,
 		return automations.Automation{}, err
 	}
 	return a, nil
+}
+
+// byDraft is the automation a chat's draft made.
+func (r *AutomationRepo) byDraft(ctx context.Context, draftID string) (automations.Automation, error) {
+	return scanAutomation(r.db.QueryRowContext(ctx, automationSelect+` WHERE draft_id = ?`, draftID))
 }
 
 // Get loads one automation by id.
@@ -118,7 +139,7 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 		existing.Schedule = *patch.Schedule
 	}
 	if patch.Prompt != nil {
-		existing.Prompt = *patch.Prompt
+		existing.Prompt = automations.TaskPrompt(*patch.Prompt)
 	}
 	if patch.ProfileID != nil {
 		existing.ProfileID = *patch.ProfileID
@@ -129,6 +150,24 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 	if patch.Tools != nil {
 		existing.Tools = *patch.Tools
 	}
+	if patch.SaveFolder != nil {
+		existing.SaveFolder = *patch.SaveFolder
+	}
+	if patch.Trigger != nil {
+		next := patch.Trigger
+		if next.Kind == "" {
+			next = nil
+		}
+		// Watching something else starts from a fresh look at it.
+		if !sameTrigger(existing.Trigger, next) {
+			existing.WatchState, existing.LastCheckedAt = nil, nil
+		}
+		existing.Trigger = next
+		// A link only works while the automation has a webhook trigger.
+		if next == nil || next.Kind != automations.TriggerWebhook {
+			existing.HookHash = ""
+		}
+	}
 	if patch.ResponseLanguage != nil {
 		existing.ResponseLanguage = *patch.ResponseLanguage
 	}
@@ -137,6 +176,9 @@ func (r *AutomationRepo) Update(ctx context.Context, id string, patch automation
 	}
 	existing.UpdatedAt = clock(now)
 	if err := prepareAutomation(&existing); err != nil {
+		return automations.Automation{}, err
+	}
+	if err := r.checkChain(ctx, existing); err != nil {
 		return automations.Automation{}, err
 	}
 	if err := existing.SetNextRun(existing.UpdatedAt); err != nil {
@@ -219,11 +261,14 @@ func (r *AutomationRepo) insert(ctx context.Context, a automations.Automation) e
 		INSERT INTO automations (
 			id, name, enabled, schedule_json, time_zone, prompt, profile_id, model_id,
 			tools_json, notification_json, created_at, updated_at, next_run_at, last_run_at,
-			consecutive_failures, last_error, response_language
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			consecutive_failures, last_error, response_language, conversation_id, draft_id, save_folder,
+			trigger_json, watch_state, last_checked_at
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		a.ID, a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.CreatedAt), formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
-		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage))
+		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage),
+		nullIfEmpty(a.ConversationID), nullIfEmpty(a.DraftID), nullIfEmpty(a.SaveFolder),
+		triggerJSON(a.Trigger), nullIfEmpty(string(a.WatchState)), formatTimePtr(a.LastCheckedAt))
 	return err
 }
 
@@ -244,11 +289,13 @@ func updateAutomation(ctx context.Context, db execer, a automations.Automation) 
 		UPDATE automations SET
 			name = ?, enabled = ?, schedule_json = ?, time_zone = ?, prompt = ?, profile_id = ?, model_id = ?,
 			tools_json = ?, notification_json = ?, updated_at = ?, next_run_at = ?, last_run_at = ?,
-			consecutive_failures = ?, last_error = ?, response_language = ?
+			consecutive_failures = ?, last_error = ?, response_language = ?, save_folder = ?,
+			trigger_json = ?, watch_state = ?, last_checked_at = ?, hook_hash = ?
 		WHERE id = ?`,
 		a.Name, boolInt(a.Enabled), sched, a.Schedule.TimeZone, a.Prompt, nullIfEmpty(a.ProfileID), nullIfEmpty(a.ModelID),
 		tools, note, formatTime(a.UpdatedAt), formatTimePtr(a.NextRunAt), formatTimePtr(a.LastRunAt),
-		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage), a.ID)
+		a.ConsecutiveFailures, nullIfEmpty(a.LastError), nullIfEmpty(a.ResponseLanguage), nullIfEmpty(a.SaveFolder),
+		triggerJSON(a.Trigger), nullIfEmpty(string(a.WatchState)), formatTimePtr(a.LastCheckedAt), nullIfEmpty(a.HookHash), a.ID)
 	if err != nil {
 		return err
 	}
@@ -279,6 +326,20 @@ func prepareAutomation(a *automations.Automation) error {
 		cleaned[i] = strings.TrimSpace(id)
 	}
 	a.Tools = cleaned
+	if a.Trigger != nil {
+		a.Trigger.URL = strings.TrimSpace(a.Trigger.URL)
+		a.Trigger.Path = strings.TrimSpace(a.Trigger.Path)
+	}
+	if err := a.Trigger.Validate(); err != nil {
+		return err
+	}
+	a.SaveFolder = strings.TrimSpace(a.SaveFolder)
+	if _, err := automations.SaveFolderPath(a.SaveFolder); err != nil {
+		return err
+	}
+	// Both the lists and the single values older clients read (#204).
+	a.Schedule.Cron = strings.TrimSpace(a.Schedule.Cron)
+	a.Schedule = a.Schedule.Normalized()
 	a.Notification.Normalize()
 	return automations.ValidateDraft(a.Name, a.Prompt, a.ModelID, a.Tools, a.Notification, a.Schedule)
 }
@@ -310,10 +371,12 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	var a automations.Automation
 	var enabled int
 	var sched, zone, tools, note, created, updated string
-	var next, last sql.NullString
+	var next, last, checked sql.NullString
+	var trigger, watchState string
 	if err := s.Scan(
 		&a.ID, &a.Name, &enabled, &sched, &zone, &a.Prompt, &a.ProfileID, &a.ModelID, &tools, &note,
 		&created, &updated, &next, &last, &a.ConsecutiveFailures, &a.LastError, &a.ResponseLanguage,
+		&a.ConversationID, &a.DraftID, &a.SaveFolder, &trigger, &watchState, &checked, &a.HookHash,
 	); err != nil {
 		return automations.Automation{}, err
 	}
@@ -337,7 +400,124 @@ func scanAutomation(s automationScanner) (automations.Automation, error) {
 	a.UpdatedAt = parseTime(updated)
 	a.NextRunAt = parseTimePtr(next)
 	a.LastRunAt = parseTimePtr(last)
+	a.LastCheckedAt = parseTimePtr(checked)
+	a.HookSet = a.HookHash != ""
+	if trigger != "" {
+		var t automations.Trigger
+		if err := json.Unmarshal([]byte(trigger), &t); err != nil {
+			return automations.Automation{}, fmt.Errorf("trigger: %w", err)
+		}
+		a.Trigger = &t
+	}
+	if watchState != "" {
+		a.WatchState = []byte(watchState)
+	}
 	return a, nil
+}
+
+func triggerJSON(t *automations.Trigger) any {
+	if t == nil || t.Kind == "" {
+		return nil
+	}
+	b, _ := json.Marshal(t)
+	return string(b)
+}
+
+func sameTrigger(a, b *automations.Trigger) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+	return *a == *b
+}
+
+// Checked records a trigger's check that found nothing new, which counts
+// as the occurrence: its state, when it was, and the next check (#204).
+func (r *AutomationRepo) Checked(ctx context.Context, id string, state []byte, checkedAt, now time.Time) error {
+	a, err := r.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+	checkedAt = clock(checkedAt)
+	a.WatchState, a.LastCheckedAt = state, &checkedAt
+	if err := a.SetNextRun(clock(now)); err != nil {
+		return err
+	}
+	return r.updateRow(ctx, a)
+}
+
+// Followers are the automations with an after trigger on id (#204).
+func (r *AutomationRepo) Followers(ctx context.Context, id string) ([]automations.Automation, error) {
+	rows, err := r.db.QueryContext(ctx, automationSelect+` WHERE trigger_json IS NOT NULL ORDER BY name`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	all, err := scanAutomations(rows)
+	if err != nil {
+		return nil, err
+	}
+	var out []automations.Automation
+	for _, a := range all {
+		if a.Trigger != nil && a.Trigger.Kind == automations.TriggerAfter && a.Trigger.AutomationID == id {
+			out = append(out, a)
+		}
+	}
+	return out, nil
+}
+
+// checkChain refuses an after trigger on an automation that doesn't exist,
+// or one that would come back around to a, so finishing never loops
+// (#204).
+func (r *AutomationRepo) checkChain(ctx context.Context, a automations.Automation) error {
+	if a.Trigger == nil || a.Trigger.Kind != automations.TriggerAfter {
+		return nil
+	}
+	next := a.Trigger.AutomationID
+	for steps := 0; steps < 100; steps++ {
+		if next == a.ID {
+			return fmt.Errorf("an automation can't follow itself, even through others")
+		}
+		prev, err := r.Get(ctx, next)
+		if err != nil {
+			if steps == 0 {
+				return fmt.Errorf("the automation it follows doesn't exist")
+			}
+			return nil
+		}
+		if prev.Trigger == nil || prev.Trigger.Kind != automations.TriggerAfter {
+			return nil
+		}
+		next = prev.Trigger.AutomationID
+	}
+	return fmt.Errorf("that chain of automations is too long")
+}
+
+// SetHookHash keeps the hash of a webhook trigger's new token, which
+// replaces the old link.
+func (r *AutomationRepo) SetHookHash(ctx context.Context, id, hash string) error {
+	res, err := r.db.ExecContext(ctx, `UPDATE automations SET hook_hash = ? WHERE id = ?`, nullIfEmpty(hash), id)
+	if err != nil {
+		return err
+	}
+	if n, _ := res.RowsAffected(); n == 0 {
+		return fmt.Errorf("automation %q not found", id)
+	}
+	return nil
+}
+
+// ByHookHash is the automation a webhook link starts.
+func (r *AutomationRepo) ByHookHash(ctx context.Context, hash string) (automations.Automation, error) {
+	if hash == "" {
+		return automations.Automation{}, sql.ErrNoRows
+	}
+	return scanAutomation(r.db.QueryRowContext(ctx, automationSelect+` WHERE hook_hash = ?`, hash))
+}
+
+// SetWatchState keeps what a trigger's check found, before the run it
+// starts.
+func (r *AutomationRepo) SetWatchState(ctx context.Context, id string, state []byte) error {
+	_, err := r.db.ExecContext(ctx, `UPDATE automations SET watch_state = ? WHERE id = ?`, nullIfEmpty(string(state)), id)
+	return err
 }
 
 func scanAutomations(rows *sql.Rows) ([]automations.Automation, error) {

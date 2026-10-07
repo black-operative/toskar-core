@@ -66,6 +66,7 @@ import (
 	"github.com/yeixio/toskar-core/internal/telemetry"
 	"github.com/yeixio/toskar-core/internal/tools"
 	"github.com/yeixio/toskar-core/internal/training"
+	"github.com/yeixio/toskar-core/internal/updates"
 	"github.com/yeixio/toskar-core/internal/version"
 	"github.com/yeixio/toskar-core/internal/webfixtures"
 	"github.com/yeixio/toskar-core/pkg/contracts"
@@ -111,6 +112,8 @@ type App struct {
 	Connectors *connectors.Manager
 	// Egress records what left this computer (§63).
 	Egress *egress.Log
+	// Updates says when a newer Toskar is out.
+	Updates *updates.Checker
 	// RunLog keeps each request's run trace (§35).
 	RunLog *runlog.Store
 	// Caches lists every cache and its policy (§36).
@@ -663,7 +666,11 @@ func New(opts Options) (*App, error) {
 
 	// Gjallarhorn: every notice is kept in the notification center; the
 	// desktop is one delivery channel.
-	a.Notifications = gjallarhorn.NewHub(db.SQL, bus, desktopChannel{settings: settingsRepo, send: automations.OSSender{}})
+	a.Notifications = gjallarhorn.NewHub(db.SQL, bus, desktopChannel{
+		settings: settingsRepo,
+		send:     automations.OSSender{},
+		toShell:  shellNotices(bus, config.Env("DESKTOP_NOTIFICATIONS")),
+	})
 	a.health = newHealthNotices()
 	// Email and webhook destinations keep their passwords and signing
 	// secrets in the secrets directory, and what they send is recorded in
@@ -676,6 +683,18 @@ func New(opts Options) (*App, error) {
 	a.API.BindMCP(a.MCP, mcp.NewServer(a.mcpBackend()), ctlPath)
 	a.API.BindPersonal(a)
 	a.API.BindPrivacy(a)
+	a.Updates = &updates.Checker{
+		Current:   version.Version,
+		Supported: updateCheckSupported,
+		On: func(ctx context.Context) bool {
+			on, err := settingsRepo.GetBool(ctx, updates.Setting, true)
+			return err == nil && on
+		},
+		Sent: func(ctx context.Context, host, detail string) {
+			a.Egress.Add(ctx, egress.UpdateCheck, host, detail)
+		},
+	}
+	a.API.BindUpdates(a.Updates)
 	a.Ratings = a.newRatings(cfg)
 	ratingsRef.Store(a.Ratings)
 	a.API.BindRatings(a.Ratings)
@@ -695,6 +714,8 @@ func New(opts Options) (*App, error) {
 		Notify: automationNotifier{settings: settingsRepo, send: automations.OSSender{}, hub: a.Notifications},
 		Bus:    bus,
 		Logger: logger,
+		Post:   a.postAutomationResult,
+		Watch:  triggerWatcher{},
 		Pause: func(ctx context.Context, id string) error {
 			enabled := false
 			_, err := a.Automations.Update(ctx, id, automations.Patch{Enabled: &enabled}, time.Now())
@@ -713,14 +734,18 @@ func New(opts Options) (*App, error) {
 			}
 			return created, nil
 		},
-		GetAutomation:      a.Automations.History,
-		ListAutomationRuns: a.Automations.RunsPage,
+		GetAutomation:         a.Automations.History,
+		ListAutomationRuns:    a.Automations.RunsPage,
+		ContinueAutomationRun: a.continueAutomationRun,
+		MakeHookLink:          a.makeHookLink,
+		RunHook:               a.runHook,
 		UpdateAutomation: func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error) {
 			return a.Automations.Update(ctx, id, patch, time.Now())
 		},
 		DeleteAutomation:  a.Automations.Delete,
 		RunAutomation:     a.AutomationRunner.RunNow,
 		PreviewAutomation: a.AutomationRunner.Preview,
+		ParseAutomation:   a.parseAutomation,
 		PauseAutomation: func(ctx context.Context, id string) (automations.Automation, error) {
 			enabled := false
 			return a.Automations.Update(ctx, id, automations.Patch{Enabled: &enabled}, time.Now())
@@ -762,6 +787,7 @@ func New(opts Options) (*App, error) {
 	a.API.BindMemory(a.Muninn)
 	a.Tools.Register(&artifacts.CreateTool{Store: a.Artifacts})
 	a.Tools.Register(&artifacts.AnalyzeTool{Store: a.Artifacts})
+	a.Tools.Register(&scheduleTool{app: a})
 	a.API.BindArtifacts(a.Artifacts)
 	a.API.BindKnowledge(a.Mimir)
 	a.Images = a.newImageSetup(cfg)
@@ -879,7 +905,7 @@ func (a *App) requireKeyForRemoteBind(ctx context.Context) error {
 		return err
 	}
 	if len(keys) == 0 {
-		// Turned on in the app, such as by Connect a phone, with no phone
+		// Turned on in the app, such as by Connect a device, with no device
 		// ever connecting: nothing could connect without a key, so go back
 		// to this computer only rather than refuse to start (#216). A host
 		// set in the environment, as in Docker, still needs a key.
@@ -915,6 +941,13 @@ func (a *App) Start(ctx context.Context) error {
 		defer a.wg.Done()
 		a.sampler.Run(ctx)
 	}()
+	if a.Updates != nil {
+		a.wg.Add(1)
+		go func() {
+			defer a.wg.Done()
+			a.Updates.Run(ctx)
+		}()
+	}
 	a.startLive(ctx)
 	// Tasks an earlier run left pending or running can't finish now, and
 	// chats from before chat tasks were settled never left pending.
@@ -1022,6 +1055,11 @@ func (a *App) Start(ctx context.Context) error {
 			defer a.wg.Done()
 			a.AutomationRunner.Start(ctx)
 		}()
+		a.wg.Add(1)
+		go func() {
+			defer a.wg.Done()
+			a.digestLoop(ctx)
+		}()
 	}
 	if a.Health != nil {
 		a.wg.Add(1)
@@ -1112,6 +1150,7 @@ func (a *App) settingsView(ctx context.Context) (contracts.SettingsView, error) 
 	notifyPeer, _ := a.Settings.GetBool(ctx, "notify_peer_offline", true)
 	communityRatings, _ := a.Settings.GetBool(ctx, ratings.SettingShow, false)
 	ratingsPrompts, _ := a.Settings.GetBool(ctx, ratings.SettingAsk, true)
+	updateCheck, _ := a.Settings.GetBool(ctx, updates.Setting, true)
 	toolTerminal, _ := a.Settings.GetString(ctx, "tool_terminal", "ask")
 	toolFiles, _ := a.Settings.GetString(ctx, "tool_file_writes", "ask")
 	toolGit, _ := a.Settings.GetString(ctx, "tool_git", "ask")
@@ -1119,6 +1158,8 @@ func (a *App) settingsView(ctx context.Context) (contracts.SettingsView, error) 
 	uiLocale, _ := a.Settings.GetString(ctx, "ui_locale", "")
 	assistantMode, _ := a.Settings.GetString(ctx, "assistant_language_mode", replylang.ModeAuto)
 	assistantLanguage, _ := a.Settings.GetString(ctx, "assistant_language", "")
+	digest, _ := a.Settings.GetString(ctx, settingDigest, "")
+	digestZone, _ := a.Settings.GetString(ctx, settingDigestZone, "")
 	if assistantMode == "" {
 		assistantMode = replylang.ModeAuto
 	}
@@ -1146,6 +1187,7 @@ func (a *App) settingsView(ctx context.Context) (contracts.SettingsView, error) 
 		NotifyPeerOffline:       notifyPeer,
 		CommunityRatings:        communityRatings,
 		RatingsPrompts:          ratingsPrompts,
+		UpdateCheck:             updateCheck,
 		ToolTerminal:            toolTerminal,
 		ToolFileWrites:          toolFiles,
 		ToolGit:                 toolGit,
@@ -1154,6 +1196,8 @@ func (a *App) settingsView(ctx context.Context) (contracts.SettingsView, error) 
 		UILocale:                uiLocale,
 		AssistantLanguageMode:   assistantMode,
 		AssistantLanguage:       assistantLanguage,
+		AutomationDigest:        digest,
+		AutomationDigestZone:    digestZone,
 	}, nil
 }
 
@@ -1237,7 +1281,7 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 			return err
 		}
 	}
-	for _, key := range []string{"save_chat_history", "save_task_history", "notify_task_finish", "notify_peer_offline", "launch_at_login", ratings.SettingShow, ratings.SettingAsk} {
+	for _, key := range []string{"save_chat_history", "save_task_history", "notify_task_finish", "notify_peer_offline", "launch_at_login", ratings.SettingShow, ratings.SettingAsk, updates.Setting} {
 		if v, ok := patch[key].(bool); ok {
 			if err := a.Settings.SetBool(ctx, key, v); err != nil {
 				return err
@@ -1249,6 +1293,22 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 			return contracts.Errorf("INVALID_LOCALE", nil, "ui_locale must be a language tag such as en or es-MX, or empty for the system language")
 		}
 		if err := a.Settings.Set(ctx, "ui_locale", v); err != nil {
+			return err
+		}
+	}
+	if v, ok := patch[settingDigest].(string); ok {
+		if !validDigestTime(v) {
+			return contracts.Errorf("INVALID_SETTING", map[string]any{"setting": settingDigest, "value": v}, "automation_digest must be a time such as 08:00, or empty for none")
+		}
+		if err := a.Settings.Set(ctx, settingDigest, v); err != nil {
+			return err
+		}
+	}
+	if v, ok := patch[settingDigestZone].(string); ok {
+		if _, err := time.LoadLocation(v); err != nil || v == "" {
+			return contracts.Errorf("INVALID_SETTING", map[string]any{"setting": settingDigestZone, "value": v}, "automation_digest_zone must be an IANA time zone such as America/Juneau")
+		}
+		if err := a.Settings.Set(ctx, settingDigestZone, v); err != nil {
 			return err
 		}
 	}
@@ -1361,7 +1421,7 @@ func (a *App) applySettingsPatch(ctx context.Context, patch map[string]any) erro
 	return nil
 }
 
-// enableLANForPhone turns on local network access for Connect a phone
+// enableLANForPhone turns on local network access for Connect a device
 // (#216), without the key the setting otherwise needs first: the phone's
 // key comes from pairing.
 func (a *App) enableLANForPhone(ctx context.Context) error {
@@ -1535,4 +1595,19 @@ func (a *App) exportDiagnostics(ctx context.Context, includeConversations bool) 
 // DataDirHint returns a short path for logs.
 func DataDirHint() string {
 	return filepath.Clean(config.DefaultDataDir())
+}
+
+// updateCheckSupported reports whether this build looks for a newer
+// version. Only release builds installed from a download do: the App Store
+// edition and the copy the desktop app runs update with their app
+// (TOSKAR_UPDATE_CHECK=off), and development builds have nothing to compare.
+func updateCheckSupported() bool {
+	if !updates.Checks(version.Version) || pyenv.Sandboxed() {
+		return false
+	}
+	switch strings.ToLower(strings.TrimSpace(config.Env("UPDATE_CHECK"))) {
+	case "off", "0", "false", "no":
+		return false
+	}
+	return true
 }

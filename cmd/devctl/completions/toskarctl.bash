@@ -40,20 +40,22 @@ _toskarctl() {
       ;;
     automations)
       if [[ ${COMP_CWORD} -eq 2 ]]; then
-        COMPREPLY=($(compgen -W "list get create update delete run pause resume" -- "$cur"))
+        COMPREPLY=($(compgen -W "list get create update delete run pause resume hook" -- "$cur"))
         return
       fi
       case "${COMP_WORDS[2]}" in
         create|update)
           case "$prev" in
-            --schedule) COMPREPLY=($(compgen -W "once daily weekly interval" -- "$cur")); return ;;
+            --schedule) COMPREPLY=($(compgen -W "once daily weekly monthly interval cron manual" -- "$cur")); return ;;
             --notify) COMPREPLY=($(compgen -W "always condition change none" -- "$cur")); return ;;
             --condition-kind) COMPREPLY=($(compgen -W "threshold available significant" -- "$cur")); return ;;
             --condition-op) COMPREPLY=($(compgen -W "below above" -- "$cur")); return ;;
-            --weekday) COMPREPLY=($(compgen -W "0 1 2 3 4 5 6" -- "$cur")); return ;;
+            --after-when) COMPREPLY=($(compgen -W "succeeded notified" -- "$cur")); return ;;
+            --trigger) COMPREPLY=($(compgen -W "page feed folder webhook after none" -- "$cur")); return ;;
+            --weekday) COMPREPLY=($(compgen -W "weekdays 0 1 2 3 4 5 6" -- "$cur")); return ;;
           esac
           if [[ "$cur" == -* ]]; then
-            COMPREPLY=($(compgen -W "--name --prompt --profile --model --schedule --at --every --weekday --zone --tool --notify --condition-kind --condition-op --condition-value --disabled" -- "$cur"))
+            COMPREPLY=($(compgen -W "--name --prompt --profile --model --schedule --at --every --weekday --day --cron --zone --tool --notify --condition-kind --condition-op --condition-value --save-folder --trigger --trigger-url --trigger-path --after --after-when --disabled" -- "$cur"))
           fi
           ;;
       esac

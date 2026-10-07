@@ -41,6 +41,7 @@ const KNOWN_EVENT_TYPES = [
   'chat.lookup',
   'chat.stopped',
   'chat.making_file',
+  'chat.making_media',
   'plan.created',
   'plan.step',
   'chat.verifying',

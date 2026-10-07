@@ -38,6 +38,8 @@ type turnTrace struct {
 	ownFiles bool
 	// runID links the answer to its run trace (§35).
 	runID string
+	// automation is an automation the answer drafted (#204).
+	automation *contracts.AutomationDraft
 	// lang is the App language notices are written in (multilingual spec
 	// §16); "" is English.
 	lang string
@@ -321,6 +323,7 @@ func (t *turnTrace) memories(list []muninn.Memory) {
 func (t *turnTrace) tool(toolID string, args, result map[string]any) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
+	t.produced(toolID, result)
 	str := func(m map[string]any, k string) string {
 		v, _ := m[k].(string)
 		return strings.TrimSpace(v)
@@ -381,6 +384,11 @@ func (t *turnTrace) tool(toolID string, args, result map[string]any) {
 			ID: str(result, "id"), Name: name, MimeType: str(result, "mime_type"), Kind: str(result, "kind"),
 			Size: size, Producer: "assistant",
 		})
+	case "automations.schedule":
+		if draft := draftFrom(result); draft != nil {
+			t.automation = draft
+			t.step("automation", "draftedAutomation", map[string]any{"name": draft.Name})
+		}
 	case "terminal":
 		t.untrusted = true
 		t.step("command", "ranCommand", nil)
@@ -433,6 +441,57 @@ func (t *turnTrace) tool(toolID string, args, result map[string]any) {
 	}
 }
 
+// produced attaches the files a tool made to the answer: an image, a clip,
+// audio read aloud, files code saved, or a page's screenshot. Each saves
+// its file to the chat and returns its id, name, and kind, or a list of
+// them; files.create is recorded with its own step.
+func (t *turnTrace) produced(toolID string, result map[string]any) {
+	if toolID == "files.create" {
+		return
+	}
+	def, ok := tools.Lookup(toolID)
+	if !ok || len(def.Outputs) == 0 {
+		return
+	}
+	add := func(m map[string]any) {
+		id, _ := m["id"].(string)
+		name, _ := m["name"].(string)
+		if id == "" || name == "" {
+			return
+		}
+		for _, f := range t.files {
+			if f.ID == id {
+				return
+			}
+		}
+		kind, _ := m["kind"].(string)
+		var size int64
+		switch v := m["size_bytes"].(type) {
+		case int64:
+			size = v
+		case int:
+			size = int64(v)
+		case float64:
+			size = int64(v)
+		}
+		t.files = append(t.files, contracts.FileRef{ID: id, Name: name, Kind: kind, Size: size, Producer: "assistant"})
+		t.step("create", "created", map[string]any{"name": name})
+	}
+	add(result)
+	switch list := result["files"].(type) {
+	case []map[string]any:
+		for _, m := range list {
+			add(m)
+		}
+	case []any:
+		for _, v := range list {
+			if m, ok := v.(map[string]any); ok {
+				add(m)
+			}
+		}
+	}
+}
+
 // serviceSources cites the pages a connected service's result links to,
 // such as GitHub issues.
 func (t *turnTrace) serviceSources(result map[string]any) {
@@ -477,16 +536,17 @@ func (t *turnTrace) sawUntrusted() bool {
 func (t *turnTrace) meta() *contracts.MessageMeta {
 	t.mu.Lock()
 	defer t.mu.Unlock()
-	if len(t.sources) == 0 && len(t.steps) == 0 && t.notice == "" && len(t.files) == 0 && t.runID == "" {
+	if len(t.sources) == 0 && len(t.steps) == 0 && t.notice == "" && len(t.files) == 0 && t.runID == "" && t.automation == nil {
 		return nil
 	}
 	return &contracts.MessageMeta{
-		Sources:  append([]contracts.Citation(nil), t.sources...),
-		Steps:    append([]contracts.ActivityStep(nil), t.steps...),
-		Notice:   t.notice,
-		Files:    append([]contracts.FileRef(nil), t.files...),
-		RunID:    t.runID,
-		Contract: contracts.ContractVersion,
+		Sources:    append([]contracts.Citation(nil), t.sources...),
+		Steps:      append([]contracts.ActivityStep(nil), t.steps...),
+		Notice:     t.notice,
+		Files:      append([]contracts.FileRef(nil), t.files...),
+		RunID:      t.runID,
+		Contract:   contracts.ContractVersion,
+		Automation: t.automation,
 	}
 }
 

@@ -26,8 +26,10 @@
   --color-mimir: #c6a15b;
   --color-heimdall: #d8a657;
   --color-gungnir: #c57a5a;
-  /* Ratatoskr's copper fur. */
-  --color-ratatoskr: #c45e31;
+  /* Ratatoskr's copper, for text: the fur's #c45e31 is 4.4:1 on dark
+     surfaces, under the 4.5:1 small text needs; this is 5.3:1. The mascot
+     keeps its own fur colors. */
+  --color-ratatoskr: #d06d41;
 }
 
 @theme inline {
@@ -131,7 +133,7 @@
   --color-mimir: #c6a15b;
   --color-heimdall: #d8a657;
   --color-gungnir: #c57a5a;
-  --color-ratatoskr: #c45e31;
+  --color-ratatoskr: #d06d41;
   --color-shadow: 0 0 0;
   --shadow-panel: 0 1px 0 rgb(255 255 255 / 0.03), 0 12px 32px -16px rgb(0 0 0 / 0.55);
   --scrim: rgb(0 0 0 / 0.55);

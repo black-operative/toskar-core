@@ -42,3 +42,26 @@ func TestUnapprovedToolsAreSkippedAndReported(t *testing.T) {
 		t.Fatal("policy")
 	}
 }
+
+// A run a trigger started read someone else's words, so a tool that changes
+// things outside Toskar is skipped even when the automation approved it
+// (#204). Without a trigger, the approval stands.
+func TestTriggerRunsSkipToolsThatChangeThings(t *testing.T) {
+	a, _ := memoryApp(t)
+	a.Tools = tools.NewRegistry(t.TempDir(), a.Bus)
+	ctx := context.Background()
+	profile := profiles.Profile{Tools: []contracts.ToolPolicy{{ToolID: "terminal", Policy: "allow"}}}
+	newEnv := func(fromTrigger bool) *automationEnv {
+		return &automationEnv{base: &chatExecEnv{app: a, ctx: ctx, profile: profile, trace: &turnTrace{}}, granted: []string{"terminal"}, fromTrigger: fromTrigger}
+	}
+	triggered := newEnv(true)
+	if _, err := triggered.ExecuteTool(ctx, "terminal", map[string]any{"command": "echo hi"}); err == nil || !strings.Contains(err.Error(), "skipped") {
+		t.Fatalf("approved terminal in a triggered run: %v", err)
+	}
+	if got := triggered.skippedTools(); len(got) != 1 || got[0] != "terminal" {
+		t.Fatalf("skipped = %v", got)
+	}
+	if _, err := newEnv(false).ExecuteTool(ctx, "terminal", map[string]any{"command": "echo hi"}); err != nil && strings.Contains(err.Error(), "skipped") {
+		t.Fatalf("approved terminal in a scheduled run was skipped: %v", err)
+	}
+}

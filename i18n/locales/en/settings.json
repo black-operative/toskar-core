@@ -137,7 +137,10 @@
     "title": "Notifications",
     "description": "Alerts for long-running work and team connectivity.",
     "taskFinish": "Notify when tasks finish",
-    "peerOffline": "Notify when a paired computer goes offline"
+    "peerOffline": "Notify when a paired computer goes offline",
+    "digest": "Daily automation digest",
+    "digestHint": "One summary of every automation’s results each day, in a chat you can reply to.",
+    "digestTime": "Time"
   },
   "toolPermissions": {
     "title": "Tool permissions",
@@ -190,7 +193,8 @@
       "external_server": "External server",
       "connector": "Connected service",
       "notification": "Notification",
-      "community_ratings": "Community ratings"
+      "community_ratings": "Community ratings",
+      "update_check": "Update check"
     },
     "kindsLower": {
       "web_search": "web search",
@@ -200,7 +204,8 @@
       "external_server": "external server",
       "connector": "connected service",
       "notification": "notification",
-      "community_ratings": "community ratings"
+      "community_ratings": "community ratings",
+      "update_check": "update check"
     },
     "sources": {
       "chat": "Chat",
@@ -243,7 +248,13 @@
     "thisComputer": "This computer",
     "service": "Service",
     "unavailable": "Unavailable",
-    "diagnostics": "Open diagnostics"
+    "diagnostics": "Open diagnostics",
+    "updateAvailable": "Toskar {{version}} is available.",
+    "whatsNew": "What's new",
+    "download": "Download",
+    "upToDate": "Up to date",
+    "checkUpdates": "Check for updates",
+    "checkUpdatesHint": "Once a day, Toskar asks toskar.ai for the latest version number. Nothing else is sent."
   },
   "reset": {
     "title": "Reset application",

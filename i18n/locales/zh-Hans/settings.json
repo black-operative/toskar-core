@@ -137,7 +137,10 @@
     "title": "通知",
     "description": "关于长时间运行的工作和团队连接的提醒。",
     "taskFinish": "任务完成时通知",
-    "peerOffline": "已配对的电脑离线时通知"
+    "peerOffline": "已配对的电脑离线时通知",
+    "digest": "每日自动化摘要",
+    "digestHint": "每天汇总一次所有自动化的结果，发到一个可以回复的聊天中。",
+    "digestTime": "时间"
   },
   "toolPermissions": {
     "title": "工具权限",
@@ -190,7 +193,8 @@
       "external_server": "外部服务器",
       "connector": "已连接的服务",
       "notification": "通知",
-      "community_ratings": "社区评分"
+      "community_ratings": "社区评分",
+      "update_check": "检查更新"
     },
     "kindsLower": {
       "web_search": "网络搜索",
@@ -200,7 +204,8 @@
       "external_server": "外部服务器",
       "connector": "已连接的服务",
       "notification": "通知",
-      "community_ratings": "社区评分"
+      "community_ratings": "社区评分",
+      "update_check": "检查更新"
     },
     "sources": {
       "chat": "聊天",
@@ -242,7 +247,13 @@
     "thisComputer": "这台电脑",
     "service": "服务",
     "unavailable": "不可用",
-    "diagnostics": "打开诊断"
+    "diagnostics": "打开诊断",
+    "updateAvailable": "Toskar {{version}} 已推出。",
+    "whatsNew": "新功能",
+    "download": "下载",
+    "upToDate": "已是最新版本",
+    "checkUpdates": "检查更新",
+    "checkUpdatesHint": "Toskar 每天向 toskar.ai 询问一次最新版本号，不会发送其他任何内容。"
   },
   "reset": {
     "title": "重置应用",

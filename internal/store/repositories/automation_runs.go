@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -16,7 +17,7 @@ const runSelect = `
 	SELECT id, automation_id, occurrence_at, status, claimed_at, lease_until,
 		started_at, finished_at, COALESCE(result, ''), COALESCE(error, ''),
 		notification_sent, COALESCE(model_id, ''), COALESCE(node_id, ''),
-		attempt, retry_at, created_at
+		attempt, retry_at, created_at, COALESCE(notify_detail, ''), COALESCE(notify_values, ''), COALESCE(conversation_id, ''), COALESCE(saved_file, '')
 	FROM automation_runs`
 
 // Claim takes the occurrence for this daemon.
@@ -160,10 +161,10 @@ func (r *AutomationRepo) CompleteRun(ctx context.Context, runID string, result a
 	if _, err := tx.ExecContext(ctx, `
 		UPDATE automation_runs
 		SET status = ?, result = ?, error = NULL, model_id = ?, node_id = ?,
-			finished_at = ?, lease_until = NULL
+			finished_at = ?, lease_until = NULL, source_hash = ?
 		WHERE id = ?`,
 		automations.RunSucceeded, result.Text, nullIfEmpty(result.ModelID), nullIfEmpty(result.NodeID),
-		formatTime(finished), runID); err != nil {
+		formatTime(finished), nullIfEmpty(result.SourceHash), runID); err != nil {
 		return err
 	}
 
@@ -382,7 +383,7 @@ func (r *AutomationRepo) latestRuns(ctx context.Context) (map[string]automations
 		SELECT r.id, r.automation_id, r.occurrence_at, r.status, r.claimed_at, r.lease_until,
 			r.started_at, r.finished_at, COALESCE(r.result, ''), COALESCE(r.error, ''),
 			r.notification_sent, COALESCE(r.model_id, ''), COALESCE(r.node_id, ''),
-			r.attempt, r.retry_at, r.created_at
+			r.attempt, r.retry_at, r.created_at, COALESCE(r.notify_detail, ''), COALESCE(r.notify_values, ''), COALESCE(r.conversation_id, ''), COALESCE(r.saved_file, '')
 		FROM automation_runs r
 		INNER JOIN (
 			SELECT automation_id, MAX(occurrence_at) AS occurrence_at
@@ -481,22 +482,72 @@ func (r *AutomationRepo) RunsPage(ctx context.Context, automationID, before stri
 	return page, nil
 }
 
-// PreviousResult returns the latest successful result scheduled before an occurrence.
-func (r *AutomationRepo) PreviousResult(ctx context.Context, automationID string, before time.Time) (string, bool, bool, error) {
-	var text string
+// PreviousResult returns the latest successful run scheduled before an
+// occurrence: its result, whether it notified, and what its tools read.
+func (r *AutomationRepo) PreviousResult(ctx context.Context, automationID string, before time.Time) (automations.Previous, bool, error) {
+	var prev automations.Previous
 	var notified int
 	err := r.db.QueryRowContext(ctx, `
-		SELECT COALESCE(result, ''), notification_sent FROM automation_runs
+		SELECT COALESCE(result, ''), notification_sent, COALESCE(source_hash, '') FROM automation_runs
 		WHERE automation_id = ? AND status = ? AND occurrence_at < ?
 		ORDER BY occurrence_at DESC
-		LIMIT 1`, automationID, automations.RunSucceeded, formatTime(clock(before))).Scan(&text, &notified)
+		LIMIT 1`, automationID, automations.RunSucceeded, formatTime(clock(before))).Scan(&prev.Text, &notified, &prev.SourceHash)
 	if err == sql.ErrNoRows {
-		return "", false, false, nil
+		return automations.Previous{}, false, nil
 	}
 	if err != nil {
-		return "", false, false, err
+		return automations.Previous{}, false, err
 	}
-	return text, notified != 0, true, nil
+	prev.Notified = notified != 0
+	return prev, true, nil
+}
+
+// SetDecision records why a run did or didn't notify (#204).
+func (r *AutomationRepo) SetDecision(ctx context.Context, runID, detail string, values map[string]any) error {
+	var raw any
+	if len(values) > 0 {
+		b, err := json.Marshal(values)
+		if err != nil {
+			return err
+		}
+		raw = string(b)
+	}
+	_, err := r.db.ExecContext(ctx, `UPDATE automation_runs SET notify_detail = ?, notify_values = ? WHERE id = ?`, nullIfEmpty(detail), raw, runID)
+	return err
+}
+
+// FinishedSince is every run that succeeded or failed after since, oldest
+// first, for the digest (#204).
+func (r *AutomationRepo) FinishedSince(ctx context.Context, since time.Time) ([]automations.Run, error) {
+	rows, err := r.db.QueryContext(ctx, runSelect+`
+		WHERE status IN ('succeeded', 'failed') AND finished_at > ?
+		ORDER BY finished_at`, formatTime(since))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return scanRuns(rows)
+}
+
+// GetRun loads one run of an automation.
+func (r *AutomationRepo) GetRun(ctx context.Context, automationID, runID string) (automations.Run, error) {
+	run, err := scanRun(r.db.QueryRowContext(ctx, runSelect+` WHERE id = ? AND automation_id = ?`, runID, automationID))
+	if err == sql.ErrNoRows {
+		return automations.Run{}, fmt.Errorf("run %q not found", runID)
+	}
+	return run, err
+}
+
+// SetRunConversation records the chat a run's result was posted to.
+func (r *AutomationRepo) SetRunConversation(ctx context.Context, runID, conversationID string) error {
+	_, err := r.db.ExecContext(ctx, `UPDATE automation_runs SET conversation_id = ? WHERE id = ?`, nullIfEmpty(conversationID), runID)
+	return err
+}
+
+// SetSavedFile records where a run's result was saved.
+func (r *AutomationRepo) SetSavedFile(ctx context.Context, runID, path string) error {
+	_, err := r.db.ExecContext(ctx, `UPDATE automation_runs SET saved_file = ? WHERE id = ?`, nullIfEmpty(path), runID)
+	return err
 }
 
 // SetNotificationSent records whether the user was notified for this occurrence.
@@ -559,12 +610,16 @@ func scanRun(s automationScanner) (automations.Run, error) {
 	var status, occurrence, created string
 	var claimed, lease, started, finished, retryAt sql.NullString
 	var notified int
+	var values string
 	if err := s.Scan(
 		&run.ID, &run.AutomationID, &occurrence, &status, &claimed, &lease,
 		&started, &finished, &run.Result, &run.Error, &notified, &run.ModelID, &run.NodeID,
-		&run.Attempt, &retryAt, &created,
+		&run.Attempt, &retryAt, &created, &run.NotifyDetail, &values, &run.ConversationID, &run.SavedFile,
 	); err != nil {
 		return automations.Run{}, err
+	}
+	if values != "" {
+		_ = json.Unmarshal([]byte(values), &run.NotifyValues)
 	}
 	run.Status = automations.RunStatus(status)
 	run.OccurrenceAt = parseTime(occurrence)

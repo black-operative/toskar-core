@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/yeixio/toskar-core/internal/automations"
 	"github.com/yeixio/toskar-core/internal/events"
@@ -109,5 +110,158 @@ func TestEventsBecomeNotifications(t *testing.T) {
 	}
 	if _, ok := noticeForEvent(a, events.New(events.ChatToken, nil)); ok {
 		t.Fatal("chat tokens are not notifications")
+	}
+}
+
+func TestDesktopNoticesGoToTheDesktopAppWhenItPostsThem(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	settings := repositories.NewSettingsRepo(db.SQL)
+	ctx := context.Background()
+	bus := events.NewBus(16)
+	_, stream := bus.Subscribe()
+	ranOSA := 0
+	desktop := desktopChannel{
+		settings: settings,
+		send:     noticeFunc(func(context.Context, automations.Notice) error { ranOSA++; return nil }),
+		toShell:  shellNotices(bus, "shell"),
+	}
+	hub := gjallarhorn.NewHub(db.SQL, bus, desktop)
+	n := automationNotifier{settings: settings, hub: hub}
+	if err := n.Notify(ctx, automations.Notice{Title: "Morning price", Body: "The laptop is $420.", AutomationID: "a1"}); err != nil {
+		t.Fatal(err)
+	}
+	if ranOSA != 0 {
+		t.Fatalf("the daemon also posted the notice itself (%d)", ranOSA)
+	}
+	var got *events.Event
+	for len(stream) > 0 {
+		evt := <-stream
+		if evt.Type == gjallarhorn.EventDesktop {
+			got = &evt
+		}
+	}
+	if got == nil || got.Payload["title"] != "Morning price" || got.Payload["body"] != "The laptop is $420." || got.Payload["link"] != "/automations?id=a1" || got.Payload["id"] == "" {
+		t.Fatalf("desktop event = %+v", got)
+	}
+	list, _, _ := hub.List(ctx, false, 0)
+	stored, _ := hub.Get(ctx, list[0].ID)
+	if d := stored.Deliveries; len(d) != 1 || d[0].Status != gjallarhorn.DeliveryDelivered {
+		t.Fatalf("deliveries = %+v", d)
+	}
+
+	// Desktop notices off: nothing goes to the app either.
+	_ = settings.SetBool(ctx, "notify_task_finish", false)
+	_ = n.Notify(ctx, automations.Notice{Title: "Evening price", Body: "Same.", AutomationID: "a1"})
+	for len(stream) > 0 {
+		if evt := <-stream; evt.Type == gjallarhorn.EventDesktop {
+			t.Fatalf("sent with desktop notices off: %+v", evt)
+		}
+	}
+
+	// Without the setting the daemon posts them itself, as before.
+	if shellNotices(bus, "") != nil || shellNotices(nil, "shell") != nil {
+		t.Fatal("expected no hand-off")
+	}
+}
+
+// A result posted to the chat an automation came from is an answer there,
+// marked with its automation, and its notice opens that chat (#204).
+func TestAutomationResultInItsChat(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	ctx := context.Background()
+	convs := repositories.NewConversationRepo(db.SQL)
+	conv, err := convs.Create(ctx, "Morning news", "general-assistant", "auto")
+	if err != nil {
+		t.Fatal(err)
+	}
+	a := &App{Conversations: convs}
+	automation := automations.Automation{ID: "a1", Name: "Morning news", ConversationID: conv.ID}
+	if err := a.postAutomationResult(ctx, automation, automations.Run{ID: "r1"}, "Three stories today."); err != nil {
+		t.Fatal(err)
+	}
+	messages, _ := convs.ListMessages(ctx, conv.ID)
+	if len(messages) != 1 || messages[0].Role != "assistant" || messages[0].Meta == nil || messages[0].Meta.AutomationRun == nil ||
+		messages[0].Meta.AutomationRun.RunID != "r1" || messages[0].Meta.AutomationRun.Name != "Morning news" {
+		t.Fatalf("messages = %+v", messages)
+	}
+	if err := a.postAutomationResult(ctx, automations.Automation{ID: "a1", ConversationID: "deleted"}, automations.Run{ID: "r2"}, "x"); err == nil {
+		t.Fatal("posted to a chat that doesn't exist")
+	}
+
+	hub := gjallarhorn.NewHub(db.SQL, events.NewBus(8))
+	n := automationNotifier{hub: hub}
+	if err := n.Notify(ctx, automations.Notice{Title: "Morning news", Body: "Three stories today.", AutomationID: "a1", ConversationID: conv.ID}); err != nil {
+		t.Fatal(err)
+	}
+	list, _, _ := hub.List(ctx, false, 0)
+	if len(list) != 1 || list[0].Link != "/chat?c="+conv.ID {
+		t.Fatalf("center = %+v", list)
+	}
+}
+
+// "Continue in chat" opens a run's result in a chat to reply to: a new one
+// the first time, the same one after, and none for a failed run (#204).
+func TestContinueAutomationRunInChat(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	ctx := context.Background()
+	repo := repositories.NewAutomationRepo(db.SQL)
+	convs := repositories.NewConversationRepo(db.SQL)
+	a := &App{Automations: repo, Conversations: convs}
+	now := time.Date(2026, 10, 7, 9, 0, 0, 0, time.UTC)
+	created, err := repo.Create(ctx, automations.CreateInput{
+		Name: "Morning news", Prompt: "Summarize the news.", ModelID: "auto",
+		Schedule: automations.Schedule{Kind: automations.KindDaily, TimeZone: "UTC", Hour: 8},
+	}, now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	finish := func(at time.Time, fail bool) automations.Run {
+		run, _, err := repo.Claim(ctx, created.ID, at, at, time.Hour)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if fail {
+			err = repo.FailRun(ctx, run.ID, "model failed", automations.Execution{}, at)
+		} else {
+			err = repo.CompleteRun(ctx, run.ID, automations.Execution{Text: "Three stories today.\n{\"significant\": true}"}, at)
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		return run
+	}
+	run := finish(now.Add(time.Hour), false)
+	conv, err := a.continueAutomationRun(ctx, created.ID, run.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	messages, _ := convs.ListMessages(ctx, conv)
+	if len(messages) != 1 || messages[0].Content != "Three stories today." || messages[0].Meta.AutomationRun.RunID != run.ID {
+		t.Fatalf("messages = %+v", messages)
+	}
+	if again, err := a.continueAutomationRun(ctx, created.ID, run.ID); err != nil || again != conv {
+		t.Fatalf("again = %q, %v; want %q", again, err, conv)
+	}
+	if list, _ := convs.List(ctx); len(list) != 1 || list[0].Title != "Morning news" {
+		t.Fatalf("chats = %+v", list)
+	}
+	failed := finish(now.Add(25*time.Hour), true)
+	if _, err := a.continueAutomationRun(ctx, created.ID, failed.ID); !errors.Is(err, errNoResult) {
+		t.Fatalf("failed run: %v", err)
+	}
+	if _, err := a.continueAutomationRun(ctx, "other", run.ID); err == nil {
+		t.Fatal("continued a run under another automation")
 	}
 }

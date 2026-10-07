@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { api } from '@/lib/api'
 import type { Automation, AutomationDetail } from '@/types/api'
 import { AutomationsPage } from './AutomationsPage'
@@ -24,6 +24,8 @@ vi.mock('@/lib/api', async () => {
       deleteAutomation: vi.fn(),
       runAutomation: vi.fn(),
       listAutomationRuns: vi.fn(),
+      parseAutomation: vi.fn(),
+      continueAutomationRun: vi.fn(),
     },
   }
 })
@@ -107,6 +109,35 @@ describe('AutomationsPage', () => {
     ])
     vi.mocked(api.pauseAutomation).mockResolvedValue({ ...saved, enabled: false })
     vi.mocked(api.createAutomation).mockResolvedValue({ ...saved, id: 'auto-2' })
+    // The computer reads requests (#204); its cases are in request_test.go.
+    vi.mocked(api.parseAutomation).mockResolvedValue({
+      name: 'Price below $500',
+      prompt: 'Check this product. Report the current price.',
+      schedule: { kind: 'daily', time_zone: 'America/Los_Angeles', hour: 8, minute: 0 },
+      notification: { mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500, currency: 'USD' } },
+      notes: [],
+    })
+  })
+
+  it('continues a run in chat', async () => {
+    vi.mocked(api.continueAutomationRun).mockResolvedValue({ conversation_id: 'conv-9' })
+    function ChatSpy() {
+      return <p>chat {new URLSearchParams(useLocation().search).get('c')}</p>
+    }
+    render(
+      <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+        <MemoryRouter initialEntries={['/automations']}>
+          <Routes>
+            <Route path="/automations" element={<AutomationsPage />} />
+            <Route path="/chat" element={<ChatSpy />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+    fireEvent.click(await screen.findByRole('button', { name: /Price below \$500/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Continue in chat' }))
+    expect(await screen.findByText('chat conv-9')).toBeInTheDocument()
+    expect(api.continueAutomationRun).toHaveBeenCalledWith('auto-1', 'run-1')
   })
 
   it('shows the latest result and runs the history actions', async () => {
@@ -134,19 +165,32 @@ describe('AutomationsPage', () => {
     expect(screen.queryByRole('button', { name: 'Show older runs' })).not.toBeInTheDocument()
   })
 
-  it('explains automations and starts one from an idea when there are none', async () => {
+  it('explains automations and starts one from a template when there are none', async () => {
     vi.mocked(api.listAutomations).mockResolvedValue([])
     renderPage()
     expect(await screen.findByRole('heading', { name: /Put Toskar to work/ })).toBeInTheDocument()
     expect(screen.getByText('Say when')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: /Back in stock/ }))
-    // The form opens filled in from the idea, ready to adjust.
-    expect(await screen.findByDisplayValue('Stock check')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Price watch/ }))
+    // The template asks for its few fields, then fills in the details without reading a request.
+    const fill = await screen.findByRole('button', { name: 'Fill in the details' })
+    expect(fill).toBeDisabled()
+    fireEvent.change(screen.getByLabelText('Link'), { target: { value: 'shop.example.com/laptop' } })
+    fireEvent.change(screen.getByLabelText('Notify below'), { target: { value: '1,299.99' } })
+    fireEvent.click(fill)
+    expect(await screen.findByDisplayValue('Price watch: shop.example.com')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Check the current price of the product at https://shop.example.com/laptop.')).toBeInTheDocument()
+    expect(screen.getByText(/Notify when the price is below \$1,299\.99/, { selector: 'dd' })).toBeInTheDocument()
+    expect(api.parseAutomation).not.toHaveBeenCalled()
+  })
+
+  it('describes a template in words instead, from its example', async () => {
+    vi.mocked(api.listAutomations).mockResolvedValue([])
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: /Folder summary/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Describe it in your own words instead' }))
     expect(screen.getByRole('textbox', { name: 'Describe what you want' })).toHaveValue(
-      'Every 6 hours, check whether this item is back in stock and tell me when it becomes available.',
+      'Every day at 6:00 PM, summarize what is in this folder and notify me only when it changes.',
     )
-    expect(screen.getByText('Notify when it becomes available', { selector: 'dd' })).toBeInTheDocument()
-    expect(screen.getByText(/link in place of/)).toBeInTheDocument()
   })
 
   it('shows how automations work on request when there are some', async () => {
@@ -158,6 +202,97 @@ describe('AutomationsPage', () => {
     expect(screen.getByRole('button', { name: 'Hide how it works' })).toHaveAttribute('aria-expanded', 'true')
   })
 
+  it('runs when a page changes, checked every hour to start', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Runs' }), { target: { value: 'page' } })
+    fireEvent.change(screen.getByRole('textbox', { name: 'Link' }), { target: { value: 'https://example.com/careers' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'Careers' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: "Say what's new." } })
+    expect(screen.getByText(/When example\.com changes · checked: Every hour/, { selector: 'dd' })).toBeInTheDocument()
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.trigger).toEqual({ kind: 'page', url: 'https://example.com/careers' })
+    expect(body.schedule).toMatchObject({ kind: 'interval', every_seconds: 3600 })
+  })
+
+  it('fills a folder summary from its template, watching the folder', async () => {
+    vi.mocked(api.listAutomations).mockResolvedValue([])
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: /Folder summary/ }))
+    fireEvent.change(await screen.findByLabelText('Folder'), { target: { value: '~/Documents/Invoices' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
+    expect(await screen.findByRole('combobox', { name: 'Runs' })).toHaveValue('folder')
+    expect(screen.getByText(/When Invoices changes · checked: Every day at 6:00\sPM/, { selector: 'dd' })).toBeInTheDocument()
+  })
+
+  it('runs from a webhook only when called', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Runs' }), { target: { value: 'webhook' } })
+    expect(screen.queryByRole('combobox', { name: 'Repeats' })).not.toBeInTheDocument()
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'New order' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Say who ordered what.' } })
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.trigger).toEqual({ kind: 'webhook' })
+    expect(body.schedule).toMatchObject({ kind: 'manual' })
+  })
+
+  it('runs after another automation, with its name in the summary', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Runs' }), { target: { value: 'after' } })
+    expect(screen.getByRole('combobox', { name: 'Automation' })).toHaveValue('auto-1')
+    fireEvent.change(screen.getByRole('combobox', { name: 'When' }), { target: { value: 'notified' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'Buy it' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Draft a purchase note.' } })
+    expect(screen.getByText('After Price below $500 notifies', { selector: 'dd' })).toBeInTheDocument()
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.trigger).toEqual({ kind: 'after', automation_id: 'auto-1', when: 'notified' })
+    expect(body.schedule).toMatchObject({ kind: 'manual' })
+  })
+
+  it('also saves results to a folder when asked', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Also save each result as a file' }))
+    fireEvent.change(screen.getByRole('textbox', { name: /^Folder/ }), { target: { value: '~/Documents/Toskar/News' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'News' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Summarize the news.' } })
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    expect(vi.mocked(api.createAutomation).mock.calls[0][0].save_folder).toBe('~/Documents/Toskar/News')
+  })
+
+  it('saves a schedule on several days at several times', async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
+    fireEvent.change(screen.getByRole('combobox', { name: 'Repeats' }), { target: { value: 'weekly' } })
+    // Monday is on; add Wednesday and Friday, and an evening time.
+    fireEvent.click(screen.getByRole('button', { name: 'Wednesday' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Friday' }))
+    expect(screen.getByRole('button', { name: 'Friday' })).toHaveAttribute('aria-pressed', 'true')
+    fireEvent.click(screen.getByRole('button', { name: 'Add a time' }))
+    const times = screen.getAllByLabelText('Time')
+    fireEvent.change(times[1], { target: { value: '17:30' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Name/ }), { target: { value: 'Standup notes' } })
+    fireEvent.change(screen.getByRole('textbox', { name: /Task/ }), { target: { value: 'Summarize the team channel.' } })
+    expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
+    await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
+    const body = vi.mocked(api.createAutomation).mock.calls[0][0]
+    expect(body.schedule).toMatchObject({ kind: 'weekly', weekdays: [1, 3, 5], times: [{ hour: 8, minute: 0 }, { hour: 17, minute: 30 }] })
+  })
+
   it('fills a structured task from a description and saves it', async () => {
     renderPage()
     fireEvent.click(await screen.findByRole('button', { name: 'New automation' }))
@@ -165,14 +300,20 @@ describe('AutomationsPage', () => {
       target: { value: 'Every morning at 8:00 AM, check this product and tell me if the price is below $500.' },
     })
     fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
-    expect(screen.getByDisplayValue('Price below $500')).toBeInTheDocument()
+    expect(await screen.findByDisplayValue('Price below $500')).toBeInTheDocument()
+    expect(api.parseAutomation).toHaveBeenCalledWith(
+      'Every morning at 8:00 AM, check this product and tell me if the price is below $500.',
+      expect.any(String),
+      'en',
+    )
     expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
     await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())
     const body = vi.mocked(api.createAutomation).mock.calls[0][0]
     expect(body.schedule).toMatchObject({ kind: 'daily', hour: 8, minute: 0 })
     expect(body.notification).toEqual({ mode: 'condition', condition: { kind: 'threshold', op: 'below', value: 500, currency: 'USD' } })
-    expect(body.prompt).toContain('{"price": 420}')
+    // The computer adds the price instruction when it runs; the page sends the task (#204).
+    expect(body.prompt).not.toContain('{"price"')
     expect(body.profile_id).toBe('general-assistant')
     expect(body.model_id).toBe('gemma-4-e4b')
     // Results follow the assistant language unless the automation says otherwise (§22).
@@ -186,6 +327,7 @@ describe('AutomationsPage', () => {
       target: { value: 'Every morning at 8:00 AM, check this product and tell me if the price is below $500.' },
     })
     fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
+    expect(await screen.findByDisplayValue('Price below $500')).toBeInTheDocument()
     expect(await screen.findByRole('option', { name: 'Gemma 4 E4B' })).toBeInTheDocument()
     const language = screen.getByRole('combobox', { name: 'Results in' })
     expect([...language.querySelectorAll('option')].slice(0, 3).map((o) => o.textContent)).toEqual([
@@ -224,6 +366,7 @@ describe('AutomationsPage', () => {
       target: { value: 'Every morning at 8:00 AM, check this product and tell me if the price is below $500.' },
     })
     fireEvent.click(screen.getByRole('button', { name: 'Fill in the details' }))
+    expect(await screen.findByDisplayValue('Price below $500')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('checkbox', { name: /Write files/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Create automation' }))
     await waitFor(() => expect(api.createAutomation).toHaveBeenCalled())

@@ -56,6 +56,11 @@ const (
 // EventCreated tells clients a notification was stored.
 const EventCreated = "notification.created"
 
+// EventDesktop hands a desktop notice to the desktop app, when it posts them
+// itself (TOSKAR_DESKTOP_NOTIFICATIONS=shell): its title and body are in the
+// App language, after quiet hours and the user's desktop setting.
+const EventDesktop = "notification.desktop"
+
 // dedupeWindow is how long a repeated notice with the same key is folded
 // into the first one instead of stored again.
 const dedupeWindow = 10 * time.Minute

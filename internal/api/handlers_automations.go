@@ -4,12 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/yeixio/toskar-core/internal/automations"
+	"github.com/yeixio/toskar-core/pkg/contracts"
 )
 
 func (s *Server) handleListAutomations(w http.ResponseWriter, r *http.Request) {
@@ -75,6 +77,81 @@ func (s *Server) handleListAutomationRuns(w http.ResponseWriter, r *http.Request
 	writeJSON(w, http.StatusOK, page)
 }
 
+// handleContinueAutomationRun opens a run's result in a chat to reply to:
+// the chat it was posted to, or a new one (#204).
+func (s *Server) handleContinueAutomationRun(w http.ResponseWriter, r *http.Request) {
+	if s.deps.ContinueAutomationRun == nil {
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Automations are not available.", nil)
+		return
+	}
+	vars := mux.Vars(r)
+	conversationID, err := s.deps.ContinueAutomationRun(r.Context(), vars["id"], vars["run_id"])
+	if err != nil {
+		// A run with nothing to continue from.
+		if code, _ := contracts.ErrorCode(err); code != "" {
+			writeErrFrom(w, http.StatusConflict, code, err)
+			return
+		}
+		writeAutomationErr(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]string{"conversation_id": conversationID})
+}
+
+// maxHookBody is the largest webhook request body.
+const maxHookBody = 64 << 10
+
+// handleMakeHookLink makes a webhook trigger's new link and returns its
+// token, the only time it's shown (#204).
+func (s *Server) handleMakeHookLink(w http.ResponseWriter, r *http.Request) {
+	if s.deps.MakeHookLink == nil {
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Automations are not available.", nil)
+		return
+	}
+	token, err := s.deps.MakeHookLink(r.Context(), mux.Vars(r)["id"])
+	if err != nil {
+		if code, _ := contracts.ErrorCode(err); code != "" {
+			writeErrFrom(w, http.StatusConflict, code, err)
+			return
+		}
+		writeAutomationErr(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]string{"token": token, "path": "/hooks/" + token})
+}
+
+// handleHook starts the automation a webhook link belongs to (#204). An
+// unknown token is not found, whatever the reason, so a caller learns
+// nothing from guessing.
+func (s *Server) handleHook(w http.ResponseWriter, r *http.Request) {
+	if s.deps.RunHook == nil {
+		writeErr(w, http.StatusNotFound, "NOT_FOUND", "not found", nil)
+		return
+	}
+	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, maxHookBody))
+	if err != nil {
+		writeErr(w, http.StatusRequestEntityTooLarge, "HOOK_TOO_LARGE", "the request body is larger than 64 KB", nil)
+		return
+	}
+	run, err := s.deps.RunHook(r.Context(), mux.Vars(r)["token"], body)
+	if err != nil {
+		code, _ := contracts.ErrorCode(err)
+		switch {
+		case code == "HOOK_TOO_SOON":
+			w.Header().Set("Retry-After", "10")
+			writeErrFrom(w, http.StatusTooManyRequests, code, err)
+		case code != "":
+			writeErrFrom(w, http.StatusConflict, code, err)
+		case errors.Is(err, automations.ErrRunning):
+			writeErrFrom(w, http.StatusConflict, "AUTOMATION_RUNNING", err)
+		default:
+			writeErr(w, http.StatusNotFound, "NOT_FOUND", "not found", nil)
+		}
+		return
+	}
+	writeJSON(w, http.StatusAccepted, map[string]string{"run_id": run.ID})
+}
+
 func (s *Server) handleUpdateAutomation(w http.ResponseWriter, r *http.Request) {
 	if s.deps.UpdateAutomation == nil {
 		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Automations are not available.", nil)
@@ -103,6 +180,33 @@ func (s *Server) handleDeleteAutomation(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
+}
+
+// handleParseAutomation reads a request into an automation to review and
+// save: its name, task, schedule, notification, and notes on what was
+// assumed (#204). language is the language the request may be written in
+// besides English, and the language of the name and notes; empty uses the
+// App language.
+func (s *Server) handleParseAutomation(w http.ResponseWriter, r *http.Request) {
+	if s.deps.ParseAutomation == nil {
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Automations are not available.", nil)
+		return
+	}
+	var body struct {
+		Text     string `json:"text"`
+		TimeZone string `json:"time_zone"`
+		Language string `json:"language"`
+	}
+	if err := json.NewDecoder(io.LimitReader(r.Body, 64<<10)).Decode(&body); err != nil {
+		writeErr(w, http.StatusBadRequest, "INVALID_JSON", "invalid body", nil)
+		return
+	}
+	parsed, err := s.deps.ParseAutomation(r.Context(), body.Text, body.TimeZone, body.Language)
+	if err != nil {
+		writeErrFrom(w, http.StatusBadRequest, "AUTOMATION_INVALID", err)
+		return
+	}
+	writeJSON(w, http.StatusOK, parsed)
 }
 
 func (s *Server) handlePreviewAutomation(w http.ResponseWriter, r *http.Request) {

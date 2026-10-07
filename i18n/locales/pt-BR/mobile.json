@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "Digite o endereço do computador que executa o Toskar.",
     "couldNotReach": "Não foi possível acessar o Toskar.",
-    "unreachable": "O Toskar naquele computador não está acessível. Use a mesma rede Wi-Fi e escolha Conectar um celular naquele computador.",
+    "unreachable": "O Toskar naquele computador não está acessível. Use a mesma rede Wi-Fi e escolha Conectar um dispositivo naquele computador.",
     "keyRejected": "Essa chave de API foi recusada. Conecte-se com um código do computador, ou crie uma chave em Acesso à API.",
     "dropped": "A conexão com o Toskar caiu.",
     "chatFailed": "O chat falhou.",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "Conectar um computador",
-    "subtitle": "O celular usa o computador que já executa seus modelos. Nesse computador, abra Computadores e escolha Conectar um celular.",
+    "subtitle": "O celular usa o computador que já executa seus modelos. Nesse computador, abra Computadores e escolha Conectar um dispositivo.",
     "address": "Endereço do computador",
     "addressPlaceholder": "192.168.1.20",
     "code": "Código",
     "codePlaceholder": "Código de 6 dígitos",
-    "codeHint": "O código que o computador mostra em Computadores → Conectar um celular. Vale uma vez, por 10 minutos.",
+    "codeHint": "O código que o computador mostra em Computadores → Conectar um dispositivo. Vale uma vez, por 10 minutos.",
     "useKey": "Usar uma chave de API",
     "useCode": "Usar um código",
     "apiKey": "Chave de API",
@@ -46,7 +46,8 @@
     "connect": "Conectar",
     "connecting": "Conectando",
     "notReady": "O Toskar respondeu, mas não está pronto.",
-    "pairUnsupported": "O Toskar desse computador é antigo demais para conectar com um código. Atualize-o ou use uma chave de API."
+    "pairUnsupported": "O Toskar desse computador é antigo demais para conectar com um código. Atualize-o ou use uma chave de API.",
+    "lede": "O celular usa o computador que já executa seus modelos."
   },
   "discovery": {
     "onThisNetwork": "Nesta rede",
@@ -57,7 +58,7 @@
     "none": "Nenhum computador encontrado. Inicie o Toskar no seu computador e use a mesma rede Wi-Fi, ou digite o endereço dele.",
     "localNetworkDenied": "O Toskar não tem permissão para procurar computadores na sua rede. Permita em Ajustes > Privacidade e Segurança > Rede Local.",
     "listFailed": "Não foi possível listar os computadores desta rede. Você ainda pode digitar um endereço abaixo.",
-    "lanOff": "Primeiro escolha Conectar um celular nesse computador"
+    "lanOff": "Primeiro escolha Conectar um dispositivo nesse computador"
   },
   "computers": {
     "title": "Computadores",
@@ -114,7 +115,10 @@
       "phi-3-5-mini-q4": "Modelo compacto da Microsoft, bom para raciocínio e programação leve.",
       "gemma-2-2b-q4": "Modelo pequeno do Google para conversas ágeis no dia a dia.",
       "qwen2-5-3b-q4": "Modelo geral de porte médio e competente, com chamada de ferramentas.",
-      "deepseek-r1-distill-1-5b-q4": "Modelo de raciocínio leve, destilado do DeepSeek R1."
+      "deepseek-r1-distill-1-5b-q4": "Modelo de raciocínio leve, destilado do DeepSeek R1.",
+      "qwen2-5-7b-q4": "Assistente geral forte para o trabalho do dia a dia.",
+      "qwen2-5-coder-7b-q4": "Modelo de programação forte e versátil, com uso de ferramentas.",
+      "deepseek-r1-distill-7b-q4": "Raciocínio mais forte para análises e problemas de várias etapas."
     }
   },
   "onboarding": {
@@ -382,5 +386,26 @@
       "story": "Forseti, filho de Baldr, se senta em Glitnir, um salão com pilares de ouro e teto de prata. Todos que levam a ele uma disputa saem reconciliados.",
       "runeName": "Isa, a runa da quietude"
     }
+  },
+  "tv": {
+    "connectLede": "O Toskar na sua TV responde com os modelos do seu computador.",
+    "enterAddress": "Digitar um endereço",
+    "askHint": "Pressione o microfone do controle remoto ou digite.",
+    "tryAsking": "Experimente perguntar",
+    "disconnect": "Desconectar",
+    "emptyHint": "As respostas vêm dos modelos do seu computador. Nada do que você pergunta vai para um serviço de IA hospedado.",
+    "suggest": {
+      "dinner": "O que posso cozinhar hoje à noite com frango, arroz e espinafre?",
+      "homework": "Explique a fotossíntese para uma criança de dez anos.",
+      "trip": "Planeje um sábado chuvoso em Juneau para uma família de quatro pessoas.",
+      "movie": "Sugira uma noite de cinema em família com três filmes que combinem."
+    }
+  },
+  "setup": {
+    "title": "Configure no seu computador",
+    "install": "Baixe o Toskar para Mac, Windows ou Linux em toskar.ai, se ele ainda não estiver no seu computador.",
+    "open": "Abra o Toskar no computador: o app Toskar ou http://localhost:7331 no navegador dele.",
+    "choose": "Abra Computadores e escolha Conectar um dispositivo.",
+    "code": "Depois, aqui, escolha o computador e digite o código de 6 dígitos que ele mostra."
   }
 }

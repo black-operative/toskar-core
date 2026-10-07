@@ -45,28 +45,78 @@
     "news": {
       "title": "朝のニュースまとめ",
       "body": "毎朝、テクノロジーニュースを短くまとめます。",
-      "request": "毎朝7時30分に、今日の主なテクノロジーニュースをまとめて。"
+      "request": "毎朝7時30分に、今日の主なテクノロジーニュースをまとめて。",
+      "name": "朝のブリーフィング: {{topics}}",
+      "task": "{{topics}}に関する今日の主なニュースを、各ソースへのリンク付きで5つの短い要点にまとめてください。",
+      "defaultTopics": "テクノロジー"
     },
     "price": {
       "title": "価格チェック",
       "body": "欲しいものが希望の価格を下回ったら知らせます。",
-      "request": "毎朝8時に、この商品をチェックして、価格が5万円を下回ったら教えてください。"
+      "request": "毎朝8時に、この商品をチェックして、価格が5万円を下回ったら教えてください。",
+      "name": "価格ウォッチ: {{site}}",
+      "task": "{{url}} の商品の現在の価格を確認してください。"
     },
     "stock": {
       "title": "再入荷チェック",
       "body": "売り切れの商品がまた買えるようになったらすぐに知らせます。",
-      "request": "6時間ごとに在庫を確認して、再入荷したら通知して。"
+      "request": "6時間ごとに在庫を確認して、再入荷したら通知して。",
+      "name": "再入荷チェック: {{site}}",
+      "task": "{{url}} の商品が在庫ありで今すぐ購入できるか確認してください。"
     },
     "releases": {
       "title": "週ごとのリリース情報",
       "body": "使っているソフトウェアの変更点を毎週金曜日に。",
-      "request": "毎週金曜日の9時に、このソフトウェアのリリース情報をまとめて。"
+      "request": "毎週金曜日の9時に、このソフトウェアのリリース情報をまとめて。",
+      "name": "リリースノート: {{software}}",
+      "task": "過去1週間の{{software}}の新しいリリースを探し、バージョン番号付きで変更点をまとめてください。"
     },
     "page": {
       "title": "ページの変更チェック",
       "body": "気になるページが変わったときだけ知らせます。",
-      "request": "毎日18時にこのページを確認して、変わったら通知して。"
-    }
+      "request": "毎日18時にこのページを確認して、変わったら通知して。",
+      "name": "ページの変更チェック: {{site}}",
+      "task": "{{url}} のページを読んで、内容をまとめてください。"
+    },
+    "folder": {
+      "title": "フォルダーの要約",
+      "body": "このコンピューターのフォルダーに変化があったときに、新しい内容を知らせます。",
+      "request": "毎日18時にこのフォルダーをまとめて、変わったら通知して。",
+      "name": "フォルダーの要約: {{folderName}}",
+      "task": "フォルダー {{folder}} のファイルをまとめてください。新しいものや変わったもの、注意が必要なことを挙げてください。"
+    },
+    "fields": {
+      "topics": {
+        "label": "トピック",
+        "placeholder": "テクノロジー、科学"
+      },
+      "url": {
+        "label": "リンク",
+        "placeholder": "https://example.com/product"
+      },
+      "price": {
+        "label": "この価格を下回ったら通知",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "通貨"
+      },
+      "software": {
+        "label": "ソフトウェア",
+        "placeholder": "名前またはリンク（例: Node.js）"
+      },
+      "folder": {
+        "label": "フォルダー",
+        "placeholder": "~/Documents/Invoices"
+      },
+      "time": {
+        "label": "時刻"
+      },
+      "weekday": {
+        "label": "曜日"
+      }
+    },
+    "describeInstead": "代わりに自分の言葉で説明する"
   },
   "detail": {
     "schedule": "スケジュール",
@@ -84,7 +134,9 @@
     "history": "履歴",
     "notRunYet": "この自動化はまだ実行されていません。",
     "olderRuns": "以前の実行を表示",
-    "loadingOlder": "読み込み中…"
+    "loadingOlder": "読み込み中…",
+    "lastChecked": "最終確認 {{when}}、変化なし",
+    "nextCheck": "次の確認 {{when}}"
   },
   "run": {
     "details": "詳細",
@@ -100,7 +152,10 @@
       "retrying": "再試行中",
       "running": "実行中",
       "notRun": "未実行"
-    }
+    },
+    "continueInChat": "チャットで続ける",
+    "openingChat": "チャットを開いています…",
+    "savedTo": "{{path}} に保存しました"
   },
   "pill": {
     "paused": "一時停止中",
@@ -155,7 +210,13 @@
     "hours": "{{count}}時間ごと",
     "everyMinute": "1分ごと",
     "minutes": "{{count}}分ごと",
-    "seconds": "{{count}}秒ごと"
+    "seconds": "{{count}}秒ごと",
+    "weekdaysOnly": "平日の{{time}}",
+    "weekends": "週末の{{time}}",
+    "weeklyDays": "毎週{{days}}の{{time}}",
+    "monthly": "毎月{{day}}日の{{time}}",
+    "cron": "カスタムスケジュール: {{cron}}",
+    "manual": "開始したときだけ"
   },
   "notify": {
     "none": "結果の保存のみ",
@@ -179,7 +240,8 @@
     "afternoon": "別の時刻を指定しない限り、「午後」は午後3:00です。",
     "morning": "別の時刻を指定しない限り、「朝」は午前8:00です。",
     "badTime": "その時刻は無効です。",
-    "unreadable": "その説明を読み取れませんでした。"
+    "unreadable": "その説明を読み取れませんでした。",
+    "byModel": "このリクエストはAIが読み取りました。保存する前にスケジュールと通知を確認してください。"
   },
   "names": {
     "priceAbove": "価格が{{amount}}超",
@@ -201,8 +263,8 @@
     "describePlaceholder": "毎朝8時に、この商品をチェックして、価格が5万円を下回ったら教えてください。",
     "describeHint": "いつ実行して何をするかを書いてください。Toskarが下の詳細を入力します。どれでも変更できます。",
     "setUp": "詳細を入力",
+    "settingUp": "入力中…",
     "ideas": "またはアイデアから始める",
-    "ideaHint": "「このページ」をリンクに置き換えるなど、文を調整してから、もう一度「詳細を入力」を選んでください。",
     "stepDetails": "詳細を確認する",
     "name": "名前",
     "task": "タスク",
@@ -212,8 +274,11 @@
     "kinds": {
       "daily": "毎日",
       "weekly": "毎週",
+      "monthly": "毎月",
       "interval": "一定間隔",
-      "once": "1回"
+      "once": "1回",
+      "cron": "カスタム（cron）",
+      "manual": "開始したときだけ"
     },
     "notifyMe": "通知",
     "notifyChoices": {
@@ -279,6 +344,75 @@
       "when": "いつ",
       "does": "何をするか",
       "tells": "いつ知らせるか"
-    }
+    },
+    "times": "時刻",
+    "addTime": "時刻を追加",
+    "removeTime": "{{time}}を削除",
+    "days": "曜日",
+    "monthDay": "日付",
+    "monthDayHint": "月の日数が足りない場合は月末に実行します。",
+    "cron": "cron式",
+    "cronHint": "下のタイムゾーンで、分・時・日・月・曜日の5つのフィールドを指定します。",
+    "saveResults": "結果をファイルにも保存する",
+    "saveFolder": "フォルダー",
+    "saveFolderHint": "結果ごとに新しい Markdown ファイルをホームフォルダー内に保存します。",
+    "runs": "実行のタイミング",
+    "runsSchedule": "スケジュールどおり",
+    "runsPage": "ウェブページが変わったとき",
+    "runsFeed": "フィードに新しい投稿があったとき",
+    "runsFolder": "ファイルやフォルダーが変わったとき",
+    "runsWebhook": "別のサービスがリンクを呼び出したとき（Webhook）",
+    "runsAfter": "別のオートメーションのあと",
+    "watchUrl": "リンク",
+    "watchPath": "フォルダーまたはファイル",
+    "watchHint": "下のスケジュールで確認し、変化があったときだけ、何が変わったかをタスクに伝えて実行します。",
+    "checkSchedule": "確認の頻度",
+    "webhookHint": "別のサービスがリンクを呼び出したときに実行します。保存したあと、オートメーションのページでリンクを作成してください。",
+    "manualHint": "「今すぐ実行」を押したときか、Webhook からのみ実行します。",
+    "afterWhich": "オートメーション",
+    "afterWhen": "タイミング",
+    "afterSucceeded": "終わるたびに",
+    "afterNotified": "通知したときだけ",
+    "afterHint": "別のオートメーションの直後に、その結果を受け取って実行します。別のオートメーションに続く実行では、Toskar の外の何かを変更するツールは使えません。"
+  },
+  "draft": {
+    "label": "確認待ちのオートメーション",
+    "when": "実行日時",
+    "task": "タスク",
+    "notify": "通知",
+    "hint": "作成するまで何も実行されません。",
+    "create": "オートメーションを作成",
+    "creating": "作成中…",
+    "created": "作成しました",
+    "open": "オートメーションで開く",
+    "failed": "オートメーションを作成できませんでした。"
+  },
+  "runInChat": "オートメーション「<automation>{{name}}</automation>」から",
+  "digest": {
+    "title": "オートメーションのまとめ",
+    "intro_other": "前回のまとめ以降に、{{count}}件のオートメーションが見つけたこと。",
+    "noResult": "実行しましたが、報告することはありません。",
+    "failed_other": "{{count}}回失敗しました。最後のエラー: {{error}}"
+  },
+  "trigger": {
+    "page": "{{site}} が変わったとき · 確認: {{schedule}}",
+    "feed": "{{site}} の新しい投稿 · 確認: {{schedule}}",
+    "folder": "{{name}} が変わったとき · 確認: {{schedule}}",
+    "webhook": "Webhook リンクが呼び出されたとき",
+    "after": "{{name}} が終わったあと",
+    "afterNotified": "{{name}} が通知したあと",
+    "anotherAutomation": "別のオートメーション"
+  },
+  "webhook": {
+    "title": "Webhook リンク",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "shownOnce": "今すぐコピーしてください。表示されるのは一度だけです。リンクを知っている人は誰でもこのオートメーションを開始できます。",
+    "howTo": "POST リクエストを送ってください。本文（最大 64 KB）はデータとしてタスクに渡されます。",
+    "noLink": "別のサービスが呼び出すリンクを作成します。",
+    "hasLink": "このオートメーションにはリンクがあります。表示されるのは作成時だけです。",
+    "make": "リンクを作成",
+    "makeNew": "新しいリンクを作成",
+    "replaces": "新しいリンクを作ると、古いリンクは使えなくなります。"
   }
 }

@@ -181,7 +181,10 @@
     "runningCommand": "Executando comando…",
     "checkingGit": "Verificando o git…",
     "usingTool": "Usando {{tool}}…",
-    "loadingChat": "Carregando esta conversa…"
+    "loadingChat": "Carregando esta conversa…",
+    "makingImage": "Criando a imagem…",
+    "changingImage": "Alterando a imagem…",
+    "makingVideo": "Criando o clipe, o que leva alguns minutos…"
   },
   "tools": {
     "names": {
@@ -212,6 +215,9 @@
         "add": "Git add",
         "commit": "Git commit",
         "push": "Git push"
+      },
+      "automations": {
+        "schedule": "Agendar tarefa"
       }
     },
     "unnamed": "Ferramenta",
@@ -577,6 +583,7 @@
     "searchedFiles": "Procurei arquivos correspondentes a “{{query}}”",
     "saved": "Salvei {{path}}",
     "created": "Criei {{name}}",
+    "draftedAutomation": "Rascunho da automação “{{name}}”",
     "ranCommand": "Executei um comando neste computador",
     "browserOpened": "Abri {{page}} no navegador",
     "browserClicked": "Cliquei na página, agora em {{page}}",

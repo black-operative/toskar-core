@@ -2,7 +2,17 @@
   "menu": {
     "quitApp": "Toskar beenden",
     "file": "Ablage",
-    "quit": "Beenden"
+    "quit": "Beenden",
+    "about": "Über Toskar",
+    "settings": "Einstellungen …",
+    "hide": "Toskar ausblenden",
+    "hideOthers": "Andere ausblenden",
+    "showAll": "Alle einblenden",
+    "newChat": "Neuer Chat",
+    "window": "Fenster",
+    "minimize": "Im Dock ablegen",
+    "zoom": "Zoomen",
+    "closeWindow": "Fenster schließen"
   },
   "tray": {
     "tooltip": "Toskar läuft im Hintergrund",

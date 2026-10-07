@@ -173,7 +173,10 @@
     "runningCommand": "コマンドを実行しています…",
     "checkingGit": "gitを確認しています…",
     "usingTool": "{{tool}}を使用しています…",
-    "loadingChat": "このチャットを読み込み中…"
+    "loadingChat": "このチャットを読み込み中…",
+    "makingImage": "画像を作成しています…",
+    "changingImage": "画像を変更しています…",
+    "makingVideo": "クリップを作成しています。数分かかります…"
   },
   "tools": {
     "names": {
@@ -204,6 +207,9 @@
         "add": "Git add",
         "commit": "Git commit",
         "push": "Git push"
+      },
+      "automations": {
+        "schedule": "タスクをスケジュール"
       }
     },
     "unnamed": "ツール",
@@ -525,6 +531,7 @@
     "searchedFiles": "「{{query}}」に一致するファイルを探しました",
     "saved": "{{path}}を保存しました",
     "created": "{{name}}を作成しました",
+    "draftedAutomation": "オートメーション「{{name}}」の下書きを作成しました",
     "ranCommand": "このコンピュータでコマンドを実行しました",
     "browserOpened": "ブラウザで{{page}}を開きました",
     "browserClicked": "ページをクリックしました。現在のページは{{page}}です",

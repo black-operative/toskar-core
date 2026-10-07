@@ -177,7 +177,10 @@
     "runningCommand": "Befehl wird ausgeführt …",
     "checkingGit": "Git wird geprüft …",
     "usingTool": "{{tool}} wird genutzt …",
-    "loadingChat": "Dieser Chat wird geladen…"
+    "loadingChat": "Dieser Chat wird geladen…",
+    "makingImage": "Bild wird erstellt…",
+    "changingImage": "Bild wird geändert…",
+    "makingVideo": "Clip wird erstellt, das dauert ein paar Minuten…"
   },
   "tools": {
     "names": {
@@ -208,6 +211,9 @@
         "add": "Git add",
         "commit": "Git commit",
         "push": "Git push"
+      },
+      "automations": {
+        "schedule": "Aufgabe planen"
       }
     },
     "unnamed": "Werkzeug",
@@ -551,6 +557,7 @@
     "searchedFiles": "Nach Dateien zu „{{query}}“ gesucht",
     "saved": "{{path}} gespeichert",
     "created": "{{name}} erstellt",
+    "draftedAutomation": "Automation „{{name}}“ entworfen",
     "ranCommand": "Einen Befehl auf diesem Computer ausgeführt",
     "browserOpened": "{{page}} im Browser geöffnet",
     "browserClicked": "Auf die Seite geklickt, jetzt {{page}}",

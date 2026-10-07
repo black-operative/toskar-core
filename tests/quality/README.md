@@ -27,7 +27,10 @@ and `setup`: knowledge files and tool policies), what it checks (`what`), the
 | `no_deflection` | The answer does not send the person off to search, or claim to browse, by `deflection`, instead of answering; with the facts `answer_matches` asks for, a pointer to a site for more is fine (real models only) |
 
 `stub` scripts what the stub model says, one reply per model call. `stub_only`
-cases check scripted behavior a real model may not produce.
+cases check scripted behavior a real model may not produce. `fixtures` cases
+need the in-process run's stand-in image and video tools, which save a tiny
+picture or clip at once; they run with the stub and a served model, not
+against a daemon. `tools_run` lists tools that must run.
 
 `web.json` holds the web pages every run reads instead of the live web: a
 search gets the results of the first site whose `match` matches it, and a page

@@ -121,9 +121,9 @@
     "otherHeader": "\n헤더:  Authorization: Bearer {{key}}"
   },
   "phones": {
-    "title": "휴대폰",
-    "description": "코드로 연결한 휴대폰이에요. 각각 자체 키가 있어 채팅과 목록 보기는 할 수 있지만 이 컴퓨터를 변경할 수는 없어요.",
-    "none": "아직 휴대폰이 없어요.",
+    "title": "기기",
+    "description": "코드로 연결한 휴대폰, 태블릿, TV예요. 각각 자체 키가 있어 채팅과 목록 보기는 할 수 있지만 이 컴퓨터를 변경할 수는 없어요.",
+    "none": "아직 기기가 없어요.",
     "meta": "연결: {{connected}} · 마지막 사용: {{lastUsed}}",
     "confirmDisconnect": "{{name}}의 연결을 해제할까요? 다시 연결하려면 새 코드가 필요해요.",
     "disconnect": "연결 해제"

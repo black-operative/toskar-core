@@ -1116,6 +1116,7 @@ func (e *chatExecEnv) ExecuteTool(ctx context.Context, toolID string, args map[s
 		meta["task_id"] = e.taskID
 	}
 	ctx = artifacts.WithConversation(ctx, e.conversationID)
+	ctx = withChatProfile(ctx, e.profile.ID)
 	// A heavy tool may run on another computer, as the profile allows.
 	ctx = remotetools.WithPolicy(ctx, e.profile.NodePolicy)
 	e.progress(events.ToolStarted, map[string]any{"tool_id": toolID, "args": args})

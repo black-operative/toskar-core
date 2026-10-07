@@ -161,7 +161,9 @@
     "test": "Toskarからのテスト",
     "testBody": "{{destination}}への通知は正常に動作しています。",
     "digest_other": "{{count}}件の通知",
-    "digestMore_other": "…ほか{{count}}件"
+    "digestMore_other": "…ほか{{count}}件",
+    "automationDigest": "オートメーションのまとめ",
+    "automationDigestBody_other": "{{count}}件のオートメーションが実行されました: {{names}}"
   },
   "sent": {
     "times": "{{title}}（{{count}}回）",

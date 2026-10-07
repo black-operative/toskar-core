@@ -23,8 +23,10 @@ type Notice struct {
 	// automation's name, what the model wrote), so each place that shows the
 	// notice writes it in its own language (multilingual spec §22).
 	Message *locale.Message
-	// AutomationID links the notice to its automation.
-	AutomationID string
+	// AutomationID links the notice to its automation, and ConversationID
+	// to the chat it was made from, where its result is (#204).
+	AutomationID   string
+	ConversationID string
 	// Failure is true when the notice reports a failed run.
 	Failure bool
 }
@@ -38,7 +40,15 @@ type Notifier interface {
 type Decision struct {
 	Notify bool
 	Notice Notice
+	// Reason says why, in English, for logs and the preview.
 	Reason string
+	// Detail is the same as a key the apps show under the run
+	// (automations:notice.<detail>), with Values for its placeholders, so
+	// they explain what the server decided instead of deciding again
+	// (#204). ConditionNotMet marks a condition that didn't hold.
+	Detail          string
+	Values          map[string]any
+	ConditionNotMet bool
 }
 
 type parsedSignal struct {
@@ -58,19 +68,19 @@ type parsedSignal struct {
 func Decide(n Notification, result string, previous *string, previousNotified bool) Decision {
 	switch n.Mode {
 	case NotifyNone:
-		return Decision{Reason: "notifications are off for this automation"}
+		return Decision{Reason: "notifications are off for this automation", Detail: "storesResult"}
 	case NotifyOnFailure:
 		return Decision{Reason: "notifications are only for failures"}
 	case NotifyAlways:
 		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "always"}
 	case NotifyOnChange:
 		if previous == nil {
-			return Decision{Reason: "waiting for a baseline result"}
+			return Decision{Reason: "waiting for a baseline result", Detail: "firstSaved"}
 		}
 		if normalizeResult(result) == normalizeResult(*previous) {
-			return Decision{Reason: "result is unchanged"}
+			return Decision{Reason: "result is unchanged", Detail: "unchanged"}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result changed"}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result changed", Detail: "changed"}
 	case NotifyOnCondition:
 		return decideCondition(n, result, previous, previousNotified)
 	default:
@@ -85,29 +95,40 @@ func decideCondition(n Notification, result string, previous *string, previousNo
 	signal, ok := parseSignal(result)
 	switch n.Condition.Kind {
 	case ConditionThreshold:
+		currency := currencyOf(n)
 		if !ok || signal.Price == nil {
-			return Decision{Reason: "result did not include a price"}
+			return Decision{Reason: "result did not include a price", Detail: "noPrice"}
 		}
 		price := *signal.Price
-		matched := n.Condition.Op == OpAbove && price > n.Condition.Value || n.Condition.Op == OpBelow && price < n.Condition.Value
+		values := map[string]any{"price": price, "amount": n.Condition.Value, "currency": currency}
+		above := n.Condition.Op == OpAbove
+		matched := above && price > n.Condition.Value || n.Condition.Op == OpBelow && price < n.Condition.Value
 		if !matched {
-			return Decision{Reason: "price is not " + n.Condition.Op + " the threshold"}
+			detail := "notBelow"
+			if above {
+				detail = "notAbove"
+			}
+			return Decision{Reason: "price is not " + n.Condition.Op + " the threshold", Detail: detail, Values: values, ConditionNotMet: true}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "price is " + n.Condition.Op + " the threshold"}
+		detail := "priceBelow"
+		if above {
+			detail = "priceAbove"
+		}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "price is " + n.Condition.Op + " the threshold", Detail: detail, Values: values}
 	case ConditionAvailable:
 		available, known := itemAvailable(result)
 		if !known || !available {
-			return Decision{Reason: "item is not available"}
+			return Decision{Reason: "item is not available", Detail: "notAvailable", ConditionNotMet: true}
 		}
 		if previousNotified && previouslyAvailable(previous) {
-			return Decision{Reason: "item was already available"}
+			return Decision{Reason: "item was already available", Detail: "alreadyAvailable"}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "item is in stock"}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "item is in stock", Detail: "inStock"}
 	case ConditionSignificant:
 		if !ok || signal.Significant == nil || !*signal.Significant {
-			return Decision{Reason: "result is not significant"}
+			return Decision{Reason: "result is not significant", Detail: "notSignificant", ConditionNotMet: true}
 		}
-		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result is significant"}
+		return Decision{Notify: true, Notice: noticeFor(n, result), Reason: "result is significant", Detail: "significant"}
 	default:
 		return Decision{Reason: "unknown notification condition"}
 	}
@@ -198,6 +219,14 @@ func noticeFor(n Notification, result string) Notice {
 	return withMessage(Notice{}, locale.Message{Title: locale.Key("notifications:notices.automationUnnamed", nil), Body: body})
 }
 
+// changeNotice says what changed, as the model put it.
+func changeNotice(what string) Notice {
+	return withMessage(Notice{}, locale.Message{
+		Title: locale.Key("notifications:notices.automationUnnamed", nil),
+		Body:  []locale.Text{locale.Literal(oneLine(what, 180))},
+	})
+}
+
 // withMessage is notice with message, and its title and body in English.
 func withMessage(notice Notice, m locale.Message) Notice {
 	notice.Message = &m
@@ -280,6 +309,9 @@ func ConditionSchema(n Notification) *structured.Schema {
 	switch n.Condition.Kind {
 	case ConditionThreshold:
 		return structured.Object(map[string]string{"price": "number"})
+	case ConditionAvailable:
+		// A flag, not English phrases, so it works in every language (#204).
+		return structured.Object(map[string]string{"available": "boolean"})
 	case ConditionSignificant:
 		return structured.Object(map[string]string{"significant": "boolean"})
 	}
@@ -312,6 +344,15 @@ func parseSignal(result string) (parsedSignal, bool) {
 	}
 	found.prose = structured.Prose(result, f)
 	return found, true
+}
+
+// ResultProse is a result without the JSON a condition asked for: what the
+// model wrote for a person to read.
+func ResultProse(result string) string {
+	if signal, ok := parseSignal(result); ok {
+		return strings.TrimSpace(signal.prose)
+	}
+	return strings.TrimSpace(result)
 }
 
 func normalizeResult(s string) string {

@@ -168,7 +168,10 @@
     "digest_one": "{{count}} notification",
     "digest_other": "{{count}} notifications",
     "digestMore_one": "…and {{count}} more",
-    "digestMore_other": "…and {{count}} more"
+    "digestMore_other": "…and {{count}} more",
+    "automationDigest": "Automation digest",
+    "automationDigestBody_one": "1 automation ran: {{names}}",
+    "automationDigestBody_other": "{{count}} automations ran: {{names}}"
   },
   "sent": {
     "times": "{{title}} ({{count}} times)",

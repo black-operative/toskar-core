@@ -93,3 +93,23 @@ func TestPlacesAreUntrustedSteps(t *testing.T) {
 		t.Fatalf("steps %+v", meta)
 	}
 }
+
+// A made image, a clip, or files code saved are attached to the answer, so
+// the chat shows them; before, only files.create's were.
+func TestTurnTraceAttachesMadeFiles(t *testing.T) {
+	tr := &turnTrace{}
+	tr.tool("image.generate", map[string]any{"prompt": "a dog"}, map[string]any{"id": "art-1", "name": "a-dog.png", "kind": "image", "seed": 7})
+	tr.tool("video.generate", nil, map[string]any{"id": "art-2", "name": "waves.mp4", "kind": "video"})
+	tr.tool("code.execute", nil, map[string]any{"files": []map[string]any{{"id": "art-3", "name": "chart.png", "kind": "image", "size_bytes": int64(2048)}}})
+	tr.tool("internet.search", map[string]any{"query": "x"}, map[string]any{"id": "not-a-file", "name": "x"})
+	meta := tr.meta()
+	if meta == nil || len(meta.Files) != 3 {
+		t.Fatalf("files = %+v", meta)
+	}
+	if f := meta.Files[0]; f.ID != "art-1" || f.Kind != "image" || f.Producer != "assistant" {
+		t.Fatalf("image = %+v", f)
+	}
+	if meta.Files[2].Size != 2048 {
+		t.Fatalf("chart = %+v", meta.Files[2])
+	}
+}

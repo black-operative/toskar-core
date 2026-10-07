@@ -1,7 +1,7 @@
 import i18n from '@/i18n'
 import type { ToolPolicy } from '@/types/api'
 
-export type CapabilityId = 'internet' | 'browser' | 'files' | 'code' | 'speech' | 'images' | 'video' | 'shell' | 'git'
+export type CapabilityId = 'internet' | 'browser' | 'files' | 'code' | 'speech' | 'images' | 'video' | 'automations' | 'shell' | 'git'
 
 // Each capability's name and description are profiles:capabilities.<id> in the catalog.
 export const CAPABILITIES: {
@@ -60,6 +60,10 @@ export const CAPABILITIES: {
   {
     id: 'video',
     tools: [{ id: 'video.generate', on: 'allow' }],
+  },
+  {
+    id: 'automations',
+    tools: [{ id: 'automations.schedule', on: 'allow' }],
   },
   {
     id: 'shell',

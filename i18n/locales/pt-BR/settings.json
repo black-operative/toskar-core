@@ -137,7 +137,10 @@
     "title": "Notificações",
     "description": "Alertas sobre trabalhos demorados e a conectividade da equipe.",
     "taskFinish": "Notificar quando tarefas terminarem",
-    "peerOffline": "Notificar quando um computador pareado ficar offline"
+    "peerOffline": "Notificar quando um computador pareado ficar offline",
+    "digest": "Resumo diário das automações",
+    "digestHint": "Um resumo dos resultados de todas as automações por dia, em um chat que você pode responder.",
+    "digestTime": "Horário"
   },
   "toolPermissions": {
     "title": "Permissões de ferramentas",
@@ -190,7 +193,8 @@
       "external_server": "Servidor externo",
       "connector": "Serviço conectado",
       "notification": "Notificação",
-      "community_ratings": "Avaliações da comunidade"
+      "community_ratings": "Avaliações da comunidade",
+      "update_check": "Verificação de atualizações"
     },
     "kindsLower": {
       "web_search": "pesquisa na web",
@@ -200,7 +204,8 @@
       "external_server": "servidor externo",
       "connector": "serviço conectado",
       "notification": "notificação",
-      "community_ratings": "avaliações da comunidade"
+      "community_ratings": "avaliações da comunidade",
+      "update_check": "verificação de atualizações"
     },
     "sources": {
       "chat": "Chat",
@@ -244,7 +249,13 @@
     "thisComputer": "Este computador",
     "service": "Serviço",
     "unavailable": "Indisponível",
-    "diagnostics": "Abrir diagnóstico"
+    "diagnostics": "Abrir diagnóstico",
+    "updateAvailable": "O Toskar {{version}} está disponível.",
+    "whatsNew": "Novidades",
+    "download": "Baixar",
+    "upToDate": "Atualizado",
+    "checkUpdates": "Verificar atualizações",
+    "checkUpdatesHint": "Uma vez por dia, o Toskar pergunta ao toskar.ai o número da versão mais recente. Nada mais é enviado."
   },
   "reset": {
     "title": "Redefinir aplicativo",

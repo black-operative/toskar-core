@@ -45,28 +45,78 @@
     "news": {
       "title": "早间新闻摘要",
       "body": "每天早上简要总结科技新闻。",
-      "request": "每天早上7点半，总结今天最重要的科技新闻。"
+      "request": "每天早上7点半，总结今天最重要的科技新闻。",
+      "name": "晨间简报：{{topics}}",
+      "task": "用五个简短要点总结今天关于{{topics}}的重要新闻，并附上每个来源的链接。",
+      "defaultTopics": "科技"
     },
     "price": {
       "title": "价格监控",
       "body": "想买的东西低于你的价格时通知你。",
-      "request": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。"
+      "request": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。",
+      "name": "价格提醒：{{site}}",
+      "task": "查看 {{url}} 上商品的当前价格。"
     },
     "stock": {
       "title": "到货提醒",
       "body": "售罄的商品可以再次购买时立即通知你。",
-      "request": "每6小时检查一次库存，有货时通知我。"
+      "request": "每6小时检查一次库存，有货时通知我。",
+      "name": "到货提醒：{{site}}",
+      "task": "查看 {{url}} 上的商品是否有货、现在能否购买。"
     },
     "releases": {
       "title": "每周版本更新",
       "body": "每周五告诉你常用软件有哪些变化。",
-      "request": "每周五上午9点，总结这个软件的新版本。"
+      "request": "每周五上午9点，总结这个软件的新版本。",
+      "name": "版本说明：{{software}}",
+      "task": "查找过去一周 {{software}} 的新版本，总结有哪些变化，并注明版本号。"
     },
     "page": {
       "title": "网页变化提醒",
       "body": "只在你关心的网页有变化时通知你。",
-      "request": "每天晚上6点检查这个页面，有变化时通知我。"
-    }
+      "request": "每天晚上6点检查这个页面，有变化时通知我。",
+      "name": "网页变化提醒：{{site}}",
+      "task": "阅读 {{url}} 页面并总结其内容。"
+    },
+    "folder": {
+      "title": "文件夹摘要",
+      "body": "这台电脑上的文件夹有变化时，告诉你有什么新内容。",
+      "request": "每天晚上6点总结这个文件夹，有变化时通知我。",
+      "name": "文件夹摘要：{{folderName}}",
+      "task": "总结文件夹 {{folder}} 中的文件：哪些是新增或有变化的，以及需要注意的事项。"
+    },
+    "fields": {
+      "topics": {
+        "label": "主题",
+        "placeholder": "科技、科学"
+      },
+      "url": {
+        "label": "链接",
+        "placeholder": "https://example.com/product"
+      },
+      "price": {
+        "label": "低于此价格时通知",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "货币"
+      },
+      "software": {
+        "label": "软件",
+        "placeholder": "名称或链接，例如 Node.js"
+      },
+      "folder": {
+        "label": "文件夹",
+        "placeholder": "~/Documents/Invoices"
+      },
+      "time": {
+        "label": "时间"
+      },
+      "weekday": {
+        "label": "星期"
+      }
+    },
+    "describeInstead": "改为用自己的话描述"
   },
   "detail": {
     "schedule": "时间安排",
@@ -84,7 +134,9 @@
     "history": "历史记录",
     "notRunYet": "这个自动化还没有运行过。",
     "olderRuns": "显示更早的运行",
-    "loadingOlder": "正在加载…"
+    "loadingOlder": "正在加载…",
+    "lastChecked": "上次检查 {{when}}，没有新内容",
+    "nextCheck": "下次检查 {{when}}"
   },
   "run": {
     "details": "详情",
@@ -100,7 +152,10 @@
       "retrying": "正在重试",
       "running": "正在运行",
       "notRun": "尚未运行"
-    }
+    },
+    "continueInChat": "在聊天中继续",
+    "openingChat": "正在打开聊天…",
+    "savedTo": "已保存到 {{path}}"
   },
   "pill": {
     "paused": "已暂停",
@@ -155,7 +210,13 @@
     "hours": "每 {{count}} 小时",
     "everyMinute": "每分钟",
     "minutes": "每 {{count}} 分钟",
-    "seconds": "每 {{count}} 秒"
+    "seconds": "每 {{count}} 秒",
+    "weekdaysOnly": "工作日 {{time}}",
+    "weekends": "周末 {{time}}",
+    "weeklyDays": "每{{days}} {{time}}",
+    "monthly": "每月 {{day}} 日 {{time}}",
+    "cron": "自定义计划：{{cron}}",
+    "manual": "仅在启动时"
   },
   "notify": {
     "none": "仅保存结果",
@@ -179,7 +240,8 @@
     "afternoon": "除非你另行设置，“下午”指下午 3:00。",
     "morning": "除非你另行设置，“早上”指上午 8:00。",
     "badTime": "该时间无效。",
-    "unreadable": "无法理解该描述。"
+    "unreadable": "无法理解该描述。",
+    "byModel": "此请求由 AI 读取。保存前请检查时间安排和通知。"
   },
   "names": {
     "priceAbove": "价格高于 {{amount}}",
@@ -201,8 +263,8 @@
     "describePlaceholder": "每天早上8点，检查这个商品，如果价格低于3000元就告诉我。",
     "describeHint": "说明它何时运行、要做什么。Toskar 会填写下面的详细信息，你可以修改任何一项。",
     "setUp": "填写详细信息",
+    "settingUp": "正在填写…",
     "ideas": "或者从一个想法开始",
-    "ideaHint": "根据需要修改文字，比如用链接替换“这个页面”，然后再次选择“填写详细信息”。",
     "stepDetails": "检查详细信息",
     "name": "名称",
     "task": "任务",
@@ -212,8 +274,11 @@
     "kinds": {
       "daily": "每天",
       "weekly": "每周",
+      "monthly": "每月",
       "interval": "按间隔",
-      "once": "一次"
+      "once": "一次",
+      "cron": "自定义（cron）",
+      "manual": "仅在启动时"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -279,6 +344,75 @@
       "when": "何时",
       "does": "做什么",
       "tells": "何时通知你"
-    }
+    },
+    "times": "时间",
+    "addTime": "添加时间",
+    "removeTime": "移除 {{time}}",
+    "days": "星期",
+    "monthDay": "每月几号",
+    "monthDayHint": "当月没有这一天时，在最后一天运行。",
+    "cron": "cron 表达式",
+    "cronHint": "按下方时区填写五个字段：分钟、小时、日、月、星期。",
+    "saveResults": "同时将每次结果保存为文件",
+    "saveFolder": "文件夹",
+    "saveFolderHint": "每次结果都会在你的主文件夹中生成一个新的 Markdown 文件。",
+    "runs": "运行方式",
+    "runsSchedule": "按计划",
+    "runsPage": "网页有变化时",
+    "runsFeed": "订阅源有新文章时",
+    "runsFolder": "文件或文件夹有变化时",
+    "runsWebhook": "其他服务调用其链接时（Webhook）",
+    "runsAfter": "在另一个自动化之后",
+    "watchUrl": "链接",
+    "watchPath": "文件夹或文件",
+    "watchHint": "Toskar 按下方计划检查，只有发生变化时才运行，并告诉任务变化了什么。",
+    "checkSchedule": "检查频率",
+    "webhookHint": "其他服务调用其链接时运行。保存后，在自动化页面上创建链接。",
+    "manualHint": "只有在你点按“立即运行”或通过其 Webhook 时才运行。",
+    "afterWhich": "自动化",
+    "afterWhen": "时机",
+    "afterSucceeded": "每次完成时",
+    "afterNotified": "仅在发出通知时",
+    "afterHint": "在另一个自动化之后立即运行，并获得它的结果。跟随其他自动化的运行不能使用会更改 Toskar 之外内容的工具。"
+  },
+  "draft": {
+    "label": "待确认的自动化",
+    "when": "时间",
+    "task": "任务",
+    "notify": "通知",
+    "hint": "创建之前不会运行任何内容。",
+    "create": "创建自动化",
+    "creating": "正在创建…",
+    "created": "已创建",
+    "open": "在“自动化”中打开",
+    "failed": "无法创建自动化。"
+  },
+  "runInChat": "来自自动化“<automation>{{name}}</automation>”",
+  "digest": {
+    "title": "自动化摘要",
+    "intro_other": "自上次摘要以来，你的 {{count}} 个自动化发现的内容。",
+    "noResult": "已运行，没有需要报告的内容。",
+    "failed_other": "失败了 {{count}} 次，最近一次：{{error}}"
+  },
+  "trigger": {
+    "page": "{{site}} 有变化时 · 检查：{{schedule}}",
+    "feed": "{{site}} 有新文章 · 检查：{{schedule}}",
+    "folder": "{{name}} 有变化时 · 检查：{{schedule}}",
+    "webhook": "其 Webhook 链接被调用时",
+    "after": "{{name}} 完成后",
+    "afterNotified": "{{name}} 发出通知后",
+    "anotherAutomation": "另一个自动化"
+  },
+  "webhook": {
+    "title": "Webhook 链接",
+    "copy": "复制",
+    "copied": "已复制",
+    "shownOnce": "请现在复制：它只显示一次。任何拥有该链接的人都可以启动此自动化。",
+    "howTo": "向它发送 POST 请求。请求正文（最多 64 KB）会作为数据交给任务。",
+    "noLink": "创建一个供其他服务调用的链接。",
+    "hasLink": "此自动化已有链接。链接只在创建时显示。",
+    "make": "创建链接",
+    "makeNew": "创建新链接",
+    "replaces": "新链接会让旧链接失效。"
   }
 }

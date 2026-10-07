@@ -2,7 +2,17 @@
   "menu": {
     "quitApp": "Esci da Toskar",
     "file": "File",
-    "quit": "Esci"
+    "quit": "Esci",
+    "about": "Informazioni su Toskar",
+    "settings": "Impostazioni…",
+    "hide": "Nascondi Toskar",
+    "hideOthers": "Nascondi altre",
+    "showAll": "Mostra tutte",
+    "newChat": "Nuova chat",
+    "window": "Finestra",
+    "minimize": "Contrai",
+    "zoom": "Ridimensiona",
+    "closeWindow": "Chiudi finestra"
   },
   "tray": {
     "tooltip": "Toskar è in esecuzione in background",

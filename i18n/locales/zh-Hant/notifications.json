@@ -161,7 +161,9 @@
     "test": "來自 Toskar 的測試",
     "testBody": "傳送到 {{destination}} 的通知運作正常。",
     "digest_other": "{{count}} 則通知",
-    "digestMore_other": "…另有 {{count}} 則"
+    "digestMore_other": "…另有 {{count}} 則",
+    "automationDigest": "自動化摘要",
+    "automationDigestBody_other": "{{count}} 個自動化已執行：{{names}}"
   },
   "sent": {
     "times": "{{title}}（{{count}} 次）",

@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "请输入运行 Toskar 的电脑的地址。",
     "couldNotReach": "无法访问 Toskar。",
-    "unreachable": "无法访问那台电脑上的 Toskar。请连接同一个 Wi-Fi 网络，并在那台电脑上选择“连接手机”。",
+    "unreachable": "无法访问那台电脑上的 Toskar。请连接同一个 Wi-Fi 网络，并在那台电脑上选择“连接设备”。",
     "keyRejected": "该 API 密钥被拒绝。请改用那台电脑上的代码连接，或在“API 访问”中创建密钥。",
     "dropped": "与 Toskar 的连接已断开。",
     "chatFailed": "聊天失败。",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "连接电脑",
-    "subtitle": "手机会使用已经运行你的模型的那台电脑。在那台电脑上打开“电脑”，然后选择“连接手机”。",
+    "subtitle": "手机会使用已经运行你的模型的那台电脑。在那台电脑上打开“电脑”，然后选择“连接设备”。",
     "address": "电脑地址",
     "addressPlaceholder": "192.168.1.20",
     "code": "代码",
     "codePlaceholder": "6 位代码",
-    "codeHint": "那台电脑在“电脑”→“连接手机”中显示的代码。10 分钟内有效，只能用一次。",
+    "codeHint": "那台电脑在“电脑”→“连接设备”中显示的代码。10 分钟内有效，只能用一次。",
     "useKey": "改用 API 密钥",
     "useCode": "改用代码",
     "apiKey": "API 密钥",
@@ -46,7 +46,8 @@
     "connect": "连接",
     "connecting": "正在连接",
     "notReady": "Toskar 已响应，但尚未就绪。",
-    "pairUnsupported": "那台电脑上的 Toskar 版本太旧，无法用代码连接。请更新它，或改用 API 密钥。"
+    "pairUnsupported": "那台电脑上的 Toskar 版本太旧，无法用代码连接。请更新它，或改用 API 密钥。",
+    "lede": "手机会使用已经运行你的模型的那台电脑。"
   },
   "discovery": {
     "onThisNetwork": "在此网络中",
@@ -57,7 +58,7 @@
     "none": "未找到电脑。请在你的电脑上启动 Toskar 并连接同一个 Wi-Fi，或输入它的地址。",
     "localNetworkDenied": "Toskar 无权在你的网络中查找电脑。请在“设置”>“隐私与安全性”>“本地网络”中允许它。",
     "listFailed": "无法列出此网络中的电脑。你仍可以在下方输入地址。",
-    "lanOff": "请先在那台电脑上选择“连接手机”"
+    "lanOff": "请先在那台电脑上选择“连接设备”"
   },
   "computers": {
     "title": "电脑",
@@ -114,7 +115,10 @@
       "phi-3-5-mini-q4": "Microsoft 推出的紧凑模型，擅长推理和轻量编程。",
       "gemma-2-2b-q4": "Google 推出的小型模型，适合流畅的日常聊天。",
       "qwen2-5-3b-q4": "能力不俗的中等规模通用模型，支持工具调用。",
-      "deepseek-r1-distill-1-5b-q4": "从 DeepSeek R1 蒸馏而来的轻量推理模型。"
+      "deepseek-r1-distill-1-5b-q4": "从 DeepSeek R1 蒸馏而来的轻量推理模型。",
+      "qwen2-5-7b-q4": "适合日常工作的强大通用助手。",
+      "qwen2-5-coder-7b-q4": "支持工具使用的强大全能编程模型。",
+      "deepseek-r1-distill-7b-q4": "更强的推理能力，适合分析和多步骤问题。"
     }
   },
   "onboarding": {
@@ -374,5 +378,26 @@
       "story": "Forseti 是 Baldr 之子，坐在 Glitnir 殿中，那里有黄金的柱子和白银的屋顶。每个带着纷争来找他的人，离开时都已和解。",
       "runeName": "Isa，静止之符文"
     }
+  },
+  "tv": {
+    "connectLede": "电视上的 Toskar 使用你电脑上的模型回答。",
+    "enterAddress": "输入地址",
+    "askHint": "按遥控器上的麦克风，或直接输入。",
+    "tryAsking": "试着问问",
+    "disconnect": "断开连接",
+    "emptyHint": "回答来自你电脑上的模型。你问的内容不会发送到托管的 AI 服务。",
+    "suggest": {
+      "dinner": "今晚用鸡肉、米饭和菠菜能做什么菜？",
+      "homework": "给十岁的孩子解释光合作用。",
+      "trip": "为四口之家规划朱诺一个下雨的星期六。",
+      "movie": "推荐一个家庭电影之夜，选三部相互呼应的电影。"
+    }
+  },
+  "setup": {
+    "title": "在电脑上设置",
+    "install": "如果电脑上还没有 Toskar，请到 toskar.ai 获取 Mac、Windows 或 Linux 版。",
+    "open": "在电脑上打开 Toskar：Toskar 应用，或在浏览器中打开 http://localhost:7331。",
+    "choose": "打开“电脑”，然后选择“连接设备”。",
+    "code": "回到这里，选择那台电脑，输入它显示的 6 位代码。"
   }
 }

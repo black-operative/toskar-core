@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import i18n from '@/i18n'
 import { api, ApiError } from '@/lib/api'
 import { subscribeEvents } from '@/lib/events'
@@ -9,11 +9,13 @@ import { readScreenshotLaunch } from '@/lib/screenshotMode'
 import type { Automation, AutomationDetail, AutomationInput, AutomationRun, Model } from '@/types/api'
 import { AutomationForm } from './AutomationForm'
 import { clockDetail, compactWhen, explainRun, runTiming } from './display'
-import { notificationLabel, resultProse, scheduleLabel, visibleTask } from './parseRequest'
+import { notificationLabel, resultProse, visibleTask, whenLabel } from './parseRequest'
 import { RealmKicker } from '@/components/ui/Realm'
 import { LoadError } from '@/components/ui/LoadError'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { AutomationsIntro, IdeaGallery } from './Intro'
+import type { IdeaId } from './ideas'
+import { WebhookLink } from './WebhookLink'
 
 const screenshotSentence =
   'Every morning at 8:00 AM, check this product and tell me if the price is below $500.'
@@ -28,8 +30,8 @@ export function AutomationsPage() {
   const [formError, setFormError] = useState('')
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<'all' | 'active' | 'paused' | 'attention'>('all')
-  // A request to start the form from: an idea someone chose.
-  const [seed, setSeed] = useState('')
+  // A template to start the form from: an idea someone chose.
+  const [seed, setSeed] = useState<IdeaId | null>(null)
   const [showIntro, setShowIntro] = useState(false)
 
   const listQuery = useQuery({
@@ -65,6 +67,8 @@ export function AutomationsPage() {
   }, [queryClient])
 
   const items = (listQuery.data ?? []).filter((item) => matchesAutomation(item, query, filter))
+  // Names for an automation that runs after another (#204).
+  const names = Object.fromEntries((listQuery.data ?? []).map((item) => [item.id, item.name]))
   const detail = detailQuery.data
   const profiles = profilesQuery.data ?? []
   const tools = toolsQuery.data ?? []
@@ -73,8 +77,8 @@ export function AutomationsPage() {
   // With none yet, the page explains automations and offers ideas instead of an empty list.
   const empty = !listQuery.isLoading && !listQuery.isError && !hasAutomations
 
-  function startNew(request = '') {
-    setSeed(request)
+  function startNew(idea: IdeaId | null = null) {
+    setSeed(idea)
     setCreating(true)
     setEditing(false)
     setSelectedID(null)
@@ -237,7 +241,7 @@ export function AutomationsPage() {
                     <p className="selectable-title font-semibold text-ink">{item.name}</p>
                     <StatusPill item={item} />
                   </div>
-                  <p className="mt-1 text-sm text-ink-muted">{scheduleLabel(item.schedule)}</p>
+                  <p className="mt-1 text-sm text-ink-muted">{whenLabel(item, names)}</p>
                   {resultProse(item.last_result) && (
                     <p className="mt-2 line-clamp-2 text-sm text-ink">{resultProse(item.last_result)}</p>
                   )}
@@ -255,24 +259,19 @@ export function AutomationsPage() {
         <aside>
           {creating || editing ? (
             <AutomationForm
-              key={editing ? selectedID ?? 'edit' : `new-${seed}`}
+              key={editing ? selectedID ?? 'edit' : `new-${seed ?? ''}`}
               profiles={profiles}
               models={models}
               tools={tools}
+              others={(listQuery.data ?? []).filter((item) => !(editing && item.id === selectedID))}
               initial={editing ? detail : null}
-              seedDescription={
-                creating && new URLSearchParams(window.location.search).get('compose') === '1'
-                  ? screenshotSentence
-                  : creating
-                    ? seed
-                    : ''
-              }
-              fromIdea={creating && Boolean(seed)}
+              seedDescription={creating && new URLSearchParams(window.location.search).get('compose') === '1' ? screenshotSentence : ''}
+              seedIdea={creating ? seed : null}
               showIdeas={!empty}
               pending={save.isPending}
               error={formError}
               onCancel={() => {
-                setSeed('')
+                setSeed(null)
                 setCreating(false)
                 setEditing(false)
                 setFormError('')
@@ -281,6 +280,7 @@ export function AutomationsPage() {
             />
           ) : detail ? (
             <Detail
+              names={names}
               detail={detail}
               models={models}
               // Run now answers once the run starts (#204); it's running
@@ -311,6 +311,7 @@ export function AutomationsPage() {
 
 function Detail({
   detail,
+  names,
   models,
   running,
   runError,
@@ -320,6 +321,7 @@ function Detail({
   onDelete,
 }: {
   detail: AutomationDetail
+  names: Record<string, string>
   models: Model[]
   running: boolean
   runError: string
@@ -350,9 +352,15 @@ function Detail({
         <div className="mt-4 space-y-3 text-sm">
           <div>
             <p className="label-caps">{t('detail.schedule')}</p>
-            <p className="text-ink">{scheduleLabel(detail.schedule)}</p>
-            <p className="text-ink-muted">{t('detail.next', { when: compactWhen(detail.next_run_at, zone) })}</p>
+            <p className="text-ink">{whenLabel(detail, names)}</p>
+            {detail.trigger?.kind && detail.last_checked_at ? (
+              <p className="text-ink-muted">{t('detail.lastChecked', { when: compactWhen(detail.last_checked_at, zone) })}</p>
+            ) : null}
+            <p className="text-ink-muted">
+              {detail.trigger?.kind ? t('detail.nextCheck', { when: compactWhen(detail.next_run_at, zone) }) : t('detail.next', { when: compactWhen(detail.next_run_at, zone) })}
+            </p>
           </div>
+          {detail.trigger?.kind === 'webhook' ? <WebhookLink automationId={detail.id} hookSet={Boolean(detail.hook_set)} /> : null}
           <div>
             <p className="label-caps">{t('detail.task')}</p>
             <p className="whitespace-pre-wrap text-ink">{visibleTask(detail.prompt)}</p>
@@ -386,14 +394,11 @@ function Detail({
           <p className="mt-2 text-sm text-ink-muted">{t('detail.notRunYet')}</p>
         ) : (
           <ul className="mt-2 space-y-3">
-            {history.map((run, index) => (
+            {history.map((run) => (
               <HistoryRow
                 key={run.id}
                 run={run}
                 zone={zone}
-                notification={detail.notification}
-                previous={history.slice(index + 1).find((item) => item.status === 'succeeded')?.result}
-                previousNotified={history.slice(index + 1).find((item) => item.status === 'succeeded')?.notification_sent ?? false}
                 models={models}
               />
             ))}
@@ -412,21 +417,23 @@ function Detail({
 function HistoryRow({
   run,
   zone,
-  notification,
-  previous,
-  previousNotified = false,
   models,
 }: {
   run: AutomationRun
   zone: string
-  notification: AutomationDetail['notification']
-  previous?: string
-  previousNotified?: boolean
   models: Model[]
 }) {
   const { t } = useTranslation('automations')
-  const notice = explainRun(notification, run, previous, previousNotified)
+  const navigate = useNavigate()
+  const notice = explainRun(run)
   const prose = resultProse(run.result)
+  // Reply to a result in a chat: the one it went to, or a new one (#204).
+  const continueInChat = useMutation({
+    mutationFn: () => api.continueAutomationRun(run.automation_id, run.id),
+    onSuccess: (opened) => {
+      if (opened) navigate(`/chat?c=${encodeURIComponent(opened.conversation_id)}`)
+    },
+  })
   const modelName = models.find((model) => model.id === run.model_id)?.display_name || run.model_id
   return (
     <li className="rounded-lg bg-raised/50 p-3">
@@ -438,6 +445,19 @@ function HistoryRow({
       {prose && <p className="mt-2 whitespace-pre-wrap text-sm text-ink-muted">{prose}</p>}
       {notice.detail && <p className="mt-1 text-sm text-ink-muted">{notice.detail}</p>}
       {run.error && <p className="mt-2 text-sm text-danger">{run.error}</p>}
+      {run.saved_file ? (
+        <p className="mt-1 break-all text-xs text-ink-faint">{t('run.savedTo', { path: run.saved_file })}</p>
+      ) : null}
+      {run.status === 'succeeded' && prose ? (
+        <div className="mt-2">
+          <button type="button" className="btn-secondary btn-sm" disabled={continueInChat.isPending} onClick={() => continueInChat.mutate()}>
+            {continueInChat.isPending ? t('run.openingChat') : t('run.continueInChat')}
+          </button>
+          {continueInChat.isError ? (
+            <p className="mt-1 text-xs text-danger">{continueInChat.error instanceof Error ? continueInChat.error.message : ''}</p>
+          ) : null}
+        </div>
+      ) : null}
       <details className="mt-2">
         <summary className="cursor-pointer text-xs text-ink-faint">{t('run.details')}</summary>
         <div className="mt-2 space-y-1 text-xs text-ink-faint">

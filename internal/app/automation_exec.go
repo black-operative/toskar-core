@@ -106,12 +106,19 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 			profile:       profile,
 			modelOverride: modelID,
 			taskID:        automation.ID,
-			turnPrompt:    automation.Prompt,
+			turnPrompt:    automations.TaskPrompt(automation.Prompt),
 			trace:         &turnTrace{lang: e.app.appLanguage(ctx)},
 			// Results in the automation's response language (§22).
 			responseLanguage: automation.ResponseLanguage,
 		},
 		granted: automation.Tools,
+	}
+	// What a trigger delivered, a page, posts, files, or a webhook's body,
+	// was written by someone else, so the run treats it as data, as chat
+	// does after reading a page (§58, #204).
+	if automations.ChangeNote(ctx) != "" {
+		env.base.trace.untrusted = true
+		env.fromTrigger = true
 	}
 	if e.app.Muninn != nil && e.app.Settings != nil {
 		if on, _ := e.app.Settings.GetBool(ctx, "memory_enabled", true); on {
@@ -125,8 +132,10 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 	stream, err := orch.Run(ctx, contracts.Task{
 		ID:        automation.ID,
 		ProfileID: profile.ID,
-		Prompt:    automation.Prompt,
-		Status:    contracts.TaskRunning,
+		// The task with its condition's instruction, which the server adds
+		// rather than the saved prompt carrying it (#204).
+		Prompt: withChangeNote(automations.RunPrompt(automation), automations.ChangeNote(ctx)),
+		Status: contracts.TaskRunning,
 	}, tools.ForUnattended(profile, automation.Tools, disabled), env)
 	if err != nil {
 		return env.execution(""), err
@@ -138,6 +147,12 @@ func (e automationExecutor) execute(ctx context.Context, automation automations.
 	out := env.execution(text)
 	if nodeID != "" {
 		out.NodeID = nodeID
+	}
+	out.SourceHash = env.sources.sum()
+	// "Notify on change" compares what changed; when the values and sources
+	// can't tell, the run's model, still loaded, judges (#204).
+	if prev, ok := automations.PreviousFrom(ctx); ok && runErr == nil && ctx.Err() == nil && automations.NeedsJudgment(automation.Notification, prev, out) {
+		out.Change = e.judgeChange(ctx, env, automation, prev.Text, out.Text)
 	}
 	out.Skipped = env.skippedTools()
 	e.reportSkipped(ctx, automation, out.Skipped)
@@ -178,6 +193,11 @@ func (e automationExecutor) reportSkipped(ctx context.Context, automation automa
 type automationEnv struct {
 	base    *chatExecEnv
 	granted []string
+	// fromTrigger is a run started by what a trigger delivered: a page,
+	// posts, files, or a webhook's body, written by someone else (#204).
+	fromTrigger bool
+	// sources fingerprints what the run's read-only tools returned (#204).
+	sources sourceRecorder
 
 	mu      sync.Mutex
 	skipped []string
@@ -208,6 +228,13 @@ func (e *automationEnv) ExecuteTool(ctx context.Context, toolID string, args map
 		return nil, fmt.Errorf("tool %q is disabled", toolID)
 	}
 	policy, err := tools.UnattendedPolicy(e.base.profile, e.granted, toolID)
+	// Someone else's words can't steer a tool that changes things outside
+	// Toskar, even one approved for this automation (#204).
+	if err == nil && e.fromTrigger {
+		if def, ok := tools.Lookup(toolID); !ok || !tools.Contained(def.Risk) {
+			err = tools.ErrNeedsApproval
+		}
+	}
 	if errors.Is(err, tools.ErrNeedsApproval) {
 		// Skip and report; never ask or widen with nobody watching (§59).
 		e.mu.Lock()
@@ -220,9 +247,13 @@ func (e *automationEnv) ExecuteTool(ctx context.Context, toolID string, args map
 	if err != nil {
 		return nil, err
 	}
-	return e.base.app.Tools.Execute(ctx, toolID, args, policy, "scheduled automation", map[string]any{
+	result, err := e.base.app.Tools.Execute(ctx, toolID, args, policy, "scheduled automation", map[string]any{
 		"automation_id": e.base.taskID,
 	})
+	if err == nil {
+		e.sources.add(toolID, args, result)
+	}
+	return result, err
 }
 
 func (e *automationEnv) Emit(eventType string, payload map[string]any) {
@@ -289,4 +320,12 @@ func collectAutomationEvents(stream <-chan pluginapi.OrchestrationEvent) (text, 
 		}
 	}
 	return strings.TrimSpace(b.String()), nodeID, err
+}
+
+// withChangeNote adds what a trigger found to a run's prompt (#204).
+func withChangeNote(prompt, note string) string {
+	if note == "" {
+		return prompt
+	}
+	return prompt + "\n\n" + note
 }

@@ -418,6 +418,30 @@ export interface MessageMeta {
   /** The backend and device that ran the answer (#317, contract 1.8). */
   backend?: string
   device?: string
+  /** An automation the answer drafted, for the person to confirm (#204, contract 1.10). */
+  automation?: AutomationDraft
+  /** A result an automation posted to the chat it was made from (#204, contract 1.11). */
+  automation_run?: AutomationRunRef
+}
+
+export interface AutomationRunRef {
+  automation_id: string
+  run_id: string
+  /** The automation's name when it ran. */
+  name: string
+}
+
+/** An automation a chat drafted; create it with draft_id and conversation_id (#204). */
+export interface AutomationDraft {
+  id: string
+  name: string
+  prompt: string
+  schedule: AutomationSchedule
+  notification: AutomationNotification
+  /** The chat's profile, which runs it. */
+  profile_id?: string
+  /** What was assumed, such as a time the request didn't give. */
+  notes?: string[]
 }
 
 /** An offer to install a missing ability, then finish the request (Gungnir §29). */
@@ -555,10 +579,16 @@ export interface SettingsView {
   save_task_history?: boolean
   notify_task_finish?: boolean
   notify_peer_offline?: boolean
+  /** The time of day one digest of every automation's results goes out, such as 08:00, or "" for none (#204). */
+  automation_digest?: string
+  /** The IANA time zone automation_digest is in. */
+  automation_digest_zone?: string
   /** Show community model ratings; downloads the public summary once a day while models are browsed. */
   community_ratings?: boolean
   /** Ask for a rating after a model has been used a while. */
   ratings_prompts?: boolean
+  /** Look at toskar.ai once a day for a newer version. */
+  update_check?: boolean
   tool_terminal?: string
   tool_file_writes?: string
   tool_git?: string
@@ -667,7 +697,7 @@ export interface APIKeyRecord {
   revoked: boolean
   /** What the key may ask of the assistant (spec §62). */
   permissions?: APIKeyPermissions
-  /** "device" for a phone's key from Connect a phone (#216). */
+  /** "device" for a device's key from Connect a device (#216). */
   kind?: string
 }
 
@@ -757,6 +787,7 @@ export interface ToolRequestedPayload {
 export interface SettingsPatch {
   ui_locale?: string
   community_ratings?: boolean
+  update_check?: boolean
   ratings_prompts?: boolean
   assistant_language_mode?: AssistantLanguageMode
   assistant_language?: string
@@ -777,6 +808,8 @@ export interface SettingsPatch {
   save_task_history?: boolean
   notify_task_finish?: boolean
   notify_peer_offline?: boolean
+  automation_digest?: string
+  automation_digest_zone?: string
   tool_terminal?: string
   tool_file_writes?: string
   tool_git?: string
@@ -939,7 +972,7 @@ export interface Task {
   created_at: string
 }
 
-export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'interval'
+export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'monthly' | 'interval' | 'cron' | 'manual'
 export type AutomationNotifyMode = 'always' | 'condition' | 'change' | 'failure' | 'none'
 export type AutomationConditionKind = 'threshold' | 'available' | 'significant'
 export type AutomationThresholdOp = 'below' | 'above'
@@ -951,8 +984,22 @@ export interface AutomationSchedule {
   at?: string
   hour?: number
   minute?: number
+  /** The first of weekdays, for older clients. */
   weekday?: number
   every_seconds?: number
+  /** A weekly schedule's days, Sunday is 0 (#204). */
+  weekdays?: number[]
+  /** The times of day a daily, weekly, or monthly schedule runs at; hour and minute are the first. */
+  times?: AutomationClockTime[]
+  /** A monthly schedule's day, 1-31; a shorter month runs on its last day. */
+  month_day?: number
+  /** A cron schedule's five-field expression, in time_zone. */
+  cron?: string
+}
+
+export interface AutomationClockTime {
+  hour: number
+  minute: number
 }
 
 export interface AutomationCondition {
@@ -980,6 +1027,17 @@ export interface Automation {
   notification: AutomationNotification
   /** The language results are written in: see AutomationInput. */
   response_language?: string
+  /** The chat it was made from, and that chat's draft (#204). */
+  conversation_id?: string
+  draft_id?: string
+  /** A folder each result is also saved to as a Markdown file (#204). */
+  save_folder?: string
+  /** Runs only when a page or feed changed, checked on the schedule (#204). */
+  trigger?: AutomationTrigger
+  /** When the trigger last checked and found nothing new. */
+  last_checked_at?: string
+  /** A webhook trigger has a link; making a new one shows it once. */
+  hook_set?: boolean
   created_at: string
   updated_at: string
   next_run_at?: string
@@ -1004,6 +1062,23 @@ export interface AutomationRun {
   node_id?: string
   attempt: number
   retry_at?: string
+  /** Why it did or didn't notify, as automations:notice.<notify_detail>, with notify_values for its placeholders (#204). */
+  notify_detail?: string
+  notify_values?: Record<string, unknown>
+  /** The chat its result was posted to (#204). */
+  conversation_id?: string
+  /** Where its result was saved, for an automation with a save folder. */
+  saved_file?: string
+}
+
+/** An automation read from a request on the computer, to review and save (#204). */
+export interface ParsedAutomation {
+  name: string
+  prompt: string
+  schedule: AutomationSchedule
+  notification: AutomationNotification
+  /** What was assumed, such as a time of day when none was given. */
+  notes: string[]
 }
 
 /** One page of an automation's runs, newest first (#204). */
@@ -1039,6 +1114,23 @@ export interface AutomationInput {
   enabled?: boolean
   /** account (the assistant language setting), app, auto (the request's language), or a language tag. */
   response_language?: string
+  /** From a chat's draft: creating the same draft again returns the automation it made (#204). */
+  conversation_id?: string
+  draft_id?: string
+  /** A folder in the home folder to also save each result to, such as ~/Documents/Toskar; "" stops saving. */
+  save_folder?: string
+  /** A page or feed to watch; one with no kind runs on the schedule again. */
+  trigger?: AutomationTrigger
+}
+
+export interface AutomationTrigger {
+  kind: 'page' | 'feed' | 'folder' | 'webhook' | 'after' | ''
+  url?: string
+  /** A folder or file in the home folder, for a folder trigger; ~ is the home folder. */
+  path?: string
+  /** The automation an after trigger follows, and whether each time it succeeds or only when it notifies. */
+  automation_id?: string
+  when?: 'succeeded' | 'notified'
 }
 
 
@@ -1514,7 +1606,7 @@ export interface PersonalStyle {
   instructions?: string
 }
 
-export type EgressKind = 'web_search' | 'web_page' | 'places' | 'paired_computer' | 'external_server' | 'connector' | 'notification' | 'community_ratings'
+export type EgressKind = 'web_search' | 'web_page' | 'places' | 'paired_computer' | 'external_server' | 'connector' | 'notification' | 'community_ratings' | 'update_check'
 
 /** The OpenAI-compatible server whose models can be chosen for a chat (#111). */
 export interface ExternalServerInfo {
@@ -1927,4 +2019,25 @@ export interface RuntimeHistory {
   interval_seconds: number
   now: RuntimeSample
   samples: RuntimeSample[]
+}
+
+/** The latest release toskar.ai names, from the daily update check. */
+export interface LatestRelease {
+  version: string
+  published_at?: string
+  prerelease?: boolean
+  notes_url?: string
+  download_url?: string
+}
+
+/** GET /api/v1/updates: whether a newer Toskar is out. */
+export interface UpdatesStatus {
+  /** This build checks (not the App Store edition, the desktop app's copy, or a development build). */
+  supported: boolean
+  /** It checks and the update_check setting is on. */
+  enabled: boolean
+  current: string
+  available: boolean
+  checked_at?: string
+  latest?: LatestRelease
 }

@@ -14,6 +14,7 @@ import (
 	"path"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -84,19 +85,29 @@ type Dependencies struct {
 	ListMessages          func(ctx context.Context, conversationID string) ([]contracts.Message, error)
 	Chat                  func(w http.ResponseWriter, r *http.Request, conversationID, profileID, modelID, message string, stream bool, execution string) error
 	// StopChat stops a conversation's running turn and reports whether one was running.
-	StopChat             func(conversationID string) bool
-	ListTasks            func(ctx context.Context) ([]contracts.Task, error)
-	CreateTask           func(ctx context.Context, profileID, conversationID, prompt string) (contracts.Task, error)
-	GetTask              func(ctx context.Context, id string) (contracts.Task, error)
-	RunTask              func(ctx context.Context, id string) error
-	ListAutomations      func(ctx context.Context) ([]automations.Automation, error)
-	CreateAutomation     func(ctx context.Context, in automations.CreateInput) (automations.Automation, error)
-	GetAutomation        func(ctx context.Context, id string) (automations.Detail, error)
-	ListAutomationRuns   func(ctx context.Context, id, before string, limit int) (automations.RunsPage, error)
-	UpdateAutomation     func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
-	DeleteAutomation     func(ctx context.Context, id string) error
-	RunAutomation        func(ctx context.Context, id string) (automations.Run, error)
-	PreviewAutomation    func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
+	StopChat           func(conversationID string) bool
+	ListTasks          func(ctx context.Context) ([]contracts.Task, error)
+	CreateTask         func(ctx context.Context, profileID, conversationID, prompt string) (contracts.Task, error)
+	GetTask            func(ctx context.Context, id string) (contracts.Task, error)
+	RunTask            func(ctx context.Context, id string) error
+	ListAutomations    func(ctx context.Context) ([]automations.Automation, error)
+	CreateAutomation   func(ctx context.Context, in automations.CreateInput) (automations.Automation, error)
+	GetAutomation      func(ctx context.Context, id string) (automations.Detail, error)
+	ListAutomationRuns func(ctx context.Context, id, before string, limit int) (automations.RunsPage, error)
+	UpdateAutomation   func(ctx context.Context, id string, patch automations.Patch) (automations.Automation, error)
+	DeleteAutomation   func(ctx context.Context, id string) error
+	RunAutomation      func(ctx context.Context, id string) (automations.Run, error)
+	// ContinueAutomationRun opens a run's result in a chat and returns the
+	// chat (#204).
+	ContinueAutomationRun func(ctx context.Context, id, runID string) (string, error)
+	// MakeHookLink makes a webhook trigger's new token, and RunHook starts
+	// the automation a token belongs to (#204).
+	MakeHookLink      func(ctx context.Context, id string) (string, error)
+	RunHook           func(ctx context.Context, token string, body []byte) (automations.Run, error)
+	PreviewAutomation func(ctx context.Context, in automations.CreateInput) (automations.Preview, error)
+	// ParseAutomation reads a request such as "every morning at 8, tell me
+	// if the price is below $500" into an automation (#204).
+	ParseAutomation      func(ctx context.Context, text, timeZone, language string) (automations.ParsedRequest, error)
 	PauseAutomation      func(ctx context.Context, id string) (automations.Automation, error)
 	ResumeAutomation     func(ctx context.Context, id string) (automations.Automation, error)
 	DecideTool           func(requestID string, allow, allowSession bool) error
@@ -173,6 +184,7 @@ type Server struct {
 	ctl             func() string
 	personal        PersonalStore
 	privacy         Privacy
+	updates         Updates
 	ratings         Ratings
 	network         Network
 	external        ExternalServers
@@ -201,6 +213,8 @@ func (s *Server) routes() {
 
 	s.router.HandleFunc("/about", s.handleSourceOffer).Methods(http.MethodGet, http.MethodOptions)
 	s.router.HandleFunc("/source", s.handleSourceOffer).Methods(http.MethodGet, http.MethodOptions)
+	// A webhook's token is its proof, so it's outside the API's keys (#204).
+	s.router.HandleFunc("/hooks/{token}", s.handleHook).Methods(http.MethodPost)
 
 	api := s.router.PathPrefix("/api/v1").Subrouter()
 	api.Use(s.controlAuthMiddleware)
@@ -234,11 +248,14 @@ func (s *Server) routes() {
 	api.HandleFunc("/automations", s.handleListAutomations).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/automations", s.handleCreateAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/preview", s.handlePreviewAutomation).Methods(http.MethodPost)
+	api.HandleFunc("/automations/parse", s.handleParseAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}/run", s.handleRunAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}/pause", s.handlePauseAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}/resume", s.handleResumeAutomation).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}", s.handleGetAutomation).Methods(http.MethodGet, http.MethodOptions)
 	api.HandleFunc("/automations/{id}/runs", s.handleListAutomationRuns).Methods(http.MethodGet, http.MethodOptions)
+	api.HandleFunc("/automations/{id}/runs/{run_id}/chat", s.handleContinueAutomationRun).Methods(http.MethodPost)
+	api.HandleFunc("/automations/{id}/hook", s.handleMakeHookLink).Methods(http.MethodPost)
 	api.HandleFunc("/automations/{id}", s.handleUpdateAutomation).Methods(http.MethodPatch)
 	api.HandleFunc("/automations/{id}", s.handleDeleteAutomation).Methods(http.MethodDelete)
 	api.HandleFunc("/tools", s.handleListTools).Methods(http.MethodGet, http.MethodOptions)
@@ -292,6 +309,7 @@ func (s *Server) routes() {
 	s.mcpRoutes(api)
 	s.personalRoutes(api)
 	s.privacyRoutes(api)
+	s.updatesRoutes(api)
 	s.ratingsRoutes(api)
 	s.networkRoutes(api)
 	s.externalRoutes(api)
@@ -442,7 +460,11 @@ func (s *Server) BindAutomations(d Dependencies) {
 	s.deps.UpdateAutomation = d.UpdateAutomation
 	s.deps.DeleteAutomation = d.DeleteAutomation
 	s.deps.RunAutomation = d.RunAutomation
+	s.deps.ContinueAutomationRun = d.ContinueAutomationRun
+	s.deps.MakeHookLink = d.MakeHookLink
+	s.deps.RunHook = d.RunHook
 	s.deps.PreviewAutomation = d.PreviewAutomation
+	s.deps.ParseAutomation = d.ParseAutomation
 	s.deps.PauseAutomation = d.PauseAutomation
 	s.deps.ResumeAutomation = d.ResumeAutomation
 }
@@ -1042,7 +1064,12 @@ func (s *Server) logMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		next.ServeHTTP(w, r)
-		s.deps.Logger.Debug("http", "method", r.Method, "path", r.URL.Path, "dur", time.Since(start))
+		urlPath := r.URL.Path
+		// A webhook's token is its password, so it stays out of the log.
+		if strings.HasPrefix(urlPath, "/hooks/") {
+			urlPath = "/hooks/…"
+		}
+		s.deps.Logger.Debug("http", "method", r.Method, "path", urlPath, "dur", time.Since(start))
 	})
 }
 
