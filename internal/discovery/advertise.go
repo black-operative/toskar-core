@@ -35,7 +35,7 @@ func StartAdvertise(cfg config.Config, pairingEnabled bool) (*Advertiser, error)
 // Bifrost's, for computers pairing with each other; api_port says where the
 // API is, for apps that find Yggdrasil on the network, such as the iPhone
 // app, and api_lan whether it answers there or only on this computer, so
-// the app can say to turn on Connect a phone instead of "unreachable"
+// the app can say to turn on Connect a device instead of "unreachable"
 // (#216).
 func advertisedTXT(cfg config.Config, pairingEnabled bool) []string {
 	return []string{

@@ -45,28 +45,78 @@
     "news": {
       "title": "아침 뉴스 요약",
       "body": "매일 아침 기술 뉴스를 짧게 요약해요.",
-      "request": "매일 아침 7시 30분에 오늘의 주요 기술 뉴스를 요약해 줘."
+      "request": "매일 아침 7시 30분에 오늘의 주요 기술 뉴스를 요약해 줘.",
+      "name": "아침 브리핑: {{topics}}",
+      "task": "{{topics}}에 관한 오늘의 주요 뉴스를 출처 링크와 함께 짧은 다섯 가지 요점으로 요약해 줘.",
+      "defaultTopics": "기술"
     },
     "price": {
       "title": "가격 확인",
       "body": "원하는 상품이 정한 가격 아래로 내려가면 알려 줘요.",
-      "request": "매일 아침 8시에, 이 상품을 확인하고 가격이 50만 원 아래로 내려가면 알려 주세요."
+      "request": "매일 아침 8시에, 이 상품을 확인하고 가격이 50만 원 아래로 내려가면 알려 주세요.",
+      "name": "가격 알림: {{site}}",
+      "task": "{{url}}에 있는 상품의 현재 가격을 확인해 줘."
     },
     "stock": {
       "title": "재입고 알림",
       "body": "품절된 상품을 다시 살 수 있게 되면 바로 알려 줘요.",
-      "request": "6시간마다 재고를 확인하고 재입고되면 알려 줘."
+      "request": "6시간마다 재고를 확인하고 재입고되면 알려 줘.",
+      "name": "재입고 알림: {{site}}",
+      "task": "{{url}}에 있는 상품이 재고가 있어 지금 살 수 있는지 확인해 줘."
     },
     "releases": {
       "title": "주간 새 버전 소식",
       "body": "쓰는 소프트웨어에서 바뀐 점을 매주 금요일에.",
-      "request": "매주 금요일 오전 9시에 이 소프트웨어의 새 버전을 확인해 줘."
+      "request": "매주 금요일 오전 9시에 이 소프트웨어의 새 버전을 확인해 줘.",
+      "name": "릴리스 노트: {{software}}",
+      "task": "지난주의 {{software}} 새 릴리스를 찾아 버전 번호와 함께 무엇이 바뀌었는지 요약해 줘."
     },
     "page": {
       "title": "페이지 변경 알림",
       "body": "관심 있는 페이지가 바뀔 때만 알려 줘요.",
-      "request": "매일 18시에 이 페이지를 확인하고 바뀌면 알려 줘."
-    }
+      "request": "매일 18시에 이 페이지를 확인하고 바뀌면 알려 줘.",
+      "name": "페이지 변경 알림: {{site}}",
+      "task": "{{url}} 페이지를 읽고 내용을 요약해 줘."
+    },
+    "folder": {
+      "title": "폴더 요약",
+      "body": "이 컴퓨터의 폴더가 바뀌면 새로운 내용을 알려 줍니다.",
+      "request": "매일 18시에 이 폴더를 요약하고 바뀌면 알려 줘.",
+      "name": "폴더 요약: {{folderName}}",
+      "task": "{{folder}} 폴더의 파일을 요약해 줘. 새로 생기거나 바뀐 것과 확인이 필요한 것을 알려 줘."
+    },
+    "fields": {
+      "topics": {
+        "label": "주제",
+        "placeholder": "기술, 과학"
+      },
+      "url": {
+        "label": "링크",
+        "placeholder": "https://example.com/product"
+      },
+      "price": {
+        "label": "이 가격 미만이면 알림",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "통화"
+      },
+      "software": {
+        "label": "소프트웨어",
+        "placeholder": "이름 또는 링크(예: Node.js)"
+      },
+      "folder": {
+        "label": "폴더",
+        "placeholder": "~/Documents/Invoices"
+      },
+      "time": {
+        "label": "시간"
+      },
+      "weekday": {
+        "label": "요일"
+      }
+    },
+    "describeInstead": "대신 직접 설명하기"
   },
   "detail": {
     "schedule": "일정",
@@ -84,7 +134,9 @@
     "history": "기록",
     "notRunYet": "이 자동화는 아직 실행되지 않았어요.",
     "olderRuns": "이전 실행 보기",
-    "loadingOlder": "불러오는 중…"
+    "loadingOlder": "불러오는 중…",
+    "lastChecked": "마지막 확인 {{when}}, 새로운 것 없음",
+    "nextCheck": "다음 확인 {{when}}"
   },
   "run": {
     "details": "세부 정보",
@@ -100,7 +152,10 @@
       "retrying": "다시 시도하는 중",
       "running": "실행 중",
       "notRun": "아직 실행 안 됨"
-    }
+    },
+    "continueInChat": "채팅에서 이어 가기",
+    "openingChat": "채팅을 여는 중…",
+    "savedTo": "{{path}}에 저장함"
   },
   "pill": {
     "paused": "일시 정지됨",
@@ -160,7 +215,8 @@
     "weekends": "주말 {{time}}",
     "weeklyDays": "매주 {{days}} {{time}}",
     "monthly": "매월 {{day}}일 {{time}}",
-    "cron": "사용자 지정 일정: {{cron}}"
+    "cron": "사용자 지정 일정: {{cron}}",
+    "manual": "시작할 때만"
   },
   "notify": {
     "none": "결과만 저장",
@@ -209,7 +265,6 @@
     "setUp": "세부 정보 채우기",
     "settingUp": "채우는 중…",
     "ideas": "또는 아이디어로 시작하기",
-    "ideaHint": "'이 페이지' 대신 링크를 넣는 식으로 문장을 고친 다음, 다시 '세부 정보 채우기'를 선택하세요.",
     "stepDetails": "세부 정보 확인",
     "name": "이름",
     "task": "작업",
@@ -222,7 +277,8 @@
       "monthly": "매월",
       "interval": "일정 간격으로",
       "once": "한 번",
-      "cron": "사용자 지정(cron)"
+      "cron": "사용자 지정(cron)",
+      "manual": "시작할 때만"
     },
     "notifyMe": "알림 받기",
     "notifyChoices": {
@@ -296,7 +352,28 @@
     "monthDay": "날짜",
     "monthDayHint": "날짜가 없는 달에는 마지막 날에 실행합니다.",
     "cron": "cron 식",
-    "cronHint": "아래 시간대 기준 다섯 필드: 분, 시, 일, 월, 요일."
+    "cronHint": "아래 시간대 기준 다섯 필드: 분, 시, 일, 월, 요일.",
+    "saveResults": "결과를 파일로도 저장",
+    "saveFolder": "폴더",
+    "saveFolderHint": "결과마다 새 Markdown 파일을 홈 폴더 안에 저장합니다.",
+    "runs": "실행 시점",
+    "runsSchedule": "일정에 따라",
+    "runsPage": "웹 페이지가 바뀌면",
+    "runsFeed": "피드에 새 글이 올라오면",
+    "runsFolder": "파일이나 폴더가 바뀌면",
+    "runsWebhook": "다른 서비스가 링크를 호출하면(웹훅)",
+    "runsAfter": "다른 자동화가 끝난 뒤",
+    "watchUrl": "링크",
+    "watchPath": "폴더 또는 파일",
+    "watchHint": "아래 일정에 따라 확인하고, 바뀐 것이 있을 때만 무엇이 바뀌었는지 작업에 알려 주며 실행합니다.",
+    "checkSchedule": "확인 주기",
+    "webhookHint": "다른 서비스가 링크를 호출하면 실행됩니다. 저장한 뒤 자동화 페이지에서 링크를 만드세요.",
+    "manualHint": "지금 실행을 누르거나 웹훅으로만 실행됩니다.",
+    "afterWhich": "자동화",
+    "afterWhen": "시점",
+    "afterSucceeded": "끝날 때마다",
+    "afterNotified": "알림을 보낼 때만",
+    "afterHint": "다른 자동화가 끝난 직후 그 결과를 받아 실행됩니다. 다른 자동화를 이어 실행할 때는 Toskar 밖의 무언가를 바꾸는 도구를 쓸 수 없습니다."
   },
   "draft": {
     "label": "확인할 자동화",
@@ -310,5 +387,32 @@
     "open": "자동화에서 열기",
     "failed": "자동화를 만들 수 없습니다."
   },
-  "runInChat": "자동화 “<automation>{{name}}</automation>”에서"
+  "runInChat": "자동화 “<automation>{{name}}</automation>”에서",
+  "digest": {
+    "title": "자동화 요약",
+    "intro_other": "지난 요약 이후 자동화 {{count}}개가 찾은 내용입니다.",
+    "noResult": "실행했지만 알릴 내용이 없습니다.",
+    "failed_other": "{{count}}번 실패했습니다. 마지막 오류: {{error}}"
+  },
+  "trigger": {
+    "page": "{{site}}이(가) 바뀌면 · 확인: {{schedule}}",
+    "feed": "{{site}}의 새 글 · 확인: {{schedule}}",
+    "folder": "{{name}}이(가) 바뀌면 · 확인: {{schedule}}",
+    "webhook": "웹훅 링크가 호출되면",
+    "after": "{{name}}이(가) 끝난 뒤",
+    "afterNotified": "{{name}}이(가) 알림을 보낸 뒤",
+    "anotherAutomation": "다른 자동화"
+  },
+  "webhook": {
+    "title": "웹훅 링크",
+    "copy": "복사",
+    "copied": "복사됨",
+    "shownOnce": "지금 복사하세요. 한 번만 표시됩니다. 링크가 있는 사람은 누구나 이 자동화를 시작할 수 있습니다.",
+    "howTo": "POST 요청을 보내세요. 본문(최대 64KB)은 데이터로 작업에 전달됩니다.",
+    "noLink": "다른 서비스가 호출할 링크를 만드세요.",
+    "hasLink": "이 자동화에는 링크가 있습니다. 만들 때만 표시됩니다.",
+    "make": "링크 만들기",
+    "makeNew": "새 링크 만들기",
+    "replaces": "새 링크를 만들면 이전 링크는 더 이상 작동하지 않습니다."
+  }
 }

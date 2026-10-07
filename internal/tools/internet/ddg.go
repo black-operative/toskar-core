@@ -136,6 +136,20 @@ func (f HTTPFetcher) Open(ctx context.Context, rawURL string) (Page, error) {
 	}, nil
 }
 
+// Raw downloads a public http or https URL as it is, such as an RSS feed,
+// with the same guard and size limit as Open.
+func (f HTTPFetcher) Raw(ctx context.Context, rawURL string) ([]byte, error) {
+	parsed, err := url.Parse(rawURL)
+	if err != nil || (parsed.Scheme != "http" && parsed.Scheme != "https") || parsed.Host == "" {
+		return nil, errString("url must be http or https")
+	}
+	body, err := get(ctx, f.client(), parsed.String(), maxPageBytes)
+	if errors.Is(err, netguard.ErrPrivate) {
+		return nil, netguard.ErrPrivate
+	}
+	return []byte(body), err
+}
+
 func extractText(page string) (string, string) {
 	node, err := html.Parse(strings.NewReader(page))
 	if err != nil {

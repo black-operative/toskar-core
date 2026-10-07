@@ -116,12 +116,66 @@ func draftFrom(result map[string]any) *contracts.AutomationDraft {
 // postAutomationResult adds a run's result to the chat the automation was
 // made from (#204), as an answer the person can reply to.
 func (a *App) postAutomationResult(ctx context.Context, automation automations.Automation, run automations.Run, text string) error {
+	return a.postRunToChat(ctx, automation.ConversationID, automation, run, text)
+}
+
+// postRunToChat adds a run's result to a chat, marked with its automation,
+// and remembers the chat on the run.
+func (a *App) postRunToChat(ctx context.Context, conversationID string, automation automations.Automation, run automations.Run, text string) error {
 	if a.Conversations == nil {
 		return errors.New("conversations are not available")
 	}
-	_, err := a.Conversations.AddMessageWithMeta(ctx, automation.ConversationID, "assistant", text, &contracts.MessageMeta{
+	_, err := a.Conversations.AddMessageWithMeta(ctx, conversationID, "assistant", text, &contracts.MessageMeta{
 		AutomationRun: &contracts.AutomationRunRef{AutomationID: automation.ID, RunID: run.ID, Name: automation.Name},
 		Contract:      contracts.ContractVersion,
 	})
-	return err
+	if err != nil {
+		return err
+	}
+	if a.Automations != nil {
+		return a.Automations.SetRunConversation(ctx, run.ID, conversationID)
+	}
+	return nil
+}
+
+// errNoResult is a run with nothing to continue from: it failed or hasn't
+// finished.
+var errNoResult = contracts.NewError("AUTOMATION_NO_RESULT", nil, errors.New("this run has no result to continue in chat"))
+
+// continueAutomationRun opens a run's result in a chat to reply to (#204):
+// the chat it was already posted to, or a new one with the result as its
+// first answer. It returns the chat.
+func (a *App) continueAutomationRun(ctx context.Context, automationID, runID string) (string, error) {
+	if a.Automations == nil || a.Conversations == nil {
+		return "", errors.New("automations are not available")
+	}
+	run, err := a.Automations.GetRun(ctx, automationID, runID)
+	if err != nil {
+		return "", err
+	}
+	text := automations.ResultProse(run.Result)
+	if run.Status != automations.RunSucceeded || text == "" {
+		return "", errNoResult
+	}
+	if run.ConversationID != "" {
+		if _, err := a.Conversations.Get(ctx, run.ConversationID); err == nil {
+			return run.ConversationID, nil
+		}
+	}
+	automation, err := a.Automations.Get(ctx, automationID)
+	if err != nil {
+		return "", err
+	}
+	profile := automation.ProfileID
+	if profile == "" {
+		profile = "general-assistant"
+	}
+	conv, err := a.Conversations.Create(ctx, automation.Name, profile, automation.ModelID)
+	if err != nil {
+		return "", err
+	}
+	if err := a.postRunToChat(ctx, conv.ID, automation, run, text); err != nil {
+		return "", err
+	}
+	return conv.ID, nil
 }

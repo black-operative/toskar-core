@@ -579,6 +579,10 @@ export interface SettingsView {
   save_task_history?: boolean
   notify_task_finish?: boolean
   notify_peer_offline?: boolean
+  /** The time of day one digest of every automation's results goes out, such as 08:00, or "" for none (#204). */
+  automation_digest?: string
+  /** The IANA time zone automation_digest is in. */
+  automation_digest_zone?: string
   /** Show community model ratings; downloads the public summary once a day while models are browsed. */
   community_ratings?: boolean
   /** Ask for a rating after a model has been used a while. */
@@ -693,7 +697,7 @@ export interface APIKeyRecord {
   revoked: boolean
   /** What the key may ask of the assistant (spec §62). */
   permissions?: APIKeyPermissions
-  /** "device" for a phone's key from Connect a phone (#216). */
+  /** "device" for a device's key from Connect a device (#216). */
   kind?: string
 }
 
@@ -804,6 +808,8 @@ export interface SettingsPatch {
   save_task_history?: boolean
   notify_task_finish?: boolean
   notify_peer_offline?: boolean
+  automation_digest?: string
+  automation_digest_zone?: string
   tool_terminal?: string
   tool_file_writes?: string
   tool_git?: string
@@ -966,7 +972,7 @@ export interface Task {
   created_at: string
 }
 
-export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'monthly' | 'interval' | 'cron'
+export type AutomationScheduleKind = 'once' | 'daily' | 'weekly' | 'monthly' | 'interval' | 'cron' | 'manual'
 export type AutomationNotifyMode = 'always' | 'condition' | 'change' | 'failure' | 'none'
 export type AutomationConditionKind = 'threshold' | 'available' | 'significant'
 export type AutomationThresholdOp = 'below' | 'above'
@@ -1024,6 +1030,14 @@ export interface Automation {
   /** The chat it was made from, and that chat's draft (#204). */
   conversation_id?: string
   draft_id?: string
+  /** A folder each result is also saved to as a Markdown file (#204). */
+  save_folder?: string
+  /** Runs only when a page or feed changed, checked on the schedule (#204). */
+  trigger?: AutomationTrigger
+  /** When the trigger last checked and found nothing new. */
+  last_checked_at?: string
+  /** A webhook trigger has a link; making a new one shows it once. */
+  hook_set?: boolean
   created_at: string
   updated_at: string
   next_run_at?: string
@@ -1051,6 +1065,10 @@ export interface AutomationRun {
   /** Why it did or didn't notify, as automations:notice.<notify_detail>, with notify_values for its placeholders (#204). */
   notify_detail?: string
   notify_values?: Record<string, unknown>
+  /** The chat its result was posted to (#204). */
+  conversation_id?: string
+  /** Where its result was saved, for an automation with a save folder. */
+  saved_file?: string
 }
 
 /** An automation read from a request on the computer, to review and save (#204). */
@@ -1099,6 +1117,20 @@ export interface AutomationInput {
   /** From a chat's draft: creating the same draft again returns the automation it made (#204). */
   conversation_id?: string
   draft_id?: string
+  /** A folder in the home folder to also save each result to, such as ~/Documents/Toskar; "" stops saving. */
+  save_folder?: string
+  /** A page or feed to watch; one with no kind runs on the schedule again. */
+  trigger?: AutomationTrigger
+}
+
+export interface AutomationTrigger {
+  kind: 'page' | 'feed' | 'folder' | 'webhook' | 'after' | ''
+  url?: string
+  /** A folder or file in the home folder, for a folder trigger; ~ is the home folder. */
+  path?: string
+  /** The automation an after trigger follows, and whether each time it succeeds or only when it notifies. */
+  automation_id?: string
+  when?: 'succeeded' | 'notified'
 }
 
 

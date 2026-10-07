@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "Inserisci l'indirizzo del computer su cui è in esecuzione Toskar.",
     "couldNotReach": "Impossibile raggiungere Toskar.",
-    "unreachable": "Toskar su quel computer non è raggiungibile. Usa la stessa rete Wi-Fi e scegli Collega un telefono su quel computer.",
+    "unreachable": "Toskar su quel computer non è raggiungibile. Usa la stessa rete Wi-Fi e scegli Collega un dispositivo su quel computer.",
     "keyRejected": "Quella chiave API è stata rifiutata. Collegati invece con un codice dal computer, oppure crea una chiave in Accesso API.",
     "dropped": "La connessione a Toskar si è interrotta.",
     "chatFailed": "Chat non riuscita.",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "Collega un computer",
-    "subtitle": "Il telefono usa il computer su cui sono già in esecuzione i tuoi modelli. Su quel computer, apri Computer e scegli Collega un telefono.",
+    "subtitle": "Il telefono usa il computer su cui sono già in esecuzione i tuoi modelli. Su quel computer, apri Computer e scegli Collega un dispositivo.",
     "address": "Indirizzo del computer",
     "addressPlaceholder": "192.168.1.20",
     "code": "Codice",
     "codePlaceholder": "Codice di 6 cifre",
-    "codeHint": "Il codice che il computer mostra in Computer → Collega un telefono. Vale una volta, per 10 minuti.",
+    "codeHint": "Il codice che il computer mostra in Computer → Collega un dispositivo. Vale una volta, per 10 minuti.",
     "useKey": "Usa invece una chiave API",
     "useCode": "Usa invece un codice",
     "apiKey": "Chiave API",
@@ -46,7 +46,8 @@
     "connect": "Collega",
     "connecting": "Collegamento",
     "notReady": "Toskar ha risposto, ma non è pronto.",
-    "pairUnsupported": "Il Toskar di quel computer è troppo vecchio per collegarsi con un codice. Aggiornalo o usa una chiave API."
+    "pairUnsupported": "Il Toskar di quel computer è troppo vecchio per collegarsi con un codice. Aggiornalo o usa una chiave API.",
+    "lede": "Il telefono usa il computer su cui sono già in esecuzione i tuoi modelli."
   },
   "discovery": {
     "onThisNetwork": "Su questa rete",
@@ -57,7 +58,7 @@
     "none": "Nessun computer trovato. Avvia Toskar sul tuo computer e usa la stessa rete Wi-Fi, oppure inserisci il suo indirizzo.",
     "localNetworkDenied": "Toskar non ha il permesso di cercare computer sulla tua rete. Consentilo in Impostazioni > Privacy e sicurezza > Rete locale.",
     "listFailed": "Impossibile elencare i computer su questa rete. Puoi comunque inserire un indirizzo qui sotto.",
-    "lanOff": "Prima scegli Collega un telefono su quel computer"
+    "lanOff": "Prima scegli Collega un dispositivo su quel computer"
   },
   "computers": {
     "title": "Computer",
@@ -385,5 +386,26 @@
       "story": "Forseti, figlio di Baldr, siede in Glitnir, una sala con colonne d'oro e un tetto d'argento. Chiunque gli porti una contesa se ne va riconciliato.",
       "runeName": "Isa, la runa della quiete"
     }
+  },
+  "tv": {
+    "connectLede": "Toskar sulla TV risponde con i modelli del tuo computer.",
+    "enterAddress": "Inserisci un indirizzo",
+    "askHint": "Premi il microfono sul telecomando, oppure scrivi.",
+    "tryAsking": "Prova a chiedere",
+    "disconnect": "Disconnetti",
+    "emptyHint": "Le risposte arrivano dai modelli del tuo computer. Niente di ciò che chiedi va a un servizio di IA ospitato.",
+    "suggest": {
+      "dinner": "Cosa posso cucinare stasera con pollo, riso e spinaci?",
+      "homework": "Spiega la fotosintesi a un bambino di dieci anni.",
+      "trip": "Organizza un sabato piovoso a Juneau per una famiglia di quattro persone.",
+      "movie": "Suggerisci una serata cinema in famiglia con tre film che stanno bene insieme."
+    }
+  },
+  "setup": {
+    "title": "Configuralo sul tuo computer",
+    "install": "Scarica Toskar per Mac, Windows o Linux da toskar.ai, se non è ancora sul tuo computer.",
+    "open": "Apri Toskar sul computer: l'app Toskar oppure http://localhost:7331 nel suo browser.",
+    "choose": "Apri Computer e scegli Collega un dispositivo.",
+    "code": "Poi, qui, scegli il computer e inserisci il codice di 6 cifre che mostra."
   }
 }

@@ -15,17 +15,18 @@ import (
 	"github.com/yeixio/toskar-core/internal/config"
 )
 
-const automationsUsage = `usage: toskarctl automations <list|get|parse|create|update|delete|run|pause|resume>
+const automationsUsage = `usage: toskarctl automations <list|get|parse|create|update|delete|run|pause|resume|hook>
   list
   get <id>
   parse <request> [--zone <tz>] [--language <tag>]
   create --request <text> [--profile <id>] [--model <id>] [--zone <tz>] [any flag below to change what it read]
-  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|monthly|interval|cron> [--at <time>] [--every <duration>] [--weekday <days>] [--day <1-31>] [--cron <expr>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--disabled]
+  create --name <name> --prompt <text> --profile <id> --model <id> --schedule <once|daily|weekly|monthly|interval|cron|manual> [--at <time>] [--every <duration>] [--weekday <days>] [--day <1-31>] [--cron <expr>] [--zone <tz>] [--tool <id>] [--notify <mode>] [--save-folder <path>] [--trigger <page|feed|folder|webhook|after|none> --trigger-url <url> | --trigger-path <path> | --after <id> [--after-when notified]] [--disabled]
   update <id> [--name <name>] [--prompt <text>] [--profile <id>] [--model <id>] [--schedule ...] [--notify <mode>]
   delete <id>
   run <id>
   pause <id>
   resume <id>
+  hook <id>                print a new webhook link for an automation with --trigger webhook; the old one stops working
 Times: daily, weekly, and monthly use HH:MM, or several such as 08:00,17:00. once uses RFC3339.
 interval uses Go durations such as 6h. --weekday takes 0-6 (Sunday is 0) or names, several
 such as 1,3,5 or mon-fri, or "weekdays". monthly runs on --day, or a month's last day when it
@@ -150,6 +151,20 @@ func runAutomations(args []string, client daemonClient, out io.Writer) error {
 			}
 		}
 		return writeJSON(out, run)
+	case "hook":
+		id, err := oneID(args[1:])
+		if err != nil {
+			return err
+		}
+		var link struct {
+			Path string `json:"path"`
+		}
+		if err := client.call(http.MethodPost, "/automations/"+id+"/hook", map[string]any{}, &link); err != nil {
+			return err
+		}
+		// Shown once: only its hash is kept (#204).
+		_, err = fmt.Fprintln(out, strings.TrimRight(client.base, "/")+link.Path)
+		return err
 	case "pause", "resume":
 		id, err := oneID(args[1:])
 		if err != nil {
@@ -200,7 +215,7 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 	prompt := fs.String("prompt", "", "prompt to run")
 	profile := fs.String("profile", "", "profile id")
 	model := fs.String("model", "", "installed model id")
-	schedule := fs.String("schedule", "", "once, daily, weekly, monthly, interval, or cron")
+	schedule := fs.String("schedule", "", "once, daily, weekly, monthly, interval, cron, or manual (only when started)")
 	at := fs.String("at", "", "HH:MM, several such as 08:00,17:00, or RFC3339")
 	every := fs.String("every", "", "interval duration, such as 6h")
 	weekday := fs.String("weekday", "", "days 0-6 (Sunday is 0) or names, such as 1,3,5, mon-fri, or weekdays")
@@ -212,6 +227,12 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 	op := fs.String("condition-op", "", "below or above")
 	value := fs.Float64("condition-value", 0, "threshold value")
 	disabled := fs.Bool("disabled", false, "create the automation paused")
+	trigger := fs.String("trigger", "", "page, feed, or folder: run only when it changed, checked on the schedule; webhook: run when its link is called; none runs on the schedule again")
+	triggerURL := fs.String("trigger-url", "", "the page or feed to watch")
+	triggerPath := fs.String("trigger-path", "", "the folder or file to watch, in your home folder, such as ~/Documents/Invoices")
+	after := fs.String("after", "", "with --trigger after: the automation it runs after, given its result")
+	afterWhen := fs.String("after-when", "", "with --trigger after: succeeded (each time it finishes, the default) or notified (only when it notifies)")
+	saveFolder := fs.String("save-folder", "", "also save each result as a Markdown file in this folder, such as ~/Documents/Toskar; \"\" stops saving")
 	var tools stringList
 	fs.Var(&tools, "tool", "tool id allowed for this automation, repeatable")
 	if err := fs.Parse(args); err != nil {
@@ -268,6 +289,12 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			}
 			in.Notification = note
 		}
+		if seen["save-folder"] {
+			in.SaveFolder = *saveFolder
+		}
+		if seen["trigger"] {
+			in.Trigger = buildTrigger(*trigger, *triggerURL, *triggerPath, *after, *afterWhen)
+		}
 		if *disabled {
 			off := false
 			in.Enabled = &off
@@ -295,6 +322,8 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 			Schedule:     sched,
 			Tools:        []string(tools),
 			Notification: note,
+			SaveFolder:   *saveFolder,
+			Trigger:      buildTrigger(*trigger, *triggerURL, *triggerPath, *after, *afterWhen),
 		}
 		if *disabled {
 			off := false
@@ -337,6 +366,16 @@ func automationBody(args []string, create bool, parse func(text, zone string) (a
 		}
 		patch.Notification = &note
 	}
+	if seen["save-folder"] {
+		patch.SaveFolder = saveFolder
+	}
+	if seen["trigger"] {
+		t := buildTrigger(*trigger, *triggerURL, *triggerPath, *after, *afterWhen)
+		if t == nil {
+			t = &automations.Trigger{}
+		}
+		patch.Trigger = t
+	}
 	if patch == (automations.Patch{}) {
 		return nil, fmt.Errorf("update needs at least one change")
 	}
@@ -375,6 +414,7 @@ func buildSchedule(f scheduleFlags) (automations.Schedule, error) {
 			}
 			sched.MonthDay = f.day
 		}
+	case automations.KindManual:
 	case automations.KindCron:
 		if strings.TrimSpace(f.cron) == "" {
 			return automations.Schedule{}, fmt.Errorf("cron schedule requires --cron, such as \"0 9 * * 1-5\"")
@@ -393,12 +433,21 @@ func buildSchedule(f scheduleFlags) (automations.Schedule, error) {
 		}
 		sched.EverySeconds = int(d / time.Second)
 	default:
-		return automations.Schedule{}, fmt.Errorf("--schedule must be once, daily, weekly, monthly, interval, or cron")
+		return automations.Schedule{}, fmt.Errorf("--schedule must be once, daily, weekly, monthly, interval, cron, or manual")
 	}
 	if err := sched.Validate(); err != nil {
 		return automations.Schedule{}, err
 	}
 	return sched.Normalized(), nil
+}
+
+// buildTrigger reads --trigger, --trigger-url, --trigger-path, --after, and --after-when; none or nothing is no
+// trigger (#204).
+func buildTrigger(kind, url, path, after, when string) *automations.Trigger {
+	if kind == "" || kind == "none" {
+		return nil
+	}
+	return &automations.Trigger{Kind: kind, URL: url, Path: path, AutomationID: after, When: when}
 }
 
 var weekdayFlagNames = map[string]int{"sun": 0, "mon": 1, "tue": 2, "wed": 3, "thu": 4, "fri": 5, "sat": 6}

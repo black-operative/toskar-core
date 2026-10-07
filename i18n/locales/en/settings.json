@@ -137,7 +137,10 @@
     "title": "Notifications",
     "description": "Alerts for long-running work and team connectivity.",
     "taskFinish": "Notify when tasks finish",
-    "peerOffline": "Notify when a paired computer goes offline"
+    "peerOffline": "Notify when a paired computer goes offline",
+    "digest": "Daily automation digest",
+    "digestHint": "One summary of every automation’s results each day, in a chat you can reply to.",
+    "digestTime": "Time"
   },
   "toolPermissions": {
     "title": "Tool permissions",

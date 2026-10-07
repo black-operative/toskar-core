@@ -121,9 +121,9 @@
     "otherHeader": "\n標頭：  Authorization: Bearer {{key}}"
   },
   "phones": {
-    "title": "手機",
-    "description": "用代碼連接的手機。每支都有自己的金鑰，可以聊天和查看清單，但不能變更這台電腦。",
-    "none": "還沒有手機。",
+    "title": "裝置",
+    "description": "用代碼連接的手機、平板電腦和電視。每台都有自己的金鑰，可以聊天和查看清單，但不能變更這台電腦。",
+    "none": "還沒有裝置。",
     "meta": "連接於 {{connected}} · 上次使用 {{lastUsed}}",
     "confirmDisconnect": "中斷 {{name}} 的連線？再次連接需要新的代碼。",
     "disconnect": "中斷連線"

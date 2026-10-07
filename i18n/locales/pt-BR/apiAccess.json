@@ -121,9 +121,9 @@
     "otherHeader": "\nCabeçalho:  Authorization: Bearer {{key}}"
   },
   "phones": {
-    "title": "Celulares",
-    "description": "Celulares conectados com um código. Cada um tem a própria chave, que pode conversar e ler listas, mas não alterar este computador.",
-    "none": "Nenhum celular ainda.",
+    "title": "Dispositivos",
+    "description": "Celulares, tablets e TVs conectados com um código. Cada um tem a própria chave, que pode conversar e ler listas, mas não alterar este computador.",
+    "none": "Nenhum dispositivo ainda.",
     "meta": "Conectado {{connected}} · Último uso {{lastUsed}}",
     "confirmDisconnect": "Desconectar {{name}}? Ele vai precisar de um novo código para se conectar de novo.",
     "disconnect": "Desconectar"

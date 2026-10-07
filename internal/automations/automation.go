@@ -122,10 +122,24 @@ type Automation struct {
 	// ConversationID is the chat the automation was made from, and DraftID
 	// the draft that chat showed (#204). Both are empty for one made
 	// elsewhere.
-	ConversationID string    `json:"conversation_id,omitempty"`
-	DraftID        string    `json:"draft_id,omitempty"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	ConversationID string `json:"conversation_id,omitempty"`
+	DraftID        string `json:"draft_id,omitempty"`
+	// SaveFolder, when set, is a folder each result is also saved to as a
+	// Markdown file (#204), such as ~/Documents/Toskar/News.
+	SaveFolder string `json:"save_folder,omitempty"`
+	// Trigger, when set, runs the automation only when what it watches
+	// changed, checked on the schedule (#204).
+	Trigger *Trigger `json:"trigger,omitempty"`
+	// WatchState is what the trigger's last check found, and
+	// LastCheckedAt when it was.
+	WatchState    []byte     `json:"-"`
+	LastCheckedAt *time.Time `json:"last_checked_at,omitempty"`
+	// HookHash is the SHA-256 of a webhook trigger's token, and HookSet
+	// says one was made; the token itself is shown once and not kept.
+	HookHash  string    `json:"-"`
+	HookSet   bool      `json:"hook_set,omitempty"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 	// NextRunAt is the occurrence the daemon should execute next.
 	// A missed restart keeps only the latest missed occurrence here.
 	NextRunAt *time.Time `json:"next_run_at,omitempty"`
@@ -145,6 +159,10 @@ func (a *Automation) SetNextRun(now time.Time) error {
 	last := time.Time{}
 	if a.LastRunAt != nil {
 		last = *a.LastRunAt
+	}
+	// A check that found nothing new counts as the occurrence (#204).
+	if a.LastCheckedAt != nil && a.LastCheckedAt.After(last) {
+		last = *a.LastCheckedAt
 	}
 	next, ok, err := a.Schedule.NextRun(a.CreatedAt, last, now)
 	if err != nil {
@@ -175,6 +193,10 @@ type CreateInput struct {
 	// returns the automation it already made.
 	ConversationID string `json:"conversation_id,omitempty"`
 	DraftID        string `json:"draft_id,omitempty"`
+	// SaveFolder: see Automation.
+	SaveFolder string `json:"save_folder,omitempty"`
+	// Trigger: see Automation.
+	Trigger *Trigger `json:"trigger,omitempty"`
 }
 
 // Patch updates the fields that are non-nil.
@@ -189,6 +211,10 @@ type Patch struct {
 	Notification *Notification `json:"notification,omitempty"`
 	// ResponseLanguage: see Automation; "" goes back to the account's.
 	ResponseLanguage *string `json:"response_language,omitempty"`
+	// SaveFolder: see Automation; "" stops saving.
+	SaveFolder *string `json:"save_folder,omitempty"`
+	// Trigger: see Automation; one with no kind runs on the schedule again.
+	Trigger *Trigger `json:"trigger,omitempty"`
 }
 
 // Response languages an automation can have besides a language tag.

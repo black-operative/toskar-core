@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/yeixio/toskar-core/internal/automations"
 	"github.com/yeixio/toskar-core/internal/events"
@@ -203,5 +204,64 @@ func TestAutomationResultInItsChat(t *testing.T) {
 	list, _, _ := hub.List(ctx, false, 0)
 	if len(list) != 1 || list[0].Link != "/chat?c="+conv.ID {
 		t.Fatalf("center = %+v", list)
+	}
+}
+
+// "Continue in chat" opens a run's result in a chat to reply to: a new one
+// the first time, the same one after, and none for a failed run (#204).
+func TestContinueAutomationRunInChat(t *testing.T) {
+	db, err := store.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	ctx := context.Background()
+	repo := repositories.NewAutomationRepo(db.SQL)
+	convs := repositories.NewConversationRepo(db.SQL)
+	a := &App{Automations: repo, Conversations: convs}
+	now := time.Date(2026, 10, 7, 9, 0, 0, 0, time.UTC)
+	created, err := repo.Create(ctx, automations.CreateInput{
+		Name: "Morning news", Prompt: "Summarize the news.", ModelID: "auto",
+		Schedule: automations.Schedule{Kind: automations.KindDaily, TimeZone: "UTC", Hour: 8},
+	}, now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	finish := func(at time.Time, fail bool) automations.Run {
+		run, _, err := repo.Claim(ctx, created.ID, at, at, time.Hour)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if fail {
+			err = repo.FailRun(ctx, run.ID, "model failed", automations.Execution{}, at)
+		} else {
+			err = repo.CompleteRun(ctx, run.ID, automations.Execution{Text: "Three stories today.\n{\"significant\": true}"}, at)
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		return run
+	}
+	run := finish(now.Add(time.Hour), false)
+	conv, err := a.continueAutomationRun(ctx, created.ID, run.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	messages, _ := convs.ListMessages(ctx, conv)
+	if len(messages) != 1 || messages[0].Content != "Three stories today." || messages[0].Meta.AutomationRun.RunID != run.ID {
+		t.Fatalf("messages = %+v", messages)
+	}
+	if again, err := a.continueAutomationRun(ctx, created.ID, run.ID); err != nil || again != conv {
+		t.Fatalf("again = %q, %v; want %q", again, err, conv)
+	}
+	if list, _ := convs.List(ctx); len(list) != 1 || list[0].Title != "Morning news" {
+		t.Fatalf("chats = %+v", list)
+	}
+	failed := finish(now.Add(25*time.Hour), true)
+	if _, err := a.continueAutomationRun(ctx, created.ID, failed.ID); !errors.Is(err, errNoResult) {
+		t.Fatalf("failed run: %v", err)
+	}
+	if _, err := a.continueAutomationRun(ctx, "other", run.ID); err == nil {
+		t.Fatal("continued a run under another automation")
 	}
 }

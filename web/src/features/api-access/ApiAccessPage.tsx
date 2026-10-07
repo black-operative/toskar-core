@@ -209,7 +209,7 @@ export function ApiAccessPage() {
   const settings = settingsQuery.data
   const keys = keysQuery.data ?? []
   const allActive = keys.filter((k) => !k.revoked)
-  // A phone's key from Connect a phone is listed under Phones (#216).
+  // A device's key from Connect a device is listed under Devices (#216).
   const phones = allActive.filter((k) => k.kind === 'device')
   const activeKeys = allActive.filter((k) => k.kind !== 'device')
   const probe = probeQuery.data

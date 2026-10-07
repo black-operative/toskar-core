@@ -121,9 +121,9 @@
     "otherHeader": "\nHeader:  Authorization: Bearer {{key}}"
   },
   "phones": {
-    "title": "Phones",
-    "description": "Phones connected with a code. Each has its own key, which can chat and read lists but can't change this computer.",
-    "none": "No phones yet.",
+    "title": "Devices",
+    "description": "Phones, tablets, and TVs connected with a code. Each has its own key, which can chat and read lists but can't change this computer.",
+    "none": "No devices yet.",
     "meta": "Connected {{connected}} · Last used {{lastUsed}}",
     "confirmDisconnect": "Disconnect {{name}}? It will need a new code to connect again.",
     "disconnect": "Disconnect"

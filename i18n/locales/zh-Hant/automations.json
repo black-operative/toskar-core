@@ -45,28 +45,78 @@
     "news": {
       "title": "早晨新聞摘要",
       "body": "每天早上簡短整理科技新聞。",
-      "request": "每天早上7點半，總結今天最重要的科技新聞。"
+      "request": "每天早上7點半，總結今天最重要的科技新聞。",
+      "name": "晨間簡報：{{topics}}",
+      "task": "用五個簡短重點總結今天關於{{topics}}的重要新聞，並附上每個來源的連結。",
+      "defaultTopics": "科技"
     },
     "price": {
       "title": "價格追蹤",
       "body": "想買的東西低於你的價格時通知你。",
-      "request": "每天早上8點，檢查這個商品，如果價格低於3000元就告訴我。"
+      "request": "每天早上8點，檢查這個商品，如果價格低於3000元就告訴我。",
+      "name": "價格提醒：{{site}}",
+      "task": "查看 {{url}} 上商品的目前價格。"
     },
     "stock": {
       "title": "補貨通知",
       "body": "售完的商品可以再次購買時立即通知你。",
-      "request": "每6個小時檢查庫存，補貨時通知我。"
+      "request": "每6個小時檢查庫存，補貨時通知我。",
+      "name": "到貨通知：{{site}}",
+      "task": "查看 {{url}} 上的商品是否有貨、現在能否購買。"
     },
     "releases": {
       "title": "每週版本更新",
       "body": "每週五告訴你常用軟體有哪些變化。",
-      "request": "每週五上午9點，總結這個軟體的新版本。"
+      "request": "每週五上午9點，總結這個軟體的新版本。",
+      "name": "版本資訊：{{software}}",
+      "task": "尋找過去一週 {{software}} 的新版本，總結有哪些變化，並註明版本號。"
     },
     "page": {
       "title": "網頁變化通知",
       "body": "只在你在意的網頁有變化時通知你。",
-      "request": "每天晚上6點檢查這個頁面，有變化時通知我。"
-    }
+      "request": "每天晚上6點檢查這個頁面，有變化時通知我。",
+      "name": "網頁變化通知：{{site}}",
+      "task": "閱讀 {{url}} 頁面並總結其內容。"
+    },
+    "folder": {
+      "title": "資料夾摘要",
+      "body": "這台電腦上的資料夾有變化時，告訴你有什麼新內容。",
+      "request": "每天晚上6點總結這個資料夾，有變化時通知我。",
+      "name": "資料夾摘要：{{folderName}}",
+      "task": "總結資料夾 {{folder}} 中的檔案：哪些是新增或有變化的，以及需要注意的事項。"
+    },
+    "fields": {
+      "topics": {
+        "label": "主題",
+        "placeholder": "科技、科學"
+      },
+      "url": {
+        "label": "連結",
+        "placeholder": "https://example.com/product"
+      },
+      "price": {
+        "label": "低於此價格時通知",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "貨幣"
+      },
+      "software": {
+        "label": "軟體",
+        "placeholder": "名稱或連結，例如 Node.js"
+      },
+      "folder": {
+        "label": "資料夾",
+        "placeholder": "~/Documents/Invoices"
+      },
+      "time": {
+        "label": "時間"
+      },
+      "weekday": {
+        "label": "星期"
+      }
+    },
+    "describeInstead": "改用自己的話描述"
   },
   "detail": {
     "schedule": "排程",
@@ -84,7 +134,9 @@
     "history": "歷史紀錄",
     "notRunYet": "這項自動化尚未執行過。",
     "olderRuns": "顯示更早的執行",
-    "loadingOlder": "正在載入…"
+    "loadingOlder": "正在載入…",
+    "lastChecked": "上次檢查 {{when}}，沒有新內容",
+    "nextCheck": "下次檢查 {{when}}"
   },
   "run": {
     "details": "詳細資訊",
@@ -100,7 +152,10 @@
       "retrying": "正在重試",
       "running": "執行中",
       "notRun": "尚未執行"
-    }
+    },
+    "continueInChat": "在聊天中繼續",
+    "openingChat": "正在開啟聊天…",
+    "savedTo": "已儲存到 {{path}}"
   },
   "pill": {
     "paused": "已暫停",
@@ -160,7 +215,8 @@
     "weekends": "週末 {{time}}",
     "weeklyDays": "每{{days}} {{time}}",
     "monthly": "每月 {{day}} 日 {{time}}",
-    "cron": "自訂排程：{{cron}}"
+    "cron": "自訂排程：{{cron}}",
+    "manual": "僅在啟動時"
   },
   "notify": {
     "none": "只儲存結果",
@@ -209,7 +265,6 @@
     "setUp": "填寫詳細資料",
     "settingUp": "正在填寫…",
     "ideas": "或從一個點子開始",
-    "ideaHint": "視需要修改文字，例如用連結取代「這個頁面」，然後再次選擇「填寫詳細資料」。",
     "stepDetails": "檢查詳細資料",
     "name": "名稱",
     "task": "工作",
@@ -222,7 +277,8 @@
       "monthly": "每月",
       "interval": "依間隔",
       "once": "一次",
-      "cron": "自訂（cron）"
+      "cron": "自訂（cron）",
+      "manual": "僅在啟動時"
     },
     "notifyMe": "通知我",
     "notifyChoices": {
@@ -296,7 +352,28 @@
     "monthDay": "每月幾號",
     "monthDayHint": "當月沒有這一天時，在最後一天執行。",
     "cron": "cron 運算式",
-    "cronHint": "依下方時區填寫五個欄位：分鐘、小時、日、月、星期。"
+    "cronHint": "依下方時區填寫五個欄位：分鐘、小時、日、月、星期。",
+    "saveResults": "同時將每次結果儲存為檔案",
+    "saveFolder": "資料夾",
+    "saveFolderHint": "每次結果都會在你的主資料夾中建立一個新的 Markdown 檔案。",
+    "runs": "執行方式",
+    "runsSchedule": "依排程",
+    "runsPage": "網頁有變化時",
+    "runsFeed": "訂閱來源有新文章時",
+    "runsFolder": "檔案或資料夾有變化時",
+    "runsWebhook": "其他服務呼叫其連結時（Webhook）",
+    "runsAfter": "在另一個自動化之後",
+    "watchUrl": "連結",
+    "watchPath": "資料夾或檔案",
+    "watchHint": "Toskar 依下方排程檢查，只有發生變化時才執行，並告訴工作變化了什麼。",
+    "checkSchedule": "檢查頻率",
+    "webhookHint": "其他服務呼叫其連結時執行。儲存後，在自動化頁面上建立連結。",
+    "manualHint": "只有在你點按「立即執行」或透過其 Webhook 時才執行。",
+    "afterWhich": "自動化",
+    "afterWhen": "時機",
+    "afterSucceeded": "每次完成時",
+    "afterNotified": "僅在發出通知時",
+    "afterHint": "在另一個自動化之後立即執行，並取得它的結果。跟隨其他自動化的執行不能使用會變更 Toskar 之外內容的工具。"
   },
   "draft": {
     "label": "待確認的自動化",
@@ -310,5 +387,32 @@
     "open": "在「自動化」中開啟",
     "failed": "無法建立自動化。"
   },
-  "runInChat": "來自自動化「<automation>{{name}}</automation>」"
+  "runInChat": "來自自動化「<automation>{{name}}</automation>」",
+  "digest": {
+    "title": "自動化摘要",
+    "intro_other": "自上次摘要以來，你的 {{count}} 個自動化發現的內容。",
+    "noResult": "已執行，沒有需要回報的內容。",
+    "failed_other": "失敗了 {{count}} 次，最近一次：{{error}}"
+  },
+  "trigger": {
+    "page": "{{site}} 有變化時 · 檢查：{{schedule}}",
+    "feed": "{{site}} 有新文章 · 檢查：{{schedule}}",
+    "folder": "{{name}} 有變化時 · 檢查：{{schedule}}",
+    "webhook": "其 Webhook 連結被呼叫時",
+    "after": "{{name}} 完成後",
+    "afterNotified": "{{name}} 發出通知後",
+    "anotherAutomation": "另一個自動化"
+  },
+  "webhook": {
+    "title": "Webhook 連結",
+    "copy": "複製",
+    "copied": "已複製",
+    "shownOnce": "請現在複製：它只會顯示一次。任何擁有此連結的人都能啟動此自動化。",
+    "howTo": "向它傳送 POST 請求。請求內容（最多 64 KB）會作為資料交給工作。",
+    "noLink": "建立一個供其他服務呼叫的連結。",
+    "hasLink": "此自動化已有連結。連結只在建立時顯示。",
+    "make": "建立連結",
+    "makeNew": "建立新連結",
+    "replaces": "新連結會讓舊連結失效。"
+  }
 }

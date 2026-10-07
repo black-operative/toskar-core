@@ -25,7 +25,7 @@
   "connection": {
     "enterAddress": "請輸入執行 Toskar 的電腦位址。",
     "couldNotReach": "無法連線到 Toskar。",
-    "unreachable": "無法連線到那台電腦上的 Toskar。請使用相同的 Wi-Fi 網路，並在那台電腦上選擇「連接手機」。",
+    "unreachable": "無法連線到那台電腦上的 Toskar。請使用相同的 Wi-Fi 網路，並在那台電腦上選擇「連接裝置」。",
     "keyRejected": "這把 API 金鑰被拒絕。請改用那台電腦上的代碼連接，或在「API 存取」中建立金鑰。",
     "dropped": "與 Toskar 的連線已中斷。",
     "chatFailed": "聊天失敗。",
@@ -33,12 +33,12 @@
   },
   "connect": {
     "title": "連線到電腦",
-    "subtitle": "手機會使用已在執行你的模型的電腦。請在那台電腦上打開「電腦」，然後選擇「連接手機」。",
+    "subtitle": "手機會使用已在執行你的模型的電腦。請在那台電腦上打開「電腦」，然後選擇「連接裝置」。",
     "address": "電腦位址",
     "addressPlaceholder": "192.168.1.20",
     "code": "代碼",
     "codePlaceholder": "6 位數代碼",
-    "codeHint": "那台電腦在「電腦」→「連接手機」中顯示的代碼。10 分鐘內有效，只能用一次。",
+    "codeHint": "那台電腦在「電腦」→「連接裝置」中顯示的代碼。10 分鐘內有效，只能用一次。",
     "useKey": "改用 API 金鑰",
     "useCode": "改用代碼",
     "apiKey": "API 金鑰",
@@ -46,7 +46,8 @@
     "connect": "連線",
     "connecting": "正在連線",
     "notReady": "Toskar 有回應，但尚未就緒。",
-    "pairUnsupported": "那台電腦上的 Toskar 版本太舊，無法用代碼連接。請更新它，或改用 API 金鑰。"
+    "pairUnsupported": "那台電腦上的 Toskar 版本太舊，無法用代碼連接。請更新它，或改用 API 金鑰。",
+    "lede": "手機會使用已在執行你的模型的電腦。"
   },
   "discovery": {
     "onThisNetwork": "在這個網路上",
@@ -57,7 +58,7 @@
     "none": "找不到任何電腦。請在你的電腦上啟動 Toskar 並使用相同的 Wi-Fi，或輸入它的位址。",
     "localNetworkDenied": "Toskar 沒有權限在你的網路上尋找電腦。請在「設定」>「隱私權與安全性」>「區域網路」中允許。",
     "listFailed": "無法列出這個網路上的電腦。你仍可以在下方輸入位址。",
-    "lanOff": "請先在那台電腦上選擇「連接手機」"
+    "lanOff": "請先在那台電腦上選擇「連接裝置」"
   },
   "computers": {
     "title": "電腦",
@@ -377,5 +378,26 @@
       "story": "Baldr 之子 Forseti 坐鎮於 Glitnir，那是一座以黃金為柱、白銀為頂的殿堂。每個帶著紛爭來找他的人，離開時都已和解。",
       "runeName": "Isa，靜止的符文"
     }
+  },
+  "tv": {
+    "connectLede": "電視上的 Toskar 使用你電腦上的模型回答。",
+    "enterAddress": "輸入位址",
+    "askHint": "按遙控器上的麥克風，或直接輸入。",
+    "tryAsking": "試著問問",
+    "disconnect": "中斷連線",
+    "emptyHint": "回答來自你電腦上的模型。你問的內容不會傳送到託管的 AI 服務。",
+    "suggest": {
+      "dinner": "今晚用雞肉、米飯和菠菜能做什麼菜？",
+      "homework": "向十歲的孩子解釋光合作用。",
+      "trip": "為四口之家規劃朱諾一個下雨的星期六。",
+      "movie": "推薦一個家庭電影之夜，選三部彼此呼應的電影。"
+    }
+  },
+  "setup": {
+    "title": "在電腦上設定",
+    "install": "如果電腦上還沒有 Toskar，請到 toskar.ai 取得 Mac、Windows 或 Linux 版。",
+    "open": "在電腦上打開 Toskar：Toskar App，或在瀏覽器中打開 http://localhost:7331。",
+    "choose": "打開「電腦」，然後選擇「連接裝置」。",
+    "code": "回到這裡，選擇那台電腦，輸入它顯示的 6 位代碼。"
   }
 }

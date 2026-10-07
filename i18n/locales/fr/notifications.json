@@ -175,7 +175,11 @@
     "digest_other": "{{count}} notifications",
     "digestMore_one": "… et {{count}} autre",
     "digestMore_many": "… et {{count}} autres",
-    "digestMore_other": "… et {{count}} autres"
+    "digestMore_other": "… et {{count}} autres",
+    "automationDigest": "Récapitulatif des automatisations",
+    "automationDigestBody_one": "1 automatisation s’est exécutée : {{names}}",
+    "automationDigestBody_other": "{{count}} automatisations se sont exécutées : {{names}}",
+    "automationDigestBody_many": "{{count}} automatisations se sont exécutées : {{names}}"
   },
   "sent": {
     "times": "{{title}} ({{count}} fois)",

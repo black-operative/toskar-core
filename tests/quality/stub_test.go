@@ -97,6 +97,7 @@ func (d stubDriver) Run(t *testing.T, c Case) Result {
 		t.Fatal(err)
 	}
 	webfixtures.Register(a.Tools, web)
+	webfixtures.RegisterMedia(a.Tools, a.Artifacts)
 	ctx := context.Background()
 
 	// The script: each model call gets the next reply; the rest say "done".

@@ -15,7 +15,7 @@ function grouped(code: string): string {
 }
 
 /**
- * Connect a phone (#216): a 6-digit code to type on the phone, which then
+ * Connect a device (#216): a 6-digit code to type on the phone, which then
  * gets a key of its own. Turns on local network access first when it's off,
  * since the phone reaches this computer over the network.
  */

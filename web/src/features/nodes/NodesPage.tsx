@@ -367,7 +367,7 @@ export function NodesPage() {
   const [claimCodes, setClaimCodes] = useState<Record<string, string>>({})
   const [removingKey, setRemovingKey] = useState<string | null>(null)
   const [joinOpen, setJoinOpen] = useState(false)
-  // ?connect=phone opens Connect a phone, as API Access links it.
+  // ?connect=phone opens Connect a device, as API Access links it.
   const [searchParams] = useSearchParams()
   const [phoneOpen, setPhoneOpen] = useState(() => searchParams.get('connect') === 'phone')
 

@@ -173,7 +173,10 @@
     "runningCommand": "명령을 실행하는 중…",
     "checkingGit": "git 확인하는 중…",
     "usingTool": "{{tool}} 사용 중…",
-    "loadingChat": "이 채팅을 불러오는 중…"
+    "loadingChat": "이 채팅을 불러오는 중…",
+    "makingImage": "그림을 만드는 중…",
+    "changingImage": "그림을 바꾸는 중…",
+    "makingVideo": "클립을 만드는 중이며 몇 분 걸립니다…"
   },
   "tools": {
     "names": {

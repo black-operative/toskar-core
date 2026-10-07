@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { AIProfile, Automation, AutomationClockTime, AutomationInput, AutomationSchedule, Model, ParsedAutomation, ToolRecord } from '@/types/api'
+import type { AIProfile, Automation, AutomationClockTime, AutomationInput, AutomationSchedule, AutomationTrigger, Model, ParsedAutomation, ToolRecord } from '@/types/api'
 import i18n from '@/i18n'
 import { api } from '@/lib/api'
 import { canChat } from '@/features/models/modelPresentation'
@@ -15,13 +15,13 @@ import {
   localTimeZone,
   notificationLabel,
   resultProse,
-  scheduleLabel,
+  whenLabel,
   scheduleTimes,
   scheduleWeekdays,
   visibleTask,
   weekdayName,
 } from './parseRequest'
-import { IDEAS } from './ideas'
+import { IDEAS, buildIdea, ideaDefaults, ideaReady, type IdeaField, type IdeaId, type IdeaValues } from './ideas'
 
 // The notify choices, in order; each is automations:form.notifyChoices.<mode> in the catalog.
 const NOTIFY_CHOICES: AutomationInput['notification']['mode'][] = ['condition', 'change', 'always', 'failure', 'none']
@@ -33,10 +33,12 @@ interface AutomationFormProps {
   profiles: AIProfile[]
   models: Model[]
   tools: ToolRecord[]
+  /** Other automations, for one that runs after another (#204). */
+  others?: Automation[]
   initial?: Automation | null
   seedDescription?: string
-  /** The form was started from an idea, so say how to make it your own. */
-  fromIdea?: boolean
+  /** A template to start from, with its fields to fill in (#204). */
+  seedIdea?: IdeaId | null
   /** Offer the ideas as shortcuts; off when the page already shows them. */
   showIdeas?: boolean
   pending: boolean
@@ -45,13 +47,16 @@ interface AutomationFormProps {
   onSubmit: (input: AutomationInput) => void
 }
 
-export function AutomationForm({ profiles, models, tools, initial, seedDescription = '', fromIdea = false, showIdeas = true, pending, error, onCancel, onSubmit }: AutomationFormProps) {
+export function AutomationForm({ profiles, models, tools, others = [], initial, seedDescription = '', seedIdea = null, showIdeas = true, pending, error, onCancel, onSubmit }: AutomationFormProps) {
   const { t } = useTranslation('automations')
   const advanced = useUIStore((state) => state.advancedMode) && new URLSearchParams(window.location.search).get('simple') !== '1'
   const advancedRef = useRef<HTMLDetailsElement>(null)
   const describeRef = useRef<HTMLTextAreaElement>(null)
   const zone = initial?.schedule.time_zone || localTimeZone()
   const [description, setDescription] = useState('')
+  const [ideaID, setIdeaID] = useState<IdeaId | null>(seedIdea)
+  const [ideaValues, setIdeaValues] = useState<IdeaValues>(() => (seedIdea ? ideaDefaults(seedIdea) : {}))
+  const idea = IDEAS.find((item) => item.id === ideaID)
   const [notes, setNotes] = useState<string[]>([])
   const [parseError, setParseError] = useState('')
   const [parsing, setParsing] = useState(false)
@@ -71,6 +76,15 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
   const [value, setValue] = useState(String(initial?.notification.condition?.value ?? ''))
   const [currency, setCurrency] = useState(initial?.notification.condition?.currency ?? 'USD')
   const [selectedTools, setSelectedTools] = useState<string[]>(initial?.tools ?? [])
+  // Run when a page or feed changes instead of every time (#204).
+  const [triggerKind, setTriggerKind] = useState<AutomationTrigger['kind']>(initial?.trigger?.kind ?? '')
+  // The link to watch, or the folder or file.
+  const [triggerURL, setTriggerURL] = useState(initial?.trigger?.url ?? initial?.trigger?.path ?? initial?.trigger?.automation_id ?? '')
+  // When it follows another automation: each time it finishes, or only when it notifies.
+  const [afterWhen, setAfterWhen] = useState<'succeeded' | 'notified'>(initial?.trigger?.when ?? 'succeeded')
+  // Also save each result as a file in a folder (#204).
+  const [saving, setSaving] = useState(Boolean(initial?.save_folder))
+  const [saveFolder, setSaveFolder] = useState(initial?.save_folder || '~/Documents/Toskar')
 
   // The computer reads a request (#204), the same way for this form,
   // toskarctl, and chat; a model reads one its words can't.
@@ -85,6 +99,27 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
     if (parsed.notification.condition?.currency) setCurrency(parsed.notification.condition.currency)
     setNotes(parsed.notes ?? [])
     setParseError('')
+  }
+
+  function chooseIdea(id: IdeaId) {
+    setIdeaID(id)
+    setIdeaValues(ideaDefaults(id))
+  }
+
+  // A template's fields fill in the details directly, with no request to read.
+  function applyIdea() {
+    if (!idea || !ideaReady(idea, ideaValues)) return
+    const built = buildIdea(idea, ideaValues, schedule.time_zone || zone, readNumber)
+    fillFrom({ ...built, notes: [] })
+    setTriggerKind(built.trigger?.kind ?? '')
+    setTriggerURL(built.trigger?.path ?? built.trigger?.url ?? '')
+  }
+
+  // Back to describing it, starting from the template's example.
+  function describeInstead() {
+    if (ideaID) setDescription(t(`ideas.${ideaID}.request`))
+    setIdeaID(null)
+    requestAnimationFrame(() => describeRef.current?.focus())
   }
 
   const readRequest = (text: string, timeZone: string) =>
@@ -160,6 +195,9 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       notification,
       tools: selectedTools,
       response_language: responseLanguage,
+      save_folder: saving ? saveFolder.trim() : '',
+      // An edit that stops watching sends a trigger with no kind.
+      trigger: triggerKind ? watchTrigger(triggerKind, triggerURL, afterWhen) : initial?.trigger ? { kind: '' } : undefined,
     }
   }
 
@@ -191,7 +229,10 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
     }
   }
 
-  const summary = scheduleLabel(schedule)
+  const summary = whenLabel(
+    { schedule, trigger: triggerKind ? watchTrigger(triggerKind, triggerURL, afterWhen) : undefined },
+    Object.fromEntries(others.map((item) => [item.id, item.name])),
+  )
 
   return (
     <form
@@ -209,49 +250,75 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
       {/* Step 1: say it in words; Toskar fills in step 2 from them. */}
       <div className="space-y-2.5 rounded-lg bg-raised/40 p-3">
         <StepHeading number={1}>{t('form.stepDescribe')}</StepHeading>
-        <label className="block space-y-1 text-sm">
-          <span className="sr-only">{t('form.describe')}</span>
-          <textarea
-            ref={describeRef}
-            className="field min-h-24 w-full"
-            value={description}
-            placeholder={t('form.describePlaceholder')}
-            aria-describedby="automation-describe-hint"
-            onChange={(event) => setDescription(event.target.value)}
-          />
-        </label>
-        <p id="automation-describe-hint" className="text-xs leading-relaxed text-ink-muted">
-          {fromIdea ? t('form.ideaHint') : t('form.describeHint')}
-        </p>
-        <div className="flex flex-wrap items-center gap-2">
-          <button type="button" className="btn-secondary btn-sm" disabled={!description.trim() || parsing} onClick={() => void applyDescription()}>
-            {parsing ? t('form.settingUp') : t('form.setUp')}
-          </button>
-        </div>
-        {parseError && <p className="text-sm text-danger">{parseError}</p>}
-        {notes.map((note) => (
-          <p key={note} className="text-sm text-ink-muted">
-            {note}
-          </p>
-        ))}
-        {initial || !showIdeas ? null : (
-          <div className="flex flex-wrap items-center gap-1.5 pt-1">
-            <span className="text-xs text-ink-faint">{t('form.ideas')}</span>
-            {IDEAS.map(({ id }) => (
-              <button
-                key={id}
-                type="button"
-                className="chat-suggestion"
-                onClick={() => {
-                  const request = t(`ideas.${id}.request`)
-                  setDescription(request)
-                  void applyDescription(request)
-                }}
-              >
-                {t(`ideas.${id}.title`)}
+        {idea ? (
+          <div className="space-y-3">
+            <div>
+              <p className="text-sm font-medium text-ink">{t(`ideas.${idea.id}.title`)}</p>
+              <p className="text-xs text-ink-muted">{t(`ideas.${idea.id}.body`)}</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {idea.fields.map((field) => (
+                <IdeaFieldInput
+                  key={field}
+                  field={field}
+                  value={ideaValues[field] ?? ''}
+                  onChange={(next) => setIdeaValues((current) => ({ ...current, [field]: next }))}
+                />
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <button type="button" className="btn-secondary btn-sm" disabled={!ideaReady(idea, ideaValues)} onClick={applyIdea}>
+                {t('form.setUp')}
               </button>
-            ))}
+              <button type="button" className="text-xs text-primary underline-offset-2 hover:underline" onClick={describeInstead}>
+                {t('ideas.describeInstead')}
+              </button>
+            </div>
           </div>
+        ) : (
+          <>
+          <label className="block space-y-1 text-sm">
+            <span className="sr-only">{t('form.describe')}</span>
+            <textarea
+              ref={describeRef}
+              className="field min-h-24 w-full"
+              value={description}
+              placeholder={t('form.describePlaceholder')}
+              aria-describedby="automation-describe-hint"
+              onChange={(event) => setDescription(event.target.value)}
+            />
+          </label>
+          <p id="automation-describe-hint" className="text-xs leading-relaxed text-ink-muted">
+            {t('form.describeHint')}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="button" className="btn-secondary btn-sm" disabled={!description.trim() || parsing} onClick={() => void applyDescription()}>
+              {parsing ? t('form.settingUp') : t('form.setUp')}
+            </button>
+          </div>
+          {parseError && <p className="text-sm text-danger">{parseError}</p>}
+          {notes.map((note) => (
+            <p key={note} className="text-sm text-ink-muted">
+              {note}
+            </p>
+          ))}
+          {initial || !showIdeas ? null : (
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              <span className="text-xs text-ink-faint">{t('form.ideas')}</span>
+              {IDEAS.map(({ id }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className="chat-suggestion"
+                  onClick={() => chooseIdea(id)}
+                >
+                  {t(`ideas.${id}.title`)}
+                </button>
+              ))}
+            </div>
+          )}
+      
+          </>
         )}
       </div>
 
@@ -271,7 +338,80 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
         />
         <span id="automation-task-hint" className="block text-xs text-ink-faint">{t('form.taskHint')}</span>
       </label>
-      <p className="text-sm text-ink-muted">{t('form.schedule')}</p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block space-y-1 text-sm">
+          <span className="text-ink-muted">{t('form.runs')}</span>
+          <select
+            className="field w-full"
+            value={triggerKind}
+            onChange={(event) => {
+              const next = event.target.value as AutomationTrigger['kind']
+              setTriggerKind(next)
+              // The link, folder, or automation is the kind's own.
+              if (next === 'after' && triggerKind !== 'after') setTriggerURL(others[0]?.id ?? '')
+              else if (triggerKind === 'after' && next !== 'after') setTriggerURL('')
+              // A webhook or a follower runs only when started; watching checks every hour to start with.
+              if (next === 'webhook' || next === 'after') {
+                setSchedule({ kind: 'manual', time_zone: schedule.time_zone })
+                return
+              }
+              if (next && (!triggerKind || triggerKind === 'webhook' || triggerKind === 'after') && schedule.kind !== 'interval') setSchedule({ kind: 'interval', time_zone: schedule.time_zone, every_seconds: 3600 })
+              else if (!next && schedule.kind === 'manual') setSchedule({ kind: 'daily', time_zone: schedule.time_zone, hour: 8, minute: 0, times: [{ hour: 8, minute: 0 }] })
+            }}
+          >
+            <option value="">{t('form.runsSchedule')}</option>
+            <option value="page">{t('form.runsPage')}</option>
+            <option value="feed">{t('form.runsFeed')}</option>
+            <option value="folder">{t('form.runsFolder')}</option>
+            <option value="webhook">{t('form.runsWebhook')}</option>
+            {others.length > 0 || triggerKind === 'after' ? <option value="after">{t('form.runsAfter')}</option> : null}
+          </select>
+        </label>
+        {triggerKind === 'after' ? (
+          <>
+            <label className="block space-y-1 text-sm">
+              <span className="text-ink-muted">{t('form.afterWhich')}</span>
+              <select className="field w-full" value={triggerURL} onChange={(event) => setTriggerURL(event.target.value)} required>
+                {others.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block space-y-1 text-sm">
+              <span className="text-ink-muted">{t('form.afterWhen')}</span>
+              <select className="field w-full" value={afterWhen} onChange={(event) => setAfterWhen(event.target.value as 'succeeded' | 'notified')}>
+                <option value="succeeded">{t('form.afterSucceeded')}</option>
+                <option value="notified">{t('form.afterNotified')}</option>
+              </select>
+            </label>
+          </>
+        ) : triggerKind && triggerKind !== 'webhook' ? (
+          <label className="block space-y-1 text-sm">
+            <span className="text-ink-muted">{triggerKind === 'folder' ? t('form.watchPath') : t('form.watchUrl')}</span>
+            <input
+              className={`field w-full ${triggerKind === 'folder' ? 'font-mono' : ''}`}
+              type={triggerKind === 'folder' ? 'text' : 'url'}
+              value={triggerURL}
+              spellCheck={false}
+              placeholder={triggerKind === 'feed' ? 'https://example.com/feed.xml' : triggerKind === 'folder' ? '~/Documents/Invoices' : 'https://example.com/careers'}
+              onChange={(event) => setTriggerURL(event.target.value)}
+              required
+            />
+          </label>
+        ) : null}
+      </div>
+      {triggerKind === 'webhook' ? (
+        <p className="text-xs text-ink-faint">{t('form.webhookHint')}</p>
+      ) : triggerKind === 'after' ? (
+        <p className="text-xs text-ink-faint">{t('form.afterHint')}</p>
+      ) : triggerKind ? (
+        <p className="text-xs text-ink-faint">{t('form.watchHint')}</p>
+      ) : null}
+      {triggerKind === 'webhook' || triggerKind === 'after' ? null : (
+        <>
+      <p className="text-sm text-ink-muted">{triggerKind ? t('form.checkSchedule') : t('form.schedule')}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block space-y-1 text-sm">
           <span className="text-ink-muted">{t('form.repeats')}</span>
@@ -286,10 +426,13 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
             <option value="interval">{t('form.kinds.interval')}</option>
             <option value="once">{t('form.kinds.once')}</option>
             <option value="cron">{t('form.kinds.cron')}</option>
+            <option value="manual">{t('form.kinds.manual')}</option>
           </select>
         </label>
         <ScheduleFields schedule={schedule} onChange={setSchedule} />
       </div>
+        </>
+      )}
       <fieldset className="space-y-2">
         <legend className="text-sm text-ink-muted">{t('form.notifyMe')}</legend>
         {NOTIFY_CHOICES.map((choice) => (
@@ -342,6 +485,29 @@ export function AutomationForm({ profiles, models, tools, initial, seedDescripti
         </div>
       )}
       {installed.length === 0 && <p className="text-sm text-danger">{t('form.installModel')}</p>}
+      <div className="space-y-2">
+        <label className="flex items-center gap-2 text-sm text-ink">
+          <input type="checkbox" checked={saving} onChange={(event) => setSaving(event.target.checked)} />
+          {t('form.saveResults')}
+        </label>
+        {saving ? (
+          <label className="block space-y-1 text-sm">
+            <span className="text-ink-muted">{t('form.saveFolder')}</span>
+            <input
+              className="field w-full font-mono"
+              value={saveFolder}
+              spellCheck={false}
+              aria-describedby="automation-save-hint"
+              onChange={(event) => setSaveFolder(event.target.value)}
+              required
+            />
+            <span id="automation-save-hint" className="block text-xs text-ink-faint">
+              {t('form.saveFolderHint')}
+            </span>
+          </label>
+        ) : null}
+      </div>
+
       <details ref={advancedRef} className="space-y-3">
         <summary className="cursor-pointer text-sm text-ink-muted">{t('form.advanced')}</summary>
         <label className="block space-y-1 text-sm">
@@ -500,6 +666,52 @@ function StepHeading({ number, children }: { number: number; children: string })
   )
 }
 
+function IdeaFieldInput({ field, value, onChange }: { field: IdeaField; value: string; onChange: (value: string) => void }) {
+  const { t } = useTranslation('automations')
+  const label = <span className="text-ink-muted">{t(`ideas.fields.${field}.label`)}</span>
+  if (field === 'currency') {
+    return (
+      <label className="block space-y-1 text-sm">
+        {label}
+        <select className="field w-full" value={value} onChange={(event) => onChange(event.target.value)}>
+          {CURRENCIES.map((code) => (
+            <option key={code} value={code}>
+              {code} · {currencyName(code)}
+            </option>
+          ))}
+        </select>
+      </label>
+    )
+  }
+  if (field === 'weekday') {
+    return (
+      <label className="block space-y-1 text-sm">
+        {label}
+        <select className="field w-full" value={value} onChange={(event) => onChange(event.target.value)}>
+          {[0, 1, 2, 3, 4, 5, 6].map((index) => (
+            <option key={index} value={index}>
+              {weekdayName(index)}
+            </option>
+          ))}
+        </select>
+      </label>
+    )
+  }
+  return (
+    <label className={`block space-y-1 text-sm ${field === 'url' || field === 'folder' || field === 'topics' || field === 'software' ? 'sm:col-span-2' : ''}`}>
+      {label}
+      <input
+        className="field w-full"
+        type={field === 'url' ? 'url' : field === 'time' ? 'time' : 'text'}
+        inputMode={field === 'price' ? 'decimal' : undefined}
+        placeholder={field === 'time' ? undefined : t(`ideas.fields.${field}.placeholder`)}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    </label>
+  )
+}
+
 function ScheduleFields({
   schedule,
   onChange,
@@ -508,6 +720,9 @@ function ScheduleFields({
   onChange: (schedule: AutomationSchedule) => void
 }) {
   const { t } = useTranslation('automations')
+  if (schedule.kind === 'manual') {
+    return <p className="self-end pb-2 text-xs text-ink-faint">{t('form.manualHint')}</p>
+  }
   if (schedule.kind === 'interval') {
     const { amount, unit } = splitInterval(schedule.every_seconds ?? 6 * 3600)
     return (
@@ -685,11 +900,18 @@ function splitInterval(seconds: number): { amount: number; unit: IntervalUnit } 
   return { amount: Math.max(1, Math.round(seconds / 60)), unit: 'minutes' }
 }
 
+function watchTrigger(kind: AutomationTrigger['kind'], target: string, when: 'succeeded' | 'notified' = 'succeeded'): AutomationTrigger {
+  if (kind === 'webhook') return { kind }
+  if (kind === 'after') return { kind, automation_id: target, when }
+  return kind === 'folder' ? { kind, path: target.trim() } : { kind, url: target.trim() }
+}
+
 function changeKind(schedule: AutomationSchedule, kind: AutomationSchedule['kind']): AutomationSchedule {
   const time_zone = schedule.time_zone
   if (kind === 'once') return { kind, time_zone, at: schedule.at }
   if (kind === 'interval') return { kind, time_zone, every_seconds: schedule.every_seconds || 6 * 3600 }
   if (kind === 'cron') return { kind, time_zone, cron: schedule.cron || '0 9 * * 1-5' }
+  if (kind === 'manual') return { kind, time_zone }
   // The times carry over between daily, weekly, and monthly.
   const times = schedule.kind === 'daily' || schedule.kind === 'weekly' || schedule.kind === 'monthly' ? scheduleTimes(schedule) : [{ hour: 8, minute: 0 }]
   const base = { time_zone, times, hour: times[0].hour, minute: times[0].minute }

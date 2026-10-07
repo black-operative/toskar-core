@@ -17,7 +17,7 @@ const runSelect = `
 	SELECT id, automation_id, occurrence_at, status, claimed_at, lease_until,
 		started_at, finished_at, COALESCE(result, ''), COALESCE(error, ''),
 		notification_sent, COALESCE(model_id, ''), COALESCE(node_id, ''),
-		attempt, retry_at, created_at, COALESCE(notify_detail, ''), COALESCE(notify_values, '')
+		attempt, retry_at, created_at, COALESCE(notify_detail, ''), COALESCE(notify_values, ''), COALESCE(conversation_id, ''), COALESCE(saved_file, '')
 	FROM automation_runs`
 
 // Claim takes the occurrence for this daemon.
@@ -383,7 +383,7 @@ func (r *AutomationRepo) latestRuns(ctx context.Context) (map[string]automations
 		SELECT r.id, r.automation_id, r.occurrence_at, r.status, r.claimed_at, r.lease_until,
 			r.started_at, r.finished_at, COALESCE(r.result, ''), COALESCE(r.error, ''),
 			r.notification_sent, COALESCE(r.model_id, ''), COALESCE(r.node_id, ''),
-			r.attempt, r.retry_at, r.created_at, COALESCE(r.notify_detail, ''), COALESCE(r.notify_values, '')
+			r.attempt, r.retry_at, r.created_at, COALESCE(r.notify_detail, ''), COALESCE(r.notify_values, ''), COALESCE(r.conversation_id, ''), COALESCE(r.saved_file, '')
 		FROM automation_runs r
 		INNER JOIN (
 			SELECT automation_id, MAX(occurrence_at) AS occurrence_at
@@ -516,6 +516,40 @@ func (r *AutomationRepo) SetDecision(ctx context.Context, runID, detail string, 
 	return err
 }
 
+// FinishedSince is every run that succeeded or failed after since, oldest
+// first, for the digest (#204).
+func (r *AutomationRepo) FinishedSince(ctx context.Context, since time.Time) ([]automations.Run, error) {
+	rows, err := r.db.QueryContext(ctx, runSelect+`
+		WHERE status IN ('succeeded', 'failed') AND finished_at > ?
+		ORDER BY finished_at`, formatTime(since))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return scanRuns(rows)
+}
+
+// GetRun loads one run of an automation.
+func (r *AutomationRepo) GetRun(ctx context.Context, automationID, runID string) (automations.Run, error) {
+	run, err := scanRun(r.db.QueryRowContext(ctx, runSelect+` WHERE id = ? AND automation_id = ?`, runID, automationID))
+	if err == sql.ErrNoRows {
+		return automations.Run{}, fmt.Errorf("run %q not found", runID)
+	}
+	return run, err
+}
+
+// SetRunConversation records the chat a run's result was posted to.
+func (r *AutomationRepo) SetRunConversation(ctx context.Context, runID, conversationID string) error {
+	_, err := r.db.ExecContext(ctx, `UPDATE automation_runs SET conversation_id = ? WHERE id = ?`, nullIfEmpty(conversationID), runID)
+	return err
+}
+
+// SetSavedFile records where a run's result was saved.
+func (r *AutomationRepo) SetSavedFile(ctx context.Context, runID, path string) error {
+	_, err := r.db.ExecContext(ctx, `UPDATE automation_runs SET saved_file = ? WHERE id = ?`, nullIfEmpty(path), runID)
+	return err
+}
+
 // SetNotificationSent records whether the user was notified for this occurrence.
 func (r *AutomationRepo) SetNotificationSent(ctx context.Context, runID string, sent bool) error {
 	res, err := r.db.ExecContext(ctx, `UPDATE automation_runs SET notification_sent = ? WHERE id = ?`, boolInt(sent), runID)
@@ -580,7 +614,7 @@ func scanRun(s automationScanner) (automations.Run, error) {
 	if err := s.Scan(
 		&run.ID, &run.AutomationID, &occurrence, &status, &claimed, &lease,
 		&started, &finished, &run.Result, &run.Error, &notified, &run.ModelID, &run.NodeID,
-		&run.Attempt, &retryAt, &created, &run.NotifyDetail, &values,
+		&run.Attempt, &retryAt, &created, &run.NotifyDetail, &values, &run.ConversationID, &run.SavedFile,
 	); err != nil {
 		return automations.Run{}, err
 	}

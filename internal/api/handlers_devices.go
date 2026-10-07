@@ -11,7 +11,7 @@ import (
 	"github.com/yeixio/toskar-core/internal/auth"
 )
 
-// Connect a phone (#216). The computer's own UI makes a 6-digit code; the
+// Connect a device (#216). The computer's own UI makes a 6-digit code; the
 // phone sends it from the local network, without a key, and gets one.
 
 func (s *Server) deviceRoutes(api *mux.Router) {
@@ -57,7 +57,7 @@ func (s *Server) pairingView(p auth.DevicePairing) pairingView {
 // enable_lan it first turns on local network access, which a phone needs.
 func (s *Server) handleStartDevicePairing(w http.ResponseWriter, r *http.Request) {
 	if s.deps.Devices == nil {
-		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Connecting a phone isn't available.", nil)
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Connecting a device isn't available.", nil)
 		return
 	}
 	var body struct {
@@ -81,7 +81,7 @@ func (s *Server) handleStartDevicePairing(w http.ResponseWriter, r *http.Request
 // handleDevicePairingStatus says whether a phone has connected with the code.
 func (s *Server) handleDevicePairingStatus(w http.ResponseWriter, r *http.Request) {
 	if s.deps.Devices == nil {
-		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Connecting a phone isn't available.", nil)
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Connecting a device isn't available.", nil)
 		return
 	}
 	writeJSON(w, http.StatusOK, s.pairingView(s.deps.Devices.Status()))
@@ -99,7 +99,7 @@ func (s *Server) handleCancelDevicePairing(w http.ResponseWriter, r *http.Reques
 // key, so it answers only on the local network.
 func (s *Server) handlePairDevice(w http.ResponseWriter, r *http.Request) {
 	if s.deps.Devices == nil {
-		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Connecting a phone isn't available.", nil)
+		writeErr(w, http.StatusNotImplemented, "NOT_IMPLEMENTED", "Connecting a device isn't available.", nil)
 		return
 	}
 	if !auth.FromLocalNetwork(r) {

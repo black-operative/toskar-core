@@ -45,28 +45,78 @@
     "news": {
       "title": "Morning news brief",
       "body": "A short summary of the day's tech news, every morning.",
-      "request": "Every morning at 7:30 AM, summarize today's top technology news."
+      "request": "Every morning at 7:30 AM, summarize today's top technology news.",
+      "name": "Morning briefing: {{topics}}",
+      "task": "Summarize today's top news about {{topics}} in five short points, with a link to each source.",
+      "defaultTopics": "technology"
     },
     "price": {
       "title": "Price watch",
       "body": "Hear when something you want drops below your price.",
-      "request": "Every morning at 8:00 AM, check this product and tell me if the price is below $500."
+      "request": "Every morning at 8:00 AM, check this product and tell me if the price is below $500.",
+      "name": "Price watch: {{site}}",
+      "task": "Check the current price of the product at {{url}}."
     },
     "stock": {
       "title": "Back in stock",
       "body": "Hear as soon as a sold-out item can be bought again.",
-      "request": "Every 6 hours, check whether this item is back in stock and tell me when it becomes available."
+      "request": "Every 6 hours, check whether this item is back in stock and tell me when it becomes available.",
+      "name": "Back in stock: {{site}}",
+      "task": "Check whether the item at {{url}} is in stock and can be bought now."
     },
     "releases": {
       "title": "Weekly release notes",
       "body": "What changed in software you use, every Friday.",
-      "request": "Every Friday at 9:00 AM, check for new releases of this software and summarize what changed."
+      "request": "Every Friday at 9:00 AM, check for new releases of this software and summarize what changed.",
+      "name": "Release notes: {{software}}",
+      "task": "Find new releases of {{software}} from the past week and summarize what changed, with the version numbers."
     },
     "page": {
       "title": "Page watch",
       "body": "Hear only when a page you care about changes.",
-      "request": "Every day at 6:00 PM, check this page and notify me only when it changes."
-    }
+      "request": "Every day at 6:00 PM, check this page and notify me only when it changes.",
+      "name": "Page watch: {{site}}",
+      "task": "Read the page at {{url}} and summarize what it says."
+    },
+    "folder": {
+      "title": "Folder summary",
+      "body": "Hear what's new in a folder on this computer, when it changes.",
+      "request": "Every day at 6:00 PM, summarize what is in this folder and notify me only when it changes.",
+      "name": "Folder summary: {{folderName}}",
+      "task": "Summarize the files in the folder {{folder}}: what's new or changed, and anything that needs attention."
+    },
+    "fields": {
+      "topics": {
+        "label": "Topics",
+        "placeholder": "technology, science"
+      },
+      "url": {
+        "label": "Link",
+        "placeholder": "https://example.com/product"
+      },
+      "price": {
+        "label": "Notify below",
+        "placeholder": "500"
+      },
+      "currency": {
+        "label": "Currency"
+      },
+      "software": {
+        "label": "Software",
+        "placeholder": "a name or a link, such as Node.js"
+      },
+      "folder": {
+        "label": "Folder",
+        "placeholder": "~/Documents/Invoices"
+      },
+      "time": {
+        "label": "Time"
+      },
+      "weekday": {
+        "label": "Day"
+      }
+    },
+    "describeInstead": "Describe it in your own words instead"
   },
   "detail": {
     "schedule": "Schedule",
@@ -84,7 +134,9 @@
     "history": "History",
     "notRunYet": "This automation has not run yet.",
     "olderRuns": "Show older runs",
-    "loadingOlder": "Loading…"
+    "loadingOlder": "Loading…",
+    "lastChecked": "Last checked {{when}}, nothing new",
+    "nextCheck": "Next check {{when}}"
   },
   "run": {
     "details": "Details",
@@ -100,7 +152,10 @@
       "retrying": "Retrying",
       "running": "Running",
       "notRun": "Not run yet"
-    }
+    },
+    "continueInChat": "Continue in chat",
+    "openingChat": "Opening the chat…",
+    "savedTo": "Saved to {{path}}"
   },
   "pill": {
     "paused": "Paused",
@@ -160,7 +215,8 @@
     "weekends": "Weekends at {{time}}",
     "weeklyDays": "Every {{days}} at {{time}}",
     "monthly": "Monthly on day {{day}} at {{time}}",
-    "cron": "Custom schedule: {{cron}}"
+    "cron": "Custom schedule: {{cron}}",
+    "manual": "Only when started"
   },
   "notify": {
     "none": "Store the result only",
@@ -209,7 +265,6 @@
     "setUp": "Fill in the details",
     "settingUp": "Filling in…",
     "ideas": "Or start from an idea",
-    "ideaHint": "Edit the words to fit, such as a link in place of “this page”, then choose Fill in the details again.",
     "stepDetails": "Check the details",
     "name": "Name",
     "task": "Task",
@@ -222,7 +277,8 @@
       "monthly": "Every month",
       "interval": "On an interval",
       "once": "Once",
-      "cron": "Custom (cron)"
+      "cron": "Custom (cron)",
+      "manual": "Only when started"
     },
     "notifyMe": "Notify me",
     "notifyChoices": {
@@ -296,7 +352,28 @@
     "monthDay": "Day of the month",
     "monthDayHint": "In a shorter month, it runs on the last day.",
     "cron": "Cron expression",
-    "cronHint": "Five fields, in the time zone below: minute, hour, day of the month, month, and day of the week."
+    "cronHint": "Five fields, in the time zone below: minute, hour, day of the month, month, and day of the week.",
+    "saveResults": "Also save each result as a file",
+    "saveFolder": "Folder",
+    "saveFolderHint": "A new Markdown file for each result, in your home folder.",
+    "runs": "Runs",
+    "runsSchedule": "On its schedule",
+    "runsPage": "When a web page changes",
+    "runsFeed": "When a feed has new posts",
+    "runsFolder": "When a file or folder changes",
+    "runsWebhook": "When another service calls its link (webhook)",
+    "runsAfter": "After another automation",
+    "watchUrl": "Link",
+    "watchPath": "Folder or file",
+    "watchHint": "Toskar checks it on the schedule below and runs only when something changed, telling the task what it was.",
+    "checkSchedule": "How often to check",
+    "webhookHint": "It runs when another service calls its link. Make the link on the automation's page after saving.",
+    "manualHint": "It runs only when you press Run now, or from its webhook.",
+    "afterWhich": "Automation",
+    "afterWhen": "When",
+    "afterSucceeded": "Each time it finishes",
+    "afterNotified": "Only when it notifies",
+    "afterHint": "It runs right after the other automation, given its result. A run that follows another can't use tools that change things outside Toskar."
   },
   "draft": {
     "label": "Automation to confirm",
@@ -310,5 +387,34 @@
     "open": "Open in Automations",
     "failed": "Could not create the automation."
   },
-  "runInChat": "From the automation <automation>{{name}}</automation>"
+  "runInChat": "From the automation <automation>{{name}}</automation>",
+  "digest": {
+    "title": "Automation digest",
+    "intro_one": "What your automation found since the last digest.",
+    "intro_other": "What your {{count}} automations found since the last digest.",
+    "noResult": "Ran, with nothing to report.",
+    "failed_one": "Failed once: {{error}}",
+    "failed_other": "Failed {{count}} times, last: {{error}}"
+  },
+  "trigger": {
+    "page": "When {{site}} changes · checked: {{schedule}}",
+    "feed": "New posts on {{site}} · checked: {{schedule}}",
+    "folder": "When {{name}} changes · checked: {{schedule}}",
+    "webhook": "When its webhook link is called",
+    "after": "After {{name}} finishes",
+    "afterNotified": "After {{name}} notifies",
+    "anotherAutomation": "another automation"
+  },
+  "webhook": {
+    "title": "Webhook link",
+    "copy": "Copy",
+    "copied": "Copied",
+    "shownOnce": "Copy it now: it's shown only once. Anyone with the link can start this automation.",
+    "howTo": "Send a POST request to it. The body, up to 64 KB, is given to the task as data.",
+    "noLink": "Make a link for another service to call.",
+    "hasLink": "This automation has a link. It's shown only when it's made.",
+    "make": "Make a link",
+    "makeNew": "Make a new link",
+    "replaces": "A new link stops the old one."
+  }
 }

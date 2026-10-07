@@ -137,7 +137,10 @@
     "title": "Notificaciones",
     "description": "Alertas sobre trabajos largos y la conectividad del equipo.",
     "taskFinish": "Avisar cuando terminen las tareas",
-    "peerOffline": "Avisar cuando una computadora vinculada se desconecte"
+    "peerOffline": "Avisar cuando una computadora vinculada se desconecte",
+    "digest": "Resumen diario de automatizaciones",
+    "digestHint": "Un resumen de los resultados de todas tus automatizaciones cada día, en un chat al que puedes responder.",
+    "digestTime": "Hora"
   },
   "toolPermissions": {
     "title": "Permisos de herramientas",

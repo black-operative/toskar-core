@@ -943,6 +943,11 @@ type SettingsView struct {
 	// AssistantLanguage is the BCP 47 tag answers are written in with
 	// AssistantLanguageMode "language", such as "de".
 	AssistantLanguage string `json:"assistant_language"`
+	// AutomationDigest is the time of day, such as "08:00", one digest of
+	// every automation's results goes out, or "" for none (#204), in
+	// AutomationDigestZone, an IANA time zone.
+	AutomationDigest     string `json:"automation_digest"`
+	AutomationDigestZone string `json:"automation_digest_zone"`
 }
 
 // Recommendation explains a recommended model setup.

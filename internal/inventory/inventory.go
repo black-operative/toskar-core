@@ -212,7 +212,7 @@ var rules = []rule{
 			v := toolsWhere(s, toolID("git."))
 			return len(v) > 0, v, ""
 		}},
-	{"image_generation", "Generate images", regexp.MustCompile(`(?i)\b(generat|creat|draw|make|render|paint)\w*\b.*\b(images?|pictures?|photos?|drawings?|illustrations?|art)\b`),
+	{"image_generation", "Generate images", regexp.MustCompile(`(?i)\b(generat|creat|draw|make|render|paint)\w*\b.*\b(images?|pictures?|photos?|drawings?|illustrations?|art)\b|\b(draw|paint|sketch|illustrate)\s+(me\s+)?(a|an|the|my|our|some)\b`),
 		func(s Snapshot) (bool, []string, string) {
 			v := toolsWhere(s, toolAbout(imageRe, makeRe))
 			if len(v) > 0 {
@@ -363,9 +363,14 @@ func Needs(s Snapshot, message string) (Ability, bool) {
 // askRe is a question about what the assistant can do, not a request to do it.
 var askRe = regexp.MustCompile(`(?i)^\s*(can|could|are|do|does|is|will|would|which|what)\b.*\b(you|yggdrasil|i)\b.*\b(able to|access|can|do|have|run|support|use|generate|connect)|^\s*(can|could) (you|i|yggdrasil)\b|\bwhich (computers?|nodes?|machines?) can run\b`)
 
+// makeThisRe is a question that names something to make: "are you able to
+// make a picture of a dog for me?" asks for the picture, not about
+// pictures, so it's a request.
+var makeThisRe = regexp.MustCompile(`(?i)\b(draw|paint|sketch|illustrate|make|create|generate|render|produce|design|animate)\b[^?]{0,40}?\b(of|showing|that shows)\s+\w+|\b(draw|paint|sketch|illustrate|animate)\s+(me\s+)?(a|an|the|my|our|some)\s+\w+|\b(draw|paint|sketch|make|create|generate|render|design)\b[^?]{0,60}\bfor me\b`)
+
 // IsQuestion reports a message asking what Yggdrasil can do.
 func IsQuestion(message string) bool {
-	return strings.Contains(message, "?") && askRe.MatchString(strings.TrimSpace(message))
+	return strings.Contains(message, "?") && askRe.MatchString(strings.TrimSpace(message)) && !makeThisRe.MatchString(message)
 }
 
 // Ask returns the abilities a capability question is about.

@@ -742,6 +742,13 @@ export const api = {
   listAutomationRuns: (id: string, before: string) =>
     request<AutomationRunsPage>(`/api/v1/automations/${id}/runs?before=${encodeURIComponent(before)}`),
 
+  /** Makes a webhook trigger's new link; its token is shown only now (#204). */
+  makeAutomationHook: (id: string) => request<{ token: string; path: string }>(`/api/v1/automations/${id}/hook`, { method: 'POST' }),
+
+  /** Opens a run's result in a chat to reply to: the one it was posted to, or a new one (#204). */
+  continueAutomationRun: (id: string, runId: string) =>
+    request<{ conversation_id: string }>(`/api/v1/automations/${id}/runs/${runId}/chat`, { method: 'POST' }),
+
   /** Reads a request such as "every morning at 8, tell me if the price is below $500" on the computer. */
   parseAutomation: (text: string, timeZone: string, language: string) =>
     request<ParsedAutomation>('/api/v1/automations/parse', {
